@@ -15,6 +15,11 @@ Cultural Events Hub is a collaborative project aimed at revitalizing local cultu
 
 ## Technology Stack
 
+| Frontend | Backend |
+| ----------- | ----------- |
+| Christophe Leroy | Jonathan De Dijcker |
+|  | Samuel Ciulla |
+
 ### Backend:
 - Developed using Adonis.js, a Node.js-based framework.
 - It will handle all server-side logic, including user authentication, event management, and ticket sales processing.

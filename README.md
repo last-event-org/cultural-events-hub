@@ -72,3 +72,5 @@ There will be 3 roles on the platform:
 - Can offer the purchase to a discounted price
 - Promote his events by purchasing Ads
 - Access a Vendor Dashboard including the sales history, Location list, settings.
+
+  by Christophe Leroy

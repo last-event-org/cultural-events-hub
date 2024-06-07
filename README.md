@@ -73,4 +73,4 @@ There will be 3 roles on the platform:
 - Promote his events by purchasing Ads
 - Access a Vendor Dashboard including the sales history, Location list, settings.
 
-  by Christophe Leroy
+

@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const menu = document.querySelectorAll('.navbar-menu');
 
   if (burger.length && menu.length) {
-      for (var i = 0; i < burger.length; i++) {
+      for (let i = 0; i < burger.length; i++) {
           burger[i].addEventListener('click', function() {
-              for (var j = 0; j < menu.length; j++) {
+              for (let j = 0; j < menu.length; j++) {
                   menu[j].classList.toggle('hidden');
               }
           });
@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const backdrop = document.querySelectorAll('.navbar-backdrop');
 
   if (close.length) {
-      for (var i = 0; i < close.length; i++) {
+      for (let i = 0; i < close.length; i++) {
           close[i].addEventListener('click', function() {
-              for (var j = 0; j < menu.length; j++) {
+              for (let j = 0; j < menu.length; j++) {
                   menu[j].classList.toggle('hidden');
               }
           });
@@ -42,14 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Initialiser la carte centrée sur Liège
-let map = L.map('map').setView([50.6333, 5.5667], 11);
+let map = L.map('map').setView([50.6333, 5.5667], 12);
 
 // Ajouter les tuiles OSM
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-// Ajouter vos propres points d'intérêt
+// Points d'intêrets "en dur"
 let poi = [
     { "name": "Place Saint-Lambert", "lat": 50.6452, "lng": 5.5734 },
     { "name": "Gare de Liège-Guillemins", "lat": 50.6246, "lng": 5.5675 },
@@ -66,7 +66,10 @@ let circle = L.circle([50.6452, 5.5734], {
     color: 'blue',
     fillColor: '#30f',
     fillOpacity: 0.2,
-    radius: 1000 // Rayon en mètres
+    radius: 2000  // Rayon en mètres, variable à changer pour augmenter 
+                  // le taille du cercle mais il faut aussi changer l'appel 
+                  // de la fonction displayPOIsWithinRadius 
+                  // pour récupérer les POI
 }).addTo(map);
 
 // Fonction pour calculer la distance entre deux points (en km)
@@ -82,7 +85,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
     return R * 2 * Math.asin(Math.sqrt(a));
 }
 
-// Fonction pour afficher les points d'intérêt dans un rayon de 1 km autour de la Place Saint-Lambert
+// Fonction pour afficher les POI dans un rayon de 1 km autour de la Place Saint-Lambert
 function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
     let poiList = document.getElementById('poi-list');
     poiList.innerHTML = '<h3 class="font-bold">Points d\'intérêt dans un rayon de ' + radiusKm + ' km autour de la Place Saint-Lambert :</h3>';
@@ -99,5 +102,6 @@ function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
 
     poiList.appendChild(ul);
 }
+//(latitude,longitude, rayon en km)
+displayPOIsWithinRadius(50.6452, 5.5734, 2); 
 
-displayPOIsWithinRadius(50.6452, 5.5734, 1);

@@ -1,12 +1,13 @@
+import { createRegisterValidator } from '#validators/register'
 import type { HttpContext } from '@adonisjs/core/http'
-import edge from 'edge.js'
+import hash from '@adonisjs/core/services/hash'
 
 export default class RegistersController {
   /**
    * Display a list of resource
    */
-  async index({}) {
-    return edge.render('pages/register')
+  async index({ view }: HttpContext) {
+    return view.render('pages/register')
   }
 
   /**
@@ -17,7 +18,12 @@ export default class RegistersController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ request }: HttpContext) {
+    console.log(request.all())
+    const data = request.all()
+    const payload = await createRegisterValidator.validate(data)
+    console.log(payload)
+  }
 
   /**
    * Show individual record

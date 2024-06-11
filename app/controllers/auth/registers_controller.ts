@@ -18,10 +18,13 @@ export default class RegistersController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {
-    console.log(request.all())
-    const data = request.all()
-    const payload = await createRegisterValidator.validate(data)
+  async store({ session, request, response }: HttpContext) {
+    const payload = await request.validateUsing(createRegisterValidator)
+    if (request.input('password') !== request.input('password_confirmation')) {
+      console.log('password error')
+      session.flash('password', 'Password do not match')
+      response.redirect().back()
+    }
     console.log(payload)
   }
 

@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Next Event: A cultural events hub</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class=" bg-slate-50">
-@include("pages/partials/testheader")
+
+@include("pages/partials/header")
+@include("pages/partials/intro")
+
+
+
 
   <h1 class="flex justify-center text-xl font-bold underline my-20">
     Next Event: A Cultural Events Hub
@@ -57,5 +64,6 @@
   </p>
 
 @include("pages/partials/footer")  
+
 </body>
 </html>

@@ -36,11 +36,13 @@ export default class RegistersController {
     user.email = payload.email
     user.password = hashedPassword
 
-    const role = await Role.findBy('role_name', 'user')
-    user.related('roleId').save(role.id)
+    const role = await Role.findBy('role_name', 'USER')
+    await user.related('role').associate(role)
 
     await user.save()
-    console.log(user.$isPersisted)
+    if (user.$isPersisted) {
+      return response.redirect('/')
+    }
   }
 
   /**

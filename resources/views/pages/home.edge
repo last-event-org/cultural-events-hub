@@ -15,14 +15,14 @@
 @include("pages/partials/intro")
 @include("pages/partials/filter_map")
 
-<main>
+
   <div class="flex justify-center my-10">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
     <h2 class="text-2xl md:text-3xl font-bold">xt Events à prix réduits</h2>
   </div>
-</main>
 
- <div class="flex flex-wrap justify-center gap-10 container mx-auto mb-10">   
+<main class=" bg-slate-100 container border shadow py-10 mb-10 mx-auto">
+ <div class="flex flex-wrap justify-center gap-10 container mx-auto ">   
     @include("pages/partials/events_cards")
     @include("pages/partials/events_cards")
     @include("pages/partials/events_cards")
@@ -44,6 +44,7 @@
     @include("pages/partials/events_cards")
     @include("pages/partials/events_cards")
   </div>
+</main>
 
   
 @include("pages/partials/footer")  

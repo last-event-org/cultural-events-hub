@@ -1,4 +1,5 @@
 import { createRegisterValidator } from '#validators/register'
+import { loginValidator } from '#validators/auth'
 import type { HttpContext } from '@adonisjs/core/http'
 import hash from '@adonisjs/core/services/hash'
 import User from '#models/user'
@@ -20,7 +21,7 @@ export default class RegistersController {
   /**
    * Handle form submission for the create action
    */
-  async store({ session, request, response }: HttpContext) {
+  async store({ session, request, response, auth }: HttpContext) {
     const payload = await request.validateUsing(createRegisterValidator)
     if (request.input('password') !== request.input('password_confirmation')) {
       console.log('password error')
@@ -41,7 +42,10 @@ export default class RegistersController {
 
     await user.save()
     if (user.$isPersisted) {
+      await auth.use('web').login(user)
       return response.redirect('/')
+    } else {
+      return response.redirect().back()
     }
   }
 

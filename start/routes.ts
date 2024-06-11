@@ -32,6 +32,5 @@ router
   })
   .as('auth')
   .use(middleware.auth())
-router.get('/register', [RegistersController, 'index']).as('register.index')
+router.get('/register', [RegistersController, 'index']).as('register')
 router.post('/register', [RegistersController, 'store']).as('register.store')
-// router.resource('/register', RegistersController)

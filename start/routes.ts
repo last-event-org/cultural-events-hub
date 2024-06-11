@@ -9,4 +9,5 @@
 
 import router from '@adonisjs/core/services/router'
 
-router.on('/').render('pages/home')
+router.on('/').render('pages/home').as('home')
+router.on('/login').render('pages/connexion').as('login')

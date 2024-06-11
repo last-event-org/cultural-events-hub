@@ -13,5 +13,7 @@ export const createRegisterValidator = vine.compile(
       all_lowercase: true,
     }),
     // TODO add validation rules for the password
+    // TODO add validation for unique email
+    // TODO add validation for unique username
   })
 )

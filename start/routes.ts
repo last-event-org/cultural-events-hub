@@ -12,6 +12,6 @@ const RegistersController = () => import('#controllers/auth/registers_controller
 // import RegistersController from '#controllers/registers_controller'
 
 router.on('/').render('pages/home')
-// router.get('/register', [RegistersController, 'index'])
-// router.post('/register', [RegistersController, 'store'])
-router.resource('/register', RegistersController)
+router.get('/register', [RegistersController, 'index']).as('register.index')
+router.post('/register', [RegistersController, 'store']).as('register.store')
+// router.resource('/register', RegistersController)

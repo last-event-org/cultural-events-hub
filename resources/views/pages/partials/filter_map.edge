@@ -1,44 +1,120 @@
 
-<style>
+{{-- <style>
     #map {
         height: 320px;
         width:320px;
     }
-    #poi-list {
-        margin-top: 20px;
-    }
-</style>
-  <div class="flex">
-    <ul>
-      <li>
-        <a href="#">Liège</a>
-      </li>
-      <li>
-        <a href="#">Bruxelles</a>
-      </li>
-      <li>
-        <a href="#">Mons</a>
-      </li>
-      <li>
-        <a href="#">Charleroi</a>
-      </li>
-      <li>
-        <a href="#">Namur</a>
-      </li>
-      <li>
-        <a href="#">Arlon</a>
-      </li>
-    </ul>
-  </div>
-    <div class="flex flex-col justify-center items-center p-4 mt-20 border shadow">
+</style> --}}
+<section class="flex flex-col bg-slate-100 items-center container border shadow my-6 mx-auto">
+  {{-- <h2 class="my-4 text-center text-xl font-semibold">Choisissez votre emplacement</h2> --}}
+  {{-- searchbar --}}
+  <div class='my-4'>
+    <div class="flex justify-between items-center w-80 h-10 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
+        <div class="flex px-4 justify-center items-center text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
 
-      <div id="map"></div>
-      <div id="poi-list"></div>
+        <input
+        class="w-full outline-none text-sm text-gray-700 pr-2"
+        type="text"
+        id="search"
+        placeholder="Votre ville ou un code postal..." /> 
     </div>
+  </div> 
+  {{-- Cities --}}
+  <ul>
+    <div class="flex flex-wrap justify-center my-4 gap-4">
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="font-semibold  text-white"href="#">Liège</a>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="font-semibold text-white"href="#">Bruxelles</a>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="font-semibold text-white"href="#">Charleroi</a>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="font-semibold text-white"href="#">Namur</a>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="font-semibold text-white"href="#">Mons</a>
+        </div>
+      </li>    
+    </div>
+  </ul>
+   
+{{-- map  --}}
+  <div class="flex flex-col w-full h-full justify-center items-center p-4 ">
+    <div id="map" class="h-80 w-80 md:w-4/5 md:h-96 border shadow"></div>
+  </div>
+
+{{-- events types --}}
+
+<ul>
+  <div class="flex flex-wrap justify-center my-4 gap-4">
+    <li>
+      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+        <a class="font-semibold  text-white"href="#">Concert</a>
+      </div>
+    </li>
+    <li>
+      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+        <a class="font-semibold text-white"href="#">Stand-up</a>
+      </div>
+    </li>
+    <li>
+      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+        <a class="font-semibold text-white"href="#">Théâtre</a>
+      </div>
+    </li>
+    <li>
+      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+        <a class="font-semibold text-white"href="#">Spectacle</a>
+      </div>
+    </li>
+    <li>
+      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+        <a class="font-semibold text-white"href="#">Sport</a>
+      </div>
+    </li>    
+  </div>
+</ul>
+  {{-- searchbar --}}
+  <div class='mb-8'>
+    <div class="flex justify-between items-center w-80 h-10 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
+        <div class="flex px-4 justify-center items-center text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
+
+        <input
+        class="w-full outline-none text-sm text-gray-700 pr-2"
+        type="text"
+        id="search"
+        placeholder="Type d'évènement..." /> 
+    </div>
+  </div> 
+
+
+{{-- POI List --}}
+
+{{-- <div id="poi-list" class="mt-4"></div> --}}
+
+</section>
 
 
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script>
-        
-    </script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+

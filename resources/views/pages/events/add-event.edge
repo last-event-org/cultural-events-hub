@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un Événement</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body>
+    @include("pages/partials/header")
+    <section class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+        <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
+                Créer un Événement
+            </h2>
+            <form action="" method="POST" class="space-y-4">
+
+                {{ csrfField() }}
+                
+                <div>
+                    <label for="title" class="block text-gray-600">
+                        Titre
+                    </label>
+                    <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
+                </div>
+
+                <div>
+                    <label for="subtitle" class="block text-gray-600">
+                        Sous-Titre
+                    </label>
+                    <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+             focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
+                </div>
+
+                <div>
+                    <label for="subtitle" class="block text-gray-600">
+                        Sous-Titre
+                    </label>
+                    <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+             focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
+                </div>
+
+                <div>
+                    <label for="description" class="block text-gray-600">
+                        Description
+                    </label>
+                    <input type="text" id="description" name="description" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" placeholder="Jean"
+                        value="{{old('description') || '' }}">
+                </div>
+
+                <div>
+                    <label for="event_start" class="block text-gray-600">
+                        Début
+                    </label>
+                    <input type="text" id="event_start" name="event_start" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" placeholder="Jean"
+                        value="{{old('event_start') || '' }}">
+                </div>
+
+                <div>
+                    <label for="event_end" class="block text-gray-600">
+                        Fin
+                    </label>
+                    <input type="text" id="event_end" name="event_end" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" placeholder="Jean"
+                        value="{{old('event_end') || '' }}">
+                </div>
+
+                <div>
+                    <label for="facebook_link" class="block text-gray-600">
+                        Lien Facebook
+                    </label>
+                    <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" placeholder="Jean"
+                        value="{{old('facebook_link') || '' }}">
+                </div>
+
+                <div>
+                    <label for="instagram_link" class="block text-gray-600">
+                        Lien Instagram
+                    </label>
+                    <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" placeholder="Jean"
+                        value="{{old('instagram_link') || '' }}">
+                </div>
+
+                <div>
+                    <label for="website_link" class="block text-gray-600">
+                        Site Web
+                    </label>
+                    <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" placeholder="Jean"
+                        value="{{old('website_link') || '' }}">
+                </div>
+
+
+                <div>
+                    <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
+          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                        Créer
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+    @include("pages/partials/footer")
+
+</body>
+
+</html>

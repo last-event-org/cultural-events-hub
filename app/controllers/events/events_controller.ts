@@ -47,17 +47,15 @@ export default class EventsController {
     event.title = payload.title
     event.subtitle = payload.subtitle
     event.description = payload.description
-    event.eventStart = DateTime.now()  // TODO Update this
-    event.eventEnd = DateTime.now()  // TODO Update this
+    event.eventStart = DateTime.fromISO(payload.event_start);
+    event.eventEnd = DateTime.fromISO(payload.event_end); 
     event.facebookLink = payload.facebook_link
     event.instagramLink = payload.instagram_link
     event.websiteLink = payload.website_link
 
     await event.save()
-    console.log(event);
 
     return response.redirect().toPath('/')
-
   }
 
   /**

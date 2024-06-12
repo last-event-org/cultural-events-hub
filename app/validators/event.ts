@@ -8,6 +8,8 @@ export const createEventValidator = vine.compile(
       description: vine.string().maxLength(255),
       // event_start: vine.date(),  // TODO adapt date/time format
       // event_end: vine.date(),  // TODO adapt date/time format
+      event_start: vine.string().trim(),
+      event_end: vine.string().trim(),
       facebook_link: vine.string().trim().maxLength(255),
       instagram_link: vine.string().trim().maxLength(255),
       website_link: vine.string().trim().maxLength(255),

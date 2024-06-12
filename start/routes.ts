@@ -1,6 +1,6 @@
 import LoginController from '#controllers/auth/login_controller'
 import LogoutController from '#controllers/auth/logout_controller'
-import HomeController from '#controllers/auth/home_controller'
+import HomeController from '#controllers/home_controller'
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 

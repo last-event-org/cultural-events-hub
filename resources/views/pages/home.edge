@@ -17,34 +17,30 @@
 
 
 <main>
+
   <div class="flex justify-center my-10">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
     <h2 class="text-2xl md:text-3xl font-bold">xt Events à prix réduits</h2>
   </div>
-</main>
 
- <div class="flex flex-wrap justify-center gap-10 container mx-auto mb-10">   
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
+<main class=" container  py-10 mb-10 mx-auto">
+ <div class="flex flex-wrap justify-center bg-slate-100  border shadow gap-10 container mx-auto my-6 py-6">   
     @include("pages/partials/events_cards")
     @include("pages/partials/events_cards")
     @include("pages/partials/events_cards")
     @include("pages/partials/events_cards")
   </div>
+  <div class="flex  my-10">
+    <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+    <h2 class="text-2xl md:text-3xl font-bold text-red-800">xt Events tendance</h2>
+  </div>
+ <div class="flex flex-wrap justify-center bg-slate-100  border shadow gap-10 container mx-auto my-6 py-6">   
+    @include("pages/partials/events_cards")
+    @include("pages/partials/events_cards")
+    @include("pages/partials/events_cards")
+    @include("pages/partials/events_cards")
+  </div>
+</main>
 
 
 @include("pages/partials/footer")  

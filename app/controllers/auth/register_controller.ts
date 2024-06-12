@@ -1,7 +1,5 @@
 import { createRegisterValidator } from '#validators/register'
-import { loginValidator } from '#validators/auth'
 import type { HttpContext } from '@adonisjs/core/http'
-import hash from '@adonisjs/core/services/hash'
 import User from '#models/user'
 import Role from '#models/role'
 
@@ -29,13 +27,12 @@ export default class RegistersController {
       response.redirect().back()
     }
 
-    const hashedPassword = await hash.make('password')
     const user = new User()
 
     user.firstname = payload.first_name
     user.lastname = payload.last_name
     user.email = payload.email
-    user.password = hashedPassword
+    user.password = payload.password
 
     // TODO check null is not assignable
     const role = await Role.findBy('role_name', 'USER')

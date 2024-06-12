@@ -5,8 +5,9 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
 
+router.get('/', [HomeController, 'index']).as('home')
+
 router.group(() => {
-    router.get('/', [HomeController, 'index']).as('home')
 
     router.get('/login', [LoginController, 'show']).as('login.show')
     router.post('/login', [LoginController, 'store']).as('login.store')

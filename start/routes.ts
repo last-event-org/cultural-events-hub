@@ -7,6 +7,7 @@ const RegistersController = () => import('#controllers/auth/registers_controller
 
 router.get('/', [HomeController, 'index']).as('home')
 
+
 router
   .group(() => {
     router.get('/login', [LoginController, 'show']).as('login.show')

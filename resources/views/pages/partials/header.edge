@@ -45,8 +45,8 @@
     href={{ route('auth.login.show') }}>
     Connexion</a>
 
-  <a class="hidden lg:inline-block py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200"
-    href="register.edge">
+  <a class="hidden lg:inline-block py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href={{ route('auth.register') }}>
+
     Enregistement</a>
 
   @else
@@ -69,7 +69,7 @@
   <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
   <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
     <div class="flex items-center mb-8">
-      <a class="flex mr-auto text-3xl font-bold leading-none" href="#">
+      <a class="flex mr-auto text-3xl font-bold leading-none" href="/">
         <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
         <h1>xt Event</h1>
       </a>
@@ -117,8 +117,9 @@
         <a class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
           href={{ route('auth.login.show') }}>
           Connexion</a>
-        <a class="block lg:inline-block py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200"
-          href="register.edge">
+
+        <a class="block lg:inline-block py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href={{ route('auth.register') }}>
+
           Enregistement</a>
       </div>
 

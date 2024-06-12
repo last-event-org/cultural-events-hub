@@ -3,6 +3,8 @@ import { defineConfig, drivers } from '@adonisjs/core/hash'
 const hashConfig = defineConfig({
   default: 'scrypt',
 
+  // TODO add argon for hashing the password
+
   list: {
     scrypt: drivers.scrypt({
       cost: 16384,

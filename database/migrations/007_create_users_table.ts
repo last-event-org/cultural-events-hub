@@ -17,8 +17,18 @@ export default class extends BaseSchema {
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
       table.integer('role_id').unsigned().references('roles.id').onDelete('SET NULL')
-      table.integer('billing_address_id').unsigned().nullable().references('addresses.id').onDelete('SET NULL')
-      table.integer('shipping_address_id').unsigned().nullable().references('addresses.id').onDelete('SET NULL')
+      table
+        .integer('billing_address_id')
+        .unsigned()
+        .nullable()
+        .references('addresses.id')
+        .onDelete('SET NULL')
+      table
+        .integer('shipping_address_id')
+        .unsigned()
+        .nullable()
+        .references('addresses.id')
+        .onDelete('SET NULL')
     })
   }
 

@@ -6,6 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+      
       table.enum('role_name', ['USER', 'VENDOR', 'ADMIN'])
       table.boolean('can_create_event').defaultTo(false)
       table.boolean('can_update_event').defaultTo(false)
@@ -22,6 +23,7 @@ export default class extends BaseSchema {
       table.boolean('can_block_user').defaultTo(false)
       table.boolean('can_update_user').defaultTo(false)
       table.boolean('can_delete_user').defaultTo(false)
+
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

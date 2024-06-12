@@ -8,7 +8,7 @@ export default class RegistersController {
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
-    return view.render('pages/register')
+    return view.render('pages/auth/register')
   }
 
   /**

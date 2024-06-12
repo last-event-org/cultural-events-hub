@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import type { HasOne } from '@adonisjs/lucid/types/relations'
+import Event from '#models/event'
 
 export default class Media extends BaseModel {
   @column({ isPrimary: true })
@@ -19,4 +21,7 @@ export default class Media extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @hasOne(() => Event)
+  declare eventId: HasOne<typeof Event>
 }

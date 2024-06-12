@@ -7,9 +7,22 @@ export default class EventsController {
   /**
    * Display a list of resource
    */
-  async index({ request }: HttpContext) {
+  async index({ request, view }: HttpContext) {
     console.log(request.params())
-    console.log(request.qs())
+    const query = request.qs()
+    console.log(query)
+
+    // Check if there is no params in the query
+    if (Object.keys(request.qs()).length === 0) {
+      const eventList = await Event.all()
+      console.log(eventList)
+      return view.render('pages/events/list')
+    }
+
+    const location = 'liege'
+    const event = new Event()
+    await event.getEventsByLocation(location)
+    // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
   }
 
   /**

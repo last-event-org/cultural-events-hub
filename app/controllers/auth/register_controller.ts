@@ -1,7 +1,5 @@
 import { createRegisterValidator } from '#validators/register'
-import { loginValidator } from '#validators/auth'
 import type { HttpContext } from '@adonisjs/core/http'
-import hash from '@adonisjs/core/services/hash'
 import User from '#models/user'
 import Role from '#models/role'
 

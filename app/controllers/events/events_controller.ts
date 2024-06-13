@@ -32,7 +32,7 @@ export default class EventsController {
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    
+
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
 
@@ -67,9 +67,12 @@ export default class EventsController {
 
     await event.save()
 
+    const selectedCategoryTypes = request.body().categoryTypes
+    
+    selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
+      await event.related('categoryTypes').attach([categoryTypeId])
+    });
 
-
-    // return response.redirect().toPath('/')
     return response.redirect().toRoute('events.show', { id: event.id })
   }
 

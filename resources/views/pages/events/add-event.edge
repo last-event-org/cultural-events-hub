@@ -25,6 +25,7 @@
 
                 {{ csrfField() }}
 
+                {{-- {{ inspect(flashMessages.all()) }} --}}
                 @error('E_INVALID_CREDENTIALS')
 
                 {{ $message }}
@@ -37,6 +38,9 @@
                     </label>
                     <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
+                    @inputError('title')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                    @end
                 </div>
 
                 <div>
@@ -45,15 +49,21 @@
                     </label>
                     <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
+                    @inputError('subtitle')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                    @end
                 </div>
 
                 <div>
                     <label for="description" class="block text-gray-600">
                         Description
                     </label>
-                    <textarea type="text" id="description" name="description" 
-                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('description') || '' }}"
-                    ></textarea>
+                    <textarea type="text" id="description" name="description"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                        value="{{old('description') || '' }}"></textarea>
+                    @inputError('description')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                    @end
                 </div>
 
                 <div class="flex flex-row gap-4">
@@ -65,7 +75,7 @@
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
                             value="">
                     </div>
-    
+
                     <div class="flex-1">
                         <label for="event_end" class="block text-gray-600">
                             Fin

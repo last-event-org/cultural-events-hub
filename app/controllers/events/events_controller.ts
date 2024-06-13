@@ -3,6 +3,7 @@ import { createEventValidator } from '#validators/event'
 import Event from '#models/event'
 import { DateTime } from 'luxon'
 
+
 export default class EventsController {
   /**
    * Display a list of resource
@@ -55,15 +56,17 @@ export default class EventsController {
 
     await event.save()
 
-    return response.redirect().toPath('/')
+    // return response.redirect().toPath('/')
+    return response.redirect().toRoute('events.show', { id: event.id })
   }
 
   /**
    * Show individual record
    */
-  async show({ params, request }: HttpContext) {
+  async show({ view, params, request }: HttpContext) {
     console.log(request.params())
     console.log(params)
+    return view.render('pages/events/details')
   }
 
   /**

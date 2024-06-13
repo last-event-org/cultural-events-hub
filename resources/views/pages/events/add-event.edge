@@ -110,6 +110,28 @@
            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
                 </div>
 
+                <fieldset>
+                    <legend class="block text-gray-600">Catégorie:</legend>
+                    @each(category in categories)
+                    <div>
+                        <input type="checkbox" id="category_{{ category.id }}" name="categories[]"
+                            value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
+                        <label for="category_{{ category.id }}">{{ category.name }}</label>
+                    </div>
+                    @end
+                </fieldset>
+
+                <fieldset id="categoryTypesFieldset" class="hidden">
+                    <legend class="block text-gray-600">Types de Catégories:</legend>
+                    @each(categoryType in categoryTypes)
+                    <div class="category-type category-type-{{ categoryType.parentCategoryId }} hidden">
+                        <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
+                            value="{{ categoryType.id }}" />
+                        <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+                    </div>
+                    @end
+                </fieldset>
+
 
                 <div>
                     <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
@@ -119,6 +141,33 @@
                 </div>
 
             </form>
+
+            <script>
+                // display Category Types only when parent Catgory is selected
+                function toggleCategoryTypes(categoryId) {
+                    const categoryCheckbox = document.getElementById('category_' + categoryId);
+                    const checkboxes = document.querySelectorAll('.category-type-' + categoryId);
+                    const categoryFieldset = document.querySelector('#categoryTypesFieldset');
+
+                    if (categoryCheckbox.checked) {
+                        checkboxes.forEach((checkbox) => {
+                            checkbox.classList.remove('hidden');
+                        });
+                        categoryFieldset.classList.remove('hidden');
+                    } else {
+                        checkboxes.forEach((checkbox) => {
+                            checkbox.classList.add('hidden');
+                        });
+
+                        // Check if any category checkbox is checked
+                        const anyCategoryChecked = Array.from(document.querySelectorAll('[name="categories[]"]')).some(checkbox => checkbox.checked);
+                        if (!anyCategoryChecked) {
+                            categoryFieldset.classList.add('hidden');
+                        }
+                    }
+                }
+            </script>
+
         </div>
     </section>
 

@@ -2,6 +2,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { createEventValidator } from '#validators/event'
 import Event from '#models/event'
 import { DateTime } from 'luxon'
+import Category from '#models/category'
+import CategoryType from '#models/category_type'
 
 
 export default class EventsController {
@@ -30,7 +32,16 @@ export default class EventsController {
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    return view.render('pages/events/add-event')
+    
+    const categories = await Category.all()
+    const categoryTypes = await CategoryType.all()
+
+    return view.render('pages/events/add-event',
+      {
+        'categories': categories,
+        'categoryTypes': categoryTypes,
+      }
+    )
   }
 
   /**
@@ -55,6 +66,8 @@ export default class EventsController {
     event.websiteLink = payload.website_link
 
     await event.save()
+
+
 
     // return response.redirect().toPath('/')
     return response.redirect().toRoute('events.show', { id: event.id })

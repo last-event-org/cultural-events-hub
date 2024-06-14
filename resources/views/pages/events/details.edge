@@ -5,12 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Next Event - Détails de l'évènement</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @vite(['resources/css/app.css', 'resources/js/map_details.js','resources/js/favourites.js'])
 </head>
 
 <body>
 
   @include("pages/partials/header")
+
+  
 
   <main class=" container py-10 mb-10 mx-auto">
     <div class="flex justify-center bg-gray-50  border shadow gap-10  mx-auto my-6 py-10"> 
@@ -46,26 +48,34 @@
                 nihil distinctio nisi! Dolor, deserunt repudiandae itaque natus quas voluptatum.
             </p>
           </div>
-
-
-            <img src="/public/images/dummy-spectacle.webp" alt="Event Image" class="w-full m-h-64  object-cover shadow ">
-        
+          
+          
+          <div class="w-full m-h-64 relative object-cover shadow " href="#">
+          <img src="/public/images/dummy-spectacle.webp" alt="Event Image" >  
+            <div class= "flex gap-2 items-center absolute top-4 right-4 z-10  transition duration-300">
+              <p class="hidden opacity-0 transform scale-50 -translate-x-full animate-pulse bg-slate-400/50 text-white font-semibold px-2 " id="add-to-favourites">Add to favourites</p>
+              <a href="#" id="favourite-star"  >
+                <img  src="/public/svg/favourite-star.svg" alt="Add to favourites" >
+              </a>
+            </div>
+          </div>
         
           <div class="flex flex-col gap-4 p-4">
 
             <div class="flex justify-center items-center gap-8">
-              <a href="#">
+              <a href="#" class="hover:animate-pulse">
                 <img src="/public/svg/facebook-color.svg" alt="facebook link">
               </a>
-              <a href="">
+              <a href="#" class="hover:animate-pulse">
                 <img src="/public/svg/instagram-color.svg" alt="instagram link">
               </a>
-              <a href="">
+              <a href="#" class="hover:animate-pulse">
                 <img src="/public/svg/web.svg" alt="website link">
               </a>
             </div>
-            
+
             <div class="border-t border-gray-200 pt-2"></div>
+
 
             <p class="text-center font-semibold text-lg text-gray-500">
               Spectacle
@@ -117,15 +127,22 @@
           <a class=" py-2 px-6 bg-green-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href="#">
             Acheter</a>
         </div>
-
+        <div class="flex flex-col  container h-60 my-10 mx-auto">
+          <div id="map" class="h-full"></div>
+        </div>
+        
       </article>
-      
 
     </div>
   </main>
 
 
   @include("pages/partials/footer")
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
 </body>
 </html>

@@ -19,8 +19,11 @@ export default class Price extends BaseModel {
   @column()
   declare availableQty: number
 
+  @column()
+  declare eventId: number
+
   @belongsTo(() => Event)
-  declare eventId: BelongsTo<typeof Event>
+  declare event: BelongsTo<typeof Event>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

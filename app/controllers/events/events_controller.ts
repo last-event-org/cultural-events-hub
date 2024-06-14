@@ -4,6 +4,10 @@ import Event from '#models/event'
 import { DateTime } from 'luxon'
 import Category from '#models/category'
 import CategoryType from '#models/category_type'
+import { createAddressValidator } from '#validators/address'
+import Address from '#models/address'
+import { createPriceValidator } from '#validators/price'
+import Price from '#models/price'
 
 export default class EventsController {
   /**
@@ -83,11 +87,39 @@ export default class EventsController {
 
     await event.save()
 
+    // Event Category Types
     const selectedCategoryTypes = request.body().categoryTypes
 
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])
     })
+
+    // Event Address
+    const addressPayload = await request.validateUsing(createAddressValidator)
+    const address = new Address()
+
+    address.name = addressPayload.name
+    address.street = addressPayload.street
+    address.number = addressPayload.number
+    address.zipCode = addressPayload.zip_code
+    address.city = addressPayload.city
+    address.country = addressPayload.country
+
+    await address.save()
+    await event.related('location').associate(address)
+
+    // Event Prices
+    const pricePayload = await request.validateUsing(createPriceValidator)
+    const price = new Price()
+
+    price.description = pricePayload.description
+    price.regularPrice = pricePayload.regular_price
+    price.discountedPrice = pricePayload.discounted_price
+    price.availableQty = pricePayload.available_qty
+
+    await price.save()
+    await price.related('event').associate(event)
+    
 
     return response.redirect().toRoute('events.show', { id: event.id })
   }

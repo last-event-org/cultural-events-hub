@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.float('regular_price')
       table.float('discounted_price')
       table.integer('available_qty')
+      table.integer('event_id').unsigned().references('events.id')
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

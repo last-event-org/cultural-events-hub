@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany, hasOne, manyToMany } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany, hasOne, manyToMany, belongsTo } from '@adonisjs/lucid/orm'
 import User from '#models/user'
 import Address from '#models/address'
-import type { HasOne, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import type { HasOne, HasMany, ManyToMany, BelongsTo } from '@adonisjs/lucid/types/relations'
 import Price from '#models/price'
 import CategoryType from '#models/category_type'
 import Indicator from '#models/indicator'
@@ -44,8 +44,13 @@ export default class Event extends BaseModel {
   @hasOne(() => User)
   declare vendorId: HasOne<typeof User>
 
-  @hasOne(() => Address)
-  declare locationId: HasOne<typeof Address>
+  @column()
+  declare location_id: number
+
+  @belongsTo(() => Address, {
+    foreignKey: 'location_id',
+  })
+  declare location: BelongsTo<typeof Address>
 
   @hasMany(() => Price)
   declare price_id: HasMany<typeof Price>
@@ -85,3 +90,4 @@ export default class Event extends BaseModel {
     // get events where indicator ID is present in the indicators_events table
   }
 }
+

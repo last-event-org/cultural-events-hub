@@ -4,6 +4,8 @@ import Event from '#models/event'
 import { DateTime } from 'luxon'
 import Category from '#models/category'
 import CategoryType from '#models/category_type'
+import { createAddressValidator } from '#validators/address'
+import Address from '#models/address'
 
 
 export default class EventsController {
@@ -66,12 +68,24 @@ export default class EventsController {
     event.websiteLink = payload.website_link
 
     await event.save()
-
-    const selectedCategoryTypes = request.body().categoryTypes
     
+    const selectedCategoryTypes = request.body().categoryTypes
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])
     });
+
+    const addressPayload = await request.validateUsing(createAddressValidator)
+    const address = new Address()
+
+    address.name = addressPayload.name
+    address.street = addressPayload.street
+    address.number = addressPayload.number
+    address.zipCode = addressPayload.zip_code
+    address.city = addressPayload.city
+    address.country = addressPayload.country
+
+    await address.save()
+    await event.related('location').associate(address)
 
     return response.redirect().toRoute('events.show', { id: event.id })
   }

@@ -9,26 +9,44 @@ import Address from '#models/address'
 import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
 
-
 export default class EventsController {
   /**
    * Display a list of resource
    */
   async index({ request, view }: HttpContext) {
-    console.log(request.params())
-    const query = request.qs()
-    console.log(query)
+    const requestQuery = request.qs()
+    // const locationId = query['location']
+    // const indicatorId = query['indicator']
 
     // Check if there is no params in the query
     if (Object.keys(request.qs()).length === 0) {
-      const eventList = await Event.all()
-      console.log(eventList)
-      return view.render('pages/events/list')
+      const events = await Event.all()
+      return view.render('pages/events/list', { events: events })
     }
 
-    const location = 'liege'
-    const event = new Event()
-    await event.getEventsByLocation(location)
+    // Get events by category_type_id
+    // const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
+    // const events = await categoryTypeId?.related('events').query()
+
+    // Get events by category_id
+    const categoryId = await Category.find(1)
+    const categories = categoryId?.related('categoryTypes').query()
+    console.log(categories)
+
+    // console.log(categoryId)
+    // const events = categoryId?.related('categoryTypesEvents').query()
+
+    // console.log(events)
+    // const categoryTypes = await CategoryType.query().where('parentCategoryId', 1)
+    // console.log(categoryTypes)
+
+    // const events = await categoryTypeId?.related('categoryTypesEvents').query()
+
+    // const location = 'liege'
+    // const event = new Event()
+    // await event.getEventsByLocation(location)
+    const events = await Event.all()
+    return view.render('pages/events/list', { events: events })
     // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
   }
 
@@ -36,16 +54,14 @@ export default class EventsController {
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
 
-    return view.render('pages/events/add-event',
-      {
-        'categories': categories,
-        'categoryTypes': categoryTypes,
-      }
-    )
+    console.log(categoryTypes)
+    return view.render('pages/events/add-event', {
+      categories: categories,
+      categoryTypes: categoryTypes,
+    })
   }
 
   /**
@@ -63,8 +79,8 @@ export default class EventsController {
     event.title = payload.title
     event.subtitle = payload.subtitle
     event.description = payload.description
-    event.eventStart = DateTime.fromISO(payload.event_start);
-    event.eventEnd = DateTime.fromISO(payload.event_end); 
+    event.eventStart = DateTime.fromISO(payload.event_start)
+    event.eventEnd = DateTime.fromISO(payload.event_end)
     event.facebookLink = payload.facebook_link
     event.instagramLink = payload.instagram_link
     event.websiteLink = payload.website_link
@@ -73,9 +89,10 @@ export default class EventsController {
 
     // Event Category Types
     const selectedCategoryTypes = request.body().categoryTypes
+
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])
-    });
+    })
 
     // Event Address
     const addressPayload = await request.validateUsing(createAddressValidator)

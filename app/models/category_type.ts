@@ -5,6 +5,8 @@ import Event from '#models/event'
 import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 
 export default class CategoryType extends BaseModel {
+  serializeExtras = true
+
   @column({ isPrimary: true })
   declare id: number
 
@@ -12,7 +14,7 @@ export default class CategoryType extends BaseModel {
   declare name: string
 
   @column()
-  declare parentCategoryId: number
+  declare categoryId: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -25,8 +27,8 @@ export default class CategoryType extends BaseModel {
     pivotForeignKey: 'category_type_id',
     pivotRelatedForeignKey: 'event_id',
   })
-  declare categoryTypes: ManyToMany<typeof Event>
+  declare events: ManyToMany<typeof Event>
 
   @belongsTo(() => Category)
-  declare parentCategory: BelongsTo<typeof Category>
+  declare category: BelongsTo<typeof Category>
 }

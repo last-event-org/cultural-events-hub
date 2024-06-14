@@ -27,6 +27,18 @@
             <h3 class="text-xl text-center font-medium text-gray-700 mb-1">
               Sous-titre
             </h3>
+            <div class="container relative shadow " href="#">
+              <img src="/public/images/dummy-spectacle.webp" alt="Event Image" class="w-full h-auto object-cover">  
+                <div class= "flex gap-2 items-center absolute top-4 right-4 z-10  transition duration-300">
+                  <p class="hidden opacity-0 transform scale-50 -translate-x-full animate-pulse bg-slate-400/50
+                   text-white font-semibold px-2 " id="add-to-favourites">
+                   Add to wishlist
+                  </p>
+                  <a href="#" id="favourite-star"  >
+                    <img  src="/public/svg/favourite-star.svg" alt="Add to favourites" >
+                  </a>
+                </div>
+              </div>
             <p class="text-sm text-gray-500 mb-1">
               Description :
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab ea alias voluptatum,
@@ -50,18 +62,7 @@
           </div>
           
           
-          <div class="container relative shadow " href="#">
-          <img src="/public/images/dummy-spectacle.webp" alt="Event Image" class="w-full h-auto object-cover">  
-            <div class= "flex gap-2 items-center absolute top-4 right-4 z-10  transition duration-300">
-              <p class="hidden opacity-0 transform scale-50 -translate-x-full animate-pulse bg-slate-400/50
-               text-white font-semibold px-2 " id="add-to-favourites">
-               Add to wishlist
-              </p>
-              <a href="#" id="favourite-star"  >
-                <img  src="/public/svg/favourite-star.svg" alt="Add to favourites" >
-              </a>
-            </div>
-          </div>
+          
         
           <div class="flex flex-col gap-4 p-4">
 
@@ -90,7 +91,7 @@
                 <p class="text-sm text-right text-gray-500 mb-1 text-clip overflow-hidden ">
                   Vendeur 
                 </p>
-                
+
                 <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="h-4 w-4 self-center block" id="heart_empty">
                 <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="h-4 w-4 self-center hidden" id="heart_full">
               </a>

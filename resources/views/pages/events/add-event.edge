@@ -193,6 +193,53 @@
                     @end
                 </fieldset>
 
+                <div>
+                    <label for="price_description" class="block text-gray-600">
+                        Description Prix
+                    </label>
+                    <input type="text" id="price_description" name="price_description" class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                    focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                        value="{{old('price_description') || '' }}">
+
+                    <div class="flex gap-4">
+                        <div>
+                            <label for="regular_price" class="block text-gray-600">
+                                Prix Plein (€)
+                            </label>
+                            <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="regular_price"
+                                id="regular_price" value="{{old('regular_price') || '0.00' }}" placeholder="0.00">
+                            @inputError('regular_price')
+                            <div style="color: red;">{{ $messages.join(', ') }}</div>
+                            @end
+                        </div>
+                        <div>
+                            <label for="discounted_price" class="block text-gray-600">
+                                Prix Réduit (€)
+                            </label>
+                            <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="discounted_price"
+                                id="discounted_price" value="{{old('discounted_price') || '0.00' }}"
+                                placeholder="€0.00">
+                            @inputError('discounted_price')
+                            <div style="color: red;">{{ $messages.join(', ') }}</div>
+                            @end
+                        </div>
+
+                        <div>
+                            <label for="available_qty" class="block text-gray-600">
+                                Places disponibles
+                            </label>
+                            <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="available_qty"
+                                id="available_qty" value="{{old('available_qty') || '' }}" placeholder="0">
+                            @inputError('available_qty')
+                            <div style="color: red;">{{ $messages.join(', ') }}</div>
+                            @end
+                        </div>
+                    </div>
+                </div>
+
 
                 <div>
                     <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 

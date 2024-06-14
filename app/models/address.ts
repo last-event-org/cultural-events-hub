@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import Event from '#models/event'
 
 export default class Address extends BaseModel {
@@ -25,8 +25,8 @@ export default class Address extends BaseModel {
   @column()
   declare country: string
 
-  @belongsTo(() => Event)
-  declare event: BelongsTo<typeof Event>
+  @hasMany(() => Event)
+  declare event: HasMany<typeof Event>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

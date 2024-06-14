@@ -53,7 +53,7 @@ export default class Event extends BaseModel {
   declare location: BelongsTo<typeof Address>
 
   @hasMany(() => Price)
-  declare price_id: HasMany<typeof Price>
+  declare prices: HasMany<typeof Price>
 
   @manyToMany(() => CategoryType, {
     pivotTable: 'category_types_events',

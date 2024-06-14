@@ -50,7 +50,11 @@ export default class Event extends BaseModel {
   @hasMany(() => Price)
   declare price_id: HasMany<typeof Price>
 
-  @manyToMany(() => CategoryType)
+  @manyToMany(() => CategoryType, {
+    pivotTable: 'category_types_events',
+    pivotForeignKey: 'event_id',
+    pivotRelatedForeignKey: 'category_type_id',
+  })
   declare categoryTypes: ManyToMany<typeof CategoryType>
 
   @manyToMany(() => Indicator)

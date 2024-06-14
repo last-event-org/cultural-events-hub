@@ -13,51 +13,113 @@
   @include("pages/partials/header")
 
   <main class=" container py-10 mb-10 mx-auto">
-    <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-10 container mx-auto my-6 py-10"> 
+    <div class="flex justify-center bg-gray-50  border shadow gap-10  mx-auto my-6 py-10"> 
 
       <article>
-        <div class="bg-white border-gray-300 rounded-lg  w-full sm:w-80 hover:scale-105 duration-300">
-        
-            <p class="text-center text-white font-bold bg-gradient-to-t from-slate-600 to-slate-800 rounded-t-lg">
-              -50%
-            </p>
-            <img src="public/images/dummy-spectacle.webp" alt="Event Image" class="w-full h-44 object-cover shadow ">
-        
-        
-          <div class="p-4">
+        <div class="bg-white border-gray-300 rounded-lg w-full">
+          <div class="flex flex-col gap-4 mx-4 mb-4">
+
             <h2 class="text-xl text-center font-semibold mb-2">
               Titre de l'événement
             </h2>
             <h3 class="text-md text-center font-medium text-gray-700 mb-1">
               Sous-titre
             </h3>
-            <div class="border-t border-gray-200 p-4"></div>
             <p class="text-sm text-gray-500 mb-1">
-              Date: 15 juin 2024
-            </p>
-            <p class="text-sm text-gray-500 mb-1">
-              Heure: de 20:00 à 23h
-            </p>
-            <p class="text-sm text-gray-500 mb-1">
-              Salle: Forum de Liège
-            </p>
-            <p class="text-sm text-gray-500 mb-1">
-              Ville: Liège
-            </p>
-            <p class="text-sm text-gray-500 mb-1">
-              Prix: 10€
+              Description :
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab ea alias voluptatum,
+               a nobis in ipsam dolorum dicta cumque esse libero temporibus, natus, reprehenderit
+                vitae nisi. Quod, quidem. Inventore corporis esse cupiditate est ad vero sunt voluptate
+                 repellat nisi minus eius reiciendis modi excepturi itaque necessitatibus et quam sequi
+                  porro iste quis iure distinctio, quibusdam labore commodi. Quae illum cum autem. 
+                  Adipisci nostrum quas inventore eius, nulla fuga. Suscipit culpa blanditiis quibusdam, 
+                  voluptatibus corrupti repellendus. Corporis vel quam nihil rem sed non nam ad odio, eligendi alias.
+                   In, consectetur quibusdam sunt veniam deserunt tempore accusantium ab qui, 
+                   voluptatem, nobis iusto ratione dolorum similique quam laudantium quod. 
+              Aliquam qui cumque suscipit nihil doloremque, odio voluptatem illum aspernatur minus
+              voluptatum voluptatibus rem in asperiores reiciendis excepturi ullam quisquam quos velit et obcaecati
+                alias libero id quas provident. Atque voluptates deleniti consequatur quidem, dignissimos 
+                repudiandae odit natus, voluptate, hic tempore quaerat praesentium sint voluptas! Itaque, quibusdam
+                inventore tempore eos quis animi nobis minus atque reiciendis, rerum eligendi pariatur nihil? Quae 
+                voluptatum sapiente quaerat consequatur iure delectus possimus laudantium modi quos laborum debitis 
+                omnis deleniti, dignissimos error pariatur magni repellendus, blanditiis reiciendis officia odit 
+                nihil distinctio nisi! Dolor, deserunt repudiandae itaque natus quas voluptatum.
             </p>
           </div>
-          <div class="border-t border-gray-200 p-4">
+
+
+            <img src="/public/images/dummy-spectacle.webp" alt="Event Image" class="w-full m-h-64  object-cover shadow ">
+        
+        
+          <div class="flex flex-col gap-4 p-4">
+
+            <div class="flex justify-center items-center gap-8">
+              <a href="#">
+                <img src="/public/svg/facebook-color.svg" alt="facebook link">
+              </a>
+              <a href="">
+                <img src="/public/svg/instagram-color.svg" alt="instagram link">
+              </a>
+              <a href="">
+                <img src="/public/svg/web.svg" alt="website link">
+              </a>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-2"></div>
+
             <p class="text-center font-semibold text-lg text-gray-500">
               Spectacle
             </p>
+            <div class="flex justify-between">
+              <p class="text-sm text-gray-500 mb-1">
+                15 juin 2024
+              </p>
+              <p class="text-sm text-gray-500 mb-1">
+                De 20:00 à 23h
+              </p>
+            </div>
+            <p class="text-sm text-gray-500 mb-1">
+              Forum de Liège
+            </p>
+            <p class="text-sm text-gray-500 mb-1">
+              Rue Pont d'Avroy 12 400 Liège
+            </p>
+            
+          </div>
+          <div class="border-t border-gray-200 p-4"></div>
+        </div>
+
+        <div class="flex flex-col  justify-center mb-4">
+          <div class="flex justify-center gap-4">
+            <a class=" px-2 py-1  hover:bg-red-200 text-sm text-blue-700  font-bold rounded-xl transition duration-200" href="#">
+              -</a>
+            <p class="text-xl font-bold  text-gray-800 mb-1">
+              10€ <span class="text-sm font-medium">Adultes</span>
+              </p>
+            <a class="px-2 py-1  hover:bg-green-300 text-sm text-blue-700   font-bold rounded-xl transition duration-200" href="#">
+              +</a>
+          </div>
+          <div class="flex justify-center gap-4">
+            <a class=" px-2 py-1  hover:bg-red-200 text-sm text-blue-700  font-bold rounded-xl transition duration-200" href="#">
+              -</a>
+            <p class="text-xl font-bold  text-gray-800 mb-1">
+              5€ Enfants
+              </p>
+            <a class="px-2 py-1  hover:bg-green-300 text-sm text-blue-700   font-bold rounded-xl transition duration-200" href="#">
+              +</a>
           </div>
         </div>
-        <a class=" py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href={{ route('auth.register') }}>
+            
+          {{-- if the user is auth and owner of the event, show Modifier button, else Acheter --}}
+        <div class="flex gap-4 justify-center">
+          <a class="py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href="#">
+            Modifier</a>
+          <a class=" py-2 px-6 bg-green-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href="#">
+            Acheter</a>
+        </div>
 
-          Enregistement</a>
       </article>
+      
 
     </div>
   </main>

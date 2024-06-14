@@ -124,7 +124,7 @@
                 <fieldset id="categoryTypesFieldset" class="hidden">
                     <legend class="block text-gray-600">Types de Catégories:</legend>
                     @each(categoryType in categoryTypes)
-                    <div class="category-type category-type-{{ categoryType.parentCategoryId }} hidden">
+                    <div class="category-type category-type-{{ categoryType.categoryId }} hidden">
                         <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
                             value="{{ categoryType.id }}" />
                         <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>

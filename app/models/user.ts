@@ -47,7 +47,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare updatedAt: DateTime | null
 
   @column()
-  declare roleId: number
+  declare roleId: number | null
 
   @belongsTo(() => Role)
   declare role: BelongsTo<typeof Role>

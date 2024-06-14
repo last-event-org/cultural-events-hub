@@ -8,6 +8,8 @@ import CategoryType from '#models/category_type'
 import Indicator from '#models/indicator'
 
 export default class Event extends BaseModel {
+  serializeExtras = true
+
   @column({ isPrimary: true })
   declare id: number
 

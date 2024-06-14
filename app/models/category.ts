@@ -4,6 +4,8 @@ import CategoryType from '#models/category_type'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 export default class Category extends BaseModel {
+  serializeExtras = true
+
   @column({ isPrimary: true })
   declare id: number
 

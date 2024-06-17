@@ -172,7 +172,7 @@
 
           
                 <fieldset>
-                  <legend class="block text-gray-600">Catégorie:</legend>
+                  <legend class="block text-gray-600">Catégories:</legend>
                   @each(category in categories)
                   <ul>
                     <li>
@@ -191,7 +191,7 @@
                         @endif
                         @end
                       </fieldset>
-                      
+
                     </li>
                   </ul>
                   @end
@@ -204,21 +204,25 @@
 
 
                 <div>
-                    <label for="price_description" class="block text-gray-600">Description Prix</label>
+                    <label for="price_description" class="block text-gray-600">
+                      Description Prix</label>
                     <input type="text" id="price_description" name="price_description" class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('price_description') || '' }}">
 
                     <div class="flex gap-4">
                         <div>
-                            <label for="regular_price" class="block text-gray-600">Prix Plein (€)</label>
+                            <label for="regular_price" class="block text-gray-600">
+                              Prix Plein (€)</label>
                             <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="regular_price" id="regular_price" value="{{old('regular_price') || '0.00' }}" placeholder="0.00">
                         </div>
                         <div>
-                            <label for="discounted_price" class="block text-gray-600">Prix Réduit (€)</label>
+                            <label for="discounted_price" class="block text-gray-600">
+                              Prix Réduit (€)</label>
                             <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="discounted_price" id="discounted_price" value="{{old('discounted_price') || '0.00' }}" placeholder="€0.00">
                         </div>
 
                         <div>
-                            <label for="available_qty" class="block text-gray-600">Places disponibles</label>
+                            <label for="available_qty" class="block text-gray-600">
+                              Places disponibles</label>
                             <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="available_qty" id="available_qty" value="{{old('available_qty') || '' }}" placeholder="0">
                         </div>
                     </div>
@@ -241,99 +245,11 @@
 
             </form>
 
-            <script>
-                function addNewPrice(event) {
-                    event.preventDefault(); // Prevent the default button action (posting the form)
-        
-                    const divEle = document.getElementById("inputFields");
-                    const wrapper = document.createElement("div");
-
-                    const descriptionLabelFld = document.createElement("label");
-                    descriptionLabelFld.textContent = 'Description Prix'
-                    descriptionLabelFld.setAttribute("type", "text");
-                    descriptionLabelFld.setAttribute("placeholder", "0.00");
-                    descriptionLabelFld.classList.add("text-gray-600", "block")
-                    
-                    const descriptionInputFld = document.createElement("input");
-                    descriptionInputFld.setAttribute("type", "text")
-                    descriptionInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-                    const regPriceLabelFld = document.createElement("label");
-                    regPriceLabelFld.textContent = 'Prix Plein'
-                    regPriceLabelFld.setAttribute("type", "text");
-                    regPriceLabelFld.setAttribute("placeholder", "0.00");
-                    regPriceLabelFld.classList.add("text-gray-600", "block")
-
-                    const regPriceInputFld = document.createElement("input");
-                    regPriceInputFld.setAttribute("type", "text")
-                    regPriceInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-                    const discPriceLabelFld = document.createElement("label");
-                    discPriceLabelFld.textContent = 'Prix Réduit'
-                    discPriceLabelFld.setAttribute("type", "text");
-                    discPriceLabelFld.setAttribute("placeholder", "0.00");
-                    discPriceLabelFld.classList.add("text-gray-600", "block")
-
-                    const discPriceInputFld = document.createElement("input");
-                    discPriceInputFld.setAttribute("type", "text")
-                    discPriceInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-                    const availQtyLabelFld = document.createElement("label");
-                    availQtyLabelFld.textContent = 'Places Disponibles'
-                    availQtyLabelFld.setAttribute("type", "text");
-                    availQtyLabelFld.setAttribute("placeholder", "0");
-                    availQtyLabelFld.classList.add("text-gray-600", "block")
-
-                    const availQtyInputFld = document.createElement("input");
-                    availQtyInputFld.setAttribute("type", "text")
-                    availQtyInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-                    const hr = document.createElement("hr");
-
-                    wrapper.appendChild(hr);
-                    wrapper.appendChild(descriptionLabelFld);
-                    wrapper.appendChild(descriptionInputFld);
-                    wrapper.appendChild(regPriceLabelFld);
-                    wrapper.appendChild(regPriceInputFld);
-                    wrapper.appendChild(discPriceLabelFld);
-                    wrapper.appendChild(discPriceInputFld);
-                    wrapper.appendChild(availQtyLabelFld);
-                    wrapper.appendChild(availQtyInputFld);
-                    divEle.appendChild(wrapper);
-                }
-            </script>
-
-            <script>
-              // display Category Types only when parent Category is selected
-              function toggleCategoryTypes(categoryId) {
-                const categoryCheckbox = document.getElementById('category_' + categoryId);
-                const checkboxes = document.querySelectorAll('.category-type-' + categoryId);
-                const categoryFieldset = document.querySelector('#categoryTypesFieldset_' + categoryId);
-            
-                if (categoryCheckbox.checked) {
-                  checkboxes.forEach((checkbox) => {
-                    checkbox.classList.remove('hidden');
-                  });
-                  categoryFieldset.classList.remove('hidden');
-                } else {
-                  checkboxes.forEach((checkbox) => {
-                    checkbox.classList.add('hidden');
-                  });
-            
-                  // Check if any category checkbox is checked
-                  const anyCategoryChecked = Array.from(document.querySelectorAll('[name="categories[]"]')).some(checkbox => checkbox.checked);
-                  if (!anyCategoryChecked) {
-                    categoryFieldset.classList.add('hidden');
-                  }
-                }
-              }
-            </script>
-
         </div>
     </section>
 
     @include("pages/partials/footer")
-
+  <script src="/resources/js/add_event.js"></script>
 </body>
 
 </html>

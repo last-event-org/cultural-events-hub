@@ -8,6 +8,8 @@ import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
+import { createMediaValidator } from '#validators/media'
+import Media from '#models/media'
 
 export default class EventsController {
   /**
@@ -31,7 +33,7 @@ export default class EventsController {
     // Get events by category_id
     const categoryId = await Category.find(1)
     const categories = categoryId?.related('categoryTypes').query()
-    console.log(categories)
+    // console.log(categories)
 
     // console.log(categoryId)
     // const events = categoryId?.related('categoryTypesEvents').query()
@@ -57,7 +59,7 @@ export default class EventsController {
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
 
-    console.log(categoryTypes)
+    // console.log(categoryTypes)
     return view.render('pages/events/add-event', {
       categories: categories,
       categoryTypes: categoryTypes,
@@ -119,6 +121,14 @@ export default class EventsController {
 
     await price.save()
     await price.related('event').associate(event)
+
+    // Event Media
+    const image_link = request.files('image_link')
+    console.log("****************** ", image_link)
+    // const mediaPayload = await request.validateUsing(createMediaValidator)
+    // const media = new Media()
+    // console.log('***************** mediaPayload: ', mediaPayload);
+
     
 
     return response.redirect().toRoute('events.show', { id: event.id })
@@ -128,8 +138,8 @@ export default class EventsController {
    * Show individual record
    */
   async show({ view, params, request }: HttpContext) {
-    console.log(request.params())
-    console.log(params)
+    // console.log(request.params())
+    // console.log(params)
     return view.render('pages/events/details')
   }
 

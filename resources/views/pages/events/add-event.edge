@@ -21,7 +21,7 @@
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
                 Créer un Événement
             </h2>
-            <form action={{ route('events.store') }} method="POST" class="space-y-4">
+            <form action={{ route('events.store') }} method="POST" class="space-y-4" enctype="multipart/form-data">
 
                 {{ csrfField() }}
 
@@ -225,7 +225,7 @@
                     <label for="image_link" class="block text-gray-600">
                         Charger des images
                     </label>
-                    <input type="file" id="image_link" name="image_link" accept="image/png, image/gif, image/jpeg, video/*" multiple/>
+                    <input type="file" id="image_link" name="image_link[]" accept="image/png, image/gif, image/jpeg, video/*" multiple/>
                 </div>
 
                 <div>

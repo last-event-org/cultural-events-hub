@@ -15,37 +15,48 @@ export default class EventsController {
    */
   async index({ request, view }: HttpContext) {
     const requestQuery = request.qs()
+    let events
     // const locationId = query['location']
     // const indicatorId = query['indicator']
 
     // Check if there is no params in the query
     if (Object.keys(request.qs()).length === 0) {
-      const events = await Event.all()
+      events = await Event.query().orderBy('event_start', 'asc')
       return view.render('pages/events/list', { events: events })
     }
 
-    // Get events by category_type_id
-    // const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
-    // const events = await categoryTypeId?.related('events').query()
+    // Get events by category_type_id - CA FONCTIONNE OK
+    if (requestQuery['category-type']) {
+      const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
+      events = await categoryTypeId?.related('events').query().orderBy('event_start', 'asc')
+    }
 
-    // Get events by category_id
-    const categoryId = await Category.find(1)
-    const categories = categoryId?.related('categoryTypes').query()
-    console.log(categories)
+    // get events by one category - NOK
+    if (requestQuery['category']) {
+      const categoryId = await Category.find(1)
+      const categories = categoryId?.related('categoryTypes')
+      console.log(categories)
 
-    // console.log(categoryId)
-    // const events = categoryId?.related('categoryTypesEvents').query()
+      events = await Event.query().whereHas('categoryTypes', (query) => {
+        query.whereInPivot('category_type_id', [25, 28]).orderBy('event_start', 'asc')
+      })
+      // console.log(events.forEach((event) => console.log('EVENT' + event)))
+    }
 
-    // console.log(events)
-    // const categoryTypes = await CategoryType.query().where('parentCategoryId', 1)
-    // console.log(categoryTypes)
+    // get events by one locationID (i.e. le forum) - OK
+    if (requestQuery['location']) {
+      events = await Event.query()
+        .where('location_id', requestQuery['location'])
+        .orderBy('event_start', 'asc')
+    }
 
-    // const events = await categoryTypeId?.related('categoryTypesEvents').query()
+    // get events by one vendorID - OK
+    if (requestQuery['vendor']) {
+      events = await Event.query()
+        .where('vendor_id', requestQuery['vendor'])
+        .orderBy('event_start', 'asc')
+    }
 
-    // const location = 'liege'
-    // const event = new Event()
-    // await event.getEventsByLocation(location)
-    const events = await Event.all()
     return view.render('pages/events/list', { events: events })
     // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
   }
@@ -119,7 +130,6 @@ export default class EventsController {
 
     await price.save()
     await price.related('event').associate(event)
-    
 
     return response.redirect().toRoute('events.show', { id: event.id })
   }

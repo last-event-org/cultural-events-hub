@@ -1,61 +1,10 @@
-function addNewPrice(event) {
-  event.preventDefault(); // Prevent the default button action (posting the form)
 
-  const divEle = document.getElementById("inputFields");
-  const wrapper = document.createElement("div");
 
-  const descriptionLabelFld = document.createElement("label");
-  descriptionLabelFld.textContent = 'Description Prix'
-  descriptionLabelFld.setAttribute("type", "text");
-  descriptionLabelFld.setAttribute("placeholder", "0.00");
-  descriptionLabelFld.classList.add("text-gray-600", "block")
+function addPriceFields() {
   
-  const descriptionInputFld = document.createElement("input");
-  descriptionInputFld.setAttribute("type", "text")
-  descriptionInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-  const regPriceLabelFld = document.createElement("label");
-  regPriceLabelFld.textContent = 'Prix Plein'
-  regPriceLabelFld.setAttribute("type", "text");
-  regPriceLabelFld.setAttribute("placeholder", "0.00");
-  regPriceLabelFld.classList.add("text-gray-600", "block")
-
-  const regPriceInputFld = document.createElement("input");
-  regPriceInputFld.setAttribute("type", "text")
-  regPriceInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-  const discPriceLabelFld = document.createElement("label");
-  discPriceLabelFld.textContent = 'Prix Réduit'
-  discPriceLabelFld.setAttribute("type", "text");
-  discPriceLabelFld.setAttribute("placeholder", "0.00");
-  discPriceLabelFld.classList.add("text-gray-600", "block")
-
-  const discPriceInputFld = document.createElement("input");
-  discPriceInputFld.setAttribute("type", "text")
-  discPriceInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-  const availQtyLabelFld = document.createElement("label");
-  availQtyLabelFld.textContent = 'Places Disponibles'
-  availQtyLabelFld.setAttribute("type", "text");
-  availQtyLabelFld.setAttribute("placeholder", "0");
-  availQtyLabelFld.classList.add("text-gray-600", "block")
-
-  const availQtyInputFld = document.createElement("input");
-  availQtyInputFld.setAttribute("type", "text")
-  availQtyInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-  const hr = document.createElement("hr");
-
-  wrapper.appendChild(hr);
-  wrapper.appendChild(descriptionLabelFld);
-  wrapper.appendChild(descriptionInputFld);
-  wrapper.appendChild(regPriceLabelFld);
-  wrapper.appendChild(regPriceInputFld);
-  wrapper.appendChild(discPriceLabelFld);
-  wrapper.appendChild(discPriceInputFld);
-  wrapper.appendChild(availQtyLabelFld);
-  wrapper.appendChild(availQtyInputFld);
-  divEle.appendChild(wrapper);
+  let template = document.getElementById('priceFieldsTemplate');
+  let clone = document.importNode(template.content, true);
+  document.getElementById('priceFieldsContainer').appendChild(clone);
 }
 
 

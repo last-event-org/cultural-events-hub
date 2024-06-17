@@ -216,7 +216,7 @@
                     <div id="inputFields"></div>
 
                     <div class="">
-                        <button class="" onclick="addNewPrice(evt)">Add Input Field</button>
+                        <button class="" onclick="addNewPrice(event)">Add Input Field</button>
                     </div>
                 
                 </div>
@@ -232,8 +232,8 @@
             </form>
 
             <script>
-                function addNewPrice(evt) {
-                    evt.preventDefault(); // Prevent the default button action (posting the form)
+                function addNewPrice(event) {
+                    event.preventDefault(); // Prevent the default button action (posting the form)
         
                     const divEle = document.getElementById("inputFields");
                     const wrapper = document.createElement("div");

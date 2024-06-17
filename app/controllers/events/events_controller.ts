@@ -112,7 +112,7 @@ export default class EventsController {
     const pricePayload = await request.validateUsing(createPriceValidator)
     const price = new Price()
 
-    price.description = pricePayload.description
+    price.description = pricePayload.price_description
     price.regularPrice = pricePayload.regular_price
     price.discountedPrice = pricePayload.discounted_price
     price.availableQty = pricePayload.available_qty

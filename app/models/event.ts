@@ -32,6 +32,9 @@ export default class Event extends BaseModel {
   @column()
   declare websiteLink: string
 
+  @column()
+  declare youtubeLink: string
+
   @column.dateTime()
   declare eventStart: DateTime
 
@@ -51,7 +54,7 @@ export default class Event extends BaseModel {
   declare locationId: number
 
   @belongsTo(() => Address, {
-    localKey: 'location_id',
+    foreignKey: 'locationId',
   })
   declare location: BelongsTo<typeof Address>
 
@@ -68,12 +71,15 @@ export default class Event extends BaseModel {
   })
   declare categoryTypes: ManyToMany<typeof CategoryType>
 
-  @manyToMany(() => Indicator)
+  @manyToMany(() => Indicator, {
+    pivotTable: 'indicators_events',
+    pivotForeignKey: 'event_id',
+    pivotRelatedForeignKey: 'indicator_id',
+  })
   declare indicators: ManyToMany<typeof Indicator>
 
   async getEventsByLocation(location: string) {
     // console.log('location : ' + location)
     // get events where events_location_id = adresses.id.name
   }
-
 }

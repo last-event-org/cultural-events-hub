@@ -11,5 +11,6 @@ export const createEventValidator = vine.compile(
       facebook_link: vine.string().url().trim().maxLength(255),
       instagram_link: vine.string().url().trim().maxLength(255),
       website_link: vine.string().url().trim().maxLength(255),
+      youtube_link: vine.string().url().trim().maxLength(255),
     })
   )

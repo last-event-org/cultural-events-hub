@@ -105,10 +105,7 @@ export default class EventsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {
-    // console.log(request.body())
-    // console.log(request.body().title)
-    // console.log(request.all())
+  async store({ request, response }: HttpContext) {  // TODO reformat this method in different do-one-thing methods
 
     const payload = await request.validateUsing(createEventValidator)
 

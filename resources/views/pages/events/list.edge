@@ -10,7 +10,9 @@
 </head>
 
 <body class=" bg-gray-100">
-
+@each(item in events)
+  <p>{{item.id}}</p>
+@end
 @include("pages/partials/header")
 <div class="flex justify-center mt-12">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
@@ -18,6 +20,20 @@
   </div>
 
 <main class=" container  py-10 mb-10 mx-auto">
+{{-- events types --}}
+
+<ul>
+  <div class="flex flex-wrap justify-center my-4 gap-4">
+    @each(category in categories)
+      <li>
+          <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+            <a class="font-semibold  text-white"href="/events/?category-type={{category.id}}">{{category.name}}</a>
+          </div>
+      </li>
+    @end
+    </div>
+</ul>
+
      <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-10 container mx-auto my-6 py-10">   
     @each(event in events)
         @include("pages/partials/events_cards")

@@ -10,9 +10,6 @@ import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
 import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
-import { cuid } from '@adonisjs/core/helpers'
-import app from '@adonisjs/core/services/app'
-import fs from 'fs'
 
 export default class EventsController {
   /**
@@ -21,21 +18,38 @@ export default class EventsController {
   async index({ request, view }: HttpContext) {
     const requestQuery = request.qs()
     let events
-    // const locationId = query['location']
-    // const indicatorId = query['indicator']
+    let title: string | null = ''
 
     // Check if there is no params in the query
     if (Object.keys(request.qs()).length === 0) {
       events = await Event.query().orderBy('event_start', 'asc')
-      return view.render('pages/events/list', { events: events, title: 'Agenda complet' })
+      title = 'Agenda complet'
+      return view.render('pages/events/list', { events: events, title: title })
     }
 
     // Get events by category_type_id - OK
     if (requestQuery['category-type']) {
       const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
       const category = await Category.find(categoryTypeId?.categoryId)
-      let title = category?.name + ' / ' + categoryTypeId?.name
-      events = await categoryTypeId?.related('events').query().orderBy('event_start', 'asc')
+      if (requestQuery['date']) {
+        let date = DateTime.fromISO(requestQuery['date'])
+        title =
+          'events du ' + date.setLocale('fr').toFormat('dd-MM-yyyy') + ' pour ' + category?.name
+        const dayBegin: string | null = date.toSQL()
+        const dayEnd: string | null = date.set({ hour: 23, minute: 59, second: 59 }).toSQL()
+        events = await Event.query()
+          .whereHas('categoryTypes', (query) => {
+            query
+              .whereInPivot('category_type_id', [requestQuery['category-type']])
+              .orderBy('event_start', 'asc')
+          })
+          .andWhereBetween('event_start', [dayBegin, dayEnd])
+      } else {
+        
+        events = await categoryTypeId?.related('events').query().orderBy('event_start', 'asc')
+        title = category?.name + ' / ' + categoryTypeId?.name
+      }
+
       return view.render('pages/events/list', { events: events, title: title })
     }
 
@@ -47,20 +61,46 @@ export default class EventsController {
       categories?.forEach((category) => {
         categoryTypesId.push(category.$attributes.id)
       })
-      console.log(categoryTypesId)
-      events = await Event.query().whereHas('categoryTypes', (query) => {
-        query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
+      if (requestQuery['date']) {
+        console.log(requestQuery['date'])
+        let date = DateTime.fromISO(requestQuery['date'])
+        title =
+          'events du ' + date.setLocale('fr').toFormat('dd-MM-yyyy') + ' pour ' + categoryId?.name
+        const dayBegin: string | null = date.toSQL()
+        const dayEnd: string | null = date.set({ hour: 23, minute: 59, second: 59 }).toSQL()
+        events = await Event.query()
+          .whereBetween('event_start', [dayBegin, dayEnd])
+          .andWhereHas('categoryTypes', (query) => {
+            query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
+          })
+      } else {
+        title = 'Vos events pour ' + categoryId?.name
+        events = await Event.query().whereHas('categoryTypes', (query) => {
+          query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
+        })
+      }
+
+      return view.render('pages/events/list', {
+        events: events,
+        title: title,
+        categories: categories,
       })
-      return view.render('pages/events/list', { events: events, title: categoryId?.name })
     }
 
     // get events by one locationID (i.e. le forum) - OK
     if (requestQuery['location']) {
-      events = await Event.query()
-        .where('location_id', requestQuery['location'])
-        .orderBy('event_start', 'asc')
+      const location = await Address.find(requestQuery['location'])
+      if (requestQuery['date']) {
+        console.log(requestQuery['date'])
+      } else {
+        if (location !== undefined) {
+          title = 'Vos événements à ' + location?.name
+          events = await Event.query()
+            .where('location_id', requestQuery['location'])
+            .orderBy('event_start', 'asc')
+        }
+      }
     }
-
 
     // get events based on one specifc date - OK
     if (requestQuery['date']) {
@@ -70,7 +110,7 @@ export default class EventsController {
       const dayBegin: string | null = date.toSQL()
       const dayEnd: string | null = date.set({ hour: 23, minute: 59, second: 59 }).toSQL()
       events = await Event.query().whereBetween('event_start', [dayBegin, dayEnd])
-      const title = date.setLocale('fr').toFormat('dd-MM-yyyy')
+      title = date.setLocale('fr').toFormat('dd-MM-yyyy')
       return view.render('pages/events/list', { events: events, title: title })
     }
 
@@ -81,7 +121,7 @@ export default class EventsController {
         .orderBy('event_start', 'asc')
     }
 
-    return view.render('pages/events/list', { events: events })
+    return view.render('pages/events/list', { events: events, title: title })
     // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
   }
 
@@ -157,17 +197,17 @@ export default class EventsController {
 
     // Event Media
     const { images_link } = await request.validateUsing(createMediaValidator)
-    console.log('mediaPayload: ', images_link);
-    
+    console.log('mediaPayload: ', images_link)
+
     for (const file of images_link) {
       const media = new Media()
-      media.path = ''  // TODO if needed, setup a path method if we'll use an external server
+      media.path = '' // TODO if needed, setup a path method if we'll use an external server
       media.altName = file.clientName
       media.eventId = event.id
 
       if (!file.tmpPath) {
-        console.error('Skipping file due to missing tmpPath:', file);
-        continue; // Skip this iteration if tmpPath is undefined
+        console.error('Skipping file due to missing tmpPath:', file)
+        continue // Skip this iteration if tmpPath is undefined
       }
 
       try {
@@ -175,10 +215,10 @@ export default class EventsController {
         media.binary = binaryData
         await media.save()
       } catch (error) {
-        console.error(`Failed to process file ${file.tmpPath}:`, error);
+        console.error(`Failed to process file ${file.tmpPath}:`, error)
       }
     }
-    
+
     return response.redirect().toRoute('events.show', { id: event.id })
   }
 

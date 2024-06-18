@@ -71,7 +71,11 @@ export default class Event extends BaseModel {
   })
   declare categoryTypes: ManyToMany<typeof CategoryType>
 
-  @manyToMany(() => Indicator)
+  @manyToMany(() => Indicator, {
+    pivotTable: 'indicators_events',
+    pivotForeignKey: 'event_id',
+    pivotRelatedForeignKey: 'indicator_id',
+  })
   declare indicators: ManyToMany<typeof Indicator>
 
   async getEventsByLocation(location: string) {

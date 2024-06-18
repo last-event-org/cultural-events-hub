@@ -128,9 +128,14 @@ export default class EventsController {
 
     // Event Category Types
     const selectedCategoryTypes = request.body().categoryTypes
-
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])
+    })
+
+    // Event Indicators
+    const selectedIndicators = request.body().indicators
+    selectedIndicators.forEach(async (indicatorId: number) => {
+      await event.related('indicators').attach([indicatorId])
     })
 
     // Event Address

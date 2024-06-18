@@ -1,5 +1,33 @@
-<h1>LIST</h1>
-@each(event in events)
-    <p>{{event.title}} - id: {{event.id}}</p>
-    
-@end
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Event: A cultural events hub</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js'])
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<body class=" bg-gray-100">
+
+@include("pages/partials/header")
+<div class="flex justify-center mt-12">
+    <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+    <h1 class="text-3xl md:text-3xl font-bold">xt Events - {{title}}</h1>
+  </div>
+
+<main class=" container  py-10 mb-10 mx-auto">
+     <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-10 container mx-auto my-6 py-10">   
+    @each(event in events)
+        @include("pages/partials/events_cards")
+    @end
+  </div>
+
+</main>
+
+
+@include("pages/partials/footer")  
+
+</body>
+</html>

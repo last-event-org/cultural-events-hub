@@ -2,6 +2,7 @@
 
   {{-- <h2 class="my-4 text-center text-xl font-semibold">Choisissez votre emplacement</h2> --}}
   {{-- searchbar --}}
+  
   <div class='mb-4 mt-8'>
     <div class="flex justify-between items-center w-80 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden">
         <div class="flex px-4 justify-center items-center text-gray-300">
@@ -57,33 +58,16 @@
 
 <ul>
   <div class="flex flex-wrap justify-center my-4 gap-4">
-    <li>
-      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-        <a class="font-semibold  text-white"href="#">Concert</a>
-      </div>
-    </li>
-    <li>
-      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-        <a class="font-semibold text-white"href="#">Stand-up</a>
-      </div>
-    </li>
-    <li>
-      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-        <a class="font-semibold text-white"href="#">Théâtre</a>
-      </div>
-    </li>
-    <li>
-      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-        <a class="font-semibold text-white"href="#">Spectacle</a>
-      </div>
-    </li>
-    <li>
-      <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-        <a class="font-semibold text-white"href="#">Sport</a>
-      </div>
-    </li>    
-  </div>
+    @each(category in categories)
+      <li>
+          <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+            <a class="font-semibold  text-white"href="/events/?category={{category.id}}">{{category.name}}</a>
+          </div>
+      </li>
+    @end
+    </div>
 </ul>
+  
   {{-- searchbar --}}
   <div class='mt-4 mb-8'>
     <div class="flex justify-between items-center w-80 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden">

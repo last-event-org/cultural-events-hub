@@ -22,7 +22,6 @@ export default class RegistersController {
   async store({ session, request, response, auth }: HttpContext) {
     const payload = await request.validateUsing(createRegisterValidator)
     if (request.input('password') !== request.input('password_confirmation')) {
-      console.log('password error')
       session.flash('password', 'Password do not match')
       response.redirect().back()
     }

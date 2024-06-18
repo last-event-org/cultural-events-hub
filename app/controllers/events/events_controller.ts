@@ -22,6 +22,7 @@ export default class EventsController {
     const requestQuery = request.qs()
     let events
     let title: string | null = ''
+    let categories: any[] = []
 
     // Check if there is no params in the query
     if (Object.keys(request.qs()).length === 0) {
@@ -29,53 +30,23 @@ export default class EventsController {
       title = 'Agenda complet'
       return view.render('pages/events/list', { events: events, title: title })
     }
-    // TODO refactor to see if possible to merge category-type and category
-    // Get events by category_type_id - OK
-    if (requestQuery['category-type']) {
-      const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
-      const category = await Category.find(categoryTypeId?.categoryId)
-      if (requestQuery['date']) {
-        // TODO verify if the date is in the correct format
-        let date = DateTime.fromISO(requestQuery['date'])
-        const dayBegin: string = date.toSQL() ?? ''
-        const dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+    // get events by one category or category-type and date - OK
+    if (requestQuery['category'] || requestQuery['category-type']) {
+      let categoryTypesId: any[] = []
 
-        events = await Event.query()
-          .whereHas('categoryTypes', (query) => {
-            query
-              .whereInPivot('category_type_id', [requestQuery['category-type']])
-              .orderBy('event_start', 'asc')
-          })
-          .andWhereBetween('event_start', [dayBegin, dayEnd])
-
-        title =
-          'events du ' +
-          date.setLocale('fr').toFormat('dd-MM-yyyy') +
-          ' pour ' +
-          (category?.name ?? '')
-      } else {
-        events = await Event.query().whereHas('categoryTypes', (query) => {
-          query
-            .whereInPivot('category_type_id', [requestQuery['category-type']])
-            .orderBy('event_start', 'asc')
+      if (requestQuery['category']) {
+        const category = await Category.find(requestQuery['category'])
+        categories = await category?.related('categoryTypes').query()
+        categories?.forEach((categoryType) => {
+          categoryTypesId.push(categoryType.$attributes.id)
         })
-
-        // events = await categoryTypeId?.related('events').query().orderBy('event_start', 'asc')
-        title = category?.name + ' / ' + categoryTypeId?.name
+        title = 'Vos events pour ' + category?.name
+      } else if (requestQuery['category-type']) {
+        const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
+        const category = await Category.find(categoryTypeId?.categoryId)
+        categoryTypesId.push(categoryTypeId?.id ?? 1)
+        title = 'Vos events pour ' + category?.name + ' / ' + categoryTypeId?.name
       }
-
-      return view.render('pages/events/list', { events: events, title: title })
-    }
-
-    // get events by one category - OK
-    if (requestQuery['category']) {
-      const categoryId = await Category.find(requestQuery['category'])
-
-      const categories = await categoryId?.related('categoryTypes').query()
-      let categoryTypesId: number[] = []
-      categories?.forEach((category) => {
-        categoryTypesId.push(category.$attributes.id)
-      })
       if (requestQuery['date']) {
         // TODO verify if the date is in the correct format
         let date = DateTime.fromISO(requestQuery['date'])
@@ -87,21 +58,12 @@ export default class EventsController {
           .andWhereHas('categoryTypes', (query) => {
             query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
           })
-
-        title =
-          'events du ' + date.setLocale('fr').toFormat('dd-MM-yyyy') + ' pour ' + categoryId?.name
+        title += ' le ' + date.setLocale('fr').toFormat('dd-MM-yyyy')
       } else {
-        title = 'Vos events pour ' + categoryId?.name
         events = await Event.query().whereHas('categoryTypes', (query) => {
           query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
         })
       }
-
-      return view.render('pages/events/list', {
-        events: events,
-        title: title,
-        categories: categories,
-      })
     }
 
     // get events by one locationID (i.e. le forum) - OK
@@ -124,8 +86,8 @@ export default class EventsController {
       console.log('DATE')
       let date = DateTime.fromISO(requestQuery['date'])
 
-      const dayBegin: string | null = date.toSQL()
-      const dayEnd: string | null = date.set({ hour: 23, minute: 59, second: 59 }).toSQL()
+      const dayBegin: string = date.toSQL() ?? ''
+      const dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
       events = await Event.query().whereBetween('event_start', [dayBegin, dayEnd])
       title = date.setLocale('fr').toFormat('dd-MM-yyyy')
       return view.render('pages/events/list', { events: events, title: title })
@@ -138,7 +100,11 @@ export default class EventsController {
         .orderBy('event_start', 'asc')
     }
 
-    return view.render('pages/events/list', { events: events, title: title })
+    return view.render('pages/events/list', {
+      events: events,
+      title: title,
+      categories: categories,
+    })
     // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
   }
 

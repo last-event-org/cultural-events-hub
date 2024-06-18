@@ -13,6 +13,7 @@ import Media from '#models/media'
 import { cuid } from '@adonisjs/core/helpers'
 import app from '@adonisjs/core/services/app'
 import fs from 'fs'
+import Indicator from '#models/indicator'
 
 export default class EventsController {
   /**
@@ -91,11 +92,13 @@ export default class EventsController {
   async create({ view }: HttpContext) {
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
+    const indicators = await Indicator.all()
 
     // console.log(categoryTypes)
     return view.render('pages/events/add-event', {
       categories: categories,
       categoryTypes: categoryTypes,
+      indicators: indicators,
     })
   }
 

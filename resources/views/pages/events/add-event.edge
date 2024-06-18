@@ -127,24 +127,24 @@
                     @end
                 </div>
 
-                    <div class="flex-1">
-                        <label for="event_start" class="block text-gray-600">
-                            Début
-                        </label>
-                        <input type="datetime-local" id="event_start" name="event_start"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                            value="">
-                    </div>
+                <div class="flex-1">
+                    <label for="event_start" class="block text-gray-600">
+                        Début
+                    </label>
+                    <input type="datetime-local" id="event_start" name="event_start"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                        value="">
+                </div>
 
-                    <div class="flex-1">
-                        <label for="event_end" class="block text-gray-600">
-                            Fin
-                        </label>
-                        <input type="datetime-local" id="event_end" name="event_end"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                            value="">
-                    </div>
- 
+                <div class="flex-1">
+                    <label for="event_end" class="block text-gray-600">
+                        Fin
+                    </label>
+                    <input type="datetime-local" id="event_end" name="event_end"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                        value="">
+                </div>
+
 
                 <div>
                     <label for="facebook_link" class="block text-gray-600">
@@ -171,48 +171,61 @@
                 </div>
 
                 <div>
-                  <label for="youtube_link" class="block text-gray-600">
-                      Lien vidéo YouTube
-                  </label>
-                  <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                    <label for="youtube_link" class="block text-gray-600">
+                        Lien vidéo YouTube
+                    </label>
+                    <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('youtube_link') || '' }}">
-              </div>
+                </div>
 
-          
+
                 <fieldset>
-                  <legend class="block text-gray-600">Catégories:</legend>
-                  @each(category in categories)
-                  <ul>
-                    <li>
-                      <input type="checkbox" id="category_{{ category.id }}" name="categories[]"
-                          value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
-                      <label for="category_{{ category.id }}">{{ category.name }}</label>
+                    <legend class="block text-gray-600">Catégories:</legend>
+                    @each(category in categories)
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="category_{{ category.id }}" name="categories[]"
+                                value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
+                            <label for="category_{{ category.id }}">{{ category.name }}</label>
 
-                      <fieldset id="categoryTypesFieldset_{{ category.id }}" class="hidden relative left-10">
-                        @each(categoryType in categoryTypes)
-                        @if (categoryType.categoryId == category.id)
+                            <fieldset id="categoryTypesFieldset_{{ category.id }}" class="hidden relative left-10">
+                                @each(categoryType in categoryTypes)
+                                @if (categoryType.categoryId == category.id)
                         <li class="category-type category-type-{{ categoryType.categoryId }} hidden">
-                          <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
-                              value="{{ categoryType.id }}" />
-                          <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+                            <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
+                                value="{{ categoryType.id }}" />
+                            <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
                         </li>
                         @endif
                         @end
-                      </fieldset>
-
-                    </li>
-                  </ul>
-                  @end
                 </fieldset>
-   
-                
+
+                </li>
+                </ul>
+                @end
+                </fieldset>
+
+                <fieldset>
+                    <legend class="block text-gray-600">Indicateurs:</legend>
+                    @each(indicator in indicators)
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="indicator_{{ indicator.id }}" name="indicators[]"
+                                value="{{ indicator.id }}" />
+                            <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
+                        </li>
+                    </ul>
+                    @end
+                </fieldset>
+
+
                 @!component('components/price_fields')
-               
+
                 <template id="priceFieldsTemplate">
-                  @!component('components/price_fields')
+                    @!component('components/price_fields')
                 </template>
                 <div id="priceFieldsContainer" class="flex flex-col gap-4">
-                  <!-- div to add the addionnal prices -->
+                    <!-- div to add the addionnal prices -->
                 </div>
 
 
@@ -220,7 +233,8 @@
                     <label for="images_link" class="block text-gray-600">
                         Charger des images
                     </label>
-                    <input type="file" id="images_link" name="images_link[]" accept="image/png, image/gif, image/jpeg, video/*" multiple/>
+                    <input type="file" id="images_link" name="images_link[]"
+                        accept="image/png, image/gif, image/jpeg, video/*" multiple />
                     @inputError('images_link')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
@@ -229,12 +243,12 @@
 
                 <div>
 
-                
-                <button type="button" onclick="addPriceFields()" class="w-full bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
+
+                    <button type="button" onclick="addPriceFields()" class="w-full bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                              Ajouter des catégories de prix
-                          </button>
- 
+                        Ajouter des catégories de prix
+                    </button>
+
 
                     <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
@@ -248,7 +262,7 @@
     </section>
 
     @include("pages/partials/footer")
-  <script src="/resources/js/add_event.js"></script>
+    <script src="/resources/js/add_event.js"></script>
 </body>
 
 </html>

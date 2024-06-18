@@ -13,9 +13,9 @@
 
 </head>
 
-<body>
+<body class="bg-gray-50">
     @include("pages/partials/header")
-    <section class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <section class="bg-gray-50 flex items-center justify-center my-20">
 
         <div class="bg-white p-8 rounded shadow-md w-full max-w-3xl">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
@@ -55,10 +55,10 @@
                 </div>
 
                 <div>
-                    <label for="location" class="block text-gray-800">
+                    <label for="location" class="block text-gray-800 text-xl font-semibold my-4">
                         Lieu
                     </label>
-                    <div>
+                    <div class="flex flex-col gap-2 my-4">
                         <label for="name" class="block text-gray-600">
                             Nom
                         </label>
@@ -127,7 +127,6 @@
                     @end
                 </div>
 
-                <div class="flex flex-row gap-4">
                     <div class="flex-1">
                         <label for="event_start" class="block text-gray-600">
                             Début
@@ -145,7 +144,7 @@
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
                             value="">
                     </div>
-                </div>
+ 
 
                 <div>
                     <label for="facebook_link" class="block text-gray-600">
@@ -171,55 +170,51 @@
            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
                 </div>
 
-                <fieldset>
-                    <legend class="block text-gray-600">Catégorie:</legend>
-                    @each(category in categories)
-                    <div>
-                        <input type="checkbox" id="category_{{ category.id }}" name="categories[]"
-                            value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
-                        <label for="category_{{ category.id }}">{{ category.name }}</label>
-                    </div>
-                    @end
-                </fieldset>
-
-                <fieldset id="categoryTypesFieldset" class="hidden">
-                    <legend class="block text-gray-600">Types de Catégories:</legend>
-                    @each(categoryType in categoryTypes)
-                    <div class="category-type category-type-{{ categoryType.categoryId }} hidden">
-                        <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
-                            value="{{ categoryType.id }}" />
-                        <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
-                    </div>
-                    @end
-                </fieldset>
-
                 <div>
-                    <label for="price_description" class="block text-gray-600">Description Prix</label>
-                    <input type="text" id="price_description" name="price_description" class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('price_description') || '' }}">
+                  <label for="website_link" class="block text-gray-600">
+                      Lien vidéo YouTube
+                  </label>
+                  <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
+              </div>
 
-                    <div class="flex gap-4">
-                        <div>
-                            <label for="regular_price" class="block text-gray-600">Prix Plein (€)</label>
-                            <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="regular_price" id="regular_price" value="{{old('regular_price') || '0.00' }}" placeholder="0.00">
-                        </div>
-                        <div>
-                            <label for="discounted_price" class="block text-gray-600">Prix Réduit (€)</label>
-                            <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="discounted_price" id="discounted_price" value="{{old('discounted_price') || '0.00' }}" placeholder="€0.00">
-                        </div>
+          
+                <fieldset>
+                  <legend class="block text-gray-600">Catégories:</legend>
+                  @each(category in categories)
+                  <ul>
+                    <li>
+                      <input type="checkbox" id="category_{{ category.id }}" name="categories[]"
+                          value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
+                      <label for="category_{{ category.id }}">{{ category.name }}</label>
 
-                        <div>
-                            <label for="available_qty" class="block text-gray-600">Places disponibles</label>
-                            <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" type="text" name="available_qty" id="available_qty" value="{{old('available_qty') || '' }}" placeholder="0">
-                        </div>
-                    </div>
-                    
-                    <div id="inputFields"></div>
+                      <fieldset id="categoryTypesFieldset_{{ category.id }}" class="hidden relative left-10">
+                        @each(categoryType in categoryTypes)
+                        @if (categoryType.categoryId == category.id)
+                        <li class="category-type category-type-{{ categoryType.categoryId }} hidden">
+                          <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
+                              value="{{ categoryType.id }}" />
+                          <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+                        </li>
+                        @endif
+                        @end
+                      </fieldset>
 
-                    <div class="">
-                        <button class="" onclick="addNewPrice(event)">Add Input Field</button>
-                    </div>
+                    </li>
+                  </ul>
+                  @end
+                </fieldset>
+   
                 
+                @!component('components/price_fields')
+               
+                <template id="priceFieldsTemplate">
+                  @!component('components/price_fields')
+                </template>
+                <div id="priceFieldsContainer" class="flex flex-col gap-4">
+                  <!-- div to add the addionnal prices -->
                 </div>
+
 
                 <div>
                     <label for="images_link" class="block text-gray-600">
@@ -233,6 +228,14 @@
 
 
                 <div>
+
+                
+                <button type="button" onclick="addPriceFields()" class="w-full bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                              Ajouter des catégories de prix
+                          </button>
+ 
+
                     <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
                         Créer
@@ -241,99 +244,11 @@
 
             </form>
 
-            <script>
-                function addNewPrice(event) {
-                    event.preventDefault(); // Prevent the default button action (posting the form)
-        
-                    const divEle = document.getElementById("inputFields");
-                    const wrapper = document.createElement("div");
-
-                    const descriptionLabelFld = document.createElement("label");
-                    descriptionLabelFld.textContent = 'Description Prix'
-                    descriptionLabelFld.setAttribute("type", "text");
-                    descriptionLabelFld.setAttribute("placeholder", "0.00");
-                    descriptionLabelFld.classList.add("text-gray-600", "block")
-                    
-                    const descriptionInputFld = document.createElement("input");
-                    descriptionInputFld.setAttribute("type", "text")
-                    descriptionInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-                    const regPriceLabelFld = document.createElement("label");
-                    regPriceLabelFld.textContent = 'Prix Plein'
-                    regPriceLabelFld.setAttribute("type", "text");
-                    regPriceLabelFld.setAttribute("placeholder", "0.00");
-                    regPriceLabelFld.classList.add("text-gray-600", "block")
-
-                    const regPriceInputFld = document.createElement("input");
-                    regPriceInputFld.setAttribute("type", "text")
-                    regPriceInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-                    const discPriceLabelFld = document.createElement("label");
-                    discPriceLabelFld.textContent = 'Prix Réduit'
-                    discPriceLabelFld.setAttribute("type", "text");
-                    discPriceLabelFld.setAttribute("placeholder", "0.00");
-                    discPriceLabelFld.classList.add("text-gray-600", "block")
-
-                    const discPriceInputFld = document.createElement("input");
-                    discPriceInputFld.setAttribute("type", "text")
-                    discPriceInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-                    const availQtyLabelFld = document.createElement("label");
-                    availQtyLabelFld.textContent = 'Places Disponibles'
-                    availQtyLabelFld.setAttribute("type", "text");
-                    availQtyLabelFld.setAttribute("placeholder", "0");
-                    availQtyLabelFld.classList.add("text-gray-600", "block")
-
-                    const availQtyInputFld = document.createElement("input");
-                    availQtyInputFld.setAttribute("type", "text")
-                    availQtyInputFld.classList.add("text-gray-600", "block", "mt-1", "px-4", "py-2", "border", "border-gray-300", "rounded-md", "shadow-sm", "focus:ring-slate-500", "focus:border-slate-700", "sm:text-sm");
-
-                    const hr = document.createElement("hr");
-
-                    wrapper.appendChild(hr);
-                    wrapper.appendChild(descriptionLabelFld);
-                    wrapper.appendChild(descriptionInputFld);
-                    wrapper.appendChild(regPriceLabelFld);
-                    wrapper.appendChild(regPriceInputFld);
-                    wrapper.appendChild(discPriceLabelFld);
-                    wrapper.appendChild(discPriceInputFld);
-                    wrapper.appendChild(availQtyLabelFld);
-                    wrapper.appendChild(availQtyInputFld);
-                    divEle.appendChild(wrapper);
-                }
-            </script>
-
-            <script>
-                // display Category Types only when parent Catgory is selected
-                function toggleCategoryTypes(categoryId) {
-                    const categoryCheckbox = document.getElementById('category_' + categoryId);
-                    const checkboxes = document.querySelectorAll('.category-type-' + categoryId);
-                    const categoryFieldset = document.querySelector('#categoryTypesFieldset');
-
-                    if (categoryCheckbox.checked) {
-                        checkboxes.forEach((checkbox) => {
-                            checkbox.classList.remove('hidden');
-                        });
-                        categoryFieldset.classList.remove('hidden');
-                    } else {
-                        checkboxes.forEach((checkbox) => {
-                            checkbox.classList.add('hidden');
-                        });
-
-                        // Check if any category checkbox is checked
-                        const anyCategoryChecked = Array.from(document.querySelectorAll('[name="categories[]"]')).some(checkbox => checkbox.checked);
-                        if (!anyCategoryChecked) {
-                            categoryFieldset.classList.add('hidden');
-                        }
-                    }
-                }
-            </script>
-
         </div>
     </section>
 
     @include("pages/partials/footer")
-
+  <script src="/resources/js/add_event.js"></script>
 </body>
 
 </html>

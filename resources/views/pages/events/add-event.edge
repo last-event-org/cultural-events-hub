@@ -222,17 +222,13 @@
                 </div>
 
                 <div>
-                    <label for="image_link" class="block text-gray-600">
+                    <label for="images_link" class="block text-gray-600">
                         Charger des images
                     </label>
-                    <input type="file" id="image_link" name="image_link[]" accept="image/png, image/gif, image/jpeg, video/*" multiple/>
-                </div>
-
-                <div>
-                    <label for="video_link" class="block text-gray-600">
-                        Charger une vidéo
-                    </label>
-                    <input type="file" id="video_link" name="video_link" accept="video/*"/>
+                    <input type="file" id="images_link" name="images_link[]" accept="image/png, image/gif, image/jpeg, video/*" multiple/>
+                    @inputError('images_link')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                    @end
                 </div>
 
 

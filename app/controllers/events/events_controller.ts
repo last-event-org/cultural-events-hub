@@ -10,6 +10,8 @@ import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
 import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
+import { cuid } from '@adonisjs/core/helpers'
+import app from '@adonisjs/core/services/app'
 
 export default class EventsController {
   /**
@@ -123,12 +125,27 @@ export default class EventsController {
     await price.related('event').associate(event)
 
     // Event Media
-    const image_link = request.files('image_link')
-    console.log("****************** ", image_link)
-    // const mediaPayload = await request.validateUsing(createMediaValidator)
-    // const media = new Media()
-    // console.log('***************** mediaPayload: ', mediaPayload);
+    const { images_link } = await request.validateUsing(createMediaValidator)
+    console.log('mediaPayload: ', images_link);
 
+    const movedFiles = []
+    for (const file of images_link) {
+      const fileName = `${cuid()}.${file.extname}`
+      await file.move(app.makePath('uploads'), { name: fileName })
+
+      movedFiles.push({ fileName, originalName: file.clientName })
+    }
+
+    movedFiles.forEach(async file => {
+      // Store file metadata in the database
+      const media = new Media()
+      media.path = `uploads/${file.fileName}`
+      media.altName = file.originalName
+      media.eventId = event.id
+      await media.save()
+
+      console.log(file);
+    })
     
 
     return response.redirect().toRoute('events.show', { id: event.id })

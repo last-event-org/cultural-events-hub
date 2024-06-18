@@ -6,6 +6,7 @@ import type { HasOne, HasMany, ManyToMany, BelongsTo } from '@adonisjs/lucid/typ
 import Price from '#models/price'
 import CategoryType from '#models/category_type'
 import Indicator from '#models/indicator'
+import Media from './media.js'
 
 export default class Event extends BaseModel {
   serializeExtras = true
@@ -56,6 +57,9 @@ export default class Event extends BaseModel {
 
   @hasMany(() => Price)
   declare prices: HasMany<typeof Price>
+
+  @hasMany(() => Media)
+  declare media: HasMany<typeof Media>
 
   @manyToMany(() => CategoryType, {
     pivotTable: 'category_types_events',

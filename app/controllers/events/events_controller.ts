@@ -130,12 +130,8 @@ export default class EventsController {
     console.log('mediaPayload: ', images_link);
     
     for (const file of images_link) {
-      console.log('file: ', file);
-      // const fileName = `${cuid()}.${file.extname}`
-      // await file.move(app.makePath('uploads'), { name: fileName })
-
       const media = new Media()
-      // media.path = `uploads/${file.fileName}`
+      media.path = ''  // TODO if needed, setup a path method if we'll use an external server
       media.altName = file.clientName
       media.eventId = event.id
 

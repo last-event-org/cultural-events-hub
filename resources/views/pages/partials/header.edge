@@ -36,7 +36,12 @@
           d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
       </svg>
     </li>
-    <li><a class="text-sm text-gray-400 hover:text-gray-500" href={{ route('events.create') }}>Ajouter un évènement</a></li>
+
+    @if(!auth.isAuthenticated)
+    <li><a class="text-sm text-gray-400 hover:text-gray-500" href={{ route('auth.login.show') }}>Ajouter un événement</a></li>
+    @else
+    <li><a class="text-sm text-gray-400 hover:text-gray-500" href={{ route('events.create') }}>Ajouter un événement</a></li>
+    @end
 
   </ul>
 
@@ -92,10 +97,18 @@
           <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
             href="#">Agenda</a>
         </li>
+
+        @if(!auth.isAuthenticated)
         <li class="mb-1">
           <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href="#">Ajouter un évenement</a>
+            href={{ route('auth.login.show') }}>Ajouter un événement</a>
         </li>
+        @else
+        <li class="mb-1">
+          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+            href={{ route('events.create') }}>Ajouter un événement</a>
+        </li>
+        @end
         <li class="mb-1">
           <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
             href="#">Carte</a>

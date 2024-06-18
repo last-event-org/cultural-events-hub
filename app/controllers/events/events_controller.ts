@@ -8,6 +8,11 @@ import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
+import { createMediaValidator } from '#validators/media'
+import Media from '#models/media'
+import { cuid } from '@adonisjs/core/helpers'
+import app from '@adonisjs/core/services/app'
+import fs from 'fs'
 
 export default class EventsController {
   /**
@@ -56,6 +61,7 @@ export default class EventsController {
         .orderBy('event_start', 'asc')
     }
 
+
     // get events based on one specifc date - OK
     if (requestQuery['date']) {
       console.log('DATE')
@@ -86,7 +92,7 @@ export default class EventsController {
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
 
-    console.log(categoryTypes)
+    // console.log(categoryTypes)
     return view.render('pages/events/add-event', {
       categories: categories,
       categoryTypes: categoryTypes,
@@ -149,6 +155,30 @@ export default class EventsController {
     await price.save()
     await price.related('event').associate(event)
 
+    // Event Media
+    const { images_link } = await request.validateUsing(createMediaValidator)
+    console.log('mediaPayload: ', images_link);
+    
+    for (const file of images_link) {
+      const media = new Media()
+      media.path = ''  // TODO if needed, setup a path method if we'll use an external server
+      media.altName = file.clientName
+      media.eventId = event.id
+
+      if (!file.tmpPath) {
+        console.error('Skipping file due to missing tmpPath:', file);
+        continue; // Skip this iteration if tmpPath is undefined
+      }
+
+      try {
+        const binaryData = fs.readFileSync(file.tmpPath)
+        media.binary = binaryData
+        await media.save()
+      } catch (error) {
+        console.error(`Failed to process file ${file.tmpPath}:`, error);
+      }
+    }
+    
     return response.redirect().toRoute('events.show', { id: event.id })
   }
 
@@ -156,8 +186,8 @@ export default class EventsController {
    * Show individual record
    */
   async show({ view, params, request }: HttpContext) {
-    console.log(request.params())
-    console.log(params)
+    // console.log(request.params())
+    // console.log(params)
     return view.render('pages/events/details')
   }
 

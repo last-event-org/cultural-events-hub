@@ -47,10 +47,10 @@ export default class Event extends BaseModel {
   declare vendorId: HasOne<typeof User>
 
   @column()
-  declare location_id: number
+  declare locationId: number
 
   @belongsTo(() => Address, {
-    foreignKey: 'location_id',
+    localKey: 'location_id',
   })
   declare location: BelongsTo<typeof Address>
 
@@ -92,4 +92,3 @@ export default class Event extends BaseModel {
     // get events where indicator ID is present in the indicators_events table
   }
 }
-

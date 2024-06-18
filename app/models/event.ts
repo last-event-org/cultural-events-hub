@@ -71,24 +71,4 @@ export default class Event extends BaseModel {
     console.log('location : ' + location)
     // get events where events_location_id = adresses.id.name
   }
-
-  async getEventsByVendor(user: number) {
-    console.log('location : ' + user)
-    // get events where events.vendor.id = user.id
-  }
-
-  async getEventsByCategory(category: number) {
-    console.log('category : ' + category)
-    // get events where category type ID in the category_type_events table is equal to the FK_parent_category_id
-  }
-
-  async getEventsBySubCategory(subCategory: number) {
-    console.log('subCategory : ' + subCategory)
-    // get events where subcategory type ID is in the category_types_events table
-  }
-
-  async getEventsByIndicators(indicator: number) {
-    console.log('subCategory : ' + indicator)
-    // get events where indicator ID is present in the indicators_events table
-  }
 }

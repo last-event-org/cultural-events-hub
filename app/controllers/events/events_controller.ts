@@ -22,25 +22,31 @@ export default class EventsController {
     // Check if there is no params in the query
     if (Object.keys(request.qs()).length === 0) {
       events = await Event.query().orderBy('event_start', 'asc')
-      return view.render('pages/events/list', { events: events })
+      return view.render('pages/events/list', { events: events, title: 'Agenda complet' })
     }
 
-    // Get events by category_type_id - CA FONCTIONNE OK
+    // Get events by category_type_id - OK
     if (requestQuery['category-type']) {
       const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
+      const category = await Category.find(categoryTypeId?.categoryId)
+      let title = category?.name + ' / ' + categoryTypeId?.name
       events = await categoryTypeId?.related('events').query().orderBy('event_start', 'asc')
+      return view.render('pages/events/list', { events: events, title: title })
     }
 
-    // get events by one category - NOK
+    // get events by one category - OK
     if (requestQuery['category']) {
-      const categoryId = await Category.find(1)
-      const categories = categoryId?.related('categoryTypes')
-      console.log(categories)
-
-      events = await Event.query().whereHas('categoryTypes', (query) => {
-        query.whereInPivot('category_type_id', [25, 28]).orderBy('event_start', 'asc')
+      const categoryId = await Category.find(requestQuery['category'])
+      const categories = await categoryId?.related('categoryTypes').query()
+      let categoryTypesId: number[] = []
+      categories?.forEach((category) => {
+        categoryTypesId.push(category.$attributes.id)
       })
-      // console.log(events.forEach((event) => console.log('EVENT' + event)))
+      console.log(categoryTypesId)
+      events = await Event.query().whereHas('categoryTypes', (query) => {
+        query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
+      })
+      return view.render('pages/events/list', { events: events, title: categoryId?.name })
     }
 
     // get events by one locationID (i.e. le forum) - OK
@@ -48,6 +54,18 @@ export default class EventsController {
       events = await Event.query()
         .where('location_id', requestQuery['location'])
         .orderBy('event_start', 'asc')
+    }
+
+    // get events based on one specifc date - OK
+    if (requestQuery['date']) {
+      console.log('DATE')
+      let date = DateTime.fromISO(requestQuery['date'])
+
+      const dayBegin: string | null = date.toSQL()
+      const dayEnd: string | null = date.set({ hour: 23, minute: 59, second: 59 }).toSQL()
+      events = await Event.query().whereBetween('event_start', [dayBegin, dayEnd])
+      const title = date.setLocale('fr').toFormat('dd-MM-yyyy')
+      return view.render('pages/events/list', { events: events, title: title })
     }
 
     // get events by one vendorID - OK

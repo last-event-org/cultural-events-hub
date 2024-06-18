@@ -32,6 +32,9 @@ export default class Event extends BaseModel {
   @column()
   declare websiteLink: string
 
+  @column()
+  declare youtubeLink: string
+
   @column.dateTime()
   declare eventStart: DateTime
 
@@ -51,7 +54,7 @@ export default class Event extends BaseModel {
   declare locationId: number
 
   @belongsTo(() => Address, {
-    localKey: 'location_id',
+    foreignKey: 'locationId',
   })
   declare location: BelongsTo<typeof Address>
 

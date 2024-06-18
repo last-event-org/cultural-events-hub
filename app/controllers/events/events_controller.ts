@@ -119,6 +119,7 @@ export default class EventsController {
     event.facebookLink = payload.facebook_link
     event.instagramLink = payload.instagram_link
     event.websiteLink = payload.website_link
+    event.youtubeLink = payload.youtube_link
 
     await event.save()
 

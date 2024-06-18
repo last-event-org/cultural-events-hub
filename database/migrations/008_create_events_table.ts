@@ -13,6 +13,7 @@ export default class extends BaseSchema {
       table.string('facebook_link')
       table.string('instagram_link')
       table.string('website_link')
+      table.string('youtube_link')
       table.timestamp('event_start')
       table.timestamp('event_end')
       table.integer('vendor_id').unsigned().references('users.id').onDelete('SET NULL')

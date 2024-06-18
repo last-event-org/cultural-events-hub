@@ -13,6 +13,7 @@ import Media from '#models/media'
 import { cuid } from '@adonisjs/core/helpers'
 import app from '@adonisjs/core/services/app'
 import fs from 'fs'
+import Indicator from '#models/indicator'
 
 export default class EventsController {
   /**
@@ -114,21 +115,20 @@ export default class EventsController {
   async create({ view }: HttpContext) {
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
+    const indicators = await Indicator.all()
 
     // console.log(categoryTypes)
     return view.render('pages/events/add-event', {
       categories: categories,
       categoryTypes: categoryTypes,
+      indicators: indicators,
     })
   }
 
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {
-    // console.log(request.body())
-    // console.log(request.body().title)
-    // console.log(request.all())
+  async store({ request, response }: HttpContext) {  // TODO reformat this method in different do-one-thing methods
 
     const payload = await request.validateUsing(createEventValidator)
 
@@ -142,14 +142,20 @@ export default class EventsController {
     event.facebookLink = payload.facebook_link
     event.instagramLink = payload.instagram_link
     event.websiteLink = payload.website_link
+    event.youtubeLink = payload.youtube_link
 
     await event.save()
 
     // Event Category Types
     const selectedCategoryTypes = request.body().categoryTypes
-
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])
+    })
+
+    // Event Indicators
+    const selectedIndicators = request.body().indicators
+    selectedIndicators.forEach(async (indicatorId: number) => {
+      await event.related('indicators').attach([indicatorId])
     })
 
     // Event Address

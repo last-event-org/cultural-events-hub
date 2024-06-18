@@ -22,28 +22,28 @@
   <ul>
     <div class="flex flex-wrap justify-center my-4 gap-4">
       <li>
-        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="font-semibold  text-white"href="#">Liège</a>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="text-xl font-semibold  text-white"href="#">Liège</a>
         </div>
       </li>
       <li>
-        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="font-semibold text-white"href="#">Bruxelles</a>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="text-xl font-semibold text-white"href="#">Bruxelles</a>
         </div>
       </li>
       <li>
-        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="font-semibold text-white"href="#">Charleroi</a>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="text-xl font-semibold text-white"href="#">Charleroi</a>
         </div>
       </li>
       <li>
-        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="font-semibold text-white"href="#">Namur</a>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="text-xl font-semibold text-white"href="#">Namur</a>
         </div>
       </li>
       <li>
-        <div class="flex items-center gap-3 bg-cyan-900 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="font-semibold text-white"href="#">Mons</a>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="text-xl font-semibold text-white"href="#">Mons</a>
         </div>
       </li>    
     </div>
@@ -58,12 +58,15 @@
 
 <ul>
   <div class="flex flex-wrap justify-center my-4 gap-4">
-    @each(category in categories)
-      <li>
-          <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-            <a class="font-semibold  text-white"href="/events/?category={{category.id}}">{{category.name}}</a>
-          </div>
-      </li>
+    @each((category, index) in categories)
+    <li>
+      <div class="flex items-center gap-3 shadow border  
+      {{ ['bg-green-300', 'bg-violet-300', 'bg-yellow-300', 'bg-orange-300', 'bg-lime-300', 'bg-fuchsia-300'][index % 6] }}
+      {{ ['hover:bg-green-400', 'hover:bg-violet-400', 'hover:bg-yellow-400', 'hover:bg-orange-400', 'hover:bg-lime-400', 'hover:bg-fuchsia-400'][index % 6] }} 
+       rounded-md px-4 pb-1">
+        <a class="text-xl font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
+      </div>
+    </li>
     @end
     </div>
 </ul>

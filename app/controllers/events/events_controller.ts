@@ -10,6 +10,9 @@ import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
 import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
+import { cuid } from '@adonisjs/core/helpers'
+import app from '@adonisjs/core/services/app'
+import fs from 'fs'
 
 export default class EventsController {
   /**
@@ -26,17 +29,17 @@ export default class EventsController {
       title = 'Agenda complet'
       return view.render('pages/events/list', { events: events, title: title })
     }
-
+    // TODO refactor to see if possible to merge category-type and category
     // Get events by category_type_id - OK
     if (requestQuery['category-type']) {
       const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
       const category = await Category.find(categoryTypeId?.categoryId)
       if (requestQuery['date']) {
+        // TODO verify if the date is in the correct format
         let date = DateTime.fromISO(requestQuery['date'])
-        title =
-          'events du ' + date.setLocale('fr').toFormat('dd-MM-yyyy') + ' pour ' + category?.name
-        const dayBegin: string | null = date.toSQL()
-        const dayEnd: string | null = date.set({ hour: 23, minute: 59, second: 59 }).toSQL()
+        const dayBegin: string = date.toSQL() ?? ''
+        const dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+
         events = await Event.query()
           .whereHas('categoryTypes', (query) => {
             query
@@ -44,9 +47,20 @@ export default class EventsController {
               .orderBy('event_start', 'asc')
           })
           .andWhereBetween('event_start', [dayBegin, dayEnd])
+
+        title =
+          'events du ' +
+          date.setLocale('fr').toFormat('dd-MM-yyyy') +
+          ' pour ' +
+          (category?.name ?? '')
       } else {
-        
-        events = await categoryTypeId?.related('events').query().orderBy('event_start', 'asc')
+        events = await Event.query().whereHas('categoryTypes', (query) => {
+          query
+            .whereInPivot('category_type_id', [requestQuery['category-type']])
+            .orderBy('event_start', 'asc')
+        })
+
+        // events = await categoryTypeId?.related('events').query().orderBy('event_start', 'asc')
         title = category?.name + ' / ' + categoryTypeId?.name
       }
 
@@ -56,23 +70,26 @@ export default class EventsController {
     // get events by one category - OK
     if (requestQuery['category']) {
       const categoryId = await Category.find(requestQuery['category'])
+
       const categories = await categoryId?.related('categoryTypes').query()
       let categoryTypesId: number[] = []
       categories?.forEach((category) => {
         categoryTypesId.push(category.$attributes.id)
       })
       if (requestQuery['date']) {
-        console.log(requestQuery['date'])
+        // TODO verify if the date is in the correct format
         let date = DateTime.fromISO(requestQuery['date'])
-        title =
-          'events du ' + date.setLocale('fr').toFormat('dd-MM-yyyy') + ' pour ' + categoryId?.name
-        const dayBegin: string | null = date.toSQL()
-        const dayEnd: string | null = date.set({ hour: 23, minute: 59, second: 59 }).toSQL()
+
+        const dayBegin: string = date.toSQL() ?? ''
+        const dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
         events = await Event.query()
           .whereBetween('event_start', [dayBegin, dayEnd])
           .andWhereHas('categoryTypes', (query) => {
             query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
           })
+
+        title =
+          'events du ' + date.setLocale('fr').toFormat('dd-MM-yyyy') + ' pour ' + categoryId?.name
       } else {
         title = 'Vos events pour ' + categoryId?.name
         events = await Event.query().whereHas('categoryTypes', (query) => {

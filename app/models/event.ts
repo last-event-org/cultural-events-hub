@@ -51,7 +51,7 @@ export default class Event extends BaseModel {
   declare locationId: number
 
   @belongsTo(() => Address, {
-    localKey: 'location_id',
+    foreignKey: 'locationId',
   })
   declare location: BelongsTo<typeof Address>
 
@@ -75,5 +75,4 @@ export default class Event extends BaseModel {
     // console.log('location : ' + location)
     // get events where events_location_id = adresses.id.name
   }
-
 }

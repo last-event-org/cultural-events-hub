@@ -61,7 +61,7 @@
     @each((category, index) in categories)
     <li>
       <div class="flex items-center gap-3 shadow border  
-      {{ ['bg-green-300', 'bg-violet-300', 'bg-yellow-300', 'bg-orange-300', 'bg-lime-300', 'bg-fuchsia-300'][index % 6] }}
+      {{ ['bg-green-200', 'bg-violet-200', 'bg-yellow-200', 'bg-orange-200', 'bg-lime-200', 'bg-fuchsia-200'][index % 6] }}
       {{ ['hover:bg-green-400', 'hover:bg-violet-400', 'hover:bg-yellow-400', 'hover:bg-orange-400', 'hover:bg-lime-400', 'hover:bg-fuchsia-400'][index % 6] }} 
        rounded-md px-4 pb-1">
         <a class="text-xl font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>

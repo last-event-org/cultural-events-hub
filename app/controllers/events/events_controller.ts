@@ -12,6 +12,7 @@ import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
 import { cuid } from '@adonisjs/core/helpers'
 import app from '@adonisjs/core/services/app'
+import fs from 'fs'
 
 export default class EventsController {
   /**
@@ -127,27 +128,31 @@ export default class EventsController {
     // Event Media
     const { images_link } = await request.validateUsing(createMediaValidator)
     console.log('mediaPayload: ', images_link);
-
-    const movedFiles = []
-    for (const file of images_link) {
-      const fileName = `${cuid()}.${file.extname}`
-      await file.move(app.makePath('uploads'), { name: fileName })
-
-      movedFiles.push({ fileName, originalName: file.clientName })
-    }
-
-    movedFiles.forEach(async file => {
-      // Store file metadata in the database
-      const media = new Media()
-      media.path = `uploads/${file.fileName}`
-      media.altName = file.originalName
-      media.eventId = event.id
-      await media.save()
-
-      console.log(file);
-    })
     
+    for (const file of images_link) {
+      console.log('file: ', file);
+      // const fileName = `${cuid()}.${file.extname}`
+      // await file.move(app.makePath('uploads'), { name: fileName })
 
+      const media = new Media()
+      // media.path = `uploads/${file.fileName}`
+      media.altName = file.clientName
+      media.eventId = event.id
+
+      if (!file.tmpPath) {
+        console.error('Skipping file due to missing tmpPath:', file);
+        continue; // Skip this iteration if tmpPath is undefined
+      }
+
+      try {
+        const binaryData = fs.readFileSync(file.tmpPath)
+        media.binary = binaryData
+        await media.save()
+      } catch (error) {
+        console.error(`Failed to process file ${file.tmpPath}:`, error);
+      }
+    }
+    
     return response.redirect().toRoute('events.show', { id: event.id })
   }
 

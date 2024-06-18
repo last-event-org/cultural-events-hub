@@ -24,4 +24,7 @@ export default class Media extends BaseModel {
 
   @belongsTo(() => Event)
   declare event: BelongsTo<typeof Event>
+
+  @column()
+  declare binary: Buffer
 }

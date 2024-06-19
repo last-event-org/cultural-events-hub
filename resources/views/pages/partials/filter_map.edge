@@ -1,9 +1,9 @@
 
 
-  <h2 class="my-8 text-center text-xl font-bold">Choisissez votre emplacement</h2>
+  <h2 class="hidden lg:block mt-24 text-center text-3xl font-bold">Choisissez votre emplacement</h2>
   
   {{-- Cities --}}
-<section class="flex flex-col lg:flex-row justify-center lg:border-2 ">
+<section class="flex flex-col lg:flex-row justify-center lg:border-2 lg:p-10 mt-12">
   <div class="flex flex-col justify-center">
 
   
@@ -73,27 +73,28 @@
 </div> 
   {{-- map  --}}
   <div class="flex flex-col w-full h-full justify-center items-center p-4 ">
-    <div id="map" class="h-80 w-full lg:w-4/5 lg:h-80 border shadow"></div>
+    <div id="map" class="h-80 w-full lg:w-4/5 border shadow"></div>
   </div>
 </section>
   
 
 {{-- events types --}}
-{{-- <hr class="w-full mt-8"> --}}
+
 <ul>
-  <div class="flex flex-wrap justify-center my-8 gap-2 ">
+  <div class="flex flex-wrap justify-center mt-4 lg:mt-16 mb-8 gap-2 ">
     @each((category, index) in categories)
     <div class="flex flex-col gap-2 w-36">
 
       <a href="/events/?category={{ category.id }}">
-      <div class=" flex  w-16 h-16 rounded-full shadow p-2 mx-auto
-      {{ ['bg-green-200', 'bg-violet-200', 'bg-yellow-200', 'bg-orange-200', 'bg-lime-200', 'bg-fuchsia-200'][index % 6] }}
-      {{ ['hover:bg-green-400', 'hover:bg-violet-400', 'hover:bg-yellow-400', 'hover:bg-orange-400', 'hover:bg-lime-400', 'hover:bg-fuchsia-400'][index % 6] }} 
-      ">
-        <img src={{["/svg/categories/concert.svg","/svg/categories/theatre.svg","/svg/categories/disco-ball.svg","/svg/categories/expo2.svg","/svg/categories/fair.svg","/svg/categories/sports.svg"][index % 6]}}
-         alt="spécial étudiant" class="p-1" title="Spécial étudiant">
-      </div>
+        <div class=" flex  w-16 h-16 rounded-full shadow p-3 mx-auto
+        {{ ['bg-green-200', 'bg-violet-200', 'bg-yellow-200', 'bg-orange-200', 'bg-lime-200', 'bg-fuchsia-200'][index % 6] }}
+        {{ ['hover:bg-green-400', 'hover:bg-violet-400', 'hover:bg-yellow-400', 'hover:bg-orange-400', 'hover:bg-lime-400', 'hover:bg-fuchsia-400'][index % 6] }} 
+        ">
+          <img src={{["/svg/categories/concert.svg","/svg/categories/theatre.svg","/svg/categories/disco-ball.svg","/svg/categories/expo2.svg","/svg/categories/fair.svg","/svg/categories/sports.svg"][index % 6]}}
+          alt="category icon" title="Spécial étudiant">
+        </div>
       </a>
+
       <li>
         <div class="flex justify-center items-center gap-2   
         {{-- {{ ['bg-green-200', 'bg-violet-200', 'bg-yellow-200', 'bg-orange-200', 'bg-lime-200', 'bg-fuchsia-200'][index % 6] }}
@@ -105,7 +106,7 @@
     
     </div>
     @end
-    </div>
+  </div>
 </ul>
   
   {{-- searchbar --}}

@@ -1,4 +1,4 @@
-import type { HttpContext } from '@adonisjs/core/http'
+import { HttpContext } from '@adonisjs/core/http'
 import { createEventValidator } from '#validators/event'
 import Event from '#models/event'
 import { DateTime } from 'luxon'
@@ -131,8 +131,18 @@ export default class EventsController {
    * Handle form submission for the create action
    */
   async store({ request, response }: HttpContext) {
-    // TODO reformat this method in different do-one-thing methods
+    const event = await this.createEvent(request)
+    
+    await this.attachCategoryTypes(request, event)
+    await this.attachIndicators(request, event)
+    await this.createEventAddress(request, event)
+    await this.createEventPrices(request, event)
+    await this.uploadEventMedia(request, event)
 
+    return response.redirect().toRoute('events.show', { id: event.id })
+  }
+
+  async createEvent(request: HttpContext['request']) {
     const payload = await request.validateUsing(createEventValidator)
 
     const event = new Event()
@@ -147,21 +157,37 @@ export default class EventsController {
     event.websiteLink = payload.website_link
     event.youtubeLink = payload.youtube_link
 
-    await event.save()
+    return await event.save()
+  }
 
-    // Event Category Types
+  async attachCategoryTypes(request: HttpContext['request'], event: Event) {
     const selectedCategoryTypes = request.body().categoryTypes
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])
     })
+  }
 
-    // Event Indicators
+  async attachIndicators(request: HttpContext['request'], event: Event) {
     const selectedIndicators = request.body().indicators
     selectedIndicators.forEach(async (indicatorId: number) => {
       await event.related('indicators').attach([indicatorId])
     })
+  }
 
-    // Event Address
+  async createEventPrices(request: HttpContext['request'], event: Event) {
+    const pricePayload = await request.validateUsing(createPriceValidator)
+    const price = new Price()
+
+    price.description = pricePayload.price_description
+    price.regularPrice = pricePayload.regular_price
+    price.discountedPrice = pricePayload.discounted_price
+    price.availableQty = pricePayload.available_qty
+
+    await price.save()
+    await price.related('event').associate(event)
+  }
+
+  async createEventAddress(request: HttpContext['request'], event: Event) {
     const addressPayload = await request.validateUsing(createAddressValidator)
     const address = new Address()
 
@@ -174,20 +200,9 @@ export default class EventsController {
 
     await address.save()
     await event.related('location').associate(address)
+  }
 
-    // Event Prices
-    const pricePayload = await request.validateUsing(createPriceValidator)
-    const price = new Price()
-
-    price.description = pricePayload.price_description
-    price.regularPrice = pricePayload.regular_price
-    price.discountedPrice = pricePayload.discounted_price
-    price.availableQty = pricePayload.available_qty
-
-    await price.save()
-    await price.related('event').associate(event)
-
-    // Event Media
+  async uploadEventMedia(request: HttpContext['request'], event: Event) {
     const { images_link } = await request.validateUsing(createMediaValidator)
 
     for (const file of images_link) {
@@ -207,8 +222,6 @@ export default class EventsController {
       media.binary = binaryData
       await media.save()
     }
-
-    return response.redirect().toRoute('events.show', { id: event.id })
   }
 
   /**

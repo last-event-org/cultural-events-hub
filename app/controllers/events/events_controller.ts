@@ -132,7 +132,7 @@ export default class EventsController {
    */
   async store({ request, response }: HttpContext) {
     const event = await this.createEvent(request)
-    
+
     await this.attachCategoryTypes(request, event)
     await this.attachIndicators(request, event)
     await this.createEventAddress(request, event)
@@ -169,6 +169,7 @@ export default class EventsController {
 
   async attachIndicators(request: HttpContext['request'], event: Event) {
     const selectedIndicators = request.body().indicators
+    // TODO add validation => if non is selected: error
     selectedIndicators.forEach(async (indicatorId: number) => {
       await event.related('indicators').attach([indicatorId])
     })

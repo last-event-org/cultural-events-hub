@@ -1,9 +1,61 @@
 
 
-  {{-- <h2 class="my-4 text-center text-xl font-semibold">Choisissez votre emplacement</h2> --}}
+  <h2 class="my-8 text-center text-xl font-bold">Choisissez votre emplacement</h2>
+  
+  {{-- Cities --}}
+<section class="flex flex-col lg:flex-row justify-center lg:border-2 ">
+  <div class="flex flex-col justify-center">
+
+  
+  <ul>
+    <div class="flex flex-wrap justify-center my-4 mx-2 gap-4  lg:w-full">
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="lg:text-xl font-semibold  text-white"href="#">Liège</a>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="lg:text-xl font-semibold text-white"href="#">Bruxelles</a>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="lg:text-xl font-semibold text-white"href="#">Charleroi</a>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="lg:text-xl font-semibold text-white"href="#">Namur</a>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="lg:text-xl font-semibold text-white"href="#">Mons</a>
+        </div>
+      </li>    
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="lg:text-xl font-semibold text-white"href="#">Anvers</a>
+        </div>
+      </li>    
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="lg:text-xl font-semibold text-white"href="#">Gand</a>
+        </div>
+      </li>    
+      <li>
+        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
+          <a class="lg:text-xl font-semibold text-white"href="#">Ostende</a>
+        </div>
+      </li>    
+         
+    </div>
+  </ul>
+
   {{-- searchbar --}}
   
-  <div class='mb-4 mt-8'>
+  <div class='my-8 mx-auto'>
     <div class="flex justify-between items-center w-80 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden">
         <div class="flex px-4 justify-center items-center text-gray-300">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -18,61 +70,46 @@
         placeholder="Votre ville ou un code postal..." /> 
     </div>
   </div> 
-  {{-- Cities --}}
-  <ul>
-    <div class="flex flex-wrap justify-center my-4 gap-4">
-      <li>
-        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="text-xl font-semibold  text-white"href="#">Liège</a>
-        </div>
-      </li>
-      <li>
-        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="text-xl font-semibold text-white"href="#">Bruxelles</a>
-        </div>
-      </li>
-      <li>
-        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="text-xl font-semibold text-white"href="#">Charleroi</a>
-        </div>
-      </li>
-      <li>
-        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="text-xl font-semibold text-white"href="#">Namur</a>
-        </div>
-      </li>
-      <li>
-        <div class="flex items-center gap-3 bg-cyan-800 hover:bg-cyan-700 rounded-md px-4 pb-1">
-          <a class="text-xl font-semibold text-white"href="#">Mons</a>
-        </div>
-      </li>    
-    </div>
-  </ul>
-   
-{{-- map  --}}
+</div> 
+  {{-- map  --}}
   <div class="flex flex-col w-full h-full justify-center items-center p-4 ">
-    <div id="map" class="h-80 w-full lg:w-4/5 md:h-96 border shadow"></div>
+    <div id="map" class="h-80 w-full lg:w-4/5 lg:h-80 border shadow"></div>
   </div>
+</section>
+  
 
 {{-- events types --}}
-
+{{-- <hr class="w-full mt-8"> --}}
 <ul>
-  <div class="flex flex-wrap justify-center my-4 gap-4">
+  <div class="flex flex-wrap justify-center my-8 gap-2 ">
     @each((category, index) in categories)
-    <li>
-      <div class="flex items-center gap-3 shadow border  
+    <div class="flex flex-col gap-2 w-36">
+
+      <a href="/events/?category={{ category.id }}">
+      <div class=" flex  w-16 h-16 rounded-full shadow p-2 mx-auto
       {{ ['bg-green-200', 'bg-violet-200', 'bg-yellow-200', 'bg-orange-200', 'bg-lime-200', 'bg-fuchsia-200'][index % 6] }}
       {{ ['hover:bg-green-400', 'hover:bg-violet-400', 'hover:bg-yellow-400', 'hover:bg-orange-400', 'hover:bg-lime-400', 'hover:bg-fuchsia-400'][index % 6] }} 
-       rounded-md px-4 pb-1">
-        <a class="text-xl font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
+      ">
+        <img src={{["/svg/categories/concert.svg","/svg/categories/theatre.svg","/svg/categories/disco-ball.svg","/svg/categories/expo2.svg","/svg/categories/fair.svg","/svg/categories/sports.svg"][index % 6]}}
+         alt="spécial étudiant" class="p-1" title="Spécial étudiant">
       </div>
-    </li>
+      </a>
+      <li>
+        <div class="flex justify-center items-center gap-2   
+        {{-- {{ ['bg-green-200', 'bg-violet-200', 'bg-yellow-200', 'bg-orange-200', 'bg-lime-200', 'bg-fuchsia-200'][index % 6] }}
+        {{-- {{ ['hover:bg-green-400', 'hover:bg-violet-400', 'hover:bg-yellow-400', 'hover:bg-orange-400', 'hover:bg-lime-400', 'hover:bg-fuchsia-400'][index % 6] }}  --}} --}}
+         rounded-md px-4 pb-1">
+          <a class=" text-xs font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
+        </div>
+      </li>
+    
+    </div>
     @end
     </div>
 </ul>
   
   {{-- searchbar --}}
-  <div class='mt-4 mb-8'>
+  {{-- <div class='mt-4 mb-8'>
     <div class="flex justify-between items-center w-80 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden">
         <div class="flex px-4 justify-center items-center text-gray-300">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -86,7 +123,7 @@
         id="search"
         placeholder="Type d'évènement..." /> 
     </div>
-  </div> 
+  </div>  --}}
 
 
 {{-- POI List --}}

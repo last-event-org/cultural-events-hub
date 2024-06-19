@@ -39,6 +39,21 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// DropDown Menu Profile
+
+const dropDown = document.getElementById('drop_down_profile');
+const userButton = document.getElementById('user_button');
+
+userButton.addEventListener('click', () => {
+  if (dropDown.classList.contains('block')) {
+    dropDown.classList.replace('block', 'hidden');
+    dropDown.classList.replace('opacity-100', 'opacity-0');
+  } else {
+    dropDown.classList.replace('hidden', 'block');
+    dropDown.classList.replace('opacity-0', 'opacity-100');
+  }
+});
+
 
 
 

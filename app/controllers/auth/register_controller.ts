@@ -40,10 +40,19 @@ export default class RegistersController {
     await user.save()
     if (user.$isPersisted) {
       await auth.use('web').login(user)
-      return response.redirect('/')
+      // return response.redirect('/')
+      return response.redirect().toRoute('auth.register.profile-type')
     } else {
       return response.redirect().back()
     }
+  }
+
+  async profileType({ view }: HttpContext) {
+    return view.render('pages/auth/profile-type')
+  }
+
+  async updateProfileType({ session, request, response, auth }: HttpContext) {
+    
   }
 
   /**

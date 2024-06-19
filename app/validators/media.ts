@@ -6,7 +6,7 @@ export const createMediaValidator = vine.compile(
       images_link: vine.array(
           vine.file({
             size: '2mb',
-            extnames: ['jpg', 'png', 'pdf']
+            extnames: ['jpg', 'png']
           })
         )
       })

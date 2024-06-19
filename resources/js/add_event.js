@@ -32,3 +32,34 @@ function toggleCategoryTypes(categoryId) {
     }
   }
 }
+
+
+function previewImages() {
+  const previewContainer = document.getElementById('imagePreviewContainer');
+  const files = document.getElementById('images_link').files;
+  previewContainer.innerHTML = '';
+
+  const maxFiles = 3
+
+  if (files.length > maxFiles) {
+      alert(`Vous ne pouvez sélectionner que ${maxFiles} fichiers maximum.`);
+      document.getElementById('images_link').value = '';  // Clear the input to prevent submission with excess files
+      return;
+  }
+
+  if (files) {
+      Array.from(files).forEach(file => {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+              const img = document.createElement('img');
+              img.src = e.target.result;
+              img.alt = file.name;
+              img.classList.add('h-32', 'w-32', 'object-cover', 'm-2');
+              previewContainer.appendChild(img);
+          };
+
+          reader.readAsDataURL(file);
+      });
+  }
+}

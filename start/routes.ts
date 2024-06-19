@@ -14,12 +14,10 @@ router
     router.post('/login', [LoginController, 'store']).as('login.store')
     router.get('/register', [RegisterController, 'index']).as('register')
     router.post('/register', [RegisterController, 'store']).as('register.store')
+    router.get('/profile-type', [RegisterController, 'profileType']).as('register.profile-type')
+    router.post('/profile-type', [RegisterController, 'updateProfileType']).as('register.update-profile-type')
     router.post('/logout', [LogoutController, 'handle']).as('logout').use(middleware.auth())
   })
   .as('auth')
 
 router.resource('events', EventsController)
-
-
-
-

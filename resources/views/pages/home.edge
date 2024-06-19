@@ -25,18 +25,13 @@
     <h2 class="text-2xl md:text-3xl font-bold">xt Events à prix réduits</h2>
   </div>
 
-<main class=" py-10 mb-10 ">
- <div class=" flex flex-wrap justify-center bg-gray-50 border shadow gap-x-6 gap-y-16  py-10 ">   
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
+<main class=" py-10 mb-10 mx-4">
+ <div class=" flex flex-wrap justify-center bg-gray-50 border shadow gap-x-6 gap-y-16  py-10 ">
+
+  @each(event in events)
+    @!component('components/events_cards', {event})
+  @end
+
   </div>
 
   <div class="flex justify-center my-10">
@@ -45,10 +40,10 @@
   </div>
 
   <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-6  my-6 py-10">   
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
+    
+    
+    {{-- @include("pages/partials/events_cards")
+    @include("pages/partials/events_cards") --}}
   </div>
 </main>
 

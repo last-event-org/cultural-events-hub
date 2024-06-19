@@ -77,9 +77,4 @@ export default class Event extends BaseModel {
     pivotRelatedForeignKey: 'indicator_id',
   })
   declare indicators: ManyToMany<typeof Indicator>
-
-  async getEventsByLocation(location: string) {
-    // console.log('location : ' + location)
-    // get events where events_location_id = adresses.id.name
-  }
 }

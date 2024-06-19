@@ -4,6 +4,8 @@ import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 import Event from '#models/event'
 
 export default class Indicator extends BaseModel {
+  serializeExtras = true
+
   @column({ isPrimary: true })
   declare id: number
 

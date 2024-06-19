@@ -4,6 +4,8 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Event from '#models/event'
 
 export default class Price extends BaseModel {
+  serializeExtras = true
+
   @column({ isPrimary: true })
   declare id: number
 

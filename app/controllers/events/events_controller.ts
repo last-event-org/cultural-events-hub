@@ -65,6 +65,12 @@ export default class EventsController {
           query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
         })
       }
+
+      return view.render('pages/events/list', {
+        events: events,
+        title: title,
+        categories: categories,
+      })
     }
 
     // get events by one locationID (i.e. le forum) - OK
@@ -101,11 +107,6 @@ export default class EventsController {
         .orderBy('event_start', 'asc')
     }
 
-    return view.render('pages/events/list', {
-      events: events,
-      title: title,
-      categories: categories,
-    })
     // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
   }
 
@@ -128,7 +129,8 @@ export default class EventsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {  // TODO reformat this method in different do-one-thing methods
+  async store({ request, response }: HttpContext) {
+    // TODO reformat this method in different do-one-thing methods
 
     const payload = await request.validateUsing(createEventValidator)
 

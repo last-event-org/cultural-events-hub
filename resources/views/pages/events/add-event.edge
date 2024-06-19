@@ -7,30 +7,6 @@
     <title>Créer un Événement</title>
     @vite(['resources/css/app.css', 'resources/js/hours_create_event.js'])
 
-    <script>
-        function previewImages() {
-            const previewContainer = document.getElementById('imagePreviewContainer');
-            const files = document.getElementById('images_link').files;
-            previewContainer.innerHTML = '';
-
-            if (files) {
-                Array.from(files).forEach(file => {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.alt = file.name;
-                        img.classList.add('h-32', 'w-32', 'object-cover', 'm-2');
-                        previewContainer.appendChild(img);
-                    };
-
-                    reader.readAsDataURL(file);
-                });
-            }
-        }
-    </script>
-
 </head>
 
 <body class="bg-gray-50">
@@ -251,7 +227,7 @@
 
                 <div>
                     <label for="images_link" class="block text-gray-600">
-                        Charger des images
+                        Charger des images (max. 3)
                     </label>
                     <input type="file" id="images_link" name="images_link[]" onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
                     @inputError('images_link')

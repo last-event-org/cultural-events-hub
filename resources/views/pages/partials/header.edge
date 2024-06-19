@@ -56,16 +56,55 @@
     Enregistement</a>
 
   @else
+    
+  {{-- DropDown Profile --}}
+ <div class="hidden lg:flex gap-2">
+  <div class="hidden relative lg:inline-block text-right">
+    <div>
+      <button type="button" id="user_button" class="flex justify-center gap-1.5  px-3 py-2 text-sm font-semibold text-gray-600   hover:text-gray-950" id="menu-button" >
+        {{ auth.user.email }}
+        <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  
+    <div id="drop_down_profile" class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white opacity-0 transition-opacity duration-500">
+      <div class="py-1">
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Profil</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Ma whishlist</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Mes vendeurs favoris</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Mes tickets achetés</a>
+          {{-- if Auth as merchant--}}
+          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            Évènements publiés</a>
+          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            Tickets vendus</a>
+          {{-- if Auth as SuperAdmin --}}
+          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            Dashboard</a>
 
-  <p class="hidden lg:inline-block lg:ml-auto"> Hi {{ auth.user.email }} </p>
 
-    <form class="hidden lg:block" method="POST" action="{{ route('auth.logout') }}">
-      {{ csrfField() }}
-      <button type="submit"
-        class="hidden lg:inline-block lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
-        href={{ route('auth.login.show') }}>
-        Déconnexion</button>
-    </form>
+          <form class="hidden lg:block" method="POST" action="{{ route('auth.logout') }}">
+            {{ csrfField() }}
+            <div class="flex justify-center">
+              <button type="submit"
+                class="hidden lg:inline-block mt-4 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-red-800 font-bold  rounded-xl transition duration-200"
+                href={{ route('auth.login.show') }}>
+                Déconnexion</button>
+            </div>
+          </form>
+      </div> 
+    </div>
+  </div>
+
+
+
+  </div>
 
   @end
 </nav>

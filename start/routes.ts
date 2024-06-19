@@ -19,7 +19,3 @@ router
   .as('auth')
 
 router.resource('events', EventsController)
-
-
-
-

@@ -15,6 +15,7 @@ import app from '@adonisjs/core/services/app'
 import fs from 'fs'
 import Indicator from '#models/indicator'
 
+
 export default class EventsController {
   /**
    * Display a list of resource
@@ -188,7 +189,6 @@ export default class EventsController {
 
     // Event Media
     const { images_link } = await request.validateUsing(createMediaValidator)
-    console.log('mediaPayload: ', images_link)
 
     for (const file of images_link) {
       const media = new Media()
@@ -201,13 +201,11 @@ export default class EventsController {
         continue // Skip this iteration if tmpPath is undefined
       }
 
-      try {
-        const binaryData = fs.readFileSync(file.tmpPath)
-        media.binary = binaryData
-        await media.save()
-      } catch (error) {
-        console.error(`Failed to process file ${file.tmpPath}:`, error)
-      }
+      // TODO add a try catch statement
+      // TODO too big images make the server to get stuck => update the validator ?
+      const binaryData = fs.readFileSync(file.tmpPath)
+      media.binary = binaryData
+      await media.save()
     }
 
     return response.redirect().toRoute('events.show', { id: event.id })

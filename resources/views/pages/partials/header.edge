@@ -1,4 +1,4 @@
-<nav class="relative px-4 py-4 flex justify-between items-center bg-white">
+<nav class="z-50 relative px-4 py-4 flex justify-between items-center bg-white">
   <a class="flex items-center text-2xl font-bold leading-none" href={{ route('home') }}>
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
     {{-- <svg class="h-10" alt="logo" viewBox="0 0 10240 10240">
@@ -8,7 +8,7 @@
     </svg> --}}
     <h1>xt Event</h1>
   </a>
-  <div class="lg:hidden">
+  <div class="lg:hidden ">
     <button class="navbar-burger flex items-center text-gray-700 p-3">
       <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <title>Mobile menu</title>
@@ -59,13 +59,13 @@
 
   <p class="hidden lg:inline-block lg:ml-auto"> Hi {{ auth.user.email }} </p>
 
-  <form method="POST" action="{{ route('auth.logout') }}">
-    {{ csrfField() }}
-    <button type="submit"
-      class="hidden lg:inline-block lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
-      href={{ route('auth.login.show') }}>
-      Déconnexion</button>
-  </form>
+    <form class="hidden lg:block" method="POST" action="{{ route('auth.logout') }}">
+      {{ csrfField() }}
+      <button type="submit"
+        class="hidden lg:inline-block lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
+        href={{ route('auth.login.show') }}>
+        Déconnexion</button>
+    </form>
 
   @end
 </nav>

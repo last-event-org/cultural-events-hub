@@ -33,6 +33,7 @@ export default class EventsController {
       return view.render('pages/events/list', { events: events, title: title })
     }
     // get events by one category or category-type and date - OK
+    // TODO validate data if no category or category-type
     if (requestQuery['category'] || requestQuery['category-type']) {
       let categoryTypesId: any[] = []
 
@@ -75,6 +76,7 @@ export default class EventsController {
     }
 
     // get events by one locationID (i.e. le forum) - OK
+    // TODO validation if locaction do not exist
     if (requestQuery['location']) {
       const location = await Address.find(requestQuery['location'])
       if (requestQuery['date']) {
@@ -90,6 +92,7 @@ export default class EventsController {
     }
 
     // get events based on one specifc date - OK
+    // TODO validation if date not in correct format
     if (requestQuery['date']) {
       console.log('DATE')
       let date = DateTime.fromISO(requestQuery['date'])
@@ -102,6 +105,7 @@ export default class EventsController {
     }
 
     // get events by one vendorID - OK
+    // TODO validation if vendor do not exist
     if (requestQuery['vendor']) {
       events = await Event.query()
         .where('vendor_id', requestQuery['vendor'])

@@ -157,10 +157,10 @@ export default class EventsController {
         message: "La début de l'événement doit être avant la fin"
       })
     }
-    event.facebookLink = payload.facebook_link
-    event.instagramLink = payload.instagram_link
-    event.websiteLink = payload.website_link
-    event.youtubeLink = payload.youtube_link
+    if (payload.facebook_link) event.facebookLink = payload.facebook_link
+    if (payload.instagram_link) event.instagramLink = payload.instagram_link
+    if (payload.website_link) event.websiteLink = payload.website_link
+    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
 
     return await event.save()
   }
@@ -187,8 +187,8 @@ export default class EventsController {
     const price = new Price()
 
     price.description = pricePayload.price_description
-    price.regularPrice = pricePayload.regular_price
-    price.discountedPrice = pricePayload.discounted_price
+    if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
+    if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
     price.availableQty = pricePayload.available_qty
 
     await price.save()

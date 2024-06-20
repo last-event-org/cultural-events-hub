@@ -1,4 +1,4 @@
-<nav class="z-50 relative px-4 py-4 flex justify-between items-center bg-white">
+<nav class="z-50  px-4 py-4 flex justify-between items-center bg-white sticky top-0 ">
   <a class="flex items-center text-2xl font-bold leading-none" href={{ route('home') }}>
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
     {{-- <svg class="h-10" alt="logo" viewBox="0 0 10240 10240">
@@ -59,7 +59,7 @@
     
   {{-- DropDown Profile --}}
  <div class="hidden lg:flex gap-2">
-  <div class="hidden relative lg:inline-block text-right">
+  <div class="hidden relative lg:inline-block text-left transition-opacity duration-500">
     <div>
       <button type="button" id="user_button" class="flex justify-center gap-1.5  px-3 py-2 text-sm font-semibold text-gray-600   hover:text-gray-950" id="menu-button" >
         {{ auth.user.email }}
@@ -79,14 +79,18 @@
           Mes vendeurs favoris</a>
         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
           Mes tickets achetés</a>
-          {{-- if Auth as merchant--}}
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Évènements publiés</a>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Tickets vendus</a>
-          {{-- if Auth as SuperAdmin --}}
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            Dashboard</a>
+
+        {{-- if Auth as merchant--}}
+
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Évènements publiés</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Tickets vendus</a>
+          
+        {{-- if Auth as SuperAdmin --}}
+
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          Dashboard</a>
 
 
           <form class="hidden lg:block" method="POST" action="{{ route('auth.logout') }}">

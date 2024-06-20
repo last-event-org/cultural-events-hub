@@ -52,14 +52,14 @@
 <ul>
   <div class="flex flex-wrap justify-center mt-4 lg:mt-16 mb-8 gap-2 ">
     @each((category, index) in categories)
+    
+      
+      
     <div class="flex flex-col gap-2 w-36">
-
+      
       <a href="/events/?category={{ category.id }}">
-        <div class=" flex  w-16 h-16 rounded-full shadow p-3 mx-auto
-        {{ ['bg-green-200', 'bg-violet-200', 'bg-yellow-200', 'bg-orange-200', 'bg-lime-200', 'bg-fuchsia-200'][index % 6] }}
-        {{ ['hover:bg-green-400', 'hover:bg-violet-400', 'hover:bg-yellow-400', 'hover:bg-orange-400', 'hover:bg-lime-400', 'hover:bg-fuchsia-400'][index % 6] }} 
-        ">
-          <img src={{["/svg/categories/concert.svg","/svg/categories/theatre.svg","/svg/categories/disco-ball.svg","/svg/categories/expo2.svg","/svg/categories/fair.svg","/svg/categories/sports.svg"][index % 6]}}
+        <div class=" flex  w-16 h-16 rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
+          <img src=/svg/categories/{{category.slug}}.svg
           alt="category icon" title="Spécial étudiant">
         </div>
       </a>

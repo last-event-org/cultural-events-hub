@@ -23,4 +23,7 @@ export default class Category extends BaseModel {
 
   @hasMany(() => CategoryType)
   declare categoryTypes: HasMany<typeof CategoryType>
+
+  @column()
+  declare slug: string
 }

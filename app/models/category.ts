@@ -12,6 +12,9 @@ export default class Category extends BaseModel {
   @column()
   declare name: string
 
+  @column()
+  declare slug: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

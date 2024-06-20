@@ -20,15 +20,12 @@
   </div>
 </div>
 
-{{-- <div class="w-full flex mt-4"> --}}
-  {{-- {{event.location.name}} --}}
-@each(item in event.indicators)
-  {{item.name}}
+// CATEGORY SLUG
+@each(item in event.categoryTypes)
+  {{item.category.slug}}
 @end
 
-{{-- @each(item in event.categoryTypes)
-  {{item.name}}
-@end --}}
+
 
 {{-- @each(item in event.prices)
   {{item.description}}

@@ -141,6 +141,9 @@
                         value="">
                 </div>
 
+                @flashMessage('date')
+                    <div style="color: red;">{{ $message.message }}</div>
+                @end
 
                 <div>
                     <label for="facebook_link" class="block text-gray-600">

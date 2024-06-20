@@ -130,8 +130,8 @@ export default class EventsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {
-    const event = await this.createEvent(request)
+  async store({ request, session, response }: HttpContext) {
+    const event = await this.createEvent(request, session, response)
 
     await this.attachCategoryTypes(request, event)
     await this.attachIndicators(request, event)
@@ -142,7 +142,7 @@ export default class EventsController {
     return response.redirect().toRoute('events.show', { id: event.id })
   }
 
-  async createEvent(request: HttpContext['request']) {
+  async createEvent(request: HttpContext['request'], session: HttpContext['session'], response: HttpContext['response']) {
     const payload = await request.validateUsing(createEventValidator)
 
     const event = new Event()
@@ -152,6 +152,11 @@ export default class EventsController {
     event.description = payload.description
     event.eventStart = DateTime.fromISO(payload.event_start)
     event.eventEnd = DateTime.fromISO(payload.event_end)
+    if (event.eventStart > event.eventEnd) {
+      session.flash('date', {
+        message: "La début de l'événement doit être avant la fin"
+      })
+    }
     event.facebookLink = payload.facebook_link
     event.instagramLink = payload.instagram_link
     event.websiteLink = payload.website_link
@@ -169,10 +174,12 @@ export default class EventsController {
 
   async attachIndicators(request: HttpContext['request'], event: Event) {
     const selectedIndicators = request.body().indicators
-    // TODO add validation => if non is selected: error
-    selectedIndicators.forEach(async (indicatorId: number) => {
-      await event.related('indicators').attach([indicatorId])
-    })
+    if (selectedIndicators) {
+      console.log('OK');
+      selectedIndicators.forEach(async (indicatorId: number) => {
+        await event.related('indicators').attach([indicatorId])
+      })
+    }
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {

@@ -3,16 +3,11 @@
 <div class="bg-white border-gray-300 rounded-lg  w-80 sm:w-96">
 <div class="relative">
   
-  {{-- <p class="text-center text-white font-bold bg-gradient-to-t from-slate-600 to-slate-800 rounded-t-lg">-50%</p> --}}
-  {{-- <p class="absolute top-0 w-full bg-slate-700/30 text-center rounded-t-lg text-green-200 text-xs font-bold px-3 py-1 ">
-    Sports : <span>Combat de catch</span></p> --}}
-    <img src="/images/hbk_vs_undertaker.jpg" alt="Event Image" class=" w-full rounded-t-lg h-44 sm:h-56 object-cover border-b-4 border-yellow-500">
-  {{-- @each(item in event.media) 
-  <img src="{{item.path}}" alt="Event Image" class=" w-full rounded-t-lg h-44 sm:h-56 object-cover border-b-4 border-yellow-500">
-  @end --}}
-  <div class=" absolute bg-green-200 w-6 h-6 rounded-full  top-5 left-4 ">
 
-    <img class="p-1" src="/svg/categories/sports.svg" alt="sports">
+  <img src="/images/hbk_vs_undertaker.jpg" alt="Event Image" class=" w-full rounded-t-lg h-44 sm:h-56 object-cover border-b-4 border-yellow-500">
+  <div class=" absolute bg-{{event.categoryTypes[0].category.slug}} w-8 h-8 rounded-full top-4 left-4 ">
+
+    <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}">
   </div>  
   <div class="flex mb-1 absolute top-4 right-4  ">
     <p class=" bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-gray-600 text-sm font-bold px-3 py-1 mb-1">
@@ -20,9 +15,6 @@
   </div>
 </div>
 {{event.categoryTypes[0].category.slug}}
-
-
-
 
 {{-- @each(item in event.prices)
   {{item.description}}
@@ -50,23 +42,22 @@
   </h3>
   <hr class="mb-1">
   <div class="flex gap-2 py-2 mb-1">
-    <div class="bg-indigo-100 w-6 h-6 rounded-full shadow">
-      
+    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow"> 
       <img src="/svg/indicators/graduation-cap.svg" alt="spécial étudiant" class="p-1" title="Spécial étudiant">
     </div>
-    <div class="bg-indigo-100 w-6 h-6 rounded-full shadow">
+    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
       <img src="/svg/indicators/wheelchair-move.svg" alt="accès PMR" class="p-1" title="Accès PMR">
     </div>
-    <div class="bg-indigo-100 w-6 h-6 rounded-full shadow">
+    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
       <img src="/svg/indicators/children.svg" alt="spécial enfants" class="p-1" title="Spécial enfants">
     </div>
-    <div class="bg-indigo-100 w-6 h-6 rounded-full shadow">
+    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
       <img src="/svg/indicators/ear-deaf.svg" alt="sourds/malentendants" class="p-1" title="Sourds/Malentendants">
     </div>
-    <div class="bg-indigo-100 w-6 h-6 rounded-full shadow">
+    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
       <img src="/svg/indicators/family-pants.svg" alt="spécial familles" class="p-1" title="Spécial Familles">
     </div>
-    <div class="bg-indigo-100 w-6 h-6 rounded-full shadow">
+    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
       <img src="/svg/indicators/ticket-perforated.svg" alt="article 27" class="p-1" title="Réductions Article 27">
     </div>
   </div>

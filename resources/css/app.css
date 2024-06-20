@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-sports{
+  background-color:#f5d0fe;
+}
+
+.bg-sports:hover{
+  background-color:#f0abfc;
+}
+
+.bg-concerts{
+  background-color:#bbf7d0;
+}
+
+.bg-concerts:hover{
+  background-color:#86efac;
+}
+
+.bg-soirees{
+  background-color:#fef08a;
+}
+
+.bg-soirees:hover{
+  background-color:#fde047;
+}
+
+.bg-expos{
+  background-color:#fed7aa;
+}
+
+.bg-expos:hover{
+  background-color:#fdba74;
+}
+
+.bg-theatre_spectacles{
+  background-color:#ddd6fe;
+}
+
+.bg-theatre_spectacles:hover{
+  background-color:#c4b5fd;
+}
+
+.bg-salons_foires{
+  background-color:#d9f99d;
+}
+
+.bg-salons_foires:hover{
+  background-color:#bef264;
+}

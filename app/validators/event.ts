@@ -29,27 +29,31 @@ export const createEventValidator = vine.compile(
           require_protocol: true,
           protocols: ['http','https']
         })
-        .trim(),
+        .trim()
+        .nullable(),
       instagram_link: vine
         .string()
         .url({
           require_protocol: true,
           protocols: ['http','https']
         })
-        .trim(),
+        .trim()
+        .nullable(),
       website_link: vine
         .string()
         .url({
           require_protocol: true,
           protocols: ['http','https']
         })
-        .trim(),
+        .trim()
+        .nullable(),
       youtube_link: vine
         .string()
         .url({
           require_protocol: true,
           protocols: ['http','https']
         })
-        .trim(),
+        .trim()
+        .nullable(),
     })
   )

@@ -10,11 +10,13 @@ export const createPriceValidator = vine.compile(
       regular_price: vine
         .number()
         .decimal(2)
-        .positive(),
+        .positive()
+        .nullable(),
       discounted_price: vine
         .number()
         .decimal(2)
-        .positive(),
+        .positive()
+        .nullable(),
       available_qty: vine
         .number()
         .withoutDecimals()

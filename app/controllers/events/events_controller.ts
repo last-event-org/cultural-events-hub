@@ -245,7 +245,7 @@ export default class EventsController {
    * Show individual record
    */
   async show({ view, params, response }: HttpContext) {
-    console.log('EVENTS CONTROLLER SHOW')
+    console.log('SHOW')
     const event = await Event.query()
       .where('id', '=', params.id)
       .preload('location')
@@ -255,7 +255,6 @@ export default class EventsController {
       .preload('indicators')
       .preload('prices')
       .preload('media')
-      .limit(1)
 
     if (event === undefined || event.length === 0) {
       response.redirect().back()
@@ -267,16 +266,58 @@ export default class EventsController {
   /**
    * Edit individual record
    */
-  async edit({ params, request }: HttpContext) {
-    const requestQuery = request.qs()
-    console.log(params)
-    console.log(requestQuery)
+  async edit({ params, view }: HttpContext) {
+    const categories = await Category.all()
+    const categoryTypes = await CategoryType.all()
+    const indicators = await Indicator.all()
+
+    const event = await Event.query()
+      .where('id', '=', params.id)
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
+      .preload('media')
+
+    return view.render('pages/events/edit-event', {
+      event: event[0],
+      categories: categories,
+      categoryTypes: categoryTypes,
+      indicators: indicators,
+    })
   }
 
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) {}
+  async update({ params, request, response, session }: HttpContext) {
+    console.log('UPDATE')
+
+    const payload = await request.validateUsing(createEventValidator)
+
+    const event = await Event.findOrFail(params['id'])
+    console.log(event)
+
+    event.title = payload.title
+    event.subtitle = payload.subtitle
+    event.description = payload.description
+    // event.eventStart = DateTime.fromISO(payload.event_start)
+    // event.eventEnd = DateTime.fromISO(payload.event_end)
+    // if (event.eventStart > event.eventEnd) {
+    //   session.flash('date', {
+    //     message: "La début de l'événement doit être avant la fin",
+    //   })
+    // }
+    if (payload.facebook_link) event.facebookLink = payload.facebook_link
+    if (payload.instagram_link) event.instagramLink = payload.instagram_link
+    if (payload.website_link) event.websiteLink = payload.website_link
+    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
+
+    await event.save()
+    return response.redirect().toRoute('events.show', { id: params.id })
+  }
 
   /**
    * Delete record

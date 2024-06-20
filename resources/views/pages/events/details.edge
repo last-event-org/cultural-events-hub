@@ -12,9 +12,8 @@
 
   @include("pages/partials/header")
 
-  
-
   <main class= "container mb-10 mx-auto">
+     <a href="{{route('events.edit', {id : event.id})}}" class="" target="" rel="noopener noreferrer" type="button">EDIT</a>
     <div class="flex justify-center  gap-10  mx-auto my-6 py-10"> 
 
       <article>
@@ -148,8 +147,13 @@
         </div>
         
       </article>
+      
+     
+
+      
 
     </div>
+    
   </main>
 
 

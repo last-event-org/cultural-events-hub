@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un Événement</title>
-    @vite(['resources/css/app.css', 'resources/js/hours_create_event.js'])
-
+    <title>Editer un Événement</title>
+    @vite(['resources/css/app.css'])
+    
 </head>
+
 
 <body class="bg-gray-50">
     @include("pages/partials/header")
@@ -15,25 +16,26 @@
 
         <div class="bg-white p-8 rounded shadow-md w-full max-w-3xl">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
-                Créer un Événement
+                EDITER UN EVENEMENT
             </h2>
-            <form action={{ route('events.store') }} method="POST" class="space-y-4" enctype="multipart/form-data">
-
-                {{ csrfField() }}
-
-                {{-- {{ inspect(flashMessages.all()) }} --}}
-                @error('E_INVALID_CREDENTIALS')
-
-                {{ $message }}
-
-                @end
+            <form action="{{ route('events.update', [event.id], { qs: {_method: 'PATCH'}}) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+            
+            {{ csrfField() }}
+            
+            {{-- {{ inspect(flashMessages.all()) }} --}}
+            @error('E_INVALID_CREDENTIALS')
+            
+            {{ $message }}
+            
+            @end
+            <input type="hidden" name="_method" value="PATCH" />
 
                 <div>
                     <label for="title" class="block text-gray-600">
                         Titre
                     </label>
                     <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ event.title || old('title') || '' }}">
                     @inputError('title')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
@@ -44,13 +46,14 @@
                         Sous-Titre
                     </label>
                     <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-             focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
+             focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.subtitle || old('subtitle') || '' }}">
                     @inputError('subtitle')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
                 </div>
-
-                <div>
+                {{-- TODO do we manage address here or somewhere else ? --}}
+                {{-- ADDRESS --}}
+                {{-- <div>
                     <div class="block text-gray-800 text-xl font-semibold my-4">
                         Lieu
                     </div>
@@ -109,27 +112,32 @@
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
                     </div>
-                </div>
+                </div> --}}
 
                 <div>
                     <label for="description" class="block text-gray-600">
                         Description
                     </label>
+                    
                     <textarea type="text" id="description" name="description"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                        >{{old('description') || '' }}</textarea>
+                        >{{event.description || old('description') || '' }}</textarea>
                     @inputError('description')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
                 </div>
 
+                {{-- TODO format date --}}
                 <div class="flex-1">
                     <label for="event_start" class="block text-gray-600">
                         Début
                     </label>
+                    {{-- Date new: {{date}} --}}
+                    <br>
+                    Event start: {{event.eventStart}}
                     <input type="datetime-local" id="event_start" name="event_start"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                        value="">
+                        value="{{event.event_start || old('event_start') || '' }}">
                 </div>
 
                 <div class="flex-1">
@@ -138,7 +146,7 @@
                     </label>
                     <input type="datetime-local" id="event_end" name="event_end"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                        value="">
+                        {{-- value="{{event.eventEnd || old('event_start') || '' }}"> --}}
                 </div>
 
                 @flashMessage('date')
@@ -150,7 +158,7 @@
                         Lien Facebook
                     </label>
                     <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('facebook_link') || '' }}">
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.facebookLink || old('facebook_link') || '' }}">
                 </div>
 
                 <div>
@@ -158,7 +166,7 @@
                         Lien Instagram
                     </label>
                     <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('instagram_link') || '' }}">
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink || old('instagram_link') || '' }}">
                 </div>
 
                 <div>
@@ -166,7 +174,7 @@
                         Site Web
                     </label>
                     <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
                 </div>
 
                 <div>
@@ -174,7 +182,7 @@
                         Lien vidéo YouTube
                     </label>
                     <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('youtube_link') || '' }}">
+         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.youtubeLink || old('youtube_link') || '' }}">
                 </div>
 
 
@@ -183,17 +191,30 @@
                     @each(category in categories)
                     <ul>
                         <li>
-                            {{-- TODO change to radio button --}}
                             <input type="checkbox" id="category_{{ category.id }}" name="categories[]"
-                                value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
+                                value="{{ category.id }}" onclick="toggleCategoryTypes({{ category.id }})" 
+                                    
+                                {{event.categoryTypes[0].category.id == category.id ? "checked" : ""}}
+                                
+                                />
                             <label for="category_{{ category.id }}">{{ category.name }}</label>
 
-                            <fieldset id="categoryTypesFieldset_{{ category.id }}" class="hidden relative left-10">
+                            <fieldset id="categoryTypesFieldset_{{ category.id }}" class=" {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}} relative left-10">
                                 @each(categoryType in categoryTypes)
                                     @if (categoryType.categoryId == category.id)
-                                    <li class="category-type category-type-{{ categoryType.categoryId }} hidden">
+                                    <li class="category-type category-type-{{ categoryType.categoryId }}  {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}}">
                                         <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
-                                            value="{{ categoryType.id }}" />
+                                            value="{{ categoryType.id }}"
+                                            
+                                            @each(eventCategoryType in event.categoryTypes)
+                                    @if(eventCategoryType.id == categoryType.id) 
+                                        checked
+                                    @end
+                                @end
+
+
+                                            
+                                            />
                                         <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
                                     </li>
                                     @endif
@@ -210,8 +231,16 @@
                     @each(indicator in indicators)
                     <ul>
                         <li>
-                            <input type="checkbox" id="indicator_{{ indicator.id }}" name="indicators[]"
-                                value="{{ indicator.id }}" />
+                            <input 
+                                type="checkbox" 
+                                id="indicator_{{ indicator.id }}" name="indicators[]"
+                                value="{{ indicator.id }}"
+                                @each(eventIndicator in event.indicators)
+                                    @if(eventIndicator.id == indicator.id) 
+                                        checked
+                                    @end
+                                @end
+                            />
                             <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
                         </li>
                     </ul>
@@ -263,6 +292,11 @@
 
     @include("pages/partials/footer")
     <script src="/resources/js/add_event.js"></script>
+    <script>
+        
+
+    </script>
+
 </body>
 
 </html>

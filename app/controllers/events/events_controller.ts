@@ -244,16 +244,34 @@ export default class EventsController {
   /**
    * Show individual record
    */
-  async show({ view, params, request }: HttpContext) {
-    
-    // console.log(params)
-    return view.render('pages/events/details')
+  async show({ view, params, response }: HttpContext) {
+    console.log('EVENTS CONTROLLER SHOW')
+    const event = await Event.query()
+      .where('id', '=', params.id)
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
+      .preload('media')
+      .limit(1)
+
+    if (event === undefined || event.length === 0) {
+      response.redirect().back()
+    } else {
+      return view.render('pages/events/details', { event: event[0] })
+    }
   }
 
   /**
    * Edit individual record
    */
-  async edit({ params }: HttpContext) {}
+  async edit({ params, request }: HttpContext) {
+    const requestQuery = request.qs()
+    console.log(params)
+    console.log(requestQuery)
+  }
 
   /**
    * Handle form submission for the edit action

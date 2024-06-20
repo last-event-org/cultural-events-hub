@@ -170,6 +170,7 @@ export default class EventsController {
   }
 
   async attachCategoryTypes(request: HttpContext['request'], event: Event) {
+    // TODO check only one category select
     const selectedCategoryTypes = request.body().categoryTypes
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])

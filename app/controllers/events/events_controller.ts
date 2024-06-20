@@ -130,8 +130,8 @@ export default class EventsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {
-    const event = await this.createEvent(request)
+  async store({ request, session, response }: HttpContext) {
+    const event = await this.createEvent(request, session, response)
 
     await this.attachCategoryTypes(request, event)
     await this.attachIndicators(request, event)
@@ -142,7 +142,7 @@ export default class EventsController {
     return response.redirect().toRoute('events.show', { id: event.id })
   }
 
-  async createEvent(request: HttpContext['request']) {
+  async createEvent(request: HttpContext['request'], session: HttpContext['session'], response: HttpContext['response']) {
     const payload = await request.validateUsing(createEventValidator)
 
     const event = new Event()
@@ -152,10 +152,15 @@ export default class EventsController {
     event.description = payload.description
     event.eventStart = DateTime.fromISO(payload.event_start)
     event.eventEnd = DateTime.fromISO(payload.event_end)
-    event.facebookLink = payload.facebook_link
-    event.instagramLink = payload.instagram_link
-    event.websiteLink = payload.website_link
-    event.youtubeLink = payload.youtube_link
+    if (event.eventStart > event.eventEnd) {
+      session.flash('date', {
+        message: "La début de l'événement doit être avant la fin"
+      })
+    }
+    if (payload.facebook_link) event.facebookLink = payload.facebook_link
+    if (payload.instagram_link) event.instagramLink = payload.instagram_link
+    if (payload.website_link) event.websiteLink = payload.website_link
+    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
 
     return await event.save()
   }
@@ -169,10 +174,12 @@ export default class EventsController {
 
   async attachIndicators(request: HttpContext['request'], event: Event) {
     const selectedIndicators = request.body().indicators
-    // TODO add validation => if non is selected: error
-    selectedIndicators.forEach(async (indicatorId: number) => {
-      await event.related('indicators').attach([indicatorId])
-    })
+    if (selectedIndicators) {
+      console.log('OK');
+      selectedIndicators.forEach(async (indicatorId: number) => {
+        await event.related('indicators').attach([indicatorId])
+      })
+    }
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {
@@ -180,8 +187,8 @@ export default class EventsController {
     const price = new Price()
 
     price.description = pricePayload.price_description
-    price.regularPrice = pricePayload.regular_price
-    price.discountedPrice = pricePayload.discounted_price
+    if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
+    if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
     price.availableQty = pricePayload.available_qty
 
     await price.save()

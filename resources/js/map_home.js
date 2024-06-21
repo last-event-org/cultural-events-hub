@@ -62,3 +62,4 @@ function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
 }
 //(latitude,longitude, rayon en km)
 displayPOIsWithinRadius(50.6452, 5.5734, 2); 
+

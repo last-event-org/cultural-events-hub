@@ -22,8 +22,6 @@ export default class HomeController {
       .preload('prices')
       .preload('media')
 
-    console.log(events)
-
     return view.render('pages/home', { categories: categories, events: events })
   }
 }

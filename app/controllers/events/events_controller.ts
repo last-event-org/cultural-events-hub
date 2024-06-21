@@ -122,7 +122,6 @@ export default class EventsController {
     const categoryTypes = await CategoryType.all()
     const indicators = await Indicator.all()
 
-    // console.log(categoryTypes)
     return view.render('pages/events/add-event', {
       categories: categories,
       categoryTypes: categoryTypes,
@@ -135,37 +134,42 @@ export default class EventsController {
    */
   async store({ request, session, response }: HttpContext) {
     const event = await this.createEvent(request, session, response)
-
-    await this.attachCategoryTypes(request, event)
-    await this.attachIndicators(request, event)
-    await this.createEventAddress(request, event)
-    await this.createEventPrices(request, event)
-    await this.uploadEventMedia(request, event)
-
-    return response.redirect().toRoute('events.show', { id: event.id })
+    if (event) {
+      await this.attachCategoryTypes(request, event)
+      await this.attachIndicators(request, event)
+      await this.createEventAddress(request, event)
+      await this.createEventPrices(request, event)
+      await this.uploadEventMedia(request, event)
+  
+      return response.redirect().toRoute('events.show', { id: event.id })
+    }
   }
 
-  async createEvent(request: HttpContext['request'], session: HttpContext['session']) {
-    const payload = await request.validateUsing(createEventValidator)
+  async createEvent(request: HttpContext['request'], session: HttpContext['session'], response: HttpContext['response']) {
+    try {
+      const payload = await request.validateUsing(createEventValidator)
 
-    const event = new Event()
-
-    event.title = payload.title
-    event.subtitle = payload.subtitle
-    event.description = payload.description
-    event.eventStart = DateTime.fromISO(payload.event_start)
-    event.eventEnd = DateTime.fromISO(payload.event_end)
-    if (event.eventStart > event.eventEnd) {
-      session.flash('date', {
-        message: "La début de l'événement doit être avant la fin",
-      })
+      const event = new Event()
+  
+      event.title = payload.title
+      event.subtitle = payload.subtitle
+      event.description = payload.description
+      event.eventStart = DateTime.fromISO(payload.event_start)
+      event.eventEnd = DateTime.fromISO(payload.event_end)
+      if (event.eventStart > event.eventEnd) {
+        session.flash('date', {
+          message: "La début de l'événement doit être avant la fin",
+        })
+      }
+      if (payload.facebook_link) event.facebookLink = payload.facebook_link
+      if (payload.instagram_link) event.instagramLink = payload.instagram_link
+      if (payload.website_link) event.websiteLink = payload.website_link
+      if (payload.youtube_link) event.youtubeLink = payload.youtube_link
+  
+      return await event.save()
+    } catch (error) {
+      console.error('Event Validation Error at createEventPrices():', error);
     }
-    if (payload.facebook_link) event.facebookLink = payload.facebook_link
-    if (payload.instagram_link) event.instagramLink = payload.instagram_link
-    if (payload.website_link) event.websiteLink = payload.website_link
-    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
-
-    return await event.save()
   }
 
   async attachCategoryTypes(request: HttpContext['request'], event: Event) {
@@ -187,31 +191,39 @@ export default class EventsController {
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {
-    const pricePayload = await request.validateUsing(createPriceValidator)
-    const price = new Price()
-
-    price.description = pricePayload.price_description
-    if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
-    if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
-    price.availableQty = pricePayload.available_qty
-
-    await price.save()
-    await price.related('event').associate(event)
+    try {
+      const pricePayload = await request.validateUsing(createPriceValidator)
+      const price = new Price()
+  
+      price.description = pricePayload.price_description
+      if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
+      if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
+      price.availableQty = pricePayload.available_qty
+  
+      await price.save()
+      await price.related('event').associate(event)
+    } catch (error) {
+      console.error('Price Validation Error at createEventPrices():', error);
+    }
   }
 
   async createEventAddress(request: HttpContext['request'], event: Event) {
-    const addressPayload = await request.validateUsing(createAddressValidator)
-    const address = new Address()
+    try {
+      const addressPayload = await request.validateUsing(createAddressValidator)
+      const address = new Address()
 
-    address.name = addressPayload.name ?? ''
-    address.street = addressPayload.street
-    address.number = addressPayload.number
-    address.zipCode = addressPayload.zip_code
-    address.city = addressPayload.city
-    address.country = addressPayload.country
+      address.name = addressPayload.name ?? ''
+      address.street = addressPayload.street
+      address.number = addressPayload.number
+      address.zipCode = addressPayload.zip_code
+      address.city = addressPayload.city
+      address.country = addressPayload.country
 
-    await address.save()
-    await event.related('location').associate(address)
+      await address.save()
+      await event.related('location').associate(address)
+    } catch (error) {
+      console.error('Address Validation Error at createEventAddress():', error);
+    }
   }
 
   async uploadEventMedia(request: HttpContext['request'], event: Event) {

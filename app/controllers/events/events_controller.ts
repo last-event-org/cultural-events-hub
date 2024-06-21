@@ -241,11 +241,13 @@ export default class EventsController {
           continue // Skip this iteration if tmpPath is undefined
         }
   
-        // TODO add a try catch statement
-        // TODO too big images make the server to get stuck => update the validator ?
-        const binaryData = fs.readFileSync(file.tmpPath)
-        media.binary = binaryData
-        await media.save()
+        try {
+          const binaryData = fs.readFileSync(file.tmpPath)
+          media.binary = binaryData
+          await media.save()
+        } catch (error) {
+          console.error('Media binary upload error:', error);
+        }
       }
     } catch (error) {
       console.error('Media Validation Error at uploadEventMedia():', error);

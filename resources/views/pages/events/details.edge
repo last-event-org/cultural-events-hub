@@ -44,11 +44,12 @@
                 </div>
               </div>
               <div class="flex flex-col justify-between gap-4 lg:gap-8 lg:w-1/2 lg:p-4">
-                <div class="flex gap-2">
+                <div class="flex gap-2 mt-4 lg:mt-0">
                   <div class=" bg-pink-200 w-6 h-6 rounded-full  top-5 left-4 ">
                     <img class="p-1" src="/svg/categories/sports.svg" alt="sports">
                   </div>  
-                  <h4 class="font-semibold">Sports<span>: Spectacle de catch</span></h4>
+                  <h4 class="font-semibold">
+                    Sports<span>: Spectacle de catch</span></h4>
                 </div>
                 <p class=" text-gray-500 mb-1 italic">
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe provident quo enim neque dolores debitis voluptas sint impedit cumque? Eligendi consequuntur ipsum ea at neque natus nulla, assumenda voluptate, tenetur, mollitia voluptas vel itaque! Harum numquam enim corrupti dolore possimus, quod consequuntur, alias eius rerum aliquid iure cum! Totam corporis, veritatis, ea maiores mollitia temporibus ab tempore dolorem soluta deleniti sunt voluptatum culpa. Dolorum quae, error dignissimos quo aut at perferendis laboriosam. Vitae provident hic veniam eaque at, quod aspernatur commodi? Aspernatur veritatis iste quae tempora corrupti veniam tempore ut ipsam incidunt sunt esse impedit consequatur, cumque labore nihil recusandae dicta qui, nemo inventore. Repellat, labore culpa. Quia natus laborum enim molestias vero adipisci sequi officia debitis repellat accusamus modi optio a exercitationem impedit, dolores praesentium eligendi, asperiores laudantium. Earum quam blanditiis quis, eveniet eligendi reiciendis laudantium ipsum quod vitae dolor debitis aut vero placeat atque incidunt non corrupti tenetur adipisci? Incidunt cumque eum nam voluptatum temporibus aliquid natus modi magni labore cupiditate deserunt, earum explicabo, libero nostrum vero aperiam molestiae, dolores quasi totam laudantium qui odio commodi aut! Quibusdam totam dolore repellendus ex iusto numquam velit ad doloribus rerum saepe! Illo deserunt doloremque similique, nemo reiciendis facilis vero incidunt.
@@ -81,7 +82,7 @@
 
         <div class="flex flex-col lg:w-full lg:flex-row ">
 
-          <div class="flex flex-col lg:w-1/2 justify-between gap-4">
+          <div class="flex flex-col lg:w-1/2  gap-4">
             <div class="flex justify-center lg:mt-8">
               <div class="flex flex-col border-4 rounded-md text-center border-yellow-500 bg-slate-100/50 gap-4 p-8 lg:px-16 "> 
                 <p class="text-sm font-bold text-gray-400 mb-1">
@@ -95,7 +96,13 @@
                 </p>  
               </div>
             </div>
-            @!component('components/add_basket')
+            <div class="flex justify-center">
+
+              <div class="flex flex-col gap-8 justify-center">
+                @!component('components/add_basket')
+                @!component('components/add_basket')
+              </div>
+            </div>
           </div>
 
           <div class="flex flex-col lg:w-1/2 container h-80 lg:h-96 my-10 mx-auto p-8 lg:p-0">

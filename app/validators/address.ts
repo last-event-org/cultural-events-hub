@@ -6,7 +6,8 @@ export const createAddressValidator = vine.compile(
       name: vine
         .string()
         .escape()
-        .maxLength(255),
+        .maxLength(255)
+        .optional(),
       street: vine
         .string()
         .escape()

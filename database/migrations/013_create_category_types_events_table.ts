@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
 
       table.integer('category_type_id').unsigned().references('category_types.id')
-      table.integer('event_id').unsigned().references('events.id')
+      table.integer('event_id').unsigned().references('events.id').onDelete('CASCADE')
       table.unique(['category_type_id', 'event_id'])
 
       table.timestamp('created_at')

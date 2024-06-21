@@ -1,19 +1,16 @@
-<article class="border shadow rounded-lg">
+<article class="bg-slate-50 ">
 
-<div class="bg-white border-gray-300 rounded-lg  w-80 sm:w-96">
-<div class="relative">
-  
-
-  <img src="/images/hbk_vs_undertaker.jpg" alt="Event Image" class=" w-full rounded-t-lg h-44 sm:h-56 object-cover border-b-4 border-yellow-500">
-  <div class=" absolute bg-{{event.categoryTypes[0].category.slug}} w-8 h-8 rounded-full top-4 left-4 ">
-
-    <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}">
-  </div>  
-  <div class="flex mb-1 absolute top-4 right-4  ">
-    <p class=" bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-gray-600 text-sm font-bold px-3 py-1 mb-1">
-      -50%</p>
+<div class="bg-slate-50 hover:bg-slate-100 border-gray-300 rounded-lg  w-80 sm:w-96">
+  <div class="relative">
+    <img src="/images/hbk_vs_undertaker.jpg" alt="Event Image" class=" w-full rounded-t-lg h-44 sm:h-56 object-cover border-b-4 border-yellow-500">
+    <div class=" absolute bg-{{event.categoryTypes[0].category.slug}} w-8 h-8 rounded-full top-4 left-4 ">
+      <img class="p-1.5" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}">
+    </div>  
+    <div class="flex mb-1 absolute top-4 right-4  ">
+      <p class=" bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-gray-600 text-sm font-bold px-3 py-1 mb-1">
+        -50%</p>
+    </div>
   </div>
-</div>
 
 {{-- @each(item in event.prices)
   {{item.description}}
@@ -23,53 +20,39 @@
 {{-- @each(item in event.media) 
   {{item.path}}
 @end --}}
-  {{-- </div> --}}
+
+
   <div class="p-4">
-  
-      <p class="text-xs text-gray-500/60 font-bold mb-2">
-        {{event.eventStart}}
-        {{-- Sam 2 Juillet<span>, de 20h à 23h</span> --}}
-      </p>
+    <p class="text-xs text-gray-500/60 font-bold mb-2">
+      {{-- {{formatDate(event.eventStart)}} --}}
+      <script>
+        formatDate({{event.eventStart}})
+      </script>
+      {{-- Sam 2 Juillet<span>, de 20h à 23h</span> --}}
+    </p>
+    <h2 class="text-xl font-bold tracking-tight text-gray-700 mb-2" >
+      {{event.title}}
+      {{-- UNDERTAKER vs SHAWN MICHAELS --}}
+    </h2>
+    <h3 class="text-xs font-semibold text-gray-400 mb-2">
+      {{event.subtitle}}
+    </h3>
+    <hr class="mb-1">
+    <div class="flex gap-2 py-2 mb-1">
+      @each (item in event.indicators)
+      <div class="bg-indigo-100 w-6 h-6 rounded-full shadow"> 
+        <img src="/svg/indicators/{{item.slug}}.svg" alt="spécial étudiant" class="p-1" title="{{item.name}}">
+      </div>
+      @end
+    </div>
+    <p class="text-gray-400 text-xs mb-1 italic">
+      {{event.description}}
+    </p>
 
-    
-  <h2 class="text-xl font-bold tracking-tight text-gray-700 mb-2" >
-    {{event.title}}
-    {{-- UNDERTAKER vs SHAWN MICHAELS --}}
-  </h2>
-  <h3 class="text-xs font-semibold text-gray-400 mb-2">
-    {{event.subtitle}}
-  </h3>
-  <hr class="mb-1">
-  <div class="flex gap-2 py-2 mb-1">
-    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow"> 
-      <img src="/svg/indicators/graduation-cap.svg" alt="spécial étudiant" class="p-1" title="Spécial étudiant">
-    </div>
-    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
-      <img src="/svg/indicators/wheelchair-move.svg" alt="accès PMR" class="p-1" title="Accès PMR">
-    </div>
-    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
-      <img src="/svg/indicators/children.svg" alt="spécial enfants" class="p-1" title="Spécial enfants">
-    </div>
-    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
-      <img src="/svg/indicators/ear-deaf.svg" alt="sourds/malentendants" class="p-1" title="Sourds/Malentendants">
-    </div>
-    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
-      <img src="/svg/indicators/family-pants.svg" alt="spécial familles" class="p-1" title="Spécial Familles">
-    </div>
-    <div class="hidden bg-indigo-100 w-6 h-6 rounded-full shadow">
-      <img src="/svg/indicators/ticket-perforated.svg" alt="article 27" class="p-1" title="Réductions Article 27">
-    </div>
-  </div>
-  <p class="text-gray-400 text-xs mb-1 italic">
-    {{event.description}}
-  </p>
-  <div class="flex justify-between items-center"> 
-
-
-
-  <a href="/events/{{event?.id?? ''}}" class="text-xs font-semibold text-indigo-900 tracking-tight hover:scale-105 duration-300">
-    VOIR PLUS DE DÉTAILS
-  </a>
+    <div class="flex justify-between items-center"> 
+      <a href="/events/{{event?.id?? ''}}" class="text-xs font-semibold text-indigo-900 tracking-tight hover:scale-105 duration-300">
+        VOIR PLUS DE DÉTAILS
+      </a>
   <div class="flex flex-col">
 
     <div class="flex rounded shadow mb-1">
@@ -105,4 +88,8 @@
   </div> --}}
 </div>
 </article>
+
+
+
+
 

@@ -96,6 +96,8 @@ export default class EventsController {
           .orderBy('event_start', 'asc')
       }
 
+      // console.log(events.length)
+
       return view.render('pages/events/list', {
         events: events,
         title: title,
@@ -125,8 +127,8 @@ export default class EventsController {
       console.log('DATE')
       let date = DateTime.fromISO(requestQuery['date'])
 
-      const dayBegin: string = date.toSQL() ?? ''
-      const dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+      dayBegin: string = date.toSQL() ?? ''
+      dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
       events = await Event.query().whereBetween('event_start', [dayBegin, dayEnd])
       title = date.setLocale('fr').toFormat('dd-MM-yyyy')
       return view.render('pages/events/list', { events: events, title: title })
@@ -202,7 +204,6 @@ export default class EventsController {
   }
 
   async attachCategoryTypes(request: HttpContext['request'], event: Event) {
-    // TODO check only one category select
     const selectedCategoryTypes = request.body().categoryTypes
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])
@@ -320,7 +321,7 @@ export default class EventsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, response, session }: HttpContext) {
+  async update({ params, request, response }: HttpContext) {
     console.log('UPDATE')
 
     const payload = await request.validateUsing(createEventValidator)

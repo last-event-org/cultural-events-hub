@@ -51,10 +51,6 @@ export default class RegistersController {
     }
   }
 
-  async profileType({ view, request }: HttpContext) {
-    return view.render('pages/auth/profile-type')
-  }
-
   async updateProfileType({ request, response, auth }: HttpContext) {
     /*
     When registering on the website we are directed to a second page

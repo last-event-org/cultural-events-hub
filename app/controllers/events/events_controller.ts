@@ -227,24 +227,28 @@ export default class EventsController {
   }
 
   async uploadEventMedia(request: HttpContext['request'], event: Event) {
-    const { images_link } = await request.validateUsing(createMediaValidator)
-
-    for (const file of images_link) {
-      const media = new Media()
-      media.path = '' // TODO if needed, setup a path method if we'll use an external server
-      media.altName = file.clientName
-      media.eventId = event.id
-
-      if (!file.tmpPath) {
-        console.error('Skipping file due to missing tmpPath:', file)
-        continue // Skip this iteration if tmpPath is undefined
+    try {
+      const { images_link } = await request.validateUsing(createMediaValidator)
+  
+      for (const file of images_link) {
+        const media = new Media()
+        media.path = '' // TODO if needed, setup a path method if we'll use an external server
+        media.altName = file.clientName
+        media.eventId = event.id
+  
+        if (!file.tmpPath) {
+          console.error('Skipping file due to missing tmpPath:', file)
+          continue // Skip this iteration if tmpPath is undefined
+        }
+  
+        // TODO add a try catch statement
+        // TODO too big images make the server to get stuck => update the validator ?
+        const binaryData = fs.readFileSync(file.tmpPath)
+        media.binary = binaryData
+        await media.save()
       }
-
-      // TODO add a try catch statement
-      // TODO too big images make the server to get stuck => update the validator ?
-      const binaryData = fs.readFileSync(file.tmpPath)
-      media.binary = binaryData
-      await media.save()
+    } catch (error) {
+      console.error('Media Validation Error at uploadEventMedia():', error);
     }
   }
 

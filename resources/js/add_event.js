@@ -1,14 +1,13 @@
 function addPriceFields() {
-
-  let template = document.getElementById('priceFieldsTemplate');
-  let clone = document.importNode(template.content, true);
-  document.getElementById('priceFieldsContainer').appendChild(clone);
+  let template = document.getElementById('priceFieldsTemplate')
+  let clone = document.importNode(template.content, true)
+  document.getElementById('priceFieldsContainer').appendChild(clone)
 }
 
 function addDiscountedPriceFields() {
-  let template = document.getElementById('discountedPriceFieldsTemplate');
-  let clone = document.importNode(template.content, true);
-  document.getElementById('discountedPriceFieldsContainer').appendChild(clone);
+  let template = document.getElementById('discountedPriceFieldsTemplate')
+  let clone = document.importNode(template.content, true)
+  document.getElementById('discountedPriceFieldsContainer').appendChild(clone)
 }
 
 function toggleRowDiscountedPrice() {
@@ -29,7 +28,6 @@ function toggleDiscountedPriceSection() {
   }
 }
 
-
 // display Category Types only when parent Category is selected
 function toggleCategoryTypes(categoryId) {
   console.log('ON CHANGE')
@@ -44,6 +42,7 @@ function toggleCategoryTypes(categoryId) {
 
   const checkboxes = document.querySelectorAll('[name="categoryTypes[]"]')
 
+  // TODO check what is needed here
   checkboxes.forEach((checkbox) => {
     const anyCategoryChecked = Array.from(document.querySelectorAll('[name="categories[]"]')).some(
       (checkbox) => checkbox.checked

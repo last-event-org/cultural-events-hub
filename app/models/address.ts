@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import Event from '#models/event'
+import User from './user.js'
 
 export default class Address extends BaseModel {
   @column({ isPrimary: true })
@@ -24,6 +25,12 @@ export default class Address extends BaseModel {
 
   @column()
   declare country: string
+
+  @column()
+  declare userId: number
+
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 
   @hasMany(() => Event)
   declare event: HasMany<typeof Event>

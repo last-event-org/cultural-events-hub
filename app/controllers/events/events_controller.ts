@@ -10,8 +10,7 @@ import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
 import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
-import { cuid } from '@adonisjs/core/helpers'
-import app from '@adonisjs/core/services/app'
+import AddressesController from '#controllers/addresses_controller'
 import fs from 'fs'
 import Indicator from '#models/indicator'
 
@@ -208,7 +207,7 @@ export default class EventsController {
     const addressPayload = await request.validateUsing(createAddressValidator)
     const address = new Address()
 
-    address.name = addressPayload.name
+    address.name = addressPayload.name ?? ''
     address.street = addressPayload.street
     address.number = addressPayload.number
     address.zipCode = addressPayload.zip_code

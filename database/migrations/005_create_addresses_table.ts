@@ -14,6 +14,7 @@ export default class extends BaseSchema {
       table.string('country')
       table.timestamp('created_at')
       table.timestamp('updated_at')
+      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
     })
   }
 

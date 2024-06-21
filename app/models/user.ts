@@ -52,6 +52,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @belongsTo(() => Role)
   declare role: BelongsTo<typeof Role>
 
+  @column()
+  declare billingAddressId: number | null
+
+  @column()
+  declare shippingAddressId: number | null
+
   @hasOne(() => Address)
   declare billingAddress: HasOne<typeof Address>
 

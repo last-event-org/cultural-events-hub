@@ -55,7 +55,7 @@ export default class RegistersController {
     return view.render('pages/auth/profile-type')
   }
 
-  async updateProfileType({ request, auth }: HttpContext) {
+  async updateProfileType({ request, response, auth }: HttpContext) {
     /*
     When registering on the website we are directed to a second page
     in which we are asked whether we would like to buy or sell event tickets:
@@ -72,7 +72,6 @@ export default class RegistersController {
 
     try {
       const addressPayload = await request.validateUsing(createAddressValidator);
-      console.log('Validated Payload:', addressPayload);
       const address = new Address();
 
       address.street = addressPayload.street;
@@ -86,6 +85,8 @@ export default class RegistersController {
       user.billingAddressId = address.id
 
       await user.related('billingAddress').save(address)
+
+      return response.redirect().toRoute('home')
 
     } catch (error) {
       console.error('Validation Error:', error);

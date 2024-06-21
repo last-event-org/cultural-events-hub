@@ -1,8 +1,34 @@
 function addPriceFields() {
-  let template = document.getElementById('priceFieldsTemplate')
-  let clone = document.importNode(template.content, true)
-  document.getElementById('priceFieldsContainer').appendChild(clone)
+
+  let template = document.getElementById('priceFieldsTemplate');
+  let clone = document.importNode(template.content, true);
+  document.getElementById('priceFieldsContainer').appendChild(clone);
 }
+
+function addDiscountedPriceFields() {
+  let template = document.getElementById('discountedPriceFieldsTemplate');
+  let clone = document.importNode(template.content, true);
+  document.getElementById('discountedPriceFieldsContainer').appendChild(clone);
+}
+
+function toggleRowDiscountedPrice() {
+  const rowDiscountedPrice = document.getElementById('rowDiscountedPrices')
+  if (rowDiscountedPrice.classList.contains('hidden')) {
+    rowDiscountedPrice.classList.remove('hidden')
+  } else {
+    rowDiscountedPrice.classList.add('hidden')
+  }
+}
+
+function toggleDiscountedPriceSection() {
+  const discountedPriceSection = document.getElementById('discountedPriceSection')
+  if (discountedPriceSection.classList.contains('hidden')) {
+    discountedPriceSection.classList.remove('hidden')
+  } else {
+    discountedPriceSection.classList.add('hidden')
+  }
+}
+
 
 // display Category Types only when parent Category is selected
 function toggleCategoryTypes(categoryId) {

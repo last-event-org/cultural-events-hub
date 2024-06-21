@@ -116,8 +116,7 @@
                         Description
                     </label>
                     <textarea type="text" id="description" name="description"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                        >{{old('description') || '' }}</textarea>
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
                     @inputError('description')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
@@ -142,7 +141,7 @@
                 </div>
 
                 @flashMessage('date')
-                    <div style="color: red;">{{ $message.message }}</div>
+                <div style="color: red;">{{ $message.message }}</div>
                 @end
 
                 <div>
@@ -190,6 +189,7 @@
 
                             <fieldset id="categoryTypesFieldset_{{ category.id }}" name="categoryTypesFieldset" class="hidden relative left-10">
                                 @each(categoryType in categoryTypes)
+
                                     @if (categoryType.categoryId == category.id)
                                     <li class="category-type category-type-{{ categoryType.categoryId }} ">
                                         <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
@@ -200,9 +200,15 @@
                                 @end
                             </fieldset>
 
+
                         </li>
-                    </ul>
-                    @end
+                        @endif
+                        @end
+                </fieldset>
+
+                </li>
+                </ul>
+                @end
                 </fieldset>
 
                 <fieldset>
@@ -228,12 +234,39 @@
                     <!-- div to add the addionnal prices -->
                 </div>
 
+                <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Ajouter des tarifs
+                </button>
+
+                <div>
+                    <input type="checkbox" id="displayDiscountSection" name="" value="" onchange="toggleDiscountedPriceSection()"/>
+                    <label for="displayDiscountSection">Voulez vous ajouter des prix réduits</label>
+                </div>
+
+                <div class="bg-orange-200 p-5 rounded-md hidden" id="discountedPriceSection">
+                    @!component('components/discounted_price_fields')
+    
+                    <template id="discountedPriceFieldsTemplate">
+                        @!component('components/discounted_price_fields')
+                    </template>
+                    <div id="discountedPriceFieldsContainer" class="flex flex-col gap-4">
+                        <!-- div to add the addionnal prices -->
+                    </div>
+    
+                    <button type="button" onclick="addDiscountedPriceFields()" class=" mt-4 bg-orange-700 text-white py-2 px-4 rounded-md hover:bg-orange-900 
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                        Ajouter des tarifs réduits
+                    </button>
+                </div>
+
 
                 <div>
                     <label for="images_link" class="block text-gray-600">
                         Charger des images (max. 3)
                     </label>
-                    <input type="file" id="images_link" name="images_link[]" onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
+                    <input type="file" id="images_link" name="images_link[]" onchange="previewImages()"
+                        accept="image/png, image/gif, image/jpeg" multiple />
                     @inputError('images_link')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
@@ -242,13 +275,6 @@
 
 
                 <div>
-
-
-                    <button type="button" onclick="addPriceFields()" class="w-full bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                        Ajouter des catégories de prix
-                    </button>
-
 
                     <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">

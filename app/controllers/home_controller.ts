@@ -12,7 +12,7 @@ export default class HomeController {
     const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
 
     const events = await Event.query()
-      .andWhereBetween('event_start', [dayBegin, dayEnd])
+      // .andWhereBetween('event_start', [dayBegin, dayEnd])
       .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
       .preload('location')
       .preload('categoryTypes', (categoryTypesQuery) => {

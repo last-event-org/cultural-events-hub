@@ -58,13 +58,17 @@ export default class RegistersController {
     in the case we would like to sell we will have to fill some more data (billing related) 
     */
     const user = await User.findOrFail(auth.user?.$attributes.id)
-    console.log('user: ', user);
-    const vendorDataPayload = await request.validateUsing(createVendorDataValidator)
 
-    user.companyName = vendorDataPayload.company_name
-    user.vatNumber = vendorDataPayload.vat_number
+    try {
+      const vendorDataPayload = await request.validateUsing(createVendorDataValidator)
 
-    await user.save()
+      user.companyName = vendorDataPayload.company_name
+      user.vatNumber = vendorDataPayload.vat_number
+      await user.save()
+      
+    } catch (error) {
+      console.error('Vendor Validation Error:', error);
+    }
 
     try {
       const addressPayload = await request.validateUsing(createAddressValidator);
@@ -75,7 +79,7 @@ export default class RegistersController {
       address.zipCode = addressPayload.zip_code;
       address.city = addressPayload.city;
       address.country = addressPayload.country;
-      address.name = user.companyName
+      address.name = user.companyName ?? ''
       
       await address.save()
       user.billingAddressId = address.id

@@ -145,11 +145,7 @@ export default class EventsController {
     return response.redirect().toRoute('events.show', { id: event.id })
   }
 
-  async createEvent(
-    request: HttpContext['request'],
-    session: HttpContext['session'],
-    response: HttpContext['response']
-  ) {
+  async createEvent(request: HttpContext['request'], session: HttpContext['session']) {
     const payload = await request.validateUsing(createEventValidator)
 
     const event = new Event()

@@ -1,4 +1,5 @@
 function addPriceFields() {
+
   let template = document.getElementById('priceFieldsTemplate');
   let clone = document.importNode(template.content, true);
   document.getElementById('priceFieldsContainer').appendChild(clone);
@@ -29,58 +30,57 @@ function toggleDiscountedPriceSection() {
 }
 
 
-
 // display Category Types only when parent Category is selected
 function toggleCategoryTypes(categoryId) {
-  const categoryCheckbox = document.getElementById('category_' + categoryId);
-  const checkboxes = document.querySelectorAll('.category-type-' + categoryId);
-  const categoryFieldset = document.querySelector('#categoryTypesFieldset_' + categoryId);
+  console.log('ON CHANGE')
 
-  if (categoryCheckbox.checked) {
-    checkboxes.forEach((checkbox) => {
-      checkbox.classList.remove('hidden');
-    });
-    categoryFieldset.classList.remove('hidden');
-  } else {
-    checkboxes.forEach((checkbox) => {
-      checkbox.classList.add('hidden');
-    });
+  // select all fieldset and hide
+  const categoryFieldsets = document.querySelectorAll('[name="categoryTypesFieldset"]')
+  categoryFieldsets.forEach((fieldset) => {
+    fieldset.id === 'categoryTypesFieldset_' + categoryId
+      ? fieldset.classList.remove('hidden')
+      : fieldset.classList.add('hidden')
+  })
 
-    // Check if any category checkbox is checked
-    const anyCategoryChecked = Array.from(document.querySelectorAll('[name="categories[]"]')).some(checkbox => checkbox.checked);
+  const checkboxes = document.querySelectorAll('[name="categoryTypes[]"]')
+
+  checkboxes.forEach((checkbox) => {
+    const anyCategoryChecked = Array.from(document.querySelectorAll('[name="categories[]"]')).some(
+      (checkbox) => checkbox.checked
+    )
+    checkbox.checked = false
     if (!anyCategoryChecked) {
-      categoryFieldset.classList.add('hidden');
+      categoryFieldset.classList.add('hidden')
     }
-  }
+  })
 }
 
-
 function previewImages() {
-  const previewContainer = document.getElementById('imagePreviewContainer');
-  const files = document.getElementById('images_link').files;
-  previewContainer.innerHTML = '';
+  const previewContainer = document.getElementById('imagePreviewContainer')
+  const files = document.getElementById('images_link').files
+  previewContainer.innerHTML = ''
 
   const maxFiles = 3
 
   if (files.length > maxFiles) {
-      alert(`Vous ne pouvez sélectionner que ${maxFiles} fichiers maximum.`);
-      document.getElementById('images_link').value = '';  // Clear the input to prevent submission with excess files
-      return;
+    alert(`Vous ne pouvez sélectionner que ${maxFiles} fichiers maximum.`)
+    document.getElementById('images_link').value = '' // Clear the input to prevent submission with excess files
+    return
   }
 
   if (files) {
-      Array.from(files).forEach(file => {
-          const reader = new FileReader();
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader()
 
-          reader.onload = function (e) {
-              const img = document.createElement('img');
-              img.src = e.target.result;
-              img.alt = file.name;
-              img.classList.add('h-32', 'w-32', 'object-cover', 'm-2');
-              previewContainer.appendChild(img);
-          };
+      reader.onload = function (e) {
+        const img = document.createElement('img')
+        img.src = e.target.result
+        img.alt = file.name
+        img.classList.add('h-32', 'w-32', 'object-cover', 'm-2')
+        previewContainer.appendChild(img)
+      }
 
-          reader.readAsDataURL(file);
-      });
+      reader.readAsDataURL(file)
+    })
   }
 }

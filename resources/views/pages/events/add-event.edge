@@ -183,17 +183,24 @@
                     <ul>
                         <li>
                             {{-- TODO change to radio button --}}
-                            <input type="checkbox" id="category_{{ category.id }}" name="categories[]"
+                            <input type="radio" id="category_{{ category.id }}" name="categories[]"
                                 value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
                             <label for="category_{{ category.id }}">{{ category.name }}</label>
 
-                            <fieldset id="categoryTypesFieldset_{{ category.id }}" class="hidden relative left-10">
+                            <fieldset id="categoryTypesFieldset_{{ category.id }}" name="categoryTypesFieldset" class="hidden relative left-10">
                                 @each(categoryType in categoryTypes)
-                                @if (categoryType.categoryId == category.id)
-                        <li class="category-type category-type-{{ categoryType.categoryId }} hidden">
-                            <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
-                                value="{{ categoryType.id }}" />
-                            <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+
+                                    @if (categoryType.categoryId == category.id)
+                                    <li class="category-type category-type-{{ categoryType.categoryId }} ">
+                                        <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
+                                            value="{{ categoryType.id }}" />
+                                        <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+                                    </li>
+                                    @endif
+                                @end
+                            </fieldset>
+
+
                         </li>
                         @endif
                         @end

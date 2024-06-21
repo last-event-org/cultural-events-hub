@@ -32,9 +32,9 @@
 </ul>
 
      <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-10 container mx-auto my-6 py-10">   
-    @each(event in events)
-        @include("pages/partials/events_cards")
-    @end
+   @each(event in events)
+    @!component('components/events_cards', {event})
+  @end
   </div>
 
 </main>

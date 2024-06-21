@@ -134,10 +134,10 @@
                     </label>
                     {{-- Date new: {{date}} --}}
                     <br>
-                    Event start: {{event.eventStart}}
+                    Event start: {{event.eventStart.toISO({})}}
                     <input type="datetime-local" id="event_start" name="event_start"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                        value="{{event.event_start || old('event_start') || '' }}">
+                        value="{{event.eventStart || old('event_start') || '' }}">
                 </div>
 
                 <div class="flex-1">
@@ -191,7 +191,7 @@
                     @each(category in categories)
                     <ul>
                         <li>
-                            <input type="checkbox" id="category_{{ category.id }}" name="categories[]"
+                            <input type="radio" id="category_{{ category.id }}" name="categories[]"
                                 value="{{ category.id }}" onclick="toggleCategoryTypes({{ category.id }})" 
                                     
                                 {{event.categoryTypes[0].category.id == category.id ? "checked" : ""}}

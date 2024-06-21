@@ -6,7 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      
+
       table.string('title')
       table.string('subtitle')
       table.string('description')
@@ -14,8 +14,8 @@ export default class extends BaseSchema {
       table.string('instagram_link')
       table.string('website_link')
       table.string('youtube_link')
-      table.timestamp('event_start')
-      table.timestamp('event_end')
+      table.dateTime('event_start')
+      table.dateTime('event_end')
       table.integer('vendor_id').unsigned().references('users.id').onDelete('SET NULL')
       table.integer('location_id').unsigned().references('addresses.id').onDelete('SET NULL')
 

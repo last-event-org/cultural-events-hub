@@ -23,10 +23,21 @@ export default class EventsController {
     let events
     let title: string | null = ''
     let categories: any[] = []
+    let dayBegin: string
+    let dayEnd: string
 
     // Check if there is no params in the query
     if (Object.keys(request.qs()).length === 0) {
-      events = await Event.query().orderBy('event_start', 'asc')
+      events = await await Event.query()
+        .preload('location')
+        .preload('categoryTypes', (categoryTypesQuery) => {
+          categoryTypesQuery.preload('category')
+        })
+        .preload('indicators')
+        .preload('prices')
+        .preload('media')
+        .orderBy('event_start', 'desc')
+
       title = 'Agenda complet'
       return view.render('pages/events/list', { events: events, title: title })
     }
@@ -53,19 +64,38 @@ export default class EventsController {
         // TODO verify if the date is in the correct format
         let date = DateTime.fromISO(requestQuery['date'])
 
-        const dayBegin: string = date.toSQL() ?? ''
-        const dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
-        events = await Event.query()
-          .whereBetween('event_start', [dayBegin, dayEnd])
-          .andWhereHas('categoryTypes', (query) => {
-            query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
+        dayBegin = date.toSQL() ?? ''
+        dayEnd = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+        events = await await Event.query()
+          .whereHas('categoryTypes', (query) => {
+            query.whereInPivot('category_type_id', categoryTypesId)
           })
+          .whereBetween('event_start', [dayBegin, dayEnd])
+          .preload('location')
+          .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category')
+          })
+          .preload('indicators')
+          .preload('prices')
+          .preload('media')
+          .orderBy('event_start', 'asc')
         title += ' le ' + date.setLocale('fr').toFormat('dd-MM-yyyy')
       } else {
-        events = await Event.query().whereHas('categoryTypes', (query) => {
-          query.whereInPivot('category_type_id', categoryTypesId).orderBy('event_start', 'asc')
-        })
+        events = await await Event.query()
+          .whereHas('categoryTypes', (query) => {
+            query.whereInPivot('category_type_id', categoryTypesId)
+          })
+          .preload('location')
+          .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category')
+          })
+          .preload('indicators')
+          .preload('prices')
+          .preload('media')
+          .orderBy('event_start', 'asc')
       }
+
+      // console.log(events.length)
 
       return view.render('pages/events/list', {
         events: events,
@@ -75,7 +105,7 @@ export default class EventsController {
     }
 
     // get events by one locationID (i.e. le forum) - OK
-    // TODO validation if locaction do not exist
+    // TODO validation if location do not exist
     if (requestQuery['location']) {
       const location = await Address.find(requestQuery['location'])
       if (requestQuery['date']) {
@@ -96,8 +126,8 @@ export default class EventsController {
       console.log('DATE')
       let date = DateTime.fromISO(requestQuery['date'])
 
-      const dayBegin: string = date.toSQL() ?? ''
-      const dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+      dayBegin: string = date.toSQL() ?? ''
+      dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
       events = await Event.query().whereBetween('event_start', [dayBegin, dayEnd])
       title = date.setLocale('fr').toFormat('dd-MM-yyyy')
       return view.render('pages/events/list', { events: events, title: title })
@@ -173,7 +203,6 @@ export default class EventsController {
   }
 
   async attachCategoryTypes(request: HttpContext['request'], event: Event) {
-    // TODO check only one category select
     const selectedCategoryTypes = request.body().categoryTypes
     selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
       await event.related('categoryTypes').attach([categoryTypeId])
@@ -305,7 +334,7 @@ export default class EventsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, response, session }: HttpContext) {
+  async update({ params, request, response }: HttpContext) {
     console.log('UPDATE')
 
     const payload = await request.validateUsing(createEventValidator)

@@ -36,9 +36,11 @@ export default class RegistersController {
     user.email = payload.email
     user.password = payload.password
 
-    // TODO check null is not assignable
     const role = await Role.findBy('role_name', 'USER')
-    await user.related('role').associate(role)
+    if (role) {
+      user.roleId = role.id
+    }
+    // await user.related('role').associate(role)
 
     await user.save()
     if (user.$isPersisted) {

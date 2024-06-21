@@ -8,8 +8,8 @@ export default class HomeController {
     await auth.check()
     const categories = await Category.query()
 
-    const dayBegin = DateTime.now().toSQL()
-    const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
+    const dayBegin = DateTime.now().toSQLDate()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
 
     const events = await Event.query()
       // .andWhereBetween('event_start', [dayBegin, dayEnd])
@@ -21,6 +21,10 @@ export default class HomeController {
       .preload('indicators')
       .preload('prices')
       .preload('media')
+      .orderBy('event_start', 'asc')
+    // .limit(1)
+
+    console.log(events)
 
     return view.render('pages/home', { categories: categories, events: events })
   }

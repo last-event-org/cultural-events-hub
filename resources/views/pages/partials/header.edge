@@ -1,11 +1,14 @@
 <nav class="z-50  px-4 py-4 flex justify-between items-center bg-white sticky top-0 border">
   <a class="flex items-center text-2xl font-bold leading-none" href={{ route('home') }}>
-    <div class="relative"></div>
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-      <h1>xt Event</h1>
-      <div class="absolute -z-10 w-24 h-5 bottom-3 left-20 bg-yellow-500"></div>
-    
+      <h1 class="relative">xt <span class="relative">Event
+        <hr class="absolute -z-10 w-16 h-2 bottom-1 left-0  bg-yellow-500">
+      </span>
+      </h1>
+      {{-- <div class="absolute -z-10 w-36 h-1.5 bottom-6 left-0 bg-yellow-500"></div> --}}
+      {{-- <div class="absolute -z-10 w-24 h-5 bottom-3 left-20 bg-yellow-500"></div> --}}   
   </a>
+
   <div class="lg:hidden ">
     <button class="navbar-burger flex items-center text-gray-700 p-3">
       <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -14,43 +17,49 @@
       </svg>
     </button>
   </div>
-  <ul
-    class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
-    <li><a class="text-sm text-gray-400 hover:text-gray-500" href="#">Tickets</a></li>
+
+  <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
+    <li>
+      <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href="#">
+      Tickets</a>
+    </li>
+
     <li class="text-gray-300">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill"
         viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
       </svg>
-
     </li>
 
-    <li><a class="text-sm text-gray-400 hover:text-gray-500" href="{{route('events.index')}}">Agenda</a></li>
+    <li><a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href="{{route('events.index')}}">
+      Agenda</a></li>
     <li class="text-gray-300">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill"
-        viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
       </svg>
     </li>
 
     @if(!auth.isAuthenticated)
-    <li><a class="text-sm text-gray-400 hover:text-gray-500" href={{ route('auth.login.show') }}>Ajouter un événement</a></li>
+    <li>
+      <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.login.show') }}>
+      Ajouter un événement</a>
+    </li>
     @else
-    <li><a class="text-sm text-gray-400 hover:text-gray-500" href={{ route('events.create') }}>Ajouter un événement</a></li>
+    <li>
+      <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('events.create') }}>
+      Ajouter un événement</a>
+    </li>
     @end
 
   </ul>
 
   @if(!auth.isAuthenticated)
 
-  <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
+  <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-md transition duration-200"
     href={{ route('auth.login.show') }}>
     Connexion</a>
-
-  <a class="hidden lg:inline-block py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm   font-bold rounded-xl transition duration-200" href={{ route('auth.register') }}>
-
+  <a class="hidden lg:inline-block py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm   font-bold rounded-md transition duration-200" href={{ route('auth.register') }}>
     Enregistement</a>
 
   @else
@@ -95,75 +104,75 @@
             {{ csrfField() }}
             <div class="flex justify-center">
               <button type="submit"
-                class="hidden lg:inline-block mt-4 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-red-800 font-bold  rounded-xl transition duration-200"
+                class="hidden lg:inline-block mt-4 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-red-800 font-bold  rounded-md transition duration-200"
                 href={{ route('auth.login.show') }}>
                 Déconnexion</button>
             </div>
           </form>
-      </div> 
+        </div> 
+      </div>
     </div>
   </div>
-
-
-
-  </div>
-
   @end
 </nav>
 
 
 <div class="navbar-menu relative z-50 hidden">
-  <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
-  <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
-    <div class="flex items-center mb-8">
-      <a class="flex mr-auto text-3xl font-bold leading-none" href="/">
-        <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-        <h1>xt Event</h1>
-      </a>
-      <button class="navbar-close">
+  <div class="navbar-backdrop fixed inset-0 bg-slate-800/60"></div>
+    <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
+      <div class="flex justify-between mb-8">
+        <div class="flex">
+          <a class="flex justify-center text-2xl font-bold" href="/">
+            <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+            <h1 class="relative">xt<span class="ml-2 relative">Event
+              <hr class="absolute -z-10 w-16 h-2 bottom-1 left-0  bg-yellow-500">
+            </span>
+          </a>
+        </div>
+        <button class="navbar-close">
+          X
+        </button>
+      </div>
+      <div>
+        <ul>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400  hover:bg-gray-50  hover:text-gray-600 rounded"
+              href="#">Profil</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400  hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="#">Tickets</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="#">Agenda</a>
+          </li>
 
-      </button>
-    </div>
-    <div>
-      <ul>
-        <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href="#">Profil</a>
-        </li>
-        <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href="#">Tickets</a>
-        </li>
-        <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href="#">Agenda</a>
-        </li>
-
-        @if(!auth.isAuthenticated)
-        <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href={{ route('auth.login.show') }}>Ajouter un événement</a>
-        </li>
-        @else
-        <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href={{ route('events.create') }}>Ajouter un événement</a>
-        </li>
-        @end
-        <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href="#">Carte</a>
-        </li>
-        <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href="#">Langues</a>
-        </li>
-        <li class="mb-1">
-          <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-            href="#">Dark/Light Mode</a>
-        </li>
-      </ul>
-    </div>
+          @if(!auth.isAuthenticated)
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href={{ route('auth.login.show') }}>Ajouter un événement</a>
+          </li>
+          @else
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href={{ route('events.create') }}>Ajouter un événement</a>
+          </li>
+          @end
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="#">Carte</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="#">Langues</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="#">Dark/Light Mode</a>
+          </li>
+        </ul>
+      </div>
     <div class="mt-auto">
 
       @if(!auth.isAuthenticated)

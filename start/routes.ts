@@ -13,8 +13,18 @@ router
     router.get('/login', [LoginController, 'show']).as('login.show')
     router.post('/login', [LoginController, 'store']).as('login.store')
     router.get('/register', [RegisterController, 'index']).as('register')
-    router.post('/register', [RegisterController, 'store']).as('register.store')
-    router.post('/profile-type', [RegisterController, 'updateProfileType']).as('register.update-profile-type').use(middleware.auth())
+    router
+      .post('/register', [RegisterController, 'store'])
+      .as('register.store')
+      .use(middleware.auth())
+    router
+      .post('/profile-type', [RegisterController, 'updateProfileType'])
+      .as('register.update-profile-type')
+      .use(middleware.auth())
+    router
+      .get('/dashboard/profile', [RegisterController, 'show'])
+      .as('register.show')
+      .use(middleware.auth())
     router.post('/logout', [LogoutController, 'handle']).as('logout').use(middleware.auth())
   })
   .as('auth')

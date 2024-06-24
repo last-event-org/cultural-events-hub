@@ -19,44 +19,44 @@
 </section>
 
 <main>
-
-  {{-- <div class="flex justify-center bg-gray-50 mt-12 mb-6">
+  <div class="flex justify-center my-10">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h2 class="text-2xl md:text-3xl font-bold">xt Events à prix réduits</h2>
-  </div> --}}
-  <div class="relative flex justify-center my-10">
-    <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h2 class="text-2xl md:text-3xl font-bold">xt Events à prix réduits</h2>
-      <div class="absolute -z-10 w-80 h-5 -bottom-2 left-96 bg-yellow-500"></div>
+    <h2 class="text-2xl md:text-3xl font-bold relative">
+        xt Events à prix réduit<span class="relative">s</span>
+        <hr class="absolute -z-10 w-[130px] md:w-40 h-2 bottom-1 right-0  bg-yellow-500">
+    </h2>
+  </div>     
 
+
+  <section class=" py-10 mb-10 mx-4">
+    <div class="flex flex-wrap justify-center  gap-x-12 2xl:gap-x-24 gap-y-16 lg:gap-y-24 2xl:gap-y-32 mb-20 ">
+      @each(event in events)
+        @!component('components/events_cards', {event})
+      @end
+    </div>
+
+
+
+    <div class="flex justify-center my-10">
+      <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+      <h2 class="text-2xl md:text-3xl font-bold relative">
+          xt Events populaire<span class="relative">s</span>
+        <hr class="absolute -z-10 w-full lg:w-1/2 h-1.5 bottom-1 right-0  bg-yellow-500">
+      </h2>
+    </div>
+
+    <div class="flex flex-wrap justify-center bg-gray-50  gap-6  my-6 py-10">   
+      @include("pages/partials/events_cards")
+      @include("pages/partials/events_cards")
+      @include("pages/partials/events_cards")
+      @include("pages/partials/events_cards")
+      @include("pages/partials/events_cards")
+      @include("pages/partials/events_cards")
+      @include("pages/partials/events_cards")
+      @include("pages/partials/events_cards")
+    </div>
+  </section>
 </main>
-<section class=" py-10 mb-10 mx-4">
- <div class=" flex flex-wrap justify-center  gap-x-6 gap-y-16  py-10 ">
-
-  @each(event in events)
-    @!component('components/events_cards', {event})
-  @end
-
-  </div>
-
-  <div class="relative flex justify-center my-10">
-    <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h2 class="text-2xl md:text-3xl font-bold">xt Events populaires</h2>
-      <div class="absolute -z-10 w-80 h-5 -bottom-2 right-60 bg-yellow-500"></div>
-    
-  </div>
-
-  <div class="flex flex-wrap justify-center bg-gray-50  gap-6  my-6 py-10">   
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-    @include("pages/partials/events_cards")
-  </div>
-</section>
 
 
 @include("pages/partials/footer")  

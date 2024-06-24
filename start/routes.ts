@@ -1,5 +1,7 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+
+const CartController = () => import('#controllers/events/cart_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
 const HomeController = () => import('#controllers/home_controller')
@@ -23,10 +25,15 @@ router
       .use(middleware.auth())
     router
       .get('/dashboard/profile', [RegisterController, 'show'])
-      .as('register.show')
+      .as('profile.show')
+      .use(middleware.auth())
+    router
+      .get('/dashboard/profile/edit', [RegisterController, 'edit'])
+      .as('profile.edit')
       .use(middleware.auth())
     router.post('/logout', [LogoutController, 'handle']).as('logout').use(middleware.auth())
   })
   .as('auth')
 
 router.resource('events', EventsController)
+router.post('/events/:id', [CartController, 'store']).as('add-to-cart').use(middleware.auth())

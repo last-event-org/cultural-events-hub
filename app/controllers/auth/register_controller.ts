@@ -105,8 +105,6 @@ export default class RegistersController {
       .firstOrFail()
 
     await auth.use('web').login(user)
-
-    console.log(user)
     return view.render('pages/dashboard/profile', {
       user: user,
     })
@@ -115,7 +113,19 @@ export default class RegistersController {
   /**
    * Edit individual record
    */
-  // async edit({ params }: HttpContext) {}
+  async edit({ params, auth, view }: HttpContext) {
+    let user = await User.query()
+      .where('id', '=', auth.user?.$attributes.id)
+      .preload('billingAddress')
+      .preload('shippingAddress')
+      .preload('role')
+      .firstOrFail()
+
+    await auth.use('web').login(user)
+    return view.render('pages/dashboard/profile', {
+      user: user,
+    })
+  }
 
   /**
    * Handle form submission for the edit action

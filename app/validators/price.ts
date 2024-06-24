@@ -8,11 +8,13 @@ export const createPricesValidator = vine.compile(
         price_description: vine
           .string()
           .escape()
-          .maxLength(255),
+          .maxLength(255)
+          .optional(),
         regular_price: vine
           .number()
           .positive()
-          .nullable(),
+          .nullable()
+          .optional(),
         discounted_price: vine
           .number()
           .positive()

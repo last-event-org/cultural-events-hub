@@ -227,7 +227,7 @@ export default class EventsController {
       for (const pricePayload of pricePayloads.prices) {
         const price = new Price()
   
-        price.description = pricePayload.price_description
+        if (pricePayload.price_description) price.description = pricePayload.price_description
         if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
         if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
         if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty

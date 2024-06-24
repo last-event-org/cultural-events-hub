@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.dateTime('purchase_date')
       table.timestamp('created_at')
       table.timestamp('updated_at')
+      table.boolean('is_paid').defaultTo('false')
       table.integer('user_id').unsigned().references('users.id').onDelete('SET NULL')
     })
   }

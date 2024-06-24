@@ -23,7 +23,7 @@ router
       .use(middleware.auth())
     router
       .get('/dashboard/profile', [RegisterController, 'show'])
-      .as('register.show')
+      .as('profile.show')
       .use(middleware.auth())
     router.post('/logout', [LogoutController, 'handle']).as('logout').use(middleware.auth())
   })

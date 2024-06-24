@@ -17,8 +17,11 @@ export default class Order extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
+  @column()
+  declare isPaid: boolean
+
   @hasOne(() => User)
-  declare parentCategoryId: HasOne<typeof User>
+  declare user: HasOne<typeof User>
 
   @hasMany(() => OrderLine)
   declare posts: HasMany<typeof OrderLine>

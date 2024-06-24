@@ -182,7 +182,6 @@
                     @each(category in categories)
                     <ul>
                         <li>
-                            {{-- TODO change to radio button --}}
                             <input type="radio" id="category_{{ category.id }}" name="categories[]"
                                 value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
                             <label for="category_{{ category.id }}">{{ category.name }}</label>

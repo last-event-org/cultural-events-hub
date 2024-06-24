@@ -18,7 +18,8 @@ export default class EventsController {
   /**
    * Display a list of resource
    */
-  async index({ request, view }: HttpContext) {
+  async index({ request, view, auth }: HttpContext) {
+    await auth.check()
     const requestQuery = request.qs()
     let events
     let title: string | null = ''
@@ -170,17 +171,21 @@ export default class EventsController {
       await this.createEventAddress(request, event)
       await this.createEventPrices(request, event)
       await this.uploadEventMedia(request, event)
-  
+
       return response.redirect().toRoute('events.show', { id: event.id })
     }
   }
 
-  async createEvent(request: HttpContext['request'], session: HttpContext['session'], response: HttpContext['response']) {
+  async createEvent(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    response: HttpContext['response']
+  ) {
     try {
       const payload = await request.validateUsing(createEventValidator)
 
       const event = new Event()
-  
+
       event.title = payload.title
       event.subtitle = payload.subtitle
       event.description = payload.description
@@ -195,10 +200,10 @@ export default class EventsController {
       if (payload.instagram_link) event.instagramLink = payload.instagram_link
       if (payload.website_link) event.websiteLink = payload.website_link
       if (payload.youtube_link) event.youtubeLink = payload.youtube_link
-  
+
       return await event.save()
     } catch (error) {
-      console.error('Event Validation Error at createEventPrices():', error);
+      console.error('Event Validation Error at createEventPrices():', error)
     }
   }
 
@@ -223,16 +228,16 @@ export default class EventsController {
     try {
       const pricePayload = await request.validateUsing(createPriceValidator)
       const price = new Price()
-  
+
       price.description = pricePayload.price_description
       if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
       if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
       price.availableQty = pricePayload.available_qty
-  
+
       await price.save()
       await price.related('event').associate(event)
     } catch (error) {
-      console.error('Price Validation Error at createEventPrices():', error);
+      console.error('Price Validation Error at createEventPrices():', error)
     }
   }
 
@@ -251,43 +256,43 @@ export default class EventsController {
       await address.save()
       await event.related('location').associate(address)
     } catch (error) {
-      console.error('Address Validation Error at createEventAddress():', error);
+      console.error('Address Validation Error at createEventAddress():', error)
     }
   }
 
   async uploadEventMedia(request: HttpContext['request'], event: Event) {
     try {
       const { images_link } = await request.validateUsing(createMediaValidator)
-  
+
       for (const file of images_link) {
         const media = new Media()
         media.path = '' // TODO if needed, setup a path method if we'll use an external server
         media.altName = file.clientName
         media.eventId = event.id
-  
+
         if (!file.tmpPath) {
           console.error('Skipping file due to missing tmpPath:', file)
           continue // Skip this iteration if tmpPath is undefined
         }
-  
+
         try {
           const binaryData = fs.readFileSync(file.tmpPath)
           media.binary = binaryData
           await media.save()
         } catch (error) {
-          console.error('Media binary upload error:', error);
+          console.error('Media binary upload error:', error)
         }
       }
     } catch (error) {
-      console.error('Media Validation Error at uploadEventMedia():', error);
+      console.error('Media Validation Error at uploadEventMedia():', error)
     }
   }
 
   /**
    * Show individual record
    */
-  async show({ view, params, response }: HttpContext) {
-    console.log('SHOW')
+  async show({ view, params, response, auth }: HttpContext) {
+    await auth.check()
     const event = await Event.query()
       .where('id', '=', params.id)
       .preload('location')

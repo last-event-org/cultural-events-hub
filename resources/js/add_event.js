@@ -1,6 +1,18 @@
 function addPriceFields() {
   let template = document.getElementById('priceFieldsTemplate')
   let clone = document.importNode(template.content, true)
+
+  const newIndex = document.querySelectorAll('.price-section').length;
+
+  // Update input names to include the new index
+  const inputs = clone.querySelectorAll('input, textarea');
+  inputs.forEach(input => {
+    const nameAttr = input.getAttribute('name');
+    if (nameAttr) {
+      input.setAttribute('name', nameAttr.replace(/\[0\]/g, `[${newIndex}]`));
+    }
+  });
+  
   document.getElementById('priceFieldsContainer').appendChild(clone)
 }
 
@@ -18,12 +30,12 @@ function toggleRowDiscountedPrice(element) {
   
   if (rowDiscountedPrice.classList.contains('hidden')) {
     rowDiscountedPrice.classList.remove('hidden');
-    priceCategInput.setAttribute('disabled', true);
-    regPriceInput.setAttribute('disabled', true);
+    // priceCategInput.setAttribute('disabled', true);
+    // regPriceInput.setAttribute('disabled', true);
   } else {
     rowDiscountedPrice.classList.add('hidden');
-    priceCategInput.removeAttribute('disabled');
-    regPriceInput.removeAttribute('disabled');
+    // priceCategInput.removeAttribute('disabled');
+    // regPriceInput.removeAttribute('disabled');
   }
 }
 

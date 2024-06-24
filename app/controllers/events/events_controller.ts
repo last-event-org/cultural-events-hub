@@ -6,13 +6,13 @@ import Category from '#models/category'
 import CategoryType from '#models/category_type'
 import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
-import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
 import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
 import AddressesController from '#controllers/addresses_controller'
 import fs from 'fs'
 import Indicator from '#models/indicator'
+import { createPricesValidator } from '#validators/price'
 
 export default class EventsController {
   /**
@@ -220,19 +220,23 @@ export default class EventsController {
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {
+    console.log('Raw request body:', request.body().prices);
     try {
-      const pricePayload = await request.validateUsing(createPriceValidator)
-      const price = new Price()
+      const pricePayloads = await request.validateUsing(createPricesValidator)
   
-      price.description = pricePayload.price_description
-      if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
-      if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
-      price.availableQty = pricePayload.available_qty
+      for (const pricePayload of pricePayloads.prices) {
+        const price = new Price()
   
-      await price.save()
-      await price.related('event').associate(event)
+        price.description = pricePayload.price_description
+        if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
+        if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
+        if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
+  
+        await price.save()
+        await price.related('event').associate(event)
+      }
     } catch (error) {
-      console.error('Price Validation Error at createEventPrices():', error);
+      console.error('Price Validation Error at createEventPrices():', error)
     }
   }
 

@@ -17,7 +17,7 @@ export default class RegistersController {
   /**
    * Display form to create a new record
    */
-  async create({ }: HttpContext) { }
+  async create({}: HttpContext) {}
 
   /**
    * Handle form submission for the create action
@@ -46,7 +46,7 @@ export default class RegistersController {
     if (user.$isPersisted) {
       await auth.use('web').login(user)
       return view.render('pages/auth/profile-type', {
-        'user': user,
+        user: user,
       })
     } else {
       return response.redirect().back()
@@ -67,38 +67,50 @@ export default class RegistersController {
       user.companyName = vendorDataPayload.company_name
       user.vatNumber = vendorDataPayload.vat_number
       await user.save()
-      
     } catch (error) {
-      console.error('Vendor Validation Error:', error);
+      console.error('Vendor Validation Error:', error)
     }
 
     try {
-      const addressPayload = await request.validateUsing(createAddressValidator);
-      const address = new Address();
+      const addressPayload = await request.validateUsing(createAddressValidator)
+      const address = new Address()
 
-      address.street = addressPayload.street;
-      address.number = addressPayload.number;
-      address.zipCode = addressPayload.zip_code;
-      address.city = addressPayload.city;
-      address.country = addressPayload.country;
+      address.street = addressPayload.street
+      address.number = addressPayload.number
+      address.zipCode = addressPayload.zip_code
+      address.city = addressPayload.city
+      address.country = addressPayload.country
       address.name = user.companyName ?? ''
-      
+
       await address.save()
       user.billingAddressId = address.id
 
       await user.related('billingAddress').save(address)
 
       return response.redirect().toRoute('home')
-
     } catch (error) {
-      console.error('Validation Error:', error);
+      console.error('Validation Error:', error)
     }
   }
 
   /**
    * Show individual record
    */
-  // async show({ params }: HttpContext) {}
+  async show({ params, auth, view }: HttpContext) {
+    let user = await User.query()
+      .where('id', '=', auth.user?.$attributes.id)
+      .preload('billingAddress')
+      .preload('shippingAddress')
+      .preload('role')
+      .firstOrFail()
+
+    await auth.use('web').login(user)
+
+    console.log(user)
+    return view.render('pages/dashboard/profile', {
+      user: user,
+    })
+  }
 
   /**
    * Edit individual record

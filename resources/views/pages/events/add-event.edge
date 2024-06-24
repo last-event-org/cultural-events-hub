@@ -180,7 +180,7 @@
                         <input class="mt-4 max-w-56 text-white" type="file" id="images_link" name="images_link[]"
                             onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
                         @inputError('images_link')
-                        <div style="color: red;">{{ $messages.join(', ') }}</div>
+                        <div style="color: yellow;">Au moins une image doit être ajoutée à l'événement</div>
                         @end
                         <div id="imagePreviewContainer" class="flex flex-wrap mt-4"></div>
                     </section>
@@ -191,9 +191,8 @@
                             @each(category in categories)
                             <ul>
                                 <li>
-                                    {{-- TODO change to radio button --}}
                                     <input type="radio" id="category_{{ category.id }}" name="categories[]"
-                                        value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
+                                        value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" required/>
                                     <label for="category_{{ category.id }}">{{ category.name }}</label>
 
                                     <fieldset id="categoryTypesFieldset_{{ category.id }}" name="categoryTypesFieldset"
@@ -203,18 +202,19 @@
                                             @if (categoryType.categoryId == category.id)
                                                 <li class="category-type category-type-{{ categoryType.categoryId }} ">
                                                     <input type="checkbox" id="categoryType_{{ categoryType.id }}"
-                                                        name="categoryTypes[]" value="{{ categoryType.id }}" />
+                                                        name="categoryTypes[]" value="{{ categoryType.id }}"/>
                                                     <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
                                                 </li>
                                             @endif
                                         @end
                                     </fieldset>
-
-
                                 </li>
 
                         @end
                         </fieldset>
+                        {{-- @flashMessage('category')
+                            <div style="color: red;">{{ $message.message }}</div>
+                        @end --}}
 
                         <fieldset class="py-2 w-1/2">
                             <legend class="block text-gray-600">Indicateurs:</legend>
@@ -274,6 +274,9 @@
                         <div id="priceFieldsContainer" class="flex flex-col gap-4">
                             <!-- div to add the addionnal prices -->
                         </div>
+                        @inputError('prices[]')
+                            <div style="color: red;">{{ $messages.join(', ') }}</div>
+                        @end
                     </div>
 
                     <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 

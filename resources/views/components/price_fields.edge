@@ -5,11 +5,17 @@
       <input type="text" id="price_description" name="prices[0][price_description]"
         class="mt-1 w-full block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
         value="{{old('price_description') || '' }}" placeholder="Ex: Adulte, Enfant, VIPO">
+        @inputError('prices.0.price_description')
+          <div style="color: red;">{{ $messages.join(', ') }}</div>
+        @end
     </div>
     <div class="flex flex-col w-2/12">
       <label for="regular_price" class="block text-gray-600">Tarif</label>
       <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-        type="text" name="prices[0][regular_price]" id="regular_price" value="{{old('regular_price') || '0.00' }}" placeholder="0.00">
+        type="text" name="prices[0][regular_price]" id="regular_price" value="{{old('regular_price') || '' }}" placeholder="0.00">
+        @inputError('prices.0.regular_price')
+          <div style="color: red;">{{ $messages.join(', ') }}</div>
+        @end
     </div>
     <div class="flex justify-end self-end pb-1 mr-10">
       <h6>€</h6>

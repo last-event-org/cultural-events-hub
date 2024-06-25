@@ -55,9 +55,8 @@
     @end
     <li>
       @if(request.cookie('orderId'))
-      <a href={{route('cart.show')}}>PANIER</a>
-    {{request.cookie('orderId')}}
-  @end
+        <a href={{route('cart.show')}}>PANIER</a>
+    @end
 
     </li>
   </ul>

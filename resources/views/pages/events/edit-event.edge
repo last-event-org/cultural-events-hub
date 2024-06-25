@@ -275,10 +275,11 @@
                         />
                     <label for="category_{{ category.id }}">{{ category.name }}</label>
 
-                    <fieldset id="categoryTypesFieldset_{{ category.id }}" class=" {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}} relative left-10">
+
+                    <fieldset name="categoryTypesFieldset" id="categoryTypesFieldset_{{ category.id }}" class=" {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}} relative left-10">
                       @each(categoryType in categoryTypes)
                         @if (categoryType.categoryId == category.id)
-                        <li class="category-type category-type-{{ categoryType.categoryId }}  {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}}">
+                        <li class="category-type category-type-{{ categoryType.categoryId }}">
                           <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
                               value="{{ categoryType.id }}"
                               

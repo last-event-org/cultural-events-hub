@@ -11,24 +11,23 @@
 <body class="bg-slate-50 ">
   @include("pages/partials/header")
   {{-- {{route('auth.profile.edit')}} --}}
-<main class="flex flex-col items-center min-h-screen gap-10">
-  <section class=" bg-white text-slate-600 flex flex-col border rounded-md shadow mt-20">
+<main class="flex flex-col items-center min-h-screen gap-10 mb-16">
+  <section class=" bg-white text-slate-600 flex flex-col border rounded-md shadow mt-16">
       <div class="justify-center flex">
         <h2 class="relative z-10 font-bold text-xl my-4">Profil 
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
       </div>
     
-      <div class="w-full md:w-[600px]">
-        <div class="flex flex-col lg:flex-row lg:items-center">
-          <div class="flex self-center lg:self-start w-32 h-32 lg:w-40 lg:h-40  shadow m-4 p-4  rounded-md">
+      <div class="w-screen sm:w-[600px] lg:w-[800px]">
+        <div class="flex flex-col lg:flex-row lg:items-center md:px-4">
+          <div class="flex self-center lg:self-start w-24 h-24 lg:w-40 lg:h-40  shadow m-4 p-4  rounded-md">
             <img src="/svg/profile_picture_dummy.svg" alt="profile picture dummy">
           </div>
-          <div class="flex flex-col gap-2 mb-2 lg:my-6  mx-4">
+          <div class="flex flex-col gap-1 mb-2 lg:my-2  mx-4 text-xs md:text-sm">
             <div class="flex gap-2">
               <p class="font-bold">Nom:</p>
-              <p>Dupont</p>
-              
+              <p>Dupont</p>          
             </div>
             <div class="flex gap-2">
               <p class="font-bold">Prénom:</p>
@@ -45,23 +44,21 @@
             <div class="flex gap-2">
               <p class="font-bold">Adresse:</p>
               <p>Rue de Mulhouse 36, 4020 Liège - Belgique</p>
-            </div>          
-          </div>   
-      </div>
-
-      <div class="flex flex-col gap-2 mx-4">
-        <div class="flex gap-2">
-          <p class="font-bold">Nom de société:</p>
-          <p>Les films du plat pays</p>
-        </div>
-        <div class="flex gap-2">
-          <p class="font-bold">N° de TVA:</p>
-          <p>BE26 3789 5214 7896</p>
-        </div>
+            </div>
+            <div class="flex gap-2">
+              <p class="font-bold">Nom de société:</p>
+              <p>Les films du plat pays</p>
+            </div>
+            <div class="flex gap-2">
+              <p class="font-bold">N° de TVA:</p>
+              <p>BE26 3789 5214 7896</p>
+            </div> 
+          </div>           
+        </div>   
       </div>
 
       <div class="flex justify-center my-8">
-        <div class="flex bg-indigo-700 text-white py-1 px-2 rounded-md font-bold">
+        <div class="flex bg-indigo-700 text-white text-sm py-1 px-2 rounded-md font-bold">
           <a href="{{route('auth.profile.edit')}} ">
             Éditer le profil
           </a> 
@@ -71,9 +68,9 @@
   </section>
 
   <section>
-    <div class="min-w-full md:w-[600px] bg-white text-slate-600 flex flex-col border rounded-md shadow px-4 ">
+    <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-md shadow px-4 md:px-8">
       <div class="justify-center flex">
-        <h2 class="relative z-10 font-bold text-xl my-4">Whishlist 
+        <h2 class="relative z-10 font-bold text-xl mt-4 mb-8">Whishlist 
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
       </div>
@@ -90,10 +87,10 @@
     </div>
   </section>
   <section>
-    <div class="w-full md:w-[600px] bg-white flex flex-col border rounded-md shadow px-4">
+    <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white flex flex-col border rounded-md shadow px-4 lg:px-8">
       
       <div class="justify-center flex">
-        <h2 class="relative z-10 font-bold text-xl my-4">Vendeurs favoris
+        <h2 class="relative z-10 font-bold text-xl my-4 lg:mb-8">Vendeurs favoris
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
       </div>

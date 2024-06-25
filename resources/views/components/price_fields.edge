@@ -1,40 +1,50 @@
-<div class="flex w-full">
-  <div class="flex flex-col w-1/4">
-    <label for="price_description" class="block text-gray-600">
-      Catégorie de Prix</label>
-    <input type="text" id="price_description" name="price_description"
-      class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-      value="{{old('price_description') || '' }}" placeholder="Ex: Adulte, Enfant, VIPO">
-  </div>
-  <div class="flex flex-col w-1/6">
-    <label for="regular_price" class="block text-gray-600">
-      Tarif (€)</label>
-    <input
-      class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-      type="text" name="regular_price" id="regular_price" value="{{old('regular_price') || '0.00' }}"
-      placeholder="0.00">
-  </div>
-
-  <div class="flex flex-col w-1/5">
-    <input type="checkbox" id="displayRowDiscountPrice" name="" value="" onchange="toggleRowDiscountedPrice()" />
-    <label for="displayRowDiscountPrice">Prix réduits</label>
-  </div>
-
-  <div class="flex flex-row bg-orange-200 p-1 rounded-md hidden" id="rowDiscountedPrices">
-    <div class="flex flex-col w-1/2">
-      <label for="discounted_price" class="block text-gray-600">
-        Prix Réduit (€)</label>
-      <input
-        class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-        type="text" name="discounted_price" id="discounted_price" value="{{old('discounted_price') || '0.00' }}"
-        placeholder="€0.00">
+<fieldset class="price-section flex justify-start p-2" name="prices[]">
+  <div class="flex gap-2 justify-end">
+    <div class="flex flex-col w-4/12">
+      <label for="price_description" class="block text-gray-600">Catégorie de Prix</label>
+      <input type="text" id="price_description" name="prices[0][price_description]"
+        class="mt-1 w-full block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        value="{{old('price_description') || '' }}" placeholder="Ex: Adulte, Enfant, VIPO">
+        @inputError('prices.0.price_description')
+          <div style="color: red;">{{ $messages.join(', ') }}</div>
+        @end
     </div>
-    <div class="flex flex-col w-1/2">
-      <label for="available_qty" class="block text-gray-600">
-        Places disponibles</label>
-      <input
-        class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-        type="text" name="available_qty" id="available_qty" value="{{old('available_qty') || '' }}" placeholder="0">
+    <div class="flex flex-col w-2/12">
+      <label for="regular_price" class="block text-gray-600">Tarif</label>
+      <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        type="text" name="prices[0][regular_price]" id="regular_price" value="{{old('regular_price') || '' }}" placeholder="0.00">
+        @inputError('prices.0.regular_price')
+          <div style="color: red;">{{ $messages.join(', ') }}</div>
+        @end
+    </div>
+    <div class="flex justify-end self-end pb-1 mr-10">
+      <h6>€</h6>
+    </div>
+    <div class="content-end w-3/12 ml-6 mr-6">
+      <a class="flex items-center px-2 h-10 text-base justify-center cursor-pointer bg-indigo-400 hover:bg-indigo-500 rounded-lg text-slate-50"
+        onclick="toggleRowDiscountedPrice(this)">
+        Prix réduits
+      </a>
     </div>
   </div>
-</div>
+  <div class="w-full">
+    <div class="flex gap-2 hidden discounted-row">
+      <input class="mt-5 w-3/12 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        type="text" name="prices[0][available_qty]" value="{{old('available_qty') || '' }}" placeholder="0">
+      <div class="self-end pb-1 w-7/12">
+        <p>place(s) disponible(s) à</p>
+      </div>
+      <input class="mt-5 block w-4/12 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        type="text" name="prices[0][discounted_price]" value="{{old('discounted_price') || '0.00' }}" placeholder="0.00">
+      <div class="flex justify-end self-end pb-1 mr-10">
+        <h6>€</h6>
+      </div>
+      <div class="content-end w-3/12">
+        <a class="flex items-center w-10 px-2 h-10 cursor-pointer bg-red-600 hover:bg-red-700 rounded-lg text-slate-50"
+          onclick="">
+          <img src="/public/svg/delete-button.svg" alt="Delete" class="w-6 h-6">
+        </a>
+      </div>
+    </div>
+  </div>
+</fieldset>

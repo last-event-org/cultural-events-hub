@@ -122,7 +122,7 @@ export default class RegistersController {
       .firstOrFail()
 
     await auth.use('web').login(user)
-    return view.render('pages/dashboard/profile', {
+    return view.render('pages/dashboard/edit_profile', {
       user: user,
     })
   }

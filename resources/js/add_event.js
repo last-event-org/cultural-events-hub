@@ -1,6 +1,18 @@
 function addPriceFields() {
   let template = document.getElementById('priceFieldsTemplate')
   let clone = document.importNode(template.content, true)
+
+  const newIndex = document.querySelectorAll('.price-section').length;
+
+  // Update input names to include the new index
+  const inputs = clone.querySelectorAll('input, textarea');
+  inputs.forEach(input => {
+    const nameAttr = input.getAttribute('name');
+    if (nameAttr) {
+      input.setAttribute('name', nameAttr.replace(/\[0\]/g, `[${newIndex}]`));
+    }
+  });
+  
   document.getElementById('priceFieldsContainer').appendChild(clone)
 }
 
@@ -10,14 +22,23 @@ function addDiscountedPriceFields() {
   document.getElementById('discountedPriceFieldsContainer').appendChild(clone)
 }
 
-function toggleRowDiscountedPrice() {
-  const rowDiscountedPrice = document.getElementById('rowDiscountedPrices')
+function toggleRowDiscountedPrice(element) {
+  const priceSection = element.closest('.price-section');
+  const rowDiscountedPrice = priceSection.querySelector('.discounted-row');
+  const priceCategInput = priceSection.querySelector('#price_description');
+  const regPriceInput = priceSection.querySelector('#regular_price');
+  
   if (rowDiscountedPrice.classList.contains('hidden')) {
-    rowDiscountedPrice.classList.remove('hidden')
+    rowDiscountedPrice.classList.remove('hidden');
+    // priceCategInput.setAttribute('disabled', true);
+    // regPriceInput.setAttribute('disabled', true);
   } else {
-    rowDiscountedPrice.classList.add('hidden')
+    rowDiscountedPrice.classList.add('hidden');
+    // priceCategInput.removeAttribute('disabled');
+    // regPriceInput.removeAttribute('disabled');
   }
 }
+
 
 function toggleDiscountedPriceSection() {
   const discountedPriceSection = document.getElementById('discountedPriceSection')

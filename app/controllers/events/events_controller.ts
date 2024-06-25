@@ -6,13 +6,14 @@ import Category from '#models/category'
 import CategoryType from '#models/category_type'
 import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
-import { createPriceValidator } from '#validators/price'
 import Price from '#models/price'
 import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
 import AddressesController from '#controllers/addresses_controller'
 import fs from 'fs'
 import Indicator from '#models/indicator'
+import { createPricesValidator } from '#validators/price'
+
 
 export default class EventsController {
   /**
@@ -165,7 +166,7 @@ export default class EventsController {
   async store({ request, session, response }: HttpContext) {
     const event = await this.createEvent(request, session, response)
     if (event) {
-      await this.attachCategoryTypes(request, event)
+      await this.attachCategoryTypes(request, session, event)
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)
       await this.createEventPrices(request, event)
@@ -176,7 +177,7 @@ export default class EventsController {
   }
 
   async createEvent(request: HttpContext['request'], session: HttpContext['session'], response: HttpContext['response']) {
-    try {
+    // try {
       const payload = await request.validateUsing(createEventValidator)
 
       const event = new Event()
@@ -197,22 +198,27 @@ export default class EventsController {
       if (payload.youtube_link) event.youtubeLink = payload.youtube_link
   
       return await event.save()
-    } catch (error) {
-      console.error('Event Validation Error at createEventPrices():', error);
-    }
+    // } catch (error) {
+      // console.error('Event Validation Error at createEventPrices():', error);
+    // }
   }
 
-  async attachCategoryTypes(request: HttpContext['request'], event: Event) {
+  async attachCategoryTypes(request: HttpContext['request'], session: HttpContext['session'], event: Event) {
     const selectedCategoryTypes = request.body().categoryTypes
-    selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
-      await event.related('categoryTypes').attach([categoryTypeId])
-    })
+    
+    if (selectedCategoryTypes) {
+      selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
+        await event.related('categoryTypes').attach([categoryTypeId])
+      })
+    } else {
+      console.log('NOK************');
+      // session.flash('category', 'NOK************')
+    }
   }
 
   async attachIndicators(request: HttpContext['request'], event: Event) {
     const selectedIndicators = request.body().indicators
     if (selectedIndicators) {
-      console.log('OK')
       selectedIndicators.forEach(async (indicatorId: number) => {
         await event.related('indicators').attach([indicatorId])
       })
@@ -220,24 +226,26 @@ export default class EventsController {
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {
-    try {
-      const pricePayload = await request.validateUsing(createPriceValidator)
-      const price = new Price()
+    // try {
+      const pricePayloads = await request.validateUsing(createPricesValidator)
   
-      price.description = pricePayload.price_description
-      if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
-      if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
-      price.availableQty = pricePayload.available_qty
+      for (const pricePayload of pricePayloads.prices) {
+        const price = new Price()
   
-      await price.save()
-      await price.related('event').associate(event)
-    } catch (error) {
-      console.error('Price Validation Error at createEventPrices():', error);
-    }
+        if (pricePayload.price_description) price.description = pricePayload.price_description
+        if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
+        if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
+        if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
+  
+        await price.save()
+        await price.related('event').associate(event)
+      }
+    // } catch (error) {
+      // console.error('Price Validation Error at createEventPrices():', error)
+    // }
   }
 
   async createEventAddress(request: HttpContext['request'], event: Event) {
-    try {
       const addressPayload = await request.validateUsing(createAddressValidator)
       const address = new Address()
 
@@ -250,13 +258,9 @@ export default class EventsController {
 
       await address.save()
       await event.related('location').associate(address)
-    } catch (error) {
-      console.error('Address Validation Error at createEventAddress():', error);
-    }
   }
 
   async uploadEventMedia(request: HttpContext['request'], event: Event) {
-    try {
       const { images_link } = await request.validateUsing(createMediaValidator)
   
       for (const file of images_link) {
@@ -278,9 +282,6 @@ export default class EventsController {
           console.error('Media binary upload error:', error);
         }
       }
-    } catch (error) {
-      console.error('Media Validation Error at uploadEventMedia():', error);
-    }
   }
 
   /**

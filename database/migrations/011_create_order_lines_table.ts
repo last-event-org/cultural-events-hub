@@ -8,8 +8,8 @@ export default class extends BaseSchema {
       table.increments('id')
 
       table.integer('qty')
-      table.integer('order_id').unsigned().references('orders.id').onDelete('RESTRICT')
-      table.integer('price_id').unsigned().references('prices.id').onDelete('RESTRICT')
+      table.integer('order_id').unsigned().references('orders.id').onDelete('CASCADE')
+      table.integer('price_id').unsigned().references('prices.id').onDelete('CASCADE')
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

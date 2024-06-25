@@ -152,6 +152,70 @@
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
                     </div>
+                </div> --}}
+
+                <div>
+                    <label for="description" class="block text-gray-600">
+                        Description
+                    </label>
+                    
+                    <textarea type="text" id="description" name="description"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                        >{{event.description || old('description') || '' }}</textarea>
+                    @inputError('description')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                    @end
+                </div>
+
+                {{-- TODO format date --}}
+                <div class="flex-1">
+                    <label for="event_start" class="block text-gray-600">
+                        Début
+                    </label>
+                    {{-- Date new: {{date}} --}}
+                    <br>
+                    Event start: {{event.eventStart.toISO({})}}
+                    <input type="datetime-local" id="event_start" name="event_start"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                        value="{{event.eventStart || old('event_start') || '' }}">
+                </div>
+
+                <div class="flex-1">
+                    <label for="event_end" class="block text-gray-600">
+                        Fin
+                    </label>
+                    <input type="datetime-local" id="event_end" name="event_end"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                        {{-- value="{{event.eventEnd || old('event_start') || '' }}"> --}}
+                        >
+                </div>
+
+                @flashMessage('date')
+                    <div style="color: red;">{{ $message.message }}</div>
+                @end
+
+                <div>
+                    <label for="facebook_link" class="block text-gray-600">
+                        Lien Facebook
+                    </label>
+                    <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.facebookLink || old('facebook_link') || '' }}">
+                </div>
+
+                <div>
+                    <label for="instagram_link" class="block text-gray-600">
+                        Lien Instagram
+                    </label>
+                    <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink || old('instagram_link') || '' }}">
+                </div>
+
+                <div>
+                    <label for="website_link" class="block text-gray-600">
+                        Site Web
+                    </label>
+                    <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
                 </div>
                 <div class="flex text-sm gap-2">
                   <div class="flex-1">

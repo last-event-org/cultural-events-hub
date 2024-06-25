@@ -47,8 +47,11 @@ export default class Event extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  @hasOne(() => User)
-  declare vendorId: HasOne<typeof User>
+  @column()
+  declare vendorId: number
+
+  @belongsTo(() => User)
+  declare vendor: BelongsTo<typeof User>
 
   @column()
   declare locationId: number

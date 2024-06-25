@@ -15,9 +15,7 @@ router
     router.get('/login', [LoginController, 'show']).as('login.show')
     router.post('/login', [LoginController, 'store']).as('login.store')
     router.get('/register', [RegisterController, 'index']).as('register')
-    router
-      .post('/register', [RegisterController, 'store'])
-      .as('register.store')
+    router.post('/register', [RegisterController, 'store']).as('register.store')
     router
       .post('/profile-type', [RegisterController, 'updateProfileType'])
       .as('register.update-profile-type')
@@ -34,11 +32,27 @@ router
   })
   .as('auth')
 
-router.resource('events', EventsController)
+router.group(() => {
+  router.get('/', [EventsController, 'index']).as('index')
+  router.get('/create', [EventsController, 'create']).as('create').use(middleware.auth())
+  router.get('/:id', [EventsController, 'show']).as('show')
+  router.post('/', [EventsController, 'store']).as('store').use(middleware.auth())
+  router.get('/:id/edit', [EventsController, 'edit']).as('edit')
+  router.patch('/:id', [EventsController, 'update']).as('update')
+  router.delete('/:id', [EventsController, 'destroy']).as('destroy')
+}).prefix('events').as('events')
+
+
+// PANIER
 router.post('/events/:id', [CartController, 'store']).as('cart.store').use(middleware.auth())
 router.get('/cart', [CartController, 'show']).as('cart.show').use(middleware.auth())
-
 router
-  .delete('/cart/destroy', [CartController, 'destroy'])
-  .as('cart.destroy')
+  .post('/cart/:id', [CartController, 'confirmOrder'])
+  .as('cart.validate')
   .use(middleware.auth())
+
+router.post('/cart/add/:id', [CartController, 'addQuantity']).as('cart.add')
+router.post('/cart/remove/:id', [CartController, 'removeQuantity']).as('cart.remove')
+router.post('/cart/delete/:id', [CartController, 'deleteOrderLine']).as('cart.delete')
+
+router.delete('/cart/:id', [CartController, 'destroy']).as('cart.destroy').use(middleware.auth())

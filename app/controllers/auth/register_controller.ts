@@ -17,7 +17,7 @@ export default class RegistersController {
   /**
    * Display form to create a new record
    */
-  async create({}: HttpContext) {}
+  async create({ }: HttpContext) { }
 
   /**
    * Handle form submission for the create action
@@ -86,6 +86,13 @@ export default class RegistersController {
       user.billingAddressId = address.id
 
       await user.related('billingAddress').save(address)
+
+      const role = await Role.findBy('role_name', 'VENDOR')
+      if (role) {
+        user.roleId = role.id
+      }
+
+      await user.save()
 
       return response.redirect().toRoute('home')
     } catch (error) {

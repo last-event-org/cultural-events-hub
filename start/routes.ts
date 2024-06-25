@@ -36,4 +36,10 @@ router
   .as('auth')
 
 router.resource('events', EventsController)
-router.post('/events/:id', [CartController, 'store']).as('add-to-cart').use(middleware.auth())
+router.post('/events/:id', [CartController, 'store']).as('cart.store').use(middleware.auth())
+router.get('/cart', [CartController, 'show']).as('cart.show').use(middleware.auth())
+
+router
+  .delete('/cart/destroy', [CartController, 'destroy'])
+  .as('cart.destroy')
+  .use(middleware.auth())

@@ -8,15 +8,24 @@ export default class OrderLine extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
+  @column()
+  declare qty: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  @belongsTo(() => Order)
-  declare orderId: BelongsTo<typeof Order>
+  @column()
+  declare orderId: number | null
 
-  @hasOne(() => Price)
-  declare priceId: HasOne<typeof Price>
+  @belongsTo(() => Order)
+  declare order: BelongsTo<typeof Order>
+
+  @column()
+  declare priceId: number | null
+
+  @belongsTo(() => Price)
+  declare price: BelongsTo<typeof Price>
 }

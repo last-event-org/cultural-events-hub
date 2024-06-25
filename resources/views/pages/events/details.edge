@@ -4,15 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Event - Détails de l'évènement</title>
-  @vite(['resources/css/app.css', 'resources/js/map_details.js','resources/js/favourites.js'])
+  <title>Next Event - {{event.title}} </title>
+  @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/map_details.js','resources/js/favourites.js'])
 </head>
 
 <body class="bg-slate-50">
 
   @include("pages/partials/header")
 
-  <main class= "container mb-10 mx-auto">
+  <main class= "container mb-10 mx-auto relative">
      
     <div class="flex justify-center  gap-10  mx-auto my-6 py-10"> 
       <article class="bg-slate-50 border-gray-300 rounded-lg w-full">

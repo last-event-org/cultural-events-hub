@@ -1,7 +1,6 @@
 
 <section class="flex flex-col lg:mt-8 mb-4 lg:w-full max-w-[664px] w-[100vw] px-8 lg:px-0 lg:pr-8">
   
-  {{item}}
   <p class=" font-semibold  text-gray-700 bg-slate-300/70 pl-2">
     {{item.description}} :</p>
   <p class="font-light pl-2" >Ancien prix  <span class="line-through">{{item.regularPrice}} €</span></p>  
@@ -14,8 +13,15 @@
     <p class="text-center text-xs text-red-800  font-bold mb-2 animate-pulse">Il reste {{item.availableQty}}  places !</p>
   </div>
   <div class="flex gap-4 justify-end w-full">
-    <a class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" href="">
-      Ajouter au panier</a>
+    @flashMessage('item-added')
+      @!component('components/notification_added_to_basket',{message: $message.message})
+    @end
+    <form action="" method="POST">
+       {{ csrfField() }}
+       <input type="hidden" name="price_id" value={{item.id}} />
+    <button class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+      Ajouter au panier</button>
+      </form>
   </div>
   
   

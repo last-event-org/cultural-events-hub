@@ -9,6 +9,8 @@
       {{-- <div class="absolute -z-10 w-24 h-5 bottom-3 left-20 bg-yellow-500"></div> --}}   
   </a>
 
+
+
   <div class="lg:hidden ">
     <button class="navbar-burger flex items-center text-gray-700 p-3">
       <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +53,13 @@
       Ajouter un événement</a>
     </li>
     @end
+    <li>
+      @if(request.cookie('orderId'))
+      <a href={{route('cart.show')}}>PANIER</a>
+    {{request.cookie('orderId')}}
+  @end
 
+    </li>
   </ul>
 
   @if(!auth.isAuthenticated)

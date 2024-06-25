@@ -64,9 +64,15 @@ export default class RegistersController {
     try {
       const vendorDataPayload = await request.validateUsing(createVendorDataValidator)
 
-      user.companyName = vendorDataPayload.company_name
+      if (vendorDataPayload.company_name && vendorDataPayload.company_name.trim() != '') {
+        user.companyName = vendorDataPayload.company_name
+      } else {
+        user.companyName = user.firstname + ' ' + user.lastname
+      }
       user.vatNumber = vendorDataPayload.vat_number
+
       await user.save()
+      
     } catch (error) {
       console.error('Vendor Validation Error:', error)
     }

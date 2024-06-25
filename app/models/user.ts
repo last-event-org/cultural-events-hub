@@ -66,4 +66,29 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasMany(() => User)
   declare favourites: HasMany<typeof User>
+
+
+  async isUser() {
+    const userRole = await Role.findBy('role_name', 'USER')
+    if (userRole) {
+      return this.roleId === userRole.id
+    }
+    return false
+  }
+
+  async isVendor() {
+    const userRole = await Role.findBy('role_name', 'VENDOR')
+    if (userRole) {
+      return this.roleId === userRole.id
+    }
+    return false
+  }
+
+  async isAdmin() {
+    const userRole = await Role.findBy('role_name', 'ADMIN')
+    if (userRole) {
+      return this.roleId === userRole.id
+    }
+    return false
+  }
 }

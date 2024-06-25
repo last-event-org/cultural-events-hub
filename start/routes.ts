@@ -36,7 +36,7 @@ router
 
 router.group(() => {
   router.get('/', [EventsController, 'index']).as('index')
-  router.get('/create', [EventsController, 'create']).as('create')
+  router.get('/create', [EventsController, 'create']).as('create').use(middleware.auth())
   router.get('/:id', [EventsController, 'show']).as('show')
   router.post('/', [EventsController, 'store']).as('store').use(middleware.auth())
   router.get('/:id/edit', [EventsController, 'edit']).as('edit')

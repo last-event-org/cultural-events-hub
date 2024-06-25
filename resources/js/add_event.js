@@ -2,17 +2,17 @@ function addPriceFields() {
   let template = document.getElementById('priceFieldsTemplate')
   let clone = document.importNode(template.content, true)
 
-  const newIndex = document.querySelectorAll('.price-section').length;
+  const newIndex = document.querySelectorAll('.price-section').length
 
   // Update input names to include the new index
-  const inputs = clone.querySelectorAll('input, textarea');
-  inputs.forEach(input => {
-    const nameAttr = input.getAttribute('name');
+  const inputs = clone.querySelectorAll('input, textarea')
+  inputs.forEach((input) => {
+    const nameAttr = input.getAttribute('name')
     if (nameAttr) {
-      input.setAttribute('name', nameAttr.replace(/\[0\]/g, `[${newIndex}]`));
+      input.setAttribute('name', nameAttr.replace(/\[0\]/g, `[${newIndex}]`))
     }
-  });
-  
+  })
+
   document.getElementById('priceFieldsContainer').appendChild(clone)
 }
 
@@ -23,22 +23,21 @@ function addDiscountedPriceFields() {
 }
 
 function toggleRowDiscountedPrice(element) {
-  const priceSection = element.closest('.price-section');
-  const rowDiscountedPrice = priceSection.querySelector('.discounted-row');
-  const priceCategInput = priceSection.querySelector('#price_description');
-  const regPriceInput = priceSection.querySelector('#regular_price');
-  
+  const priceSection = element.closest('.price-section')
+  const rowDiscountedPrice = priceSection.querySelector('.discounted-row')
+  const priceCategInput = priceSection.querySelector('#price_description')
+  const regPriceInput = priceSection.querySelector('#regular_price')
+
   if (rowDiscountedPrice.classList.contains('hidden')) {
-    rowDiscountedPrice.classList.remove('hidden');
+    rowDiscountedPrice.classList.remove('hidden')
     // priceCategInput.setAttribute('disabled', true);
     // regPriceInput.setAttribute('disabled', true);
   } else {
-    rowDiscountedPrice.classList.add('hidden');
+    rowDiscountedPrice.classList.add('hidden')
     // priceCategInput.removeAttribute('disabled');
     // regPriceInput.removeAttribute('disabled');
   }
 }
-
 
 function toggleDiscountedPriceSection() {
   const discountedPriceSection = document.getElementById('discountedPriceSection')
@@ -55,6 +54,7 @@ function toggleCategoryTypes(categoryId) {
 
   // select all fieldset and hide
   const categoryFieldsets = document.querySelectorAll('[name="categoryTypesFieldset"]')
+  console.log(categoryFieldsets)
   categoryFieldsets.forEach((fieldset) => {
     fieldset.id === 'categoryTypesFieldset_' + categoryId
       ? fieldset.classList.remove('hidden')
@@ -66,7 +66,7 @@ function toggleCategoryTypes(categoryId) {
   // TODO check what is needed here
   checkboxes.forEach((checkbox) => {
     const anyCategoryChecked = Array.from(document.querySelectorAll('[name="categories[]"]')).some(
-      (checkbox) => checkbox.checked
+      (checkedBox) => checkedBox.checked
     )
     checkbox.checked = false
     if (!anyCategoryChecked) {

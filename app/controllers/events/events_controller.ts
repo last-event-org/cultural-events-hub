@@ -15,7 +15,6 @@ import fs from 'fs'
 import Indicator from '#models/indicator'
 import { createPricesValidator } from '#validators/price'
 
-
 export default class EventsController {
   /**
    * Display a list of resource
@@ -180,45 +179,51 @@ export default class EventsController {
     }
   }
 
-
-  async createEvent(request: HttpContext['request'], session: HttpContext['session'], response: HttpContext['response']) {
+  async createEvent(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    response: HttpContext['response']
+  ) {
     // try {
-      const payload = await request.validateUsing(createEventValidator)
+    const payload = await request.validateUsing(createEventValidator)
 
-      const event = new Event()
+    const event = new Event()
 
-      event.title = payload.title
-      event.subtitle = payload.subtitle
-      event.description = payload.description
-      event.eventStart = DateTime.fromISO(payload.event_start)
-      event.eventEnd = DateTime.fromISO(payload.event_end)
-      if (event.eventStart > event.eventEnd) {
-        session.flash('date', {
-          message: "La début de l'événement doit être avant la fin",
-        })
-      }
-      if (payload.facebook_link) event.facebookLink = payload.facebook_link
-      if (payload.instagram_link) event.instagramLink = payload.instagram_link
-      if (payload.website_link) event.websiteLink = payload.website_link
-      if (payload.youtube_link) event.youtubeLink = payload.youtube_link
+    event.title = payload.title
+    event.subtitle = payload.subtitle
+    event.description = payload.description
+    event.eventStart = DateTime.fromISO(payload.event_start)
+    event.eventEnd = DateTime.fromISO(payload.event_end)
+    if (event.eventStart > event.eventEnd) {
+      session.flash('date', {
+        message: "La début de l'événement doit être avant la fin",
+      })
+    }
+    if (payload.facebook_link) event.facebookLink = payload.facebook_link
+    if (payload.instagram_link) event.instagramLink = payload.instagram_link
+    if (payload.website_link) event.websiteLink = payload.website_link
+    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
 
-      return await event.save()
+    return await event.save()
 
     // } catch (error) {
-      // console.error('Event Validation Error at createEventPrices():', error);
+    // console.error('Event Validation Error at createEventPrices():', error);
     // }
-
   }
 
-  async attachCategoryTypes(request: HttpContext['request'], session: HttpContext['session'], event: Event) {
+  async attachCategoryTypes(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    event: Event
+  ) {
     const selectedCategoryTypes = request.body().categoryTypes
-    
+
     if (selectedCategoryTypes) {
       selectedCategoryTypes.forEach(async (categoryTypeId: number) => {
         await event.related('categoryTypes').attach([categoryTypeId])
       })
     } else {
-      console.log('NOK************');
+      console.log('NOK************')
       // session.flash('category', 'NOK************')
     }
   }
@@ -233,66 +238,62 @@ export default class EventsController {
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {
-
     // try {
-      const pricePayloads = await request.validateUsing(createPricesValidator)
-  
-      for (const pricePayload of pricePayloads.prices) {
-        const price = new Price()
-  
-        if (pricePayload.price_description) price.description = pricePayload.price_description
-        if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
-        if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
-        if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
-  
-        await price.save()
-        await price.related('event').associate(event)
-      }
-    // } catch (error) {
-      // console.error('Price Validation Error at createEventPrices():', error)
-    // }
+    const pricePayloads = await request.validateUsing(createPricesValidator)
 
+    for (const pricePayload of pricePayloads.prices) {
+      const price = new Price()
+
+      if (pricePayload.price_description) price.description = pricePayload.price_description
+      if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
+      if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
+      if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
+
+      await price.save()
+      await price.related('event').associate(event)
+    }
+    // } catch (error) {
+    // console.error('Price Validation Error at createEventPrices():', error)
+    // }
   }
 
   async createEventAddress(request: HttpContext['request'], event: Event) {
-      const addressPayload = await request.validateUsing(createAddressValidator)
-      const address = new Address()
+    const addressPayload = await request.validateUsing(createAddressValidator)
+    const address = new Address()
 
-      address.name = addressPayload.name ?? ''
-      address.street = addressPayload.street
-      address.number = addressPayload.number
-      address.zipCode = addressPayload.zip_code
-      address.city = addressPayload.city
-      address.country = addressPayload.country
+    address.name = addressPayload.name ?? ''
+    address.street = addressPayload.street
+    address.number = addressPayload.number
+    address.zipCode = addressPayload.zip_code
+    address.city = addressPayload.city
+    address.country = addressPayload.country
 
-      await address.save()
-      await event.related('location').associate(address)
-
+    await address.save()
+    await event.related('location').associate(address)
   }
 
   async uploadEventMedia(request: HttpContext['request'], event: Event) {
-      const { images_link } = await request.validateUsing(createMediaValidator)
+    const { images_link } = await request.validateUsing(createMediaValidator)
 
-      for (const file of images_link) {
-        const media = new Media()
-        media.path = '' // TODO if needed, setup a path method if we'll use an external server
-        media.altName = file.clientName
-        media.eventId = event.id
+    for (const file of images_link) {
+      const media = new Media()
+      media.path = '' // TODO if needed, setup a path method if we'll use an external server
+      media.altName = file.clientName
+      media.eventId = event.id
 
-        if (!file.tmpPath) {
-          console.error('Skipping file due to missing tmpPath:', file)
-          continue // Skip this iteration if tmpPath is undefined
-        }
-
-        try {
-          const binaryData = fs.readFileSync(file.tmpPath)
-          media.binary = binaryData
-          await media.save()
-        } catch (error) {
-          console.error('Media binary upload error:', error)
-        }
+      if (!file.tmpPath) {
+        console.error('Skipping file due to missing tmpPath:', file)
+        continue // Skip this iteration if tmpPath is undefined
       }
 
+      try {
+        const binaryData = fs.readFileSync(file.tmpPath)
+        media.binary = binaryData
+        await media.save()
+      } catch (error) {
+        console.error('Media binary upload error:', error)
+      }
+    }
   }
 
   /**
@@ -309,6 +310,7 @@ export default class EventsController {
       .preload('indicators')
       .preload('prices')
       .preload('media')
+      .preload('vendor')
 
     if (event === undefined || event.length === 0) {
       response.redirect().back()

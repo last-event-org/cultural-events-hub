@@ -50,7 +50,9 @@ export default class Event extends BaseModel {
   @column()
   declare vendorId: number
 
-  @belongsTo(() => User)
+  @belongsTo(() => User, {
+    foreignKey: 'vendorId',
+  })
   declare vendor: BelongsTo<typeof User>
 
   @column()

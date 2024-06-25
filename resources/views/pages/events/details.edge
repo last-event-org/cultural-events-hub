@@ -21,6 +21,37 @@
           <a href="{{route('events.edit', {id : event.id})}}" class="  hover:text-yellow-500 text-xs underline  font-bold rounded-xl transition duration-200" target="" rel="noopener noreferrer" type="button">
             Modifier</a>
         </div>
+
+        {{-- nom de la société --}}
+        {{event.vendor.companyName}}
+         
+
+        {{-- id de la société à lier pour qu'on puisse retracer le user pour ajouter aux favoris --}}
+        {{event.vendor.id}}
+        <br>
+
+        {{event.location.name}}
+        {{event.location.street}}
+        {{event.location.number}}
+        {{event.location.zipCode}}
+        {{event.location.city}}
+        {{event.location.country}}
+
+        {{event.eventStart}}
+        {{event.eventEnd}}
+
+        {{-- toutes les sous-catégories --}}
+        @each(item in event.categoryTypes)
+          {{item.name}}
+        @end
+
+        {{-- toutes les  --}}
+        @each(item in event.prices)
+          {{item.description}}
+          {{item.regularPrice}}
+          {{item.discountedPrice}}
+        @end
+
        
         <div class="flex flex-col gap-4 mx-4 mb-4">
           

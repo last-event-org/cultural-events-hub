@@ -42,17 +42,25 @@
       </svg>
     </li>
 
-    @if(!auth.isAuthenticated)
-    <li>
-      <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.login.show') }}>
-      Ajouter un événement</a>
-    </li>
+    @if(await auth.isAuthenticated)
+      @if(await auth.user.isVendor())
+      <li>
+        <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('events.create') }}>
+          Ajouter un événement</a>
+      </li>
+      @else
+      <li>
+        <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.profile.edit') }}>
+          Ajouter un événement</a>
+      </li>
+      @end
     @else
-    <li>
-      <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('events.create') }}>
-      Ajouter un événement</a>
-    </li>
+      <li>
+        <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.login.show') }}>
+        Ajouter un événement</a>
+      </li>
     @end
+    
     <li>
       @if(request.cookie('orderId'))
         <a href={{route('cart.show')}}>PANIER</a>

@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Event Edit profile</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/cart.js'])
+  <title>Next Event - Panier</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -20,25 +20,78 @@
       @if(!order) 
       <p>Votre panier est vide</p>
       @else
+      <table>
+          <thead>
+            <tr>
+              <th scope="col">Evénement</th>
+              <th scope="col">Catégorie de billet</th>
+              <th scope="col">Quantité</th>
+              <th scope="col">Prix/pc</th>
+              <th scope="col">Total</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+
+      {{order.userId}}
         @each(item in order.orderLineId)
-        {{order.userId}}
-          <p>Qty {{item.qty}}</p>
-          <p>{{item.priceId}}</p>
-          <p>{{item.price.description}}</p>
-          <p>{{item.price.regularPrice}}</p>
-          <p>{{item.price.discountedPrice}}</p>
-          <p>{{item.price.event.title}}</p>
+          <tr>
+              <th scope="row">{{item.price.event.title}}</th>
+              <td>{{item.price.description}}</td>
+              <td >
+                <form action="{{ route('cart.add', [item.id]) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+                    {{ csrfField() }}
+                    <button onclick="addQuantity({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-green-700 hover:bg-green-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+                    +
+                    </button>
+                </form>
+                <span name="orderLineQty-{{item.id}}">{{item.qty}}</span>
+                <form action="{{ route('cart.remove', [item.id]) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+                  {{ csrfField() }}
+                  
+                  <button onclick="removeQuantity({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+                  -
+                  </button>
+                </form>
+
+              </td>
+              <td>{{item.price.discountedPrice}} €</td>
+              <td>TOTAL €</td>
+              <td>
+                <form action="{{ route('cart.delete', [item.id]) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+                  {{ csrfField() }}
+                  
+                  <button onclick="removeOrderLine({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+                  -
+                  </button>
+                </form>
+              </td>
+            </tr>
         @end
-          <form action="" method="POST">
+        </tbody>
+        <tfoot>
+            <tr>
+              <th scope="row" colspan="2">Total</th>
+              <td>33 €</td>
+            </tr>
+          </tfoot>
+        </table>
+
+      <form action="{{ route('cart.destroy', [order.id], { qs: {_method: 'DELETE'}}) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+            
+            {{ csrfField() }}
+            
+            <input type="hidden" name="_method" value="DELETE" />
+            <button name class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+      Vider mon panier</button>
+            </form>
+
+          <form action="{{route('cart.validate', [order.id])}}" method="POST">
        {{ csrfField() }}
-       <input type="hidden" name="order_id" value={{order.id}} />
     <button class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
       Valider mon panier</button>
-    {{-- TODO Fieldset --}}
 
-    <a href={{route('cart.destroy')}}>
-      <button name class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-      Vider mon panier</button>
+      
       </form>
     </a>
       @end
@@ -51,7 +104,7 @@
   
 
     @include("pages/partials/footer")
-  
+  <script src="/resources/js/cart.js"></script>
 
 </body>
 </html>

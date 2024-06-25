@@ -4,110 +4,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editer un Événement</title>
-    @vite(['resources/css/app.css'])
-    
+    <title>Éditer un Événement</title>
+    @vite(['resources/css/app.css', 'resources/js/hours_create_event.js'])
+
 </head>
 
+<body class="bg-slate-50">
+  @include("pages/partials/header")
+  <main class="flex flex-col items-center min-h-screen mb-16">
 
-<body class="bg-gray-50">
-    @include("pages/partials/header")
-    <section class="bg-gray-50 flex items-center justify-center my-20">
+      <div class="justify-center flex">  
+        <h2 class="relative z-10 font-bold text-xl my-10">
+          Éditer l'évènement
+            <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+        </h2>
+      </div>
 
-        <div class="bg-white p-8 rounded shadow-md w-full max-w-3xl">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
-                EDITER UN EVENEMENT
-            </h2>
-            <form action="{{ route('events.update', [event.id], { qs: {_method: 'PATCH'}}) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+    <form action="{{ route('events.update', [event.id], { qs: {_method: 'PATCH'}}) }}" method="post"  enctype="multipart/form-data">
+      {{ csrfField() }}
+      {{-- {{ inspect(flashMessages.all()) }} --}}
+      @error('E_INVALID_CREDENTIALS')
+      {{ $message }}
+      @end
+
+      <section class=" bg-white text-slate-600 flex flex-col border rounded-md mb-5 shadow p-4">
+        <div class="w-screen sm:w-[600px] lg:w-[800px] text-sm">
+          <div class="block text-slate-800 text-xl font-semibold my-4 text-center">
+              Description
+          </div>
             
-            {{ csrfField() }}
-            
-            {{-- {{ inspect(flashMessages.all()) }} --}}
-            @error('E_INVALID_CREDENTIALS')
-            
-            {{ $message }}
-            
+          <div class="flex flex-col mb-3">
+            <label for="title" class="block text-gray-600">
+                Titre
+            </label>
+            <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border
+              border-gray-300 rounded-md shadow-sm
+              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" 
+              value="{{ event.title || old('title') || '' }}"
+            >
+            @inputError('title')
+            <div style="color: red;">{{ $messages.join(', ') }}
+            </div>
             @end
-            <input type="hidden" name="_method" value="PATCH" />
+          </div>
 
-                <div>
-                    <label for="title" class="block text-gray-600">
-                        Titre
+          <div class="flex flex-col mb-3">
+              <label for="subtitle" class="block text-gray-600">
+                  Sous-Titre
+              </label>
+              <input type="text" id="subtitle" name="subtitle" 
+                class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" 
+              value="{{event.subtitle || old('subtitle') || '' }}">
+              @inputError('subtitle')
+              <div style="color: red;">{{ $messages.join(', ') }}</div>
+              @end
+          </div>
+
+          <div class="flex flex-col mb-3">
+            <label for="description" class="block text-gray-600">
+                Description
+            </label>
+            <textarea type="text" id="description" name="description"
+              class="mt-1 block w-full h-36 px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+              >{{event.description || old('description') || '' }}
+            </textarea>
+            @inputError('description')
+            <div style="color: red;">{{ $messages.join(', ') }}</div>
+            @end
+          </div>
+        </section>
+
+
+        <section class=" bg-blue-100 text-slate-600 flex flex-col border rounded-md shadow my-10 p-4">
+          <div class="w-screen sm:w-[600px] lg:w-[800px] ">
+            <div class="block text-slate-800 text-xl font-semibold my-4 text-center">
+                Lieu
+            </div>
+            <div class="flex flex-col text-sm">
+                <div class="flex flex-col mb-3">
+                    <label for="name" class="block text-gray-600">
+                        Nom
                     </label>
-                    <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ event.title || old('title') || '' }}">
-                    @inputError('title')
+                    <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
+                    @inputError('name')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
                 </div>
 
-                <div>
-                    <label for="subtitle" class="block text-gray-600">
-                        Sous-Titre
-                    </label>
-                    <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-             focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.subtitle || old('subtitle') || '' }}">
-                    @inputError('subtitle')
-                    <div style="color: red;">{{ $messages.join(', ') }}</div>
-                    @end
-                </div>
-                {{-- TODO do we manage address here or somewhere else ? --}}
-                {{-- ADDRESS --}}
-                {{-- <div>
-                    <div class="block text-gray-800 text-xl font-semibold my-4">
-                        Lieu
-                    </div>
-                    <div class="flex flex-col gap-2 my-4">
-                        <label for="name" class="block text-gray-600">
-                            Nom
-                        </label>
-                        <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                 focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
-                        @inputError('name')
-                        <div style="color: red;">{{ $messages.join(', ') }}</div>
-                        @end
-
+                <div class="flex mb-3 gap-2">
+                    <div class="flex flex-col w-5/6">
                         <label for="street" class="block text-gray-600">
                             Rue
                         </label>
                         <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                 focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
+              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
                         @inputError('street')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
+                    </div>
 
+                    <div class="flex flex-col w-1/6">
                         <label for="number" class="block text-gray-600">
                             Numéro
                         </label>
                         <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                 focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
+              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
                         @inputError('number')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
+                    </div>
+                </div>
 
+                <div class="flex mb-3 gap-2">
+                    <div class="flex flex-col w-2/6">
                         <label for="zip_code" class="block text-gray-600">
                             Code Postal
                         </label>
                         <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                 focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
+              focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                            value="{{old('zip_code') || '' }}">
                         @inputError('zip_code')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
+                    </div>
 
+                    <div class="flex flex-col">
                         <label for="city" class="block text-gray-600">
                             Ville
                         </label>
                         <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                 focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
+              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
                         @inputError('city')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
+                    </div>
 
+                    <div class="flex flex-col mb-3">
                         <label for="country" class="block text-gray-600">
                             Pays
                         </label>
                         <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                 focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
+              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
                         @inputError('country')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
@@ -177,18 +217,53 @@
                     <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
                 </div>
+                <div class="flex text-sm gap-2">
+                  <div class="flex-1">
+                      <label for="event_start" class="block text-gray-600">
+                          Début
+                      </label>
+                      <p class="text-[8px]">Event start: {{event.eventStart.toISO({})}}</p>
+                      <input type="datetime-local" id="event_start" name="event_start"
+                          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                          value="">
+                  </div>
 
-                <div>
-                    <label for="youtube_link" class="block text-gray-600">
-                        Lien vidéo YouTube
-                    </label>
-                    <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.youtubeLink || old('youtube_link') || '' }}">
-                </div>
+                  <div class="flex-1">
+                      <label for="event_end" class="block text-gray-600">
+                          Fin
+                      </label>
+                      <p class="text-[8px]">Event End: {{event.eventEnd.toISO({})}}</p>
+                      <input type="datetime-local" id="event_end" name="event_end"
+                          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                          value="">
+                  </div>
+              
 
+              @flashMessage('date')
+              <div style="color: red;">{{ $message.message }}</div>
+              @end
+            </div>
+        </section>
 
-                <fieldset>
-                    <legend class="block text-gray-600">Catégories:</legend>
+        <section class=" bg-emerald-200 text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-6">  
+          <label for="images_link" class="text-center ">
+              Charger des images (max. 3)
+          </label>
+          <input class="mt-4 max-w-56" type="file" id="images_link" name="images_link[]"
+              onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple 
+          />
+          @inputError('images_link')
+          <div style="color: yellow;">Au moins une image doit être ajoutée à l'événement
+          </div>
+          @end
+          <div id="imagePreviewContainer" class="flex flex-wrap mt-4">
+          </div>
+        </section>
+
+        <section class=" bg-pink-100 text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-6">
+          <div class="w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base">
+                <fieldset class="py-2 w-1/2">
+                    <legend class="block">Catégories:</legend>
                     @each(category in categories)
                     <ul>
                         <li>
@@ -226,29 +301,70 @@
                     </ul>
                     @end
                 </fieldset>
+                            
+                {{-- @flashMessage('category')
+                    <div style="color: red;">{{ $message.message }}</div>
+                @end --}}
 
-                <fieldset>
-                    <legend class="block text-gray-600">Indicateurs:</legend>
-                    @each(indicator in indicators)
-                    <ul>
-                        <li>
-                            <input 
-                                type="checkbox" 
-                                id="indicator_{{ indicator.id }}" name="indicators[]"
-                                value="{{ indicator.id }}"
-                                @each(eventIndicator in event.indicators)
-                                    @if(eventIndicator.id == indicator.id) 
-                                        checked
-                                    @end
-                                @end
-                            />
-                            <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
-                        </li>
-                    </ul>
-                    @end
+                <fieldset class="py-2 w-1/2">
+                  <legend class="block text-gray-600">Indicateurs:</legend>
+                  @each(indicator in indicators)
+                  <ul>
+                      <li>
+                          <input 
+                              type="checkbox" 
+                              id="indicator_{{ indicator.id }}" name="indicators[]"
+                              value="{{ indicator.id }}"
+                              @each(eventIndicator in event.indicators)
+                                  @if(eventIndicator.id == indicator.id) 
+                                      checked
+                                  @end
+                              @end
+                          />
+                          <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
+                      </li>
+                  </ul>
+                  @end
                 </fieldset>
+            </div>
+          </section>
+
+            <div class="text-sm">
+                <div class="pb-3">
+                    <label for="facebook_link" class="block text-gray-600">
+                        Lien Facebook
+                    </label>
+                    <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+    focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.facebookLink || old('facebook_link') || '' }}">
+                </div>
+
+                <div class="pb-3">
+                    <label for="instagram_link" class="block text-gray-600">
+                        Lien Instagram
+                    </label>
+                    <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink || old('instagram_link') || '' }}">
+                </div>
+
+                <div class="pb-3">
+                    <label for="website_link" class="block text-gray-600">
+                        Lien Site Web
+                    </label>
+                    <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
+                </div>
+
+                <div class="pb-3">
+                    <label for="youtube_link" class="block text-gray-600">
+                        Lien vidéo YouTube
+                    </label>
+                    <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+      focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.youtubeLink || old('youtube_link') || '' }}">
+                </div>
+            </div>
 
 
+            <div class="text-sm p-3 bg-fuchsia-50 rounded-lg">
                 @!component('components/price_fields')
 
                 <template id="priceFieldsTemplate">
@@ -257,47 +373,52 @@
                 <div id="priceFieldsContainer" class="flex flex-col gap-4">
                     <!-- div to add the addionnal prices -->
                 </div>
-
-
-                <div>
-                    <label for="images_link" class="block text-gray-600">
-                        Charger des images (max. 3)
-                    </label>
-                    <input type="file" id="images_link" name="images_link[]" onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
-                    @inputError('images_link')
+                @inputError('prices[]')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
-                    @end
-                    <div id="imagePreviewContainer" class="flex flex-wrap mt-4"></div>
+                @end
+            </div>
+
+            <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
+        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                Ajouter des tarifs
+            </button>
+
+            {{-- <div>
+                <input type="checkbox" id="displayDiscountSection" name="" value=""
+                    onchange="toggleDiscountedPriceSection(this)" />
+                <label for="displayDiscountSection">Voulez vous ajouter des prix réduits</label>
+            </div>
+
+            <div class="bg-orange-200 p-5 rounded-md hidden" id="discountedPriceSection">
+                @!component('components/discounted_price_fields')
+
+                <template id="discountedPriceFieldsTemplate">
+                    @!component('components/discounted_price_fields')
+                </template>
+                <div id="discountedPriceFieldsContainer" class="flex flex-col gap-4">
+                    <!-- div to add the addionnal prices -->
                 </div>
 
+                <button type="button" onclick="addDiscountedPriceFields()" class=" mt-4 bg-orange-700 text-white py-2 px-4 rounded-md hover:bg-orange-900 
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Ajouter des tarifs réduits
+                </button>
+            </div> --}}
 
-                <div>
+            <div>
 
+                <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
+  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Créer
+                </button>
+            </div>
 
-                    <button type="button" onclick="addPriceFields()" class="w-full bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                        Ajouter des catégories de prix
-                    </button>
+        </form>
+      </div>
+    </main>
 
-
-                    <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
-          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                        Créer
-                    </button>
-                </div>
-
-            </form>
-
-        </div>
-    </section>
-
-    @include("pages/partials/footer")
-    <script src="/resources/js/add_event.js"></script>
-    <script>
-        
-
-    </script>
-
+  @include("pages/partials/footer")
+<script src="/resources/js/add_event.js"></script>
 </body>
 
 </html>

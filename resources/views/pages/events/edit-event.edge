@@ -27,8 +27,8 @@
       {{ $message }}
       @end
 
-      <section class=" bg-white text-slate-600 flex flex-col border rounded-md mb-5 shadow p-4">
-        <div class="w-screen sm:w-[600px] lg:w-[800px] text-sm">
+      <section class=" bg-white text-slate-600 flex flex-col items-center border rounded-md mb-5 shadow p-4">
+        <div class="w-screen sm:w-[600px] lg:w-[800px] text-sm px-4">
           <div class="block text-slate-800 text-xl font-semibold my-4 text-center">
               Description
           </div>
@@ -77,8 +77,8 @@
         </section>
 
 
-        <section class=" bg-blue-100 text-slate-600 flex flex-col border rounded-md shadow my-10 p-4">
-          <div class="w-screen sm:w-[600px] lg:w-[800px] ">
+        <section class=" bg-blue-100 text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-4">
+          <div class="w-screen sm:w-[600px] lg:w-[800px] px-4">
             <div class="block text-slate-800 text-xl font-semibold my-4 text-center">
                 Lieu
             </div>
@@ -152,9 +152,9 @@
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
                     </div>
-                </div> --}}
+                </div> 
 
-                <div>
+                {{-- <div>
                     <label for="description" class="block text-gray-600">
                         Description
                     </label>
@@ -216,7 +216,7 @@
                     </label>
                     <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
-                </div>
+                </div> --}}
                 <div class="flex text-sm gap-2">
                   <div class="flex-1">
                       <label for="event_start" class="block text-gray-600">
@@ -237,7 +237,7 @@
                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
                           value="">
                   </div>
-              
+             
 
               @flashMessage('date')
               <div style="color: red;">{{ $message.message }}</div>
@@ -261,76 +261,73 @@
         </section>
 
         <section class=" bg-pink-100 text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-6">
-          <div class="w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base">
-                <fieldset class="py-2 w-1/2">
-                    <legend class="block">Catégories:</legend>
-                    @each(category in categories)
-                    <ul>
-                        <li>
-                            <input type="radio" id="category_{{ category.id }}" name="categories[]"
-                                value="{{ category.id }}" onclick="toggleCategoryTypes({{ category.id }})" 
-                                    
-                                {{event.categoryTypes[0].category.id == category.id ? "checked" : ""}}
-                                
-                                />
-                            <label for="category_{{ category.id }}">{{ category.name }}</label>
-
-                            <fieldset id="categoryTypesFieldset_{{ category.id }}" class=" {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}} relative left-10">
-                                @each(categoryType in categoryTypes)
-                                    @if (categoryType.categoryId == category.id)
-                                    <li class="category-type category-type-{{ categoryType.categoryId }}  {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}}">
-                                        <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
-                                            value="{{ categoryType.id }}"
-                                            
-                                            @each(eventCategoryType in event.categoryTypes)
-                                    @if(eventCategoryType.id == categoryType.id) 
-                                        checked
-                                    @end
-                                @end
-
-
-                                            
-                                            />
-                                        <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
-                                    </li>
-                                    @endif
-                                @end
-                            </fieldset>
-
-                        </li>
-                    </ul>
-                    @end
-                </fieldset>
+          <div class="flex w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base px-4">
+            <fieldset class="w-1/2">
+              <legend class="block">Catégories:</legend>
+                @each(category in categories)
+                <ul>
+                  <li>
+                    <input type="radio" id="category_{{ category.id }}" name="categories[]"
+                        value="{{ category.id }}" onclick="toggleCategoryTypes({{ category.id }})" 
                             
-                {{-- @flashMessage('category')
+                        {{event.categoryTypes[0].category.id == category.id ? "checked" : ""}}
+                        
+                        />
+                    <label for="category_{{ category.id }}">{{ category.name }}</label>
+
+                    <fieldset id="categoryTypesFieldset_{{ category.id }}" class=" {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}} relative left-10">
+                      @each(categoryType in categoryTypes)
+                        @if (categoryType.categoryId == category.id)
+                        <li class="category-type category-type-{{ categoryType.categoryId }}  {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}}">
+                          <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
+                              value="{{ categoryType.id }}"
+                              
+                              @each(eventCategoryType in event.categoryTypes)
+                                @if(eventCategoryType.id == categoryType.id) 
+                                    checked
+                                @end
+                        @end
+                            />
+                          <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+                        </li>
+                        @endif
+                      @end
+                    </fieldset>
+                  </li>
+                </ul>
+              @end
+            </fieldset>
+                            
+                @flashMessage('category')
                     <div style="color: red;">{{ $message.message }}</div>
-                @end --}}
+                @end
 
-                <fieldset class="py-2 w-1/2">
-                  <legend class="block text-gray-600">Indicateurs:</legend>
-                  @each(indicator in indicators)
-                  <ul>
-                      <li>
-                          <input 
-                              type="checkbox" 
-                              id="indicator_{{ indicator.id }}" name="indicators[]"
-                              value="{{ indicator.id }}"
-                              @each(eventIndicator in event.indicators)
-                                  @if(eventIndicator.id == indicator.id) 
-                                      checked
-                                  @end
+            <fieldset class="w-1/2">
+              <legend class="block text-gray-600">Indicateurs:</legend>
+              @each(indicator in indicators)
+              <ul>
+                  <li>
+                      <input 
+                          type="checkbox" 
+                          id="indicator_{{ indicator.id }}" name="indicators[]"
+                          value="{{ indicator.id }}"
+                          @each(eventIndicator in event.indicators)
+                              @if(eventIndicator.id == indicator.id) 
+                                  checked
                               @end
-                          />
-                          <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
-                      </li>
-                  </ul>
-                  @end
-                </fieldset>
-            </div>
-          </section>
+                          @end
+                      />
+                      <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
+                  </li>
+              </ul>
+              @end
+            </fieldset>
+          </div>
+        </section>
 
-            <div class="text-sm">
-                <div class="pb-3">
+        <section class=" bg-white text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-6">
+          <div class="flex flex-col gap-3 w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base px-4">
+                <div>
                     <label for="facebook_link" class="block text-gray-600">
                         Lien Facebook
                     </label>
@@ -338,15 +335,15 @@
     focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.facebookLink || old('facebook_link') || '' }}">
                 </div>
 
-                <div class="pb-3">
+                <div>
                     <label for="instagram_link" class="block text-gray-600">
                         Lien Instagram
                     </label>
                     <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink || old('instagram_link') || '' }}">
+        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink|| old('instagram_link') || '' }}">
                 </div>
 
-                <div class="pb-3">
+                <div>
                     <label for="website_link" class="block text-gray-600">
                         Lien Site Web
                     </label>
@@ -354,7 +351,7 @@
         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
                 </div>
 
-                <div class="pb-3">
+                <div>
                     <label for="youtube_link" class="block text-gray-600">
                         Lien vidéo YouTube
                     </label>
@@ -362,6 +359,8 @@
       focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.youtubeLink || old('youtube_link') || '' }}">
                 </div>
             </div>
+          </div>
+        </section>  
 
 
             <div class="text-sm p-3 bg-fuchsia-50 rounded-lg">

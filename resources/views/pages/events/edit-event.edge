@@ -27,7 +27,7 @@
       {{ $message }}
       @end
 
-      <section class=" bg-white text-slate-600 flex flex-col border rounded-md mb-5 shadow p-4">
+      <section class=" bg-white text-slate-600 flex flex-col items-center border rounded-md mb-5 shadow p-4">
         <div class="w-screen sm:w-[600px] lg:w-[800px] text-sm px-4">
           <div class="block text-slate-800 text-xl font-semibold my-4 text-center">
               Description
@@ -77,8 +77,8 @@
         </section>
 
 
-        <section class=" bg-blue-100 text-slate-600 flex flex-col border rounded-md shadow my-10 p-4">
-          <div class="w-screen sm:w-[600px] lg:w-[800px] ">
+        <section class=" bg-blue-100 text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-4">
+          <div class="w-screen sm:w-[600px] lg:w-[800px] px-4">
             <div class="block text-slate-800 text-xl font-semibold my-4 text-center">
                 Lieu
             </div>
@@ -153,8 +153,8 @@
                         @end
                     </div>
                 </div> 
-{{-- 
-                <div>
+
+                {{-- <div>
                     <label for="description" class="block text-gray-600">
                         Description
                     </label>
@@ -216,7 +216,7 @@
                     </label>
                     <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
-                </div>
+                </div> --}}
                 <div class="flex text-sm gap-2">
                   <div class="flex-1">
                       <label for="event_start" class="block text-gray-600">
@@ -237,7 +237,7 @@
                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
                           value="">
                   </div>
-              --}}
+             
 
               @flashMessage('date')
               <div style="color: red;">{{ $message.message }}</div>
@@ -261,7 +261,7 @@
         </section>
 
         <section class=" bg-pink-100 text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-6">
-          <div class="flex w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base">
+          <div class="flex w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base px-4">
             <fieldset class="w-1/2">
               <legend class="block">Catégories:</legend>
                 @each(category in categories)
@@ -326,7 +326,7 @@
         </section>
 
         <section class=" bg-white text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-6">
-          <div class="flex flex-col gap-3 w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base">
+          <div class="flex flex-col gap-3 w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base px-4">
                 <div>
                     <label for="facebook_link" class="block text-gray-600">
                         Lien Facebook
@@ -340,7 +340,7 @@
                         Lien Instagram
                     </label>
                     <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink || old('instagram_link') || '' }}">
+        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink|| old('instagram_link') || '' }}">
                 </div>
 
                 <div>

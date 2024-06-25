@@ -18,7 +18,6 @@ router
     router
       .post('/register', [RegisterController, 'store'])
       .as('register.store')
-      .use(middleware.auth())
     router
       .post('/profile-type', [RegisterController, 'updateProfileType'])
       .as('register.update-profile-type')

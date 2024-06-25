@@ -9,6 +9,7 @@ import Address from '#models/address'
 import Price from '#models/price'
 import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
+import User from '#models/user'
 import AddressesController from '#controllers/addresses_controller'
 import fs from 'fs'
 import Indicator from '#models/indicator'
@@ -164,9 +165,11 @@ export default class EventsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, session, response }: HttpContext) {
+  async store({ request, session, response, auth }: HttpContext) {
     const event = await this.createEvent(request, session, response)
     if (event) {
+      const user = auth.user
+      if (user) event.vendorId = user.id
       await this.attachCategoryTypes(request, session, event)
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)

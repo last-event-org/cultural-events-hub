@@ -34,7 +34,16 @@ router
   })
   .as('auth')
 
-router.resource('events', EventsController)
+router.group(() => {
+  router.get('/', [EventsController, 'index']).as('index')
+  router.get('/create', [EventsController, 'create']).as('create')
+  router.get('/:id', [EventsController, 'show']).as('show')
+  router.post('/', [EventsController, 'store']).as('store').use(middleware.auth())
+  router.get('/:id/edit', [EventsController, 'edit']).as('edit')
+  router.patch('/:id', [EventsController, 'update']).as('update')
+  router.delete('/:id', [EventsController, 'destroy']).as('destroy')
+}).prefix('events').as('events')
+
 router.post('/events/:id', [CartController, 'store']).as('cart.store').use(middleware.auth())
 router.get('/cart', [CartController, 'show']).as('cart.show').use(middleware.auth())
 

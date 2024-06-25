@@ -3,6 +3,7 @@ import OrderLine from '#models/order_line'
 import Price from '#models/price'
 import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 import { document } from 'postcss'
 
 export default class CartController {
@@ -86,17 +87,71 @@ export default class CartController {
    * Add one 1pc
    */
 
-  async addQuantity(id: number) {}
+  async addQuantity({ params, view, response, request }: HttpContext) {
+    console.log('ADD QUANTITY')
+
+    const orderLine = await OrderLine.find(params['id'])
+    if (orderLine) {
+      orderLine.qty += 1
+      orderLine?.save()
+    }
+
+    // TODO configure the response
+    return response.send()
+  }
 
   /**
    * Remove 1pc
    */
-  async removeQuantity(id: number) {}
+  async removeQuantity({ params, auth, view, response }: HttpContext) {
+    console.log('REMOVE QUANTITY')
+
+    const orderLine = await OrderLine.find(params['id'])
+    if (orderLine) {
+      if (orderLine.qty === 1) {
+        orderLine.delete()
+      } else {
+        orderLine.qty -= 1
+        orderLine?.save()
+      }
+    }
+
+    // TODO configure the response
+    return response.send()
+  }
+
+  /**
+   * Remove 1pc
+   */
+  async deleteOrderLine({ params, response }: HttpContext) {
+    console.log('DELETE ORDER LINE')
+
+    const orderLine = await OrderLine.find(params['id'])
+    orderLine?.delete()
+
+    // TODO configure the response
+    return response.send()
+  }
 
   /**
    * Confirm order
    */
-  async confirmOrder() {}
+  async confirmOrder({ params, response }: HttpContext) {
+    console.log('CONFIRM ORDER')
+    console.log(params['id'])
+    const order = await Order.find(params['id'])
+
+    // TODO update quantities in prices
+
+    if (order) {
+      order.isPaid = true
+      order.purchaseDate = DateTime.now()
+      await order?.save()
+      response.clearCookie('orderId')
+    }
+
+    return response.redirect().back()
+  }
 
   /**
    * Handle form submission for the edit action
@@ -106,9 +161,12 @@ export default class CartController {
   /**
    * Delete record
    */
-  async destroy({ params, request, response }: HttpContext) {
-    let order = await Order.find(request.cookie('orderId'))
-    order?.delete()
-    return response.redirect().toRoute('home')
+  async destroy({ params, response }: HttpContext) {
+    console.log('DESTROY')
+    console.log(params)
+    let order = await Order.find(params['id'])
+    await order?.delete()
+    response.clearCookie('orderId')
+    return response.redirect().toRoute('cart.show')
   }
 }

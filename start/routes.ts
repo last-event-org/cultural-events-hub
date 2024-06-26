@@ -25,6 +25,10 @@ router
       .as('profile.show')
       .use(middleware.auth())
     router
+      .get('/dashboard/orders', [CartController, 'index'])
+      .as('profile.orders')
+      .use(middleware.auth())
+    router
       .get('/dashboard/profile/edit', [RegisterController, 'edit'])
       .as('profile.edit')
       .use(middleware.auth())
@@ -32,16 +36,18 @@ router
   })
   .as('auth')
 
-router.group(() => {
-  router.get('/', [EventsController, 'index']).as('index')
-  router.get('/create', [EventsController, 'create']).as('create').use(middleware.auth())
-  router.get('/:id', [EventsController, 'show']).as('show')
-  router.post('/', [EventsController, 'store']).as('store').use(middleware.auth())
-  router.get('/:id/edit', [EventsController, 'edit']).as('edit')
-  router.patch('/:id', [EventsController, 'update']).as('update')
-  router.delete('/:id', [EventsController, 'destroy']).as('destroy')
-}).prefix('events').as('events')
-
+router
+  .group(() => {
+    router.get('/', [EventsController, 'index']).as('index')
+    router.get('/create', [EventsController, 'create']).as('create').use(middleware.auth())
+    router.get('/:id', [EventsController, 'show']).as('show')
+    router.post('/', [EventsController, 'store']).as('store').use(middleware.auth())
+    router.get('/:id/edit', [EventsController, 'edit']).as('edit')
+    router.patch('/:id', [EventsController, 'update']).as('update')
+    router.delete('/:id', [EventsController, 'destroy']).as('destroy')
+  })
+  .prefix('events')
+  .as('events')
 
 // PANIER
 router.post('/events/:id', [CartController, 'store']).as('cart.store').use(middleware.auth())
@@ -53,6 +59,6 @@ router
 
 router.post('/cart/add/:id', [CartController, 'addQuantity']).as('cart.add')
 router.post('/cart/remove/:id', [CartController, 'removeQuantity']).as('cart.remove')
-router.post('/cart/delete/:id', [CartController, 'deleteOrderLine']).as('cart.delete')
+router.delete('/cart/delete/:id', [CartController, 'deleteOrderLine']).as('cart.delete')
 
 router.delete('/cart/:id', [CartController, 'destroy']).as('cart.destroy').use(middleware.auth())

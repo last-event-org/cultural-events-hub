@@ -23,12 +23,12 @@
         </div>
 
         {{-- nom de la société --}}
-        {{event.vendor.companyName}}
+        {{-- {{event.vendor.companyName}} --}}
          
 
         {{-- id de la société à lier pour qu'on puisse retracer le user pour ajouter aux favoris --}}
-        {{event.vendor.id}}
-        <br>
+        {{-- {{event.vendor.id}} --}}
+        {{-- <br>
 
         {{event.location.name}}
         {{event.location.street}}
@@ -38,19 +38,19 @@
         {{event.location.country}}
 
         {{event.eventStart}}
-        {{event.eventEnd}}
+        {{event.eventEnd}} --}}
 
         {{-- toutes les sous-catégories --}}
-        @each(item in event.categoryTypes)
+        {{-- @each(item in event.categoryTypes)
           {{item.name}}
-        @end
+        @end --}}
 
         {{-- toutes les  --}}
-        @each(item in event.prices)
+        {{-- @each(item in event.prices)
           {{item.description}}
           {{item.regularPrice}}
           {{item.discountedPrice}}
-        @end
+        @end --}}
 
        
         <div class="flex flex-col gap-4 mx-4 mb-4">
@@ -152,7 +152,9 @@
               </div>
             </div>
           </div>    
-        
+         @flashMessage('item-added')
+            @!component('components/notification_added_to_basket',{message: $message.message})
+          @end
       </article>     
 
     </div>

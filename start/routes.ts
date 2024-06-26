@@ -53,7 +53,7 @@ router
 // PANIER
 router
   .group(() => {
-    router.get('/cart', [CartController, 'show']).as('show')
+    router.get('/', [CartController, 'show']).as('show')
 
     router.post('/:id', [CartController, 'confirmOrder']).as('validate')
     router.post('/add/:id', [CartController, 'addQuantity']).as('add')
@@ -65,6 +65,7 @@ router
   .prefix('cart')
   .as('cart')
 
+// TODO change this route to add it to the group
 router.post('/events/:id', [CartController, 'store']).as('store').use(middleware.auth())
 
 router

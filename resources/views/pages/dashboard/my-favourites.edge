@@ -16,9 +16,11 @@
     <h1>Mes Favoris</h1>
     @each(vendor in userFavourites)
       <li>
-          <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-              <p>{{vendor.companyName}}</p>
-          </div>
+        <a href="/events/?vendor={{ vendor.id }}" class="space-y-4">
+            <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+                <p>{{vendor.companyName}}</p>
+            </div>
+          </a>
             <form action="{{ route('favourite.destroy', [vendor.id]) }}" method="post" class="space-y-4"  enctype="multipart/form-data">
               {{ csrfField() }}
               <button type="submit" class="text-yellow">Effacer</button>

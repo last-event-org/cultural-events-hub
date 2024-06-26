@@ -22,6 +22,7 @@ export default class EventsController {
   async index({ request, view, auth }: HttpContext) {
     await auth.check()
     const requestQuery = request.qs()
+    console.log('\n\n\n\n\nrequestQuery: ', requestQuery);
     let events
     let title: string | null = ''
     let categories: any[] = []
@@ -30,7 +31,7 @@ export default class EventsController {
 
     // Check if there is no params in the query
     if (Object.keys(request.qs()).length === 0) {
-      events = await await Event.query()
+      events = await Event.query()
         .preload('location')
         .preload('categoryTypes', (categoryTypesQuery) => {
           categoryTypesQuery.preload('category')

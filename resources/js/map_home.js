@@ -19,16 +19,34 @@ poi.forEach(function(point) {
         .bindPopup(point.name);
 });
 
+
+
+
 // Ajouter un cercle bleu transparent autour de la Place Saint-Lambert
+let baseRadius = 2000;
+const radiusButtons = document.querySelectorAll('.radius-btn');
+
 let circle = L.circle([50.6452, 5.5734], {
     color: 'blue',
     fillColor: '#30f',
     fillOpacity: 0.2,
-    radius: 2000  // Rayon en mètres, variable à changer pour augmenter 
+    radius: baseRadius  // Rayon en mètres, variable à changer pour augmenter 
                   // le taille du cercle mais il faut aussi changer l'appel 
                   // de la fonction displayPOIsWithinRadius 
                   // pour récupérer les POI
 }).addTo(map);
+
+radiusButtons.forEach(button => {
+  button.addEventListener('click', () => {
+      baseRadius = button.value;
+      updateCircleRadius(baseRadius);
+  });
+});
+
+function updateCircleRadius(newRadius) {
+  circle.setRadius(newRadius);
+  baseRadius = newRadius
+}
 
 // Fonction pour calculer la distance entre deux points (en km)
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -61,5 +79,5 @@ function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
     poiList.appendChild(ul);
 }
 //(latitude,longitude, rayon en km)
-displayPOIsWithinRadius(50.6452, 5.5734, 2); 
+displayPOIsWithinRadius(50.6452, 5.5734, baseRadius/1000); 
 

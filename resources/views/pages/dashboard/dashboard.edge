@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body>
+  
+  @include("pages/partials/header")
+  <main class="bg-gray-100 flex  justify-center min-h-screen ">
+    
+    <div class="bg-white p-8 my-20  rounded shadow-md w-full max-w-md ">
+      <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
+        Dashboard
+      </h2>
+      
+    </div>
+  </main>
+  
+
+    @include("pages/partials/footer")
+  
+<script scr="resources/js/app.js"></script>
+</body>
+</html>

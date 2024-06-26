@@ -14,6 +14,10 @@ export default class RegistersController {
     return view.render('pages/auth/register')
   }
 
+  async dashboard({ view }: HttpContext) {
+    return view.render('pages/dashboard/dashboard')
+  }
+
   /**
    * Display form to create a new record
    */

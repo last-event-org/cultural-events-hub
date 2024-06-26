@@ -19,6 +19,10 @@ router
     router.get('/register', [RegisterController, 'index']).as('register')
     router.post('/register', [RegisterController, 'store']).as('register.store')
     router
+      .get('/dashboard', [RegisterController, 'dashboard'])
+      .as('dashboard')
+      .use(middleware.auth())
+    router
       .post('/profile-type', [RegisterController, 'updateProfileType'])
       .as('register.update-profile-type')
       .use(middleware.auth())

@@ -13,7 +13,7 @@ export default class WishlistsController {
             .query()
             .preload('location')
 
-        return view.render('pages/events/my-wishlist', { userWishlist: userWishlist })
+        return view.render('pages/dashboard/my-wishlist', { userWishlist: userWishlist })
     }
 
     async addToWishlist({ params, response, auth }: HttpContext) {

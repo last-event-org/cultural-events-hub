@@ -16,69 +16,72 @@
   width: 100%;
   height: 100%;
   border: 0;
-  padding:2rem;
+  padding: 2rem;
 }
-
 
 input:focus {
   outline: none; /* Remove the default browser focus outline */
-} 
-
-.bg-sports{
-  background-color:#f5d0fe;
 }
 
-.bg-sports:hover{
-  background-color:#f0abfc;
+.bg-sports {
+  background-color: #f5d0fe;
 }
 
-.bg-concerts{
-  background-color:#bbf7d0;
+.bg-sports:hover {
+  background-color: #f0abfc;
 }
 
-.bg-concerts:hover{
-  background-color:#86efac;
+.bg-concerts {
+  background-color: #bbf7d0;
 }
 
-.bg-soirees{
-  background-color:#fef08a;
+.bg-concerts:hover {
+  background-color: #86efac;
 }
 
-.bg-soirees:hover{
-  background-color:#fde047;
+.bg-soirees {
+  background-color: #fef08a;
 }
 
-.bg-expos{
-  background-color:#fed7aa;
+.bg-soirees:hover {
+  background-color: #fde047;
 }
 
-.bg-expos:hover{
-  background-color:#fdba74;
+.bg-expos {
+  background-color: #fed7aa;
 }
 
-.bg-theatre_spectacles{
-  background-color:#ddd6fe;
+.bg-expos:hover {
+  background-color: #fdba74;
 }
 
-.bg-theatre_spectacles:hover{
-  background-color:#c4b5fd;
+.bg-theatre_spectacles {
+  background-color: #ddd6fe;
 }
 
-.bg-salons_foires{
-  background-color:#d9f99d;
+.bg-theatre_spectacles:hover {
+  background-color: #c4b5fd;
 }
 
-.bg-salons_foires:hover{
-  background-color:#bef264;
+.bg-salons_foires {
+  background-color: #d9f99d;
+}
+
+.bg-salons_foires:hover {
+  background-color: #bef264;
 }
 
 @keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 .notification {
   animation-name: fadeOut;
-  animation-duration: 5s;
+  animation-duration: 3s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }

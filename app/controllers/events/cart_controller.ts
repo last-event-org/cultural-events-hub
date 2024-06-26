@@ -25,7 +25,7 @@ export default class CartController {
   /**
    * Add ticket to the cart
    */
-  async store({ request, response, params, auth, session }: HttpContext) {
+  async store({ request, response, auth, session }: HttpContext) {
     await auth.check()
 
     // TODO check if all the queries couldn't be added to the model
@@ -72,7 +72,7 @@ export default class CartController {
     })
 
     // TODO avoid refreshing the page or go back
-    return response.redirect().back()
+    return response.send()
   }
 
   /**

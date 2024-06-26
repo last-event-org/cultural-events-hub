@@ -63,7 +63,7 @@
             
                    {{ csrfField() }}
                   {{-- TODO Form submission canceled because the form is not connected --}}
-                     {{-- <input type="hidden" name="_method" value="DELETE" /> --}}
+                     <input type="hidden" name="_method" value="DELETE" />
                   
                   <button onclick="removeOrderLine({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
                   x
@@ -86,13 +86,13 @@
             {{ csrfField() }}
             
             <input type="hidden" name="_method" value="DELETE" />
-            <button name class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+            <button onclick="showErrorNotification('Panier supprimé')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
       Vider mon panier</button>
             </form>
 
           <form action="{{route('cart.validate', [order.id])}}" method="POST">
        {{ csrfField() }}
-    <button class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+    <button onclick="showSuccessNotification('Panier validé - Merci pour votre commande')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
       Valider mon panier</button>
 
       
@@ -100,6 +100,7 @@
     </a>
       @end
      
+      <div id="notification"></div>
      
 
        

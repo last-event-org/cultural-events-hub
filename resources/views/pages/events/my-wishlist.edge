@@ -22,8 +22,9 @@
               <p>{{event.location.name}}</p>
             </a>
           </div>
-          <a class="text-red" href="{{ route('wishlist.destroy', [event.id]) }}">Effacer</a>
-
+            <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class="space-y-4">
+              <button class="text-red">Effacer</button>
+            </form>
       </li>
     @end
 </main>

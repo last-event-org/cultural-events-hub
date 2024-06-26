@@ -46,5 +46,7 @@ export default class WishlistsController {
         }
         
         if (user) await event.related('usersWhoWishlisted').detach([user.id])
+        
+        return response.redirect().toRoute('wishlist.index')
     }
 }

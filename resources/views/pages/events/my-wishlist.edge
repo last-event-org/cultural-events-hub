@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class=" bg-gray-100">
+@include("pages/partials/header")
+
+<main class="container py-10 mb-10 mx-auto">
+
+    <h1>Ma Wishlist</h1>
+    @each(event in userWishlist)
+      <li>
+          <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+            <a class="font-semibold  text-white" href="{{ route('events.show', [event.id]) }}">
+              <p>{{event.title}}</p>
+              <p>{{event.location.name}}</p>
+            </a>
+          </div>
+          <a class="text-red" href="{{ route('wishlist.destroy', [event.id]) }}">Effacer</a>
+
+      </li>
+    @end
+</main>
+
+
+@include("pages/partials/footer")  
+
+</body>
+</html>

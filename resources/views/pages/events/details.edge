@@ -28,6 +28,7 @@
 
         {{-- id de la société à lier pour qu'on puisse retracer le user pour ajouter aux favoris --}}
         {{-- {{event.vendor.id}} --}}
+<
         {{-- <br>
 
         {{event.location.name}}
@@ -71,9 +72,12 @@
                     text-white font-semibold px-2 " id="add-to-favourites">
                     Add to wishlist
                   </p>
-                  <a href="#" id="favourite-star"  >
-                    <img  src="/public/svg/favourite-star.svg" alt="Add to favourites" >
-                  </a>
+                  <form action="{{ route('wishlist.add', [event.id]) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+                    {{ csrfField() }}
+                    <button type="submit" id="favourite-star">
+                      <img  src="/public/svg/favourite-star.svg" alt="Add to favourites" >
+                    </button>
+                </form>
                 </div>
               </div>
               <div class="flex flex-col justify-between gap-4 lg:gap-8 lg:w-1/2 lg:p-4">

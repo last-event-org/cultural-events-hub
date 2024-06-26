@@ -82,4 +82,11 @@ export default class Event extends BaseModel {
     pivotRelatedForeignKey: 'indicator_id',
   })
   declare indicators: ManyToMany<typeof Indicator>
+
+  @manyToMany(() => User, {
+    pivotTable: 'wishlists',
+    pivotForeignKey: 'event_id',
+    pivotRelatedForeignKey: 'user_id',
+  })
+  declare usersWhoWishlisted: ManyToMany<typeof User>
 }

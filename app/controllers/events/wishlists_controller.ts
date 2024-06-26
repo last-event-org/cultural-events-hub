@@ -41,7 +41,7 @@ export default class WishlistsController {
 
         if (user) await event.related('usersWhoWishlisted').attach([user.id])
 
-        return response.redirect().toRoute('events.show', { id: event })
+        return response.redirect().back();
     }
 
     async destroy({ params, response, auth }: HttpContext) {
@@ -68,6 +68,6 @@ export default class WishlistsController {
 
         if (user) await event.related('usersWhoWishlisted').detach([user.id])
 
-        return response.redirect().toRoute('wishlist.index')
+        return response.redirect().back();
     }
 }

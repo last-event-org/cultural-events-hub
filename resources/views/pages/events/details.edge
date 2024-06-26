@@ -18,11 +18,14 @@
       <article class="bg-slate-50 border-gray-300 rounded-lg w-full">
         <div class="flex justify-center items-center mb-4">
 
-          <a href="{{route('events.edit', {id : event.id})}}" class="  hover:text-yellow-500 text-xs underline  font-bold rounded-xl transition duration-200" target="" rel="noopener noreferrer" type="button">
+          <a href="{{route('events.edit', {id : event.id})}}"
+           class="hover:text-yellow-500 text-xs underline  font-bold rounded-xl transition duration-200" 
+           target="" rel="noopener noreferrer" type="button">
             Modifier</a>
         </div>
 
         {{-- nom de la société --}}
+        {{-- {{event.vendor.companyName}} --}}
         {{-- {{event.vendor.companyName}} --}}
          
 
@@ -31,27 +34,15 @@
 <
         {{-- <br>
 
-        {{event.location.name}}
-        {{event.location.street}}
-        {{event.location.number}}
-        {{event.location.zipCode}}
-        {{event.location.city}}
-        {{event.location.country}}
+        
 
         {{event.eventStart}}
         {{event.eventEnd}} --}}
 
         {{-- toutes les sous-catégories --}}
-        {{-- @each(item in event.categoryTypes)
-          {{item.name}}
-        @end --}}
+        
 
-        {{-- toutes les  --}}
-        {{-- @each(item in event.prices)
-          {{item.description}}
-          {{item.regularPrice}}
-          {{item.discountedPrice}}
-        @end --}}
+        
 
        
         <div class="flex flex-col gap-4 mx-4 mb-4">
@@ -63,7 +54,7 @@
           <h3 class="text-xl  font-medium text-gray-400 ">
             {{event.subtitle}} 
           </h3>
-          <div class="flex flex-col lg:flex-row w-full lg:border-2 border-yellow-500 rounded-md">
+          <div class="flex flex-col lg:flex-row w-full lg:bg-white-100 shadow rounded-md">
 
             <div class="lg:w-1/2 relative" href="#">
               <img src="/public/images/dummy-spectacle.webp" alt="Event Image" class="lg:p-4 h-auto object-cover">  
@@ -88,7 +79,12 @@
                       <img class="p-1.5" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">
                     </div>  
                     <h4 class="font-semibold">
-                      {{event.categoryTypes[0].category.name}}<span>: Spectacle de catch </span></h4>
+                      {{event.categoryTypes[0].category.name}} :
+                      <span>
+                        @each(item in event.categoryTypes)
+                            {{item.name}}   
+                        @end
+                      </span></h4>
                   </div>
                   <div class="flex gap-2 py-2 mb-1">
                     @each (item in event.indicators)
@@ -108,7 +104,7 @@
                   <div class="lg:hidden w-1/2 border-t-2 border-gray-400"></div>
                   <a href="" class="flex  items-center gap-2 " id="heart_trigger">
                     <p class="text-sm text-right text-gray-500 mb-1 text-clip overflow-hidden ">
-                      Vendeur 
+                      {{event.vendor.companyName}}
                     </p>
                     <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="h-4 w-4 self-center block" id="heart_empty">
                     <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="h-4 w-4 self-center hidden" id="heart_full">
@@ -128,17 +124,17 @@
                 </div>
             </div>     
           </div>
-
-          <div class="flex flex-col lg:flex-row gap-8 bg-slate-100 ">
+ 
+          <div class="flex flex-col lg:flex-row gap-8 bg-slate-100 rounded-md shadow ">
             <div class="flex flex-col items-center text-center gap-4 p-8 md:px-16 lg:w-1/2  "> 
               <p class="text-sm font-bold text-gray-400 ">
                 Sam 15 juin 2024, de 12h à 20h
               </p>
               <p class="font-bold text-xl text-gray-700">
-                Forum de Liège 
+                {{event.location.name}}
               </p>
               <p class="text-sm text-gray-500">
-                Rue Pont d'Avroy 12, 4000 Liège
+                {{event.location.street}} {{event.location.number}}, {{event.location.zipCode}} {{event.location.city}} - {{event.location.country}}
               </p>  
               <div id="map" class="h-60 w-80 lg:h-80 lg:w-full z-10 mt-8 "></div>
             </div> 
@@ -148,6 +144,8 @@
               @!component('components/add_basket', {item})
                @end
             </div>
+            
+        
           </div>
           <div class="flex justify-center">
             <div class="w-full h-full lg:w-3/5 lg:h-3/5 ">

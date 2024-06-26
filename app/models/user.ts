@@ -1,11 +1,12 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, column, hasOne, hasMany, belongsTo } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasOne, hasMany, belongsTo, manyToMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import Role from '#models/role'
-import type { HasOne, HasMany, BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { HasOne, HasMany, BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Address from '#models/address'
+import Event from '#models/event'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -66,6 +67,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @hasMany(() => User)
   declare favourites: HasMany<typeof User>
+
+  @manyToMany(() => Event, {
+    pivotTable: 'wishlists',
+    pivotForeignKey: 'user_id',
+    pivotRelatedForeignKey: 'event_id',
+  })
+  declare wishlistEvents: ManyToMany<typeof Event>
 
   async isUser() {
     const userRole = await Role.findBy('role_name', 'USER')

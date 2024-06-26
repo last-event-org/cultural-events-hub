@@ -9,6 +9,8 @@ export default class extends BaseSchema {
       table.string('name')
       table.string('street')
       table.string('number')
+      table.decimal('latitude', 10, 5).defaultTo(null)
+      table.decimal('longitude', 6, 5).defaultTo(null)
       table.integer('zip_code', 5)
       table.string('city')
       table.string('country')

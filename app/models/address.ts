@@ -18,6 +18,12 @@ export default class Address extends BaseModel {
   declare number: string
 
   @column()
+  declare latitude: number
+
+  @column()
+  declare longitude: number
+
+  @column()
   declare zipCode: number
 
   @column()

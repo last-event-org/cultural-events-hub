@@ -164,6 +164,11 @@ export default class EventsController {
       return view.render('pages/events/list', { events: events, title: title })
     }
 
+    if (requestQuery['city']) {
+      let [events, title] = await this.citySearch(request)
+      return view.render('pages/events/list', { events: events, title: title })
+    }
+
     // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
   }
 
@@ -180,6 +185,29 @@ export default class EventsController {
       categoryTypes: categoryTypes,
       indicators: indicators,
     })
+  }
+
+  async citySearch(request: HttpContext['request']) {
+    const requestQuery = request.qs()
+    let events
+    let title: string | null = ''
+
+    // TODO validation if city do not exist
+    if (requestQuery['city']) {
+      events = await Event.query()
+        .orderBy('event_start', 'asc')
+        .preload('location')
+        .preload('categoryTypes', (categoryTypesQuery) => {
+          categoryTypesQuery.preload('category')
+        })
+        .preload('indicators')
+        .preload('prices')
+        .preload('media')
+        .orderBy('event_start', 'asc')
+      title = 'Event pour un endroit' + requestQuery['city']
+    }
+
+    return [events, title]
   }
 
   /**
@@ -288,9 +316,34 @@ export default class EventsController {
     address.zipCode = addressPayload.zip_code
     address.city = addressPayload.city
     address.country = addressPayload.country
+    const [latitude, longitude] = await this.getCoordinatesFromAddress(
+      addressPayload.city,
+      addressPayload.street,
+      addressPayload.zip_code,
+      addressPayload.number
+    )
+    console.log(latitude, '       ', longitude)
+    address.latitude = latitude
+    address.longitude = longitude
 
     await address.save()
     await event.related('location').associate(address)
+  }
+
+  async getCoordinatesFromAddress(city: string, street: string, zip: number, number: string) {
+    console.log('getCoordinatesFromAddress')
+    try {
+      const response = await fetch(
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=${process.env.API_KEY_ROUTERSERVICE}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+      )
+      const datas = await response.json()
+      return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
+    } catch (e) {
+      console.log('ERROR')
+      console.log(e)
+    }
+    // lat: data.features[0].geometry.coordinates[1],
+    //     lng: data.features[0].geometry.coordinates[0],
   }
 
   async uploadEventMedia(request: HttpContext['request'], event: Event) {

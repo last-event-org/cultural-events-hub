@@ -11,14 +11,11 @@
 
 <body class="bg-slate-50">
   @include("pages/partials/header")
-  <main class="flex flex-col items-center min-h-screen mb-16">
-
-      <div class="justify-center flex">  
-        <h2 class="relative z-10 font-bold text-xl my-10">
-          Éditer l'évènement
-            <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
-        </h2>
-      </div>
+  <main class="flex flex-col justify-center items-center min-h-screen mx-auto mb-16 w-screen sm:w-full xl:w-[1200px]">
+      
+    <h2 class="font-semibold text-slate-600 text-xl mt-5 xl:mt-8 xl:mb-2">
+      Édition l'évènement  
+    </h2>
 
     <form action="{{ route('events.update', [event.id], { qs: {_method: 'PATCH'}}) }}" method="post"  enctype="multipart/form-data">
       {{ csrfField() }}
@@ -27,10 +24,15 @@
       {{ $message }}
       @end
 
-      <section class=" bg-white text-slate-600 flex flex-col border rounded-md mb-5 shadow p-4">
-        <div class="w-screen sm:w-[600px] lg:w-[800px] text-sm">
-          <div class="block text-slate-800 text-xl font-semibold my-4 text-center">
+    <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
+   {{-- Description    --}}
+      <section class=" bg-white text-slate-600 flex flex-col items-center border rounded-md shadow p-4 xl:w-1/2">
+        <div class="w-screen sm:w-full text-sm px-2 sm:px-4">
+          <div class="justify-center flex">  
+            <h2 class="relative z-10 font-bold text-black text-xl my-4">
               Description
+                <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+            </h2>
           </div>
             
           <div class="flex flex-col mb-3">
@@ -66,7 +68,7 @@
                 Description
             </label>
             <textarea type="text" id="description" name="description"
-              class="mt-1 block w-full h-36 px-4 py-2 border border-gray-300 rounded-md shadow-sm
+              class="mt-1 block w-full h-[131px] px-4 py-2 border border-gray-300 rounded-md shadow-sm
                 focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
               >{{event.description || old('description') || '' }}
             </textarea>
@@ -76,30 +78,33 @@
           </div>
         </section>
 
-
-        <section class=" bg-blue-100 text-slate-600 flex flex-col border rounded-md shadow my-10 p-4">
-          <div class="w-screen sm:w-[600px] lg:w-[800px] ">
-            <div class="block text-slate-800 text-xl font-semibold my-4 text-center">
-                Lieu
+{{-- Informations pratiques --}}
+        <section class=" bg-blue-100 text-slate-600 flex flex-col items-center border rounded-md shadow p-4 xl:w-1/2 xl:h-full">
+          <div class="w-screen sm:w-full h-full px-2 sm:px-4 mb-8">
+            <div class="justify-center flex">  
+              <h2 class="relative z-10 font-bold text-black text-xl my-4">
+                Informations pratiques
+                  <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+              </h2>
             </div>
             <div class="flex flex-col text-sm">
                 <div class="flex flex-col mb-3">
                     <label for="name" class="block text-gray-600">
-                        Nom
+                        Nom du lieu
                     </label>
-                    <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                    <input type="text" id="name" name="name" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
                     @inputError('name')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
                 </div>
 
-                <div class="flex mb-3 gap-2">
+                <div class="flex w-full mb-3 gap-2">
                     <div class="flex flex-col w-5/6">
                         <label for="street" class="block text-gray-600">
                             Rue
                         </label>
-                        <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                        <input type="text" id="street" name="street" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
               focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
                         @inputError('street')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
@@ -110,7 +115,7 @@
                         <label for="number" class="block text-gray-600">
                             Numéro
                         </label>
-                        <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                        <input type="text" id="number" name="number" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
               focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
                         @inputError('number')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
@@ -119,133 +124,199 @@
                 </div>
 
                 <div class="flex mb-3 gap-2">
-                    <div class="flex flex-col w-2/6">
+                    <div class="flex flex-col w-1/6">
                         <label for="zip_code" class="block text-gray-600">
-                            Code Postal
+                            CP
                         </label>
-                        <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                        <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
               focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                            value="{{old('zip_code') || '' }}">
+                            value="{{old('zip_code') || '' }}" placeholder="1000">
                         @inputError('zip_code')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
                     </div>
 
-                    <div class="flex flex-col">
+                    <div class="flex flex-col w-3/6">
                         <label for="city" class="block text-gray-600">
                             Ville
                         </label>
-                        <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                        <input type="text" id="city" name="city" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
               focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
                         @inputError('city')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
                     </div>
 
-                    <div class="flex flex-col mb-3">
+                    <div class="flex flex-col w-2/6">
                         <label for="country" class="block text-gray-600">
                             Pays
                         </label>
-                        <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                        <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
               focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
                         @inputError('country')
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
                     </div>
-                </div> --}}
+                </div> 
 
-                <div>
-                    <label for="description" class="block text-gray-600">
-                        Description
-                    </label>
-                    
-                    <textarea type="text" id="description" name="description"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                        >{{event.description || old('description') || '' }}</textarea>
-                    @inputError('description')
-                    <div style="color: red;">{{ $messages.join(', ') }}</div>
-                    @end
-                </div>
-
-                {{-- TODO format date --}}
-                <div class="flex-1">
-                    <label for="event_start" class="block text-gray-600">
-                        Début
-                    </label>
-                    {{-- Date new: {{date}} --}}
-                    <br>
-                    Event start: {{event.eventStart.toISO({})}}
-                    <input type="datetime-local" id="event_start" name="event_start"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                        value="{{event.eventStart || old('event_start') || '' }}">
-                </div>
-
-                <div class="flex-1">
-                    <label for="event_end" class="block text-gray-600">
-                        Fin
-                    </label>
-                    <input type="datetime-local" id="event_end" name="event_end"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-                        {{-- value="{{event.eventEnd || old('event_start') || '' }}"> --}}
-                        >
-                </div>
-
-                @flashMessage('date')
-                    <div style="color: red;">{{ $message.message }}</div>
-                @end
-
-                <div>
-                    <label for="facebook_link" class="block text-gray-600">
-                        Lien Facebook
-                    </label>
-                    <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.facebookLink || old('facebook_link') || '' }}">
-                </div>
-
-                <div>
-                    <label for="instagram_link" class="block text-gray-600">
-                        Lien Instagram
-                    </label>
-                    <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink || old('instagram_link') || '' }}">
-                </div>
-
-                <div>
-                    <label for="website_link" class="block text-gray-600">
-                        Site Web
-                    </label>
-                    <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-           focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
-                </div>
-                <div class="flex text-sm gap-2">
-                  <div class="flex-1">
+                <div class="flex text-sm gap-2 w-full">
+                  <div class="flex flex-col w-1/2">
                       <label for="event_start" class="block text-gray-600">
-                          Début
+                          Début 
                       </label>
-                      <p class="text-[8px]">Event start: {{event.eventStart.toISO({})}}</p>
+                      {{-- <p class="text-[8px]">Event start: {{event.eventStart.toISO({})}}</p> --}}
                       <input type="datetime-local" id="event_start" name="event_start"
-                          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                          class="mt-1 block w-full px-0 sm:px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm"
                           value="">
                   </div>
 
-                  <div class="flex-1">
+                  <div class="flex flex-col w-1/2">
                       <label for="event_end" class="block text-gray-600">
-                          Fin
+                          Fin 
                       </label>
-                      <p class="text-[8px]">Event End: {{event.eventEnd.toISO({})}}</p>
+                      {{-- <p class="text-[8px]">Event End: {{event.eventEnd.toISO({})}}</p> --}}
                       <input type="datetime-local" id="event_end" name="event_end"
-                          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+                          class="mt-1 block w-full px-0 sm:px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm"
                           value="">
                   </div>
-              
+             
 
               @flashMessage('date')
               <div style="color: red;">{{ $message.message }}</div>
               @end
             </div>
         </section>
+      </div>  
 
-        <section class=" bg-emerald-200 text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-6">  
+
+    <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
+      {{-- Links  --}}
+      <section class=" bg-white text-slate-600 flex flex-col items-center border rounded-md shadow p-4 xl:w-1/2 wl:h-full">
+        <h2 class="relative z-10 font-bold text-black text-xl my-4">
+          Liens
+            <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+        </h2>
+        <div class="flex flex-col gap-3 w-screen sm:w-full text-sm px-2 sm:px-4 mb-5">
+          <div>
+              <label for="facebook_link" class="block text-gray-600">
+                  Facebook
+              </label>
+              <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.facebookLink || old('facebook_link') || '' }}">
+          </div>
+
+          <div>
+              <label for="instagram_link" class="block text-gray-600">
+                  Instagram
+              </label>
+              <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink|| old('instagram_link') || '' }}">
+          </div>
+
+          <div>
+              <label for="website_link" class="block text-gray-600">
+                  Site Web
+              </label>
+              <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
+          </div>
+
+          <div>
+              <label for="youtube_link" class="block text-gray-600">
+                  Vidéo YouTube
+              </label>
+              <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.youtubeLink || old('youtube_link') || '' }}">
+          </div>
+
+        </div>
+      </section>  
+
+      {{-- Categories  --}}
+      <section class=" bg-white text-slate-600 flex flex-col items-center border rounded-md shadow p-6 xl:w-1/2 xl:h-full">
+        <div class="flex w-screen sm:w-full px-4">
+          <fieldset class="py-2 w-full">
+            <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto ">Catégories
+              <hr class="absolute -z-10 w-full h-2 bottom-3 left-0  bg-yellow-500">
+            </legend>
+              @each(category in categories)
+              <ul>
+                <li>
+                    <input type="radio" id="category_{{ category.id }}" name="categories[]"
+                        value="{{ category.id }}" onclick="toggleCategoryTypes({{ category.id }})" 
+                            
+                        {{event.categoryTypes[0].category.id == category.id ? "checked" : ""}}
+                        
+                        />
+                    <label for="category_{{ category.id }}">{{ category.name }}</label>
+
+
+                    <fieldset name="categoryTypesFieldset" id="categoryTypesFieldset_{{ category.id }}" class=" {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}} relative left-10">
+                      @each(categoryType in categoryTypes)
+                        @if (categoryType.categoryId == category.id)
+                        <li class="category-type category-type-{{ categoryType.categoryId }}">
+                          <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
+                              value="{{ categoryType.id }}"
+                              
+                              @each(eventCategoryType in event.categoryTypes)
+                                @if(eventCategoryType.id == categoryType.id) 
+                                    checked
+                                @end
+                        @end
+                            />
+                          <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+                        </li>
+                        @endif
+                      @end
+                    </fieldset>
+                  </li>
+                </ul>
+              @end
+            </fieldset>
+                          
+              @flashMessage('category')
+                  <div style="color: red;">{{ $message.message }}</div>
+              @end
+          </div>
+        </section> 
+      </div> 
+ 
+      <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
+        {{-- Indicators          --}}
+        <section class="bg-white text-slate-600 flex flex-col items-center border rounded-md shadow xl:w-1/2 my-0 p-6">
+          <div class="flex w-screen sm:w-full px-4">    
+            <fieldset class="py-2 w-full">
+              <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto ">
+                Indicateurs
+                <hr class="absolute -z-10 w-full h-2 bottom-3 left-0  bg-yellow-500">
+              </legend>
+              @each(indicator in indicators)
+              <ul>
+                  <li>
+                      <input 
+                          type="checkbox" 
+                          id="indicator_{{ indicator.id }}" name="indicators[]"
+                          value="{{ indicator.id }}"
+                          @each(eventIndicator in event.indicators)
+                              @if(eventIndicator.id == indicator.id) 
+                                  checked
+                              @end
+                          @end
+                      />
+                      <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
+                  </li>
+              </ul>
+              @end
+            </fieldset>
+          </div>
+        </section>
+        
+        {{-- Image loading --}}
+        <section class=" bg-emerald-100 text-slate-600 flex flex-col xl:w-1/2 items-center border rounded-md shadow p-6"> 
+          <h2 class="relative z-10 font-bold text-black text-xl my-4">
+            Images
+              <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+          </h2> 
           <label for="images_link" class="text-center ">
               Charger des images (max. 3)
           </label>
@@ -259,166 +330,42 @@
           <div id="imagePreviewContainer" class="flex flex-wrap mt-4">
           </div>
         </section>
+      </div>  
+{{-- Prices  --}}
+      <section class="flex flex-col items-center text-sm bg-slate-100 w-full xl:w-[1100px] 2xl:w-[1500px] rounded-md shadow border mb-5 p-6">
+        <h2 class=" relative z-10 font-bold text-black text-xl my-4 text-center max-w-fit">
+          Prix
+            <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+        </h2>
+            @!component('components/price_fields')
 
-        <section class=" bg-pink-100 text-slate-600 flex flex-col items-center border rounded-md shadow my-10 p-6">
-          <div class="w-screen sm:w-[600px] lg:w-[800px] text-xs md:text-sm lg:text-base">
-                <fieldset class="py-2 w-1/2">
-                    <legend class="block">Catégories:</legend>
-                    @each(category in categories)
-                    <ul>
-                        <li>
-                            <input type="radio" id="category_{{ category.id }}" name="categories[]"
-                                value="{{ category.id }}" onclick="toggleCategoryTypes({{ category.id }})" 
-                                    
-                                {{event.categoryTypes[0].category.id == category.id ? "checked" : ""}}
-                                
-                                />
-                            <label for="category_{{ category.id }}">{{ category.name }}</label>
+          <template id="priceFieldsTemplate">
+              @!component('components/price_fields')
+          </template>
+          <div id="priceFieldsContainer" class="flex flex-col gap-4">
+              <!-- div to add the addionnal prices -->
+          </div>
+          @inputError('prices[]')
+              <div style="color: red;">{{ $messages.join(', ') }}</div>
+          @end
 
-                            <fieldset id="categoryTypesFieldset_{{ category.id }}" class=" {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}} relative left-10">
-                                @each(categoryType in categoryTypes)
-                                    @if (categoryType.categoryId == category.id)
-                                    <li class="category-type category-type-{{ categoryType.categoryId }}  {{event.categoryTypes[0].category.id == category.id ? "" : "hidden"}}">
-                                        <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]"
-                                            value="{{ categoryType.id }}"
-                                            
-                                            @each(eventCategoryType in event.categoryTypes)
-                                    @if(eventCategoryType.id == categoryType.id) 
-                                        checked
-                                    @end
-                                @end
+          <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+            Ajouter des tarifs
+          </button>
 
+        </section>
+        <div class="flex justify-center my-2">
+          <button type="submit" class="bg-yellow-500 text-black font-bold py-2 px-4 rounded-md hover:bg-yellow-400 
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
+              Appliquer les changements
+          </button> 
+        </div>
 
-                                            
-                                            />
-                                        <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
-                                    </li>
-                                    @endif
-                                @end
-                            </fieldset>
-
-                        </li>
-                    </ul>
-                    @end
-                </fieldset>
-                            
-                {{-- @flashMessage('category')
-                    <div style="color: red;">{{ $message.message }}</div>
-                @end --}}
-
-                <fieldset class="py-2 w-1/2">
-                  <legend class="block text-gray-600">Indicateurs:</legend>
-                  @each(indicator in indicators)
-                  <ul>
-                      <li>
-                          <input 
-                              type="checkbox" 
-                              id="indicator_{{ indicator.id }}" name="indicators[]"
-                              value="{{ indicator.id }}"
-                              @each(eventIndicator in event.indicators)
-                                  @if(eventIndicator.id == indicator.id) 
-                                      checked
-                                  @end
-                              @end
-                          />
-                          <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
-                      </li>
-                  </ul>
-                  @end
-                </fieldset>
-            </div>
-          </section>
-
-            <div class="text-sm">
-                <div class="pb-3">
-                    <label for="facebook_link" class="block text-gray-600">
-                        Lien Facebook
-                    </label>
-                    <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-    focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.facebookLink || old('facebook_link') || '' }}">
-                </div>
-
-                <div class="pb-3">
-                    <label for="instagram_link" class="block text-gray-600">
-                        Lien Instagram
-                    </label>
-                    <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink || old('instagram_link') || '' }}">
-                </div>
-
-                <div class="pb-3">
-                    <label for="website_link" class="block text-gray-600">
-                        Lien Site Web
-                    </label>
-                    <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
-                </div>
-
-                <div class="pb-3">
-                    <label for="youtube_link" class="block text-gray-600">
-                        Lien vidéo YouTube
-                    </label>
-                    <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-      focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.youtubeLink || old('youtube_link') || '' }}">
-                </div>
-            </div>
-
-
-            <div class="text-sm p-3 bg-fuchsia-50 rounded-lg">
-                @!component('components/price_fields')
-
-                <template id="priceFieldsTemplate">
-                    @!component('components/price_fields')
-                </template>
-                <div id="priceFieldsContainer" class="flex flex-col gap-4">
-                    <!-- div to add the addionnal prices -->
-                </div>
-                @inputError('prices[]')
-                    <div style="color: red;">{{ $messages.join(', ') }}</div>
-                @end
-            </div>
-
-            <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
-        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                Ajouter des tarifs
-            </button>
-
-            {{-- <div>
-                <input type="checkbox" id="displayDiscountSection" name="" value=""
-                    onchange="toggleDiscountedPriceSection(this)" />
-                <label for="displayDiscountSection">Voulez vous ajouter des prix réduits</label>
-            </div>
-
-            <div class="bg-orange-200 p-5 rounded-md hidden" id="discountedPriceSection">
-                @!component('components/discounted_price_fields')
-
-                <template id="discountedPriceFieldsTemplate">
-                    @!component('components/discounted_price_fields')
-                </template>
-                <div id="discountedPriceFieldsContainer" class="flex flex-col gap-4">
-                    <!-- div to add the addionnal prices -->
-                </div>
-
-                <button type="button" onclick="addDiscountedPriceFields()" class=" mt-4 bg-orange-700 text-white py-2 px-4 rounded-md hover:bg-orange-900 
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                    Ajouter des tarifs réduits
-                </button>
-            </div> --}}
-
-            <div>
-
-                <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
-  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                    Créer
-                </button>
-            </div>
-
-        </form>
-      </div>
+      </form>
     </main>
 
   @include("pages/partials/footer")
 <script src="/resources/js/add_event.js"></script>
 </body>
-
 </html>

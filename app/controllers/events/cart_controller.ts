@@ -10,50 +10,63 @@ export default class CartController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {}
+  async index({ view, auth }: HttpContext) {
+    await auth.check()
+    let orders = await Order.query()
+      .where('user_id', '=', auth.user?.$attributes.id)
+      .andWhere('is_paid', '=', true)
+      .preload('orderLineId', (query) =>
+        query.preload('price', (priceQuery) => priceQuery.preload('event'))
+      )
+    // console.log(orders)
+    return view.render('pages/dashboard/orders', { orders: orders })
+  }
 
   /**
-   * Handle form submission for the create action
+   * Add ticket to the cart
    */
   async store({ request, response, params, auth, session }: HttpContext) {
     await auth.check()
-    console.log('ADD PRICE TO ORDER')
 
-    // TODO put the db query in the model
+    // TODO check if all the queries couldn't be added to the model
+
+    // check if a non-paid order already exists for the user
     let order = await Order.query()
       .where('user_id', '=', auth.user?.$attributes.id)
-      .andWhere('is_paid', '=', 'false')
-    console.log('ORDER')
-    console.log(order)
+      .andWhere('is_paid', '=', false)
 
     let price = await Price.find(request.input('price_id'))
-    const orderLine = new OrderLine()
-    orderLine.qty = 1
-    if (price !== null) {
-      orderLine.priceId = price.id
-      await orderLine.save()
-    }
 
-    let user = await User.find(auth.user?.$attributes.id)
-    console.log('USER')
-    console.log(user)
-
-    if (order?.length === 0) {
+    if (order.length === 0) {
       let newOrder = await new Order()
-      newOrder.userId = user.id
-      newOrder = await newOrder.save()
-      console.log('NEW ORDER')
+      let user = await User.find(auth.user?.$attributes.id)
+
+      newOrder.userId = user?.id
+      await newOrder.save()
+
+      const orderLine = new OrderLine()
+      orderLine.qty = 1
       orderLine.orderId = newOrder.id
+      price ? (orderLine.priceId = price.id) : ''
       response.cookie('orderId', newOrder.id)
       await orderLine.save()
     } else {
-      console.log('ORDER EXISTS')
-      orderLine.orderId = order[0].id
-      await orderLine.save()
+      const orderLineExists = await OrderLine.query()
+        .where('orderId', '=', order[0].id)
+        .andWhere('priceId', '=', price.id)
+      if (orderLineExists.length !== 0) {
+        orderLineExists[0].qty += 1
+        orderLineExists[0].save()
+      } else {
+        const orderLine = new OrderLine()
+        orderLine.orderId = order[0].id
+        orderLine.qty = 1
 
-      response.cookie('orderId', order[0].id)
+        price ? (orderLine.priceId = price.id) : ''
+        response.cookie('orderId', order[0].id)
+        await orderLine.save()
+      }
     }
-
     session.flash('item-added', {
       message: 'Article ajouté au panier',
     })
@@ -77,9 +90,15 @@ export default class CartController {
       })
       .first()
 
-    console.log(order)
+    // calculate the total price but will also be calculated in the front
+    const totalOrder = order?.orderLineId.reduce(
+      (acc, line) => acc + line.price.discountedPrice * line.qty,
+      0
+    )
+
     return view.render('pages/cart/show', {
       order: order,
+      totalOrder: totalOrder,
     })
   }
 
@@ -121,9 +140,9 @@ export default class CartController {
   }
 
   /**
-   * Remove 1pc
+   * Remove the order line
    */
-  async deleteOrderLine({ params, response }: HttpContext) {
+  async deleteOrderLine({ params, auth, view, response }: HttpContext) {
     console.log('DELETE ORDER LINE')
 
     const orderLine = await OrderLine.find(params['id'])
@@ -137,20 +156,35 @@ export default class CartController {
    * Confirm order
    */
   async confirmOrder({ params, response }: HttpContext) {
-    console.log('CONFIRM ORDER')
-    console.log(params['id'])
-    const order = await Order.find(params['id'])
-
-    // TODO update quantities in prices
+    const order = await Order.query()
+      .where('id', '=', params['id'])
+      .preload('orderLineId', (orderLineQuery) => {
+        orderLineQuery.preload('price', (priceQuery) => {
+          priceQuery.preload('event')
+        })
+      })
+      .first()
 
     if (order) {
+      order.orderLineId.forEach(async (orderLine) => {
+        const price = await Price.find(orderLine.priceId)
+        if (price) {
+          if (orderLine.qty > price.availableQty) {
+            // TODO handle if ordered qty is > than availableQty
+          } else {
+            price.availableQty -= orderLine.qty
+            price?.save()
+          }
+        }
+      })
+
       order.isPaid = true
       order.purchaseDate = DateTime.now()
       await order?.save()
       response.clearCookie('orderId')
     }
 
-    return response.redirect().back()
+    return response.redirect().toRoute('cart.show')
   }
 
   /**
@@ -162,8 +196,6 @@ export default class CartController {
    * Delete record
    */
   async destroy({ params, response }: HttpContext) {
-    console.log('DESTROY')
-    console.log(params)
     let order = await Order.find(params['id'])
     await order?.delete()
     response.clearCookie('orderId')

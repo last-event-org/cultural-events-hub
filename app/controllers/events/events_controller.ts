@@ -9,7 +9,6 @@ import Address from '#models/address'
 import Price from '#models/price'
 import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
-import User from '#models/user'
 import AddressesController from '#controllers/addresses_controller'
 import fs from 'fs'
 import Indicator from '#models/indicator'
@@ -299,23 +298,30 @@ export default class EventsController {
   /**
    * Show individual record
    */
-  async show({ view, params, response, auth }: HttpContext) {
+  async show({ view, params, session, response, auth }: HttpContext) {
     await auth.check()
-    const event = await Event.query()
-      .where('id', '=', params.id)
-      .preload('location')
-      .preload('categoryTypes', (categoryTypesQuery) => {
-        categoryTypesQuery.preload('category')
-      })
-      .preload('indicators')
-      .preload('prices')
-      .preload('media')
-      .preload('vendor')
-
-    if (event === undefined || event.length === 0) {
-      response.redirect().back()
-    } else {
-      return view.render('pages/events/details', { event: event[0] })
+    try {
+      const event = await Event.query()
+        .where('id', '=', params.id)
+        .preload('location')
+        .preload('categoryTypes', (categoryTypesQuery) => {
+          categoryTypesQuery.preload('category')
+        })
+        .preload('indicators')
+        .preload('prices')
+        .preload('media')
+        .preload('vendor')
+      if (event === undefined || event.length === 0) {
+        response.redirect().back()
+      } else {
+        session.forget('item-added')
+        return view.render('pages/events/details', { event: event[0] })
+      }
+    } catch (error) {
+      if (error) {
+        console.error('Price Validation Error at createEventPrices():', error)
+        response.redirect().back()
+      }
     }
   }
 
@@ -349,10 +355,7 @@ export default class EventsController {
    * Handle form submission for the edit action
    */
   async update({ params, request, response }: HttpContext) {
-    console.log('UPDATE')
-
     const payload = await request.validateUsing(createEventValidator)
-
     const event = await Event.findOrFail(params['id'])
     console.log(event)
 

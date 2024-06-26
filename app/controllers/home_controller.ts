@@ -7,14 +7,14 @@ import Order from '#models/order'
 export default class HomeController {
   async index({ view, auth, response }: HttpContext) {
     await auth.check()
-    const categories = await Category.query()
+    const categories = await Category.query().select('name', 'slug', 'id')
 
     const dayBegin = DateTime.now().toSQLDate()
     const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
 
     let order = await Order.query()
       .where('user_id', '=', auth.user?.$attributes.id)
-      .andWhere('is_paid', '=', 'false')
+      .andWhere('is_paid', '=', false)
     console.log(order)
     if (!auth.isAuthenticated || order.length === 0) {
       response.clearCookie('orderId')
@@ -23,7 +23,7 @@ export default class HomeController {
     }
 
     const events = await Event.query()
-      // .andWhereBetween('event_start', [dayBegin, dayEnd])
+      .andWhereBetween('event_start', [dayBegin, dayEnd])
       .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
       .preload('location')
       .preload('categoryTypes', (categoryTypesQuery) => {
@@ -31,11 +31,10 @@ export default class HomeController {
       })
       .preload('indicators')
       .preload('prices')
-      .preload('media')
+      .preload('media', (mediaQuery) => {
+        mediaQuery.select('path', 'altName')
+      })
       .orderBy('event_start', 'asc')
-    // .limit(1)
-
-    // console.log(events)
 
     return view.render('pages/home', { categories: categories, events: events })
   }

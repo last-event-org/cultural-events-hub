@@ -13,7 +13,7 @@ export default class WishlistsController {
             .query()
             .preload('location')
 
-        return view.render('pages/events/my-wishlist', { userWishlist: userWishlist })
+        return view.render('pages/dashboard/my-wishlist', { userWishlist: userWishlist })
     }
 
     async addToWishlist({ params, response, auth }: HttpContext) {
@@ -24,13 +24,24 @@ export default class WishlistsController {
         if (!user) {
             return response.status(404).json({ message: 'User not found' })
         }
+
         if (!event) {
             return response.status(404).json({ message: 'Event not found' })
         }
 
+        const alreadyWishlisted = await event
+            .related('usersWhoWishlisted')
+            .query()
+            .where('user_id', user.id)
+            .first()
+
+        if (alreadyWishlisted) {
+            return response.status(400).json({ message: 'Event is already in your wishlist' })
+        }
+
         if (user) await event.related('usersWhoWishlisted').attach([user.id])
 
-        return response.redirect().toRoute('events.show', { id: event })
+        return response.redirect().back();
     }
 
     async destroy({ params, response, auth }: HttpContext) {
@@ -44,7 +55,19 @@ export default class WishlistsController {
         if (!event) {
             return response.status(404).json({ message: 'Event not found' })
         }
-        
+
+        const alreadyWishlisted = await event
+            .related('usersWhoWishlisted')
+            .query()
+            .where('user_id', user.id)
+            .first()
+
+        if (!alreadyWishlisted) {
+            return response.status(400).json({ message: 'Event is not in your wishlist' })
+        }
+
         if (user) await event.related('usersWhoWishlisted').detach([user.id])
+
+        return response.redirect().back();
     }
 }

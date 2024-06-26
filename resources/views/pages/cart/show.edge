@@ -63,7 +63,7 @@
             
                    {{ csrfField() }}
                   {{-- TODO Form submission canceled because the form is not connected --}}
-                     {{-- <input type="hidden" name="_method" value="DELETE" /> --}}
+                     <input type="hidden" name="_method" value="DELETE" />
                   
                   <button onclick="removeOrderLine({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
                   x

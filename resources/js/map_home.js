@@ -1,6 +1,9 @@
 
 // Initialiser la carte centrée sur Liège
-let map = L.map('map').setView([50.6333, 5.5667], 12);
+
+
+let mapZoom = 13;
+let map = L.map('map').setView([50.6333, 5.5667], mapZoom);
 
 // Ajouter les tuiles OSM
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -23,7 +26,7 @@ poi.forEach(function(point) {
 
 
 // Ajouter un cercle bleu transparent autour de la Place Saint-Lambert
-let baseRadius = 2000;
+let baseRadius = 1000;
 const radiusButtons = document.querySelectorAll('.radius-btn');
 
 let circle = L.circle([50.6452, 5.5734], {
@@ -39,13 +42,19 @@ let circle = L.circle([50.6452, 5.5734], {
 radiusButtons.forEach(button => {
   button.addEventListener('click', () => {
       baseRadius = button.value;
+      mapZoom = button.dataset.zoom;
       updateCircleRadius(baseRadius);
+      updateMapZoom(mapZoom);
   });
 });
 
 function updateCircleRadius(newRadius) {
   circle.setRadius(newRadius);
   baseRadius = newRadius
+}
+
+function updateMapZoom(newZoom) {
+  map.setZoom(newZoom);
 }
 
 // Fonction pour calculer la distance entre deux points (en km)

@@ -13,6 +13,7 @@ import AddressesController from '#controllers/addresses_controller'
 import fs from 'fs'
 import Indicator from '#models/indicator'
 import { createPricesValidator } from '#validators/price'
+import User from '#models/user'
 
 export default class EventsController {
   /**
@@ -332,6 +333,7 @@ export default class EventsController {
         .preload('prices')
         .preload('media')
         .preload('vendor')
+
       if (event === undefined || event.length === 0) {
         response.redirect().back()
       } else {

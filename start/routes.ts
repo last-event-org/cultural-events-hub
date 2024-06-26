@@ -66,7 +66,7 @@ router.delete('/cart/:id', [CartController, 'destroy']).as('cart.destroy').use(m
 
 
 router.group(() => {
-  router.get('/', [WishlistsController, 'index']).as('index').use(middleware.auth())
-  router.post('/add/:id', [WishlistsController, 'addToWishlist']).as('add').use(middleware.auth())
-  router.delete('/:id', [WishlistsController, 'destroy']).as('destroy')
-}).prefix('wishlist').as('wishlist')
+  router.get('/', [WishlistsController, 'index']).as('index')
+  router.post('/add/:id', [WishlistsController, 'addToWishlist']).as('add')
+  router.post('/:id', [WishlistsController, 'destroy']).as('destroy')
+}).prefix('wishlist').as('wishlist').use(middleware.auth())

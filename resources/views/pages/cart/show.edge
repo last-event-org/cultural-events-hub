@@ -33,20 +33,20 @@
           </thead>
           <tbody>
 
-      {{order.userId}}
+      User ID : {{order.userId}}  - Order ID : {{order.id}}
         @each(item in order.orderLineId)
-          <tr>
+          <tr name="orderLineQtyRow-{{item.id}}">
               <th scope="row">{{item.price.event.title}}</th>
               <td>{{item.price.description}}</td>
               <td >
-                <form action="{{ route('cart.add', [item.id]) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+                <form action="{{ route('cart.add', [item.id]) }}" method="post" class="space-y-4">
                     {{ csrfField() }}
                     <button onclick="addQuantity({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-green-700 hover:bg-green-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
                     +
                     </button>
                 </form>
                 <span name="orderLineQty-{{item.id}}">{{item.qty}}</span>
-                <form action="{{ route('cart.remove', [item.id]) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+                <form action="{{ route('cart.remove', [item.id]) }}" method="post" class="space-y-4">
                   {{ csrfField() }}
                   
                   <button onclick="removeQuantity({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
@@ -55,14 +55,18 @@
                 </form>
 
               </td>
-              <td>{{item.price.discountedPrice}} €</td>
-              <td>TOTAL €</td>
+              <td name="discount-price-{{item.id}}">{{item.price.discountedPrice}}</td>
+              <td ><span name="total-price-{{item.id}}" data-subtotal="{{item.qty * item.price.discountedPrice}}">{{item.qty * item.price.discountedPrice}}</span> €</td>
               <td>
-                <form action="{{ route('cart.delete', [item.id]) }}" method="post" class="space-y-4" enctype="multipart/form-data">
-                  {{ csrfField() }}
+                 {{-- DELETE ROW --}}
+                <form name="removeOrderLine-{{item.id}}" action="{{ route('cart.delete', [item.id], { qs: {_method: 'DELETE'}})}}" method="post" class="space-y-4">
+            
+                   {{ csrfField() }}
+                  {{-- TODO Form submission canceled because the form is not connected --}}
+                     {{-- <input type="hidden" name="_method" value="DELETE" /> --}}
                   
                   <button onclick="removeOrderLine({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-                  -
+                  x
                   </button>
                 </form>
               </td>
@@ -72,7 +76,7 @@
         <tfoot>
             <tr>
               <th scope="row" colspan="2">Total</th>
-              <td>33 €</td>
+              <td><span  data-total-order="{{totalOrder}}">{{totalOrder}}</span> €</td>
             </tr>
           </tfoot>
         </table>
@@ -104,7 +108,7 @@
   
 
     @include("pages/partials/footer")
-  <script src="/resources/js/cart.js"></script>
+  <script src="/resources/js/cart.js" defer></script>
 
 </body>
 </html>

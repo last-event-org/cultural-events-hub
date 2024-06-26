@@ -13,9 +13,7 @@
     <p class="text-center text-xs text-red-800  font-bold mb-2 animate-pulse">Il reste {{item.availableQty}}  places !</p>
   </div>
   <div class="flex gap-4 justify-end w-full">
-    @flashMessage('item-added')
-      @!component('components/notification_added_to_basket',{message: $message.message})
-    @end
+   
     <form action="" method="POST">
        {{ csrfField() }}
        <input type="hidden" name="price_id" value={{item.id}} />

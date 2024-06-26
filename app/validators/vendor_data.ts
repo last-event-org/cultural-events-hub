@@ -6,7 +6,8 @@ export const createVendorDataValidator = vine.compile(
         company_name: vine
             .string()
             .escape()
-            .maxLength(255),
+            .maxLength(255)
+            .optional(),
         vat_number: vine
             .string()
             .escape()

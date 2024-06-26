@@ -72,7 +72,7 @@ export default class CartController {
     })
 
     // TODO avoid refreshing the page or go back
-    return response.redirect().back()
+    return response.send()
   }
 
   /**

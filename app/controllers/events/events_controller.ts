@@ -322,7 +322,6 @@ export default class EventsController {
       addressPayload.zip_code,
       addressPayload.number
     )
-    console.log(latitude, '       ', longitude)
     address.latitude = latitude
     address.longitude = longitude
 
@@ -343,7 +342,7 @@ export default class EventsController {
       console.log(e)
     }
     // lat: data.features[0].geometry.coordinates[1],
-    //     lng: data.features[0].geometry.coordinates[0],
+    // lng: data.features[0].geometry.coordinates[0],
   }
 
   async uploadEventMedia(request: HttpContext['request'], event: Event) {

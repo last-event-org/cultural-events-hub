@@ -56,6 +56,8 @@ userButton.addEventListener('click', () => {
 
 //Dashboard
 
+
+// BUG deplacer ceci ailleurs car c'est appelé partout et un message d'erreur s'affiche dans la console
 //DropDown Billing Adress
 
 const billingAdressButton = document.getElementById('billing__adress--button');

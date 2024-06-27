@@ -22,7 +22,7 @@ export default class EventsController {
   async index({ request, view, auth }: HttpContext) {
     await auth.check()
     const requestQuery = request.qs()
-    console.log('\n\n\n\n\nrequestQuery: ', requestQuery);
+    console.log('\n\n\n\n\nrequestQuery: ', requestQuery)
     let events
     let title: string | null = ''
     let categories: any[] = []
@@ -391,7 +391,9 @@ export default class EventsController {
         response.redirect().back()
       } else {
         session.forget('item-added')
-        return view.render('pages/events/details', { event: event[0] })
+        return view.render('pages/events/details', {
+          event: event[0],
+        })
       }
     } catch (error) {
       if (error) {

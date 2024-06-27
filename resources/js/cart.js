@@ -87,3 +87,7 @@ function updateTotalOrder() {
 
   totalOrder.textContent = sum
 }
+
+function test(variable) {
+  console.log(variable)
+}

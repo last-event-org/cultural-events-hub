@@ -173,8 +173,8 @@
           </div>    
 
             <div id="notification"></div>    
-            @!component('components/notification_added_to_basket',{message: $message.message})
-          @end --}}
+            {{-- @!component('components/notification_added_to_basket', {message: $message.message}) --}}
+          
       </article>     
 
     </div>
@@ -191,6 +191,8 @@
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""></script>
 
-  <script src="/resources/js/cart.js" defer></script>
+  <script src="/resources/js/cart.js" defer>
+    test('hello')
+  </script>
 </body>
 </html>

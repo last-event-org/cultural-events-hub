@@ -11,7 +11,7 @@ hoverTarget.addEventListener('mouseleave', () => {
   changeClass.classList.remove('block', 'opacity-100', 'scale-100', 'translate-x-0')
 })
 
-const heartTrigger = document.getElementById('heart_trigger')
+const heartTrigger = document.getElementById('favourite-heart')
 const heartEmpty = document.getElementById('heart_empty')
 const heartFull = document.getElementById('heart_full')
 

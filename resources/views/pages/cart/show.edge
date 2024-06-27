@@ -8,108 +8,101 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-slate-50 text-xs sm:text-sm md:text-base">
   @include("pages/partials/header")
-  <main class="bg-gray-100 flex  justify-center min-h-screen">
+  <main class="flex justify-center items-center min-h-screen w-screen sm:w-[600px] mx-auto">
     
-    <div class="bg-white p-8 my-20 mb-auto rounded shadow-md w-full max-w-md ">
+    <div class="bg-white sm:p-4 lg:p-8 my-10 mb-auto rounded-md shadow w-full py-4">
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
         Mon panier
       </h2>
       
       @if(!order) 
-      <p>Votre panier est vide</p>
+      <p class="text-center text-gray-600">Votre panier est vide</p>
       @else
-      <table>
-          <thead>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+          <thead class="bg-slate-700 text-white">
             <tr>
-              <th scope="col">Evénement</th>
-              <th scope="col">Catégorie de billet</th>
-              <th scope="col">Quantité</th>
-              <th scope="col">Prix/pc</th>
-              <th scope="col">Total</th>
-              <th scope="col"></th>
+              <th scope="col" class="py-2 px-2 text-left">Event</th>
+              <th scope="col" class="py-2 px-2 text-left">Ticket</th>
+              <th scope="col" class="py-2 px-2 text-left">Quantité</th>
+              <th scope="col" class="py-2 px-2 text-left">Prix</th>
+              <th scope="col" class="py-2 px-2 text-left">Total</th>
+              {{-- <th scope="col" class="py-2 px-2"></th> --}}
             </tr>
           </thead>
           <tbody>
-
-      User ID : {{order.userId}}  - Order ID : {{order.id}}
-        @each(item in order.orderLineId)
-          <tr name="orderLineQtyRow-{{item.id}}">
-              <th scope="row">{{item.price.event.title}}</th>
-              <td>{{item.price.description}}</td>
-              <td >
-                <form action="{{ route('cart.add', [item.id]) }}" method="post" class="space-y-4">
+            {{-- User ID : {{order.userId}}  - Order ID : {{order.id}} --}}
+            @each(item in order.orderLineId)
+            <tr name="orderLineQtyRow-{{item.id}}" class="border-t border-slate-200">
+              <td class="py-2 px-2">{{item.price.event.title}}</td>
+              <td class=" px-2">{{item.price.description}}</td>
+              <td class=" px-2">
+                <div class="flex items-center justify-center space-x-2">
+                  <form action="{{ route('cart.remove', [item.id]) }}" method="post">
                     {{ csrfField() }}
-                    <button onclick="addQuantity({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-green-700 hover:bg-green-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-                    +
-                    </button>
-                </form>
-                <span name="orderLineQty-{{item.id}}">{{item.qty}}</span>
-                <form action="{{ route('cart.remove', [item.id]) }}" method="post" class="space-y-4">
-                  {{ csrfField() }}
-                  
-                  <button onclick="removeQuantity({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-                  -
-                  </button>
-                </form>
-
+                    <button onclick="removeQuantity({{item.id}})" class="text-center lg:py-2 lg:px-4  text-red-600 font-bold " type="submit">
+                      -</button>
+                  </form>
+                  <span name="orderLineQty-{{item.id}}">{{item.qty}}</span>
+                  <form action="{{ route('cart.add', [item.id]) }}" method="post">
+                    {{ csrfField() }}
+                    <button onclick="addQuantity({{item.id}})" class="text-center lg:py-2 lg:px-4  text-green-600 font-bold" type="submit">
+                      +</button>
+                  </form>
+                </div>
               </td>
-              <td name="discount-price-{{item.id}}">{{item.price.discountedPrice}}</td>
-              <td ><span name="total-price-{{item.id}}" data-subtotal="{{item.qty * item.price.discountedPrice}}">{{item.qty * item.price.discountedPrice}}</span> €</td>
-              <td>
-                 {{-- DELETE ROW --}}
+              <td  class=" px-4">
+                <span name="discount-price-{{item.id}}">
+                  {{item.price.discountedPrice}}
+                </span>€
+              </td>
+              <td class=" px-4"><span name="total-price-{{item.id}}" data-subtotal="{{item.qty * item.price.discountedPrice}}">{{item.qty * item.price.discountedPrice}}</span>€</td>
+              {{-- <td class="py-2 px-4">
                 <form name="removeOrderLine-{{item.id}}" action="{{ route('cart.delete', [item.id], { qs: {_method: 'DELETE'}})}}" method="post" class="space-y-4">
-            
-                   {{ csrfField() }}
+
+                  {{ csrfField() }}
                   {{-- TODO Form submission canceled because the form is not connected --}}
                      <input type="hidden" name="_method" value="DELETE" />
-                  
-                  <button onclick="removeOrderLine({{item.id}})" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-                  x
-                  </button>
+                  <button onclick="removeOrderLine({{item.id}})" class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
+                    x</button>
+
                 </form>
-              </td>
+              </td> --}}
             </tr>
-        @end
-        </tbody>
-        <tfoot>
-            <tr>
-              <th scope="row" colspan="2">Total</th>
-              <td><span  data-total-order="{{totalOrder}}">{{totalOrder}}</span> €</td>
+            @end
+          </tbody>
+          <tfoot class="bg-slate-100 ">
+            <tr class="">
+              <th scope="row" colspan="4" class="py-2 text-right">Total :</th>
+              <td class="px-4"><span data-total-order="{{totalOrder}}">{{totalOrder}}</span>€</td>
             </tr>
           </tfoot>
         </table>
+      </div>
 
-      <form action="{{ route('cart.destroy', [order.id], { qs: {_method: 'DELETE'}}) }}" method="post" class="space-y-4" enctype="multipart/form-data">
-            
-            {{ csrfField() }}
-            
-            <input type="hidden" name="_method" value="DELETE" />
-            <button onclick="showErrorNotification('Panier supprimé')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-      Vider mon panier</button>
-            </form>
 
-          <form action="{{route('cart.validate', [order.id])}}" method="POST">
-       {{ csrfField() }}
-    <button onclick="showSuccessNotification('Panier validé - Merci pour votre commande')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-      Valider mon panier</button>
-
-      
-      </form>
-    </a>
+      <div class="mt-6 flex flex-col items-center gap-4">
+        <form action="{{ route('cart.destroy', [order.id], { qs: {_method: 'DELETE'}}) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+          {{ csrfField() }}
+          <input type="hidden" name="_method" value="DELETE" />
+          <button class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
+            Vider mon panier</button>
+        </form>
+        <form action="{{route('cart.validate', [order.id])}}" method="POST">
+          {{ csrfField() }}
+          <button class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
+            Valider mon panier</button>
+        </form>
+      </div>
       @end
-     
-      <div id="notification"></div>
-     
 
-       
+       <div id="notification"></div>
     </div>
   </main>
   
-
-    @include("pages/partials/footer")
+  @include("pages/partials/footer")
   <script src="/resources/js/cart.js" defer></script>
-
 </body>
 </html>

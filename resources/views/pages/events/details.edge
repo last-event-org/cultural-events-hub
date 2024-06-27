@@ -15,7 +15,7 @@
   <main class= "container mb-10 mx-auto relative">
      
     <div class="flex justify-center  gap-10  mx-auto my-6 py-10"> 
-      <article class="bg-slate-50 border-gray-300 rounded-lg w-full">
+      <article class="w-full">
         <div class="flex justify-center items-center mb-4">
 
           <a href="{{route('events.edit', {id : event.id})}}"
@@ -33,9 +33,6 @@
         {{-- {{event.vendor.id}} --}}
 
         {{-- <br>
-
-        
-
         {{event.eventStart}}
         {{event.eventEnd}} --}}
 
@@ -44,17 +41,20 @@
 
         
 
-       
-        <div class="flex flex-col gap-4 mx-4 mb-4">
+      <section class="flex flex-col  w-full lg:bg-white border shadow rounded-md py-4 lg:py-8">
+
+      
+        <div class="flex flex-col gap-2 mx-2 lg:mx-4 pb-4 lg:pb-0">
           
-          <h2 class="text-4xl font-semibold tracking-tight text-gray-700">
+          <h2 class="text-4xl font-bold tracking-tight text-gray-700">
             {{event.title}}
           </h2>
           
-          <h3 class="text-xl  font-medium text-gray-400 ">
+          <h3 class="text-xl  font-semibold text-gray-400 ">
             {{event.subtitle}} 
           </h3>
-          <div class="flex flex-col lg:flex-row w-full lg:bg-white-100 shadow rounded-md">
+        </div> 
+        <div class="flex flex-col lg:flex-row w-full">
 
             <div class="lg:w-1/2 relative" href="#">
               <img src="/public/images/dummy-spectacle.webp" alt="Event Image" class="lg:p-4 h-auto object-cover">  
@@ -94,11 +94,8 @@
                     @end
                   </div>
                 </div>
-                <p class=" text-gray-500 mb-1 italic">
+                <p class=" text-gray-500 mb-1 italic mx-2 lg:mx-0">
                   {{event.description}} 
-                  {{-- {{event.description}} 
-                  {{event.description}}      
-                  {{event.description}}  --}}
                 </p>
                 <div class="flex flex-col lg:flex-row gap-4 justify-around items-center">
                   <div class="lg:hidden w-1/2 border-t-2 border-gray-400"></div>
@@ -127,9 +124,9 @@
                 </div>
             </div>     
           </div>
- 
-          <div class="flex flex-col lg:flex-row gap-8 bg-slate-100 rounded-md shadow ">
-            <div class="flex flex-col items-center text-center gap-4 p-8 md:px-16 lg:w-1/2  "> 
+        </section> 
+          <div class="flex flex-col lg:flex-row gap-8 bg-slate-100 rounded-md border shadow mt-10">
+            <div class="flex flex-col justify-center items-center text-center gap-4 p-8 md:px-16 lg:w-1/2  "> 
               <p class="text-sm font-bold text-gray-400 ">
                 Sam 15 juin 2024, de 12h à 20h
               </p>
@@ -150,15 +147,28 @@
             
         
           </div>
-          <div class="flex justify-center">
+          <div class="flex flex-col lg:flex-row justify-center items-center bg-white rounded-md shadow border mt-10 lg:p-4">
             <div class="w-full h-full lg:w-3/5 lg:h-3/5 ">
-              <div class="video-container mt-4 ">
+              <div class="video-container ">
                 <iframe src="https://www.youtube.com/embed/xm3YgoEiEDc" frameborder="0" allowfullscreen></iframe>
               </div>
             </div>
-          </div>
-          <div id="notification"></div>    
-         {{-- @flashMessage('item-added')
+
+            <div class="flex flex-col h-3/5 justify-between gap-8  py-8">
+              @!component('components/dashboard/mini-event')
+              @!component('components/dashboard/mini-event')
+              @!component('components/dashboard/mini-event')
+              <div class="hidden 2xl:block">
+                @!component('components/dashboard/mini-event')
+              </div>
+              <div class="hidden xl:block">
+                @!component('components/dashboard/mini-event')
+              </div>
+              
+            </div>
+          </div>    
+
+            <div id="notification"></div>    
             @!component('components/notification_added_to_basket',{message: $message.message})
           @end --}}
       </article>     

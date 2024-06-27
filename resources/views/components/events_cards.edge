@@ -7,10 +7,23 @@
     </div>  
     <div class="flex mb-1 absolute top-4 right-4  ">
       <p class=" bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-gray-600 text-sm font-bold px-3 py-1 mb-1">
-        -50%</p>
+        @let(regPrices = 0)
+        @let(discPrices = 0)
+        @let(minDiscountedPrice = Infinity)
+
+        @each(item in event.prices)
+          @assign(regPrices = regPrices + item.regularPrice)
+          @assign(discPrices = discPrices + item.discountedPrice)
+          @assign(minDiscountedPrice = item.discountedPrice < minDiscountedPrice ? item.discountedPrice : minDiscountedPrice)
+        @end
+
+        @let(percentage = ((regPrices - discPrices) / regPrices) * 100)
+
+        -{{ percentage.toFixed(0) }}%
+      </p>
     </div>
   </div>
-
+  
 
 
 
@@ -19,9 +32,9 @@
   {{item.discountedPrice}}
 @end --}}
 
-{{-- @each(item in event.media) 
-  {{item.path}}
-@end --}}
+@each(item in event.media) 
+  <img src="{{item.path}}" alt="{{item.path}}">
+@end
 
 
   <div class="p-4">
@@ -48,7 +61,8 @@
 
     <div class="flex justify-between items-center mt-2"> 
       <div class="flex flex-col gap-2 h-full justify-between ">
-        <p class="text-indigo-900 tracking-tight font-semibold ">Forum de Liège - Liège</p>
+        <p class="text-indigo-900 tracking-tight font-semibold ">
+          {{event.location.name}} - {{event.location.city}}</p>
         <a href="/events/{{event?.id?? ''}}" class="text-xs font-semibold text-indigo-900 tracking-tight hover:scale-105 duration-300">
           VOIR PLUS DE DÉTAILS
         </a>
@@ -61,7 +75,7 @@
         <p class="text-xs text-center">
           àpd de
           <span class="font-bold">
-            5€
+            {{ minDiscountedPrice }}€
           </span> 
         </p>
       </div>

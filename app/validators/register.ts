@@ -34,6 +34,6 @@ export const createRegisterValidator = vine.compile(
       .maxLength(255)
       .normalizeEmail({
         all_lowercase: true,
-      }),
-  })
+      })
+    })
 )

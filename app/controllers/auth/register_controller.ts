@@ -1,6 +1,6 @@
 import { createRegisterValidator } from '#validators/register'
 import { createVendorDataValidator } from '#validators/vendor_data'
-import { Route, type HttpContext } from '@adonisjs/core/http'
+import { HttpContext, Route } from '@adonisjs/core/http'
 import User from '#models/user'
 import Role from '#models/role'
 import { createAddressValidator } from '#validators/address'
@@ -19,15 +19,18 @@ export default class RegistersController {
   }
 
   /**
-   * Display form to create a new record
-   */
-  async create({ }: HttpContext) { }
-
-  /**
    * Handle form submission for the create action
    */
   async store({ session, request, response, auth, view }: HttpContext) {
     const payload = await request.validateUsing(createRegisterValidator)
+
+    // check if user email is already in the db
+    const userEmail = await User.findBy('email', payload.email)
+    if (userEmail) {
+      session.flash('duplicateEmail', 'Cet email a déjà été utilisé')
+      return response.redirect().back()
+    }
+
     if (request.input('password') !== request.input('password_confirmation')) {
       session.flash('password', 'Password do not match')
       response.redirect().back()
@@ -105,7 +108,6 @@ export default class RegistersController {
       if (role) {
         user.roleId = role.id
       }
-
       await user.save()
 
       return response.redirect().toRoute('home')

@@ -65,8 +65,19 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @hasOne(() => Address)
   declare shippingAddress: HasOne<typeof Address>
 
-  @hasMany(() => User)
-  declare favourites: HasMany<typeof User>
+  @manyToMany(() => User, {
+    pivotTable: 'favourites',
+    pivotForeignKey: 'user_id',
+    pivotRelatedForeignKey: 'vendor_id',
+  })
+  declare favouritesUser: ManyToMany<typeof User>
+
+  @manyToMany(() => User, {
+    pivotTable: 'favourites',
+    pivotForeignKey: 'vendor_id',
+    pivotRelatedForeignKey: 'user_id',
+  })
+  declare favouritesVendor: ManyToMany<typeof User>
 
   @manyToMany(() => Event, {
     pivotTable: 'wishlists',

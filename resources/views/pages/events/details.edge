@@ -31,6 +31,7 @@
 
         {{-- id de la société à lier pour qu'on puisse retracer le user pour ajouter aux favoris --}}
         {{-- {{event.vendor.id}} --}}
+
         {{-- <br>
         {{event.eventStart}}
         {{event.eventEnd}} --}}
@@ -98,16 +99,17 @@
                 </p>
                 <div class="flex flex-col lg:flex-row gap-4 justify-around items-center">
                   <div class="lg:hidden w-1/2 border-t-2 border-gray-400"></div>
-                  <a href="" class="flex  items-center gap-2 " id="heart_trigger">
-
+                  <form action="{{ route('favourite.add', [event.vendor.id]) }}" method="post" class="space-y-4" enctype="multipart/form-data">
+                    {{ csrfField() }}
+                    <button type="submit" id="favourite-heart">
+                      <p class="text-sm text-right text-gray-500 mb-1 text-clip overflow-hidden ">
+                        Organisé par: {{ event.vendor.companyName }}
+                      </p>
+                        <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="h-4 w-4 self-center block" id="heart_empty">
+                        <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="h-4 w-4 self-center hidden" id="heart_full">
                     
-                    <p class="text-sm text-right text-gray-500 mb-1 text-clip overflow-hidden ">
-                      {{event.vendor.companyName}}
-                    </p>
-                    <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="h-4 w-4 self-center block" id="heart_empty">
-                    <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="h-4 w-4 self-center hidden" id="heart_full">
-                  </a>
-
+                    </button>
+                </form>
                   <div class="flex justify-center items-center gap-8 mb-4">
                     <a href="#" class="hover:animate-pulse">
                       <img src="/public/svg/facebook-color.svg" alt="facebook link">
@@ -151,6 +153,7 @@
                 <iframe src="https://www.youtube.com/embed/xm3YgoEiEDc" frameborder="0" allowfullscreen></iframe>
               </div>
             </div>
+
             <div class="flex flex-col h-3/5 justify-between gap-8  py-8">
               @!component('components/dashboard/mini-event')
               @!component('components/dashboard/mini-event')
@@ -164,9 +167,10 @@
               
             </div>
           </div>    
-         @flashMessage('item-added')
+
+            <div id="notification"></div>    
             @!component('components/notification_added_to_basket',{message: $message.message})
-          @end
+          @end --}}
       </article>     
 
     </div>
@@ -182,5 +186,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""></script>
+
+  <script src="/resources/js/cart.js" defer></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wishlist</title>
+  <title>Favoris</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -13,17 +13,16 @@
 
 <main class="container py-10 mb-10 mx-auto">
 
-    <h1>Ma Wishlist</h1>
-    @each(event in userWishlist)
+    <h1>Mes Favoris</h1>
+    @each(vendor in userFavourites)
       <li>
           <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-            <a class="font-semibold  text-white" href="{{ route('events.show', [event.id]) }}">
-              <p>{{event.title}}</p>
-              <p>{{event.location.name}}</p>
-            </a>
+              <p>{{vendor.companyName}}</p>
           </div>
-          <a class="text-red" href="{{ route('wishlist.destroy', [event.id]) }}">Effacer</a>
-
+            <form action="{{ route('favourite.destroy', [vendor.id]) }}" method="post" class="space-y-4"  enctype="multipart/form-data">
+              {{ csrfField() }}
+              <button type="submit" class="text-yellow">Effacer</button>
+            </form>
       </li>
     @end
 </main>

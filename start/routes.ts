@@ -1,6 +1,7 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 import WishlistsController from '#controllers/events/wishlists_controller'
+import FavouritesController from '#controllers/vendors/favourites_controller'
 
 const CartController = () => import('#controllers/events/cart_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
@@ -51,22 +52,31 @@ router
   .as('events')
 
 // PANIER
-router.post('/events/:id', [CartController, 'store']).as('cart.store').use(middleware.auth())
-router.get('/cart', [CartController, 'show']).as('cart.show').use(middleware.auth())
 router
-  .post('/cart/:id', [CartController, 'confirmOrder'])
-  .as('cart.validate')
+  .group(() => {
+    router.get('/', [CartController, 'show']).as('show')
+
+    router.post('/:id', [CartController, 'confirmOrder']).as('validate')
+    router.post('/add/:id', [CartController, 'addQuantity']).as('add')
+    router.post('/remove/:id', [CartController, 'removeQuantity']).as('remove')
+    router.delete('/delete/:id', [CartController, 'deleteOrderLine']).as('delete')
+    router.delete('/:id', [CartController, 'destroy']).as('destroy')
+  })
   .use(middleware.auth())
-
-router.post('/cart/add/:id', [CartController, 'addQuantity']).as('cart.add')
-router.post('/cart/remove/:id', [CartController, 'removeQuantity']).as('cart.remove')
-router.delete('/cart/delete/:id', [CartController, 'deleteOrderLine']).as('cart.delete')
-
-router.delete('/cart/:id', [CartController, 'destroy']).as('cart.destroy').use(middleware.auth())
-
+  .prefix('cart')
+  .as('cart')
 
 router.group(() => {
-  router.get('/', [WishlistsController, 'index']).as('index').use(middleware.auth())
-  router.post('/add/:id', [WishlistsController, 'addToWishlist']).as('add').use(middleware.auth())
-  router.delete('/:id', [WishlistsController, 'destroy']).as('destroy')
-}).prefix('wishlist').as('wishlist')
+  router.get('/', [WishlistsController, 'index']).as('index')
+  router.post('/add/:id', [WishlistsController, 'addToWishlist']).as('add')
+  router.post('/:id', [WishlistsController, 'destroy']).as('destroy')
+}).prefix('wishlist').as('wishlist').use(middleware.auth())
+
+router.group(() => {
+  router.get('/', [FavouritesController, 'index']).as('index')
+  router.post('/add/:id', [FavouritesController, 'addToFavourites']).as('add')
+  router.post('/:id', [FavouritesController, 'destroy']).as('destroy')
+}).prefix('favourite').as('favourite').use(middleware.auth())
+
+// TODO change this route to add it to the group
+router.post('/events/:id', [CartController, 'store']).as('store').use(middleware.auth())

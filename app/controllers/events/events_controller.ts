@@ -13,6 +13,7 @@ import AddressesController from '#controllers/addresses_controller'
 import fs from 'fs'
 import Indicator from '#models/indicator'
 import { createPricesValidator } from '#validators/price'
+import User from '#models/user'
 
 export default class EventsController {
   /**
@@ -117,6 +118,16 @@ export default class EventsController {
           events = await Event.query()
             .where('location_id', requestQuery['location'])
             .orderBy('event_start', 'asc')
+            .preload('location')
+            .preload('categoryTypes', (categoryTypesQuery) => {
+              categoryTypesQuery.preload('category')
+            })
+            .preload('indicators')
+            .preload('prices')
+            .preload('media')
+            .orderBy('event_start', 'asc')
+          title = 'Events pour une location'
+          return view.render('pages/events/list', { events: events, title: title })
         }
       }
     }
@@ -140,6 +151,17 @@ export default class EventsController {
       events = await Event.query()
         .where('vendor_id', requestQuery['vendor'])
         .orderBy('event_start', 'asc')
+        .preload('location')
+        .preload('categoryTypes', (categoryTypesQuery) => {
+          categoryTypesQuery.preload('category')
+        })
+        .preload('indicators')
+        .preload('prices')
+        .preload('media')
+        .orderBy('event_start', 'asc')
+      title = 'Event pour un vendeur'
+
+      return view.render('pages/events/list', { events: events, title: title })
     }
 
     // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
@@ -311,6 +333,7 @@ export default class EventsController {
         .preload('prices')
         .preload('media')
         .preload('vendor')
+
       if (event === undefined || event.length === 0) {
         response.redirect().back()
       } else {

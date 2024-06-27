@@ -31,6 +31,10 @@ router
       .as('profile.show')
       .use(middleware.auth())
     router
+      .get('/dashboard/switch-to-vendor', [RegisterController, 'switchToVendor'])
+      .as('profile.switch-to-vendor')
+      .use(middleware.auth())
+    router
       .get('/dashboard/orders', [CartController, 'index'])
       .as('profile.orders')
       .use(middleware.auth())

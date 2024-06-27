@@ -57,6 +57,10 @@ export default class RegistersController {
     }
   }
 
+  async switchToVendor({ view }: HttpContext) {
+    return view.render('pages/auth/switch-to-vendor')
+  }
+
   async updateProfileType({ request, response, auth }: HttpContext) {
     /*
     When registering on the website we are directed to a second page

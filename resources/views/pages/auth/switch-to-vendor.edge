@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Event Edit profile</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/dropdown_address.js'])
+</head>
+
+<body>
+  
+  @include("pages/partials/header")
+  <main class="bg-gray-100 flex  justify-center">
+    
+    <div class="bg-white p-8 my-20  rounded shadow-md w-full max-w-md ">
+      <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
+        Devenir Organisateur
+      </h2>
+
+      <div class="flex flex-col justify-between  w-full text-gray-800 text-xl font-semibold my-4">
+        <p>
+            Pour pouvoir vendre des places d'événements il faut obtenir un compte 'vendeur'.
+        </p>
+				<p>
+					Pour celà il est nécessaire de remplir des informations dans votre profile:
+				</p>
+        <ul class="text-gray-500 text-base">
+            <li>Nom de société</li>
+            <li>Numéro de TVA</li>
+            <li>Adress de facturation</li>
+        </ul>
+			</div>
+
+			<div>
+				<a href={{ route('auth.profile.edit') }}>
+					<button type="submit" class="w-full bg-indigo-800 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Créer votre compte organisateur
+					</button>
+				</a>
+			</div>       
+
+    </div>
+  </main>
+  
+
+    @include("pages/partials/footer")
+  
+<script scr="resources/js/app.js"></script>
+</body>
+</html>

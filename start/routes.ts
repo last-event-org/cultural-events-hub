@@ -1,7 +1,5 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
-import WishlistsController from '#controllers/events/wishlists_controller'
-import FavouritesController from '#controllers/vendors/favourites_controller'
 
 const CartController = () => import('#controllers/events/cart_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
@@ -9,6 +7,8 @@ const LogoutController = () => import('#controllers/auth/logout_controller')
 const HomeController = () => import('#controllers/home_controller')
 const RegisterController = () => import('#controllers/auth/register_controller')
 const EventsController = () => import('#controllers/events/events_controller')
+const WishlistsController = () => import('#controllers/events/wishlists_controller')
+const FavouritesController = () => import('#controllers/vendors/favourites_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
 
@@ -21,6 +21,10 @@ router
     router
       .get('/dashboard', [RegisterController, 'dashboard'])
       .as('dashboard')
+      .use(middleware.auth())
+    router
+      .post('/update', [RegisterController, 'update'])
+      .as('register.update')
       .use(middleware.auth())
     router
       .post('/profile-type', [RegisterController, 'updateProfileType'])

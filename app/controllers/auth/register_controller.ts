@@ -1,5 +1,6 @@
 import { createRegisterValidator } from '#validators/register'
 import { createVendorDataValidator } from '#validators/vendor_data'
+import { updateUserProfileValidator } from '#validators/user_profile'
 import { HttpContext, Route } from '@adonisjs/core/http'
 import User from '#models/user'
 import Role from '#models/role'
@@ -64,7 +65,21 @@ export default class RegistersController {
     return view.render('pages/auth/switch-to-vendor')
   }
 
-  async updateProfileType({ request, response, auth }: HttpContext) {
+  async update({ request, response, session, auth }: HttpContext) {
+    
+    const user = await User.findOrFail(auth.user?.$attributes.id)
+
+    const userProfilePayload = await request.validateUsing(updateUserProfileValidator)
+    user.firstname = userProfilePayload.first_name
+    user.lastname = userProfilePayload.last_name
+    user.email = userProfilePayload.email
+
+    await user.save()
+
+    // TODO recreate updateProfileType() here
+  }
+
+  async updateProfileType({request, response, auth}: HttpContext) {
     /*
     When registering on the website we are directed to a second page
     in which we are asked whether we would like to buy or sell event tickets:

@@ -1,10 +1,23 @@
-// Initialiser la carte centrée sur Liège
+// import { getCoordinatesFromCity } from './geolocation'
 
 let mapZoom = 13
-let map = L.map('map').setView([50.6333, 5.5667], mapZoom)
-// Bruxelles
-// let map = L.map('map').setView([50.85045, 4.34878], mapZoom)
 
+let poi = [
+  { name: 'Place Saint-Lambert', lat: 50.6452, lng: 5.5734 },
+  { name: 'Gare de Liège-Guillemins', lat: 50.6246, lng: 5.5675 },
+  { name: 'Montagne de Bueren', lat: 50.6482, lng: 5.5804 },
+]
+
+// Bruxelles
+let [latitude, longitude] = [50.85045, 4.34878]
+// Initialiser la carte centrée sur Liège
+if (window.city) {
+  asyn
+  ;[latitude, longitude] = await getCoordinatesFromCity(window.city)
+  console.log(latitude + '  ' + longitude)
+}
+
+let map = L.map('map').setView([latitude, longitude], mapZoom)
 
 // Ajouter les tuiles OSM
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -13,11 +26,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map)
 
 // Points d'intêrets "en dur"
-let poi = [
-  { name: 'Place Saint-Lambert', lat: 50.6452, lng: 5.5734 },
-  { name: 'Gare de Liège-Guillemins', lat: 50.6246, lng: 5.5675 },
-  { name: 'Montagne de Bueren', lat: 50.6482, lng: 5.5804 },
-]
+// let poi = []
+// events.forEach((event) => {
+//   console.log(event.location)
+// })
 
 poi.forEach(function (point) {
   L.marker([point.lat, point.lng]).addTo(map).bindPopup(point.name)
@@ -27,9 +39,11 @@ poi.forEach(function (point) {
 let baseRadius = 1000
 const radiusButtons = document.querySelectorAll('.radius-btn')
 
-let circle = L.circle([50.6452, 5.5734], {
-  color: 'blue',
-  fillColor: '#30f',
+let circle = L.circle([latitude, longitude], {
+  // color: 'blue',
+  // fillColor: '#30f',
+  color: 'rgb(234 179 8)',
+  fillColor: 'rgb(234 179 8)',
   fillOpacity: 0.2,
   radius: baseRadius, // Rayon en mètres, variable à changer pour augmenter
   // le taille du cercle mais il faut aussi changer l'appel
@@ -89,4 +103,4 @@ function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
   poiList.appendChild(ul)
 }
 //(latitude,longitude, rayon en km)
-displayPOIsWithinRadius(50.6452, 5.5734, baseRadius / 1000)
+displayPOIsWithinRadius(latitude, longitude, baseRadius / 1000)

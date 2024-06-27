@@ -22,7 +22,6 @@ export default class EventsController {
   async index({ request, view, auth }: HttpContext) {
     await auth.check()
     const requestQuery = request.qs()
-    console.log('\n\n\n\n\nrequestQuery: ', requestQuery)
     let events
     let title: string | null = ''
     let categories: any[] = []
@@ -167,7 +166,11 @@ export default class EventsController {
 
     if (requestQuery['city']) {
       let [events, title] = await this.citySearch(request)
-      return view.render('pages/events/list', { events: events, title: title })
+      return view.render('pages/events/location', {
+        // events: events,
+        title: title,
+        city: requestQuery['city'],
+      })
     }
 
     // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
@@ -205,7 +208,8 @@ export default class EventsController {
         .preload('prices')
         .preload('media')
         .orderBy('event_start', 'asc')
-      title = 'Event pour un endroit' + requestQuery['city']
+
+      title = 'Event pour un endroit ' + requestQuery['city']
     }
 
     return [events, title]

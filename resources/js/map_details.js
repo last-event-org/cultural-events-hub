@@ -6,7 +6,4 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map)
 
-L.marker([window.latitude, window.longitude])
-  .addTo(map)
-  .bindPopup("L'évènement est ici")
-  .openPopup()
+L.marker([window.latitude, window.longitude]).addTo(map).bindPopup(window.name).openPopup()

@@ -2,6 +2,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 import WishlistsController from '#controllers/events/wishlists_controller'
 import FavouritesController from '#controllers/vendors/favourites_controller'
+import ListEvents from '#controllers/api_listevents'
 
 const CartController = () => import('#controllers/events/cart_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
@@ -70,17 +71,28 @@ router
   .prefix('cart')
   .as('cart')
 
-router.group(() => {
-  router.get('/', [WishlistsController, 'index']).as('index')
-  router.post('/add/:id', [WishlistsController, 'addToWishlist']).as('add')
-  router.post('/:id', [WishlistsController, 'destroy']).as('destroy')
-}).prefix('wishlist').as('wishlist').use(middleware.auth())
+router
+  .group(() => {
+    router.get('/', [WishlistsController, 'index']).as('index')
+    router.post('/add/:id', [WishlistsController, 'addToWishlist']).as('add')
+    router.post('/:id', [WishlistsController, 'destroy']).as('destroy')
+  })
+  .prefix('wishlist')
+  .as('wishlist')
+  .use(middleware.auth())
 
-router.group(() => {
-  router.get('/', [FavouritesController, 'index']).as('index')
-  router.post('/add/:id', [FavouritesController, 'addToFavourites']).as('add')
-  router.post('/:id', [FavouritesController, 'destroy']).as('destroy')
-}).prefix('favourite').as('favourite').use(middleware.auth())
+router
+  .group(() => {
+    router.get('/', [FavouritesController, 'index']).as('index')
+    router.post('/add/:id', [FavouritesController, 'addToFavourites']).as('add')
+    router.post('/:id', [FavouritesController, 'destroy']).as('destroy')
+  })
+  .prefix('favourite')
+  .as('favourite')
+  .use(middleware.auth())
 
 // TODO change this route to add it to the group
 router.post('/events/:id', [CartController, 'store']).as('store').use(middleware.auth())
+
+// API CALLS
+router.get('/api/getEvents', [ListEvents, 'getEvents'])

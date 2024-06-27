@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Event: A cultural events hub</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js', ])
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<body class=" bg-gray-100">
+@include("pages/partials/header")
+<div class="flex justify-center mt-12">
+    <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+    <h1 class="text-3xl md:text-3xl font-bold">xt Events - {{title}}</h1>
+  </div>
+
+<main class=" container  py-10 mb-10 mx-auto">
+  
+@if(city)
+
+  {{-- <div id="map" class="h-96 w-full  border shadow "></div> --}}
+  <section class="flex flex-col bg-gray-50 items-center  mb-6 mx-auto ">
+    @include("pages/partials/filter_map")
+  </section>
+@end
+<button onclick="newfunction()" type="submit">Click to fetch</button>
+
+
+  {{-- events types --}}
+<ul>
+  <div class="flex flex-wrap justify-center my-4 gap-4">
+    @each(category in categories)
+      <li>
+          <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+            <a class="font-semibold  text-white"href="/events/?category-type={{category.id}}">{{category.name}}</a>
+          </div>
+      </li>
+    @end
+    </div>
+</ul>
+
+     <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-10 container mx-auto my-6 py-10">
+        <div id="poi-list"></div>
+   @each(event in events)
+    @!component('components/events_cards', {event})
+  @end
+  </div>
+  
+
+</main>
+
+
+@include("pages/partials/footer")
+
+<script>
+    window.city = "{{ city }}";
+</script>
+<script src="/resources/js/map_events.js" defer></script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</body>
+</html>

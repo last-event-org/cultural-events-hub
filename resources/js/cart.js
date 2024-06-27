@@ -26,8 +26,6 @@ function showErrorNotification(message) {
 </div>`
 }
 
-
-
 function addQuantity(id) {
   const orderLineRowQty = document.getElementsByName('orderLineQty-' + id)
 
@@ -88,6 +86,8 @@ function updateTotalOrder() {
   totalOrder.textContent = sum
 }
 
-function test(variable) {
+function test() {
   console.log(variable)
 }
+
+

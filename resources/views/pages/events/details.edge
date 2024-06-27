@@ -155,7 +155,7 @@
           <div class="flex flex-col lg:flex-row justify-center items-center bg-white rounded-md shadow border mt-10 lg:p-4">
             <div class="w-full h-full lg:w-3/5 lg:h-3/5 ">
               <div class="video-container ">
-                <iframe src="https://www.youtube.com/embed/xm3YgoEiEDc" frameborder="0" allowfullscreen></iframe>
+                {{-- <iframe src="https://www.youtube.com/embed/xm3YgoEiEDc" frameborder="0" allowfullscreen></iframe> --}}
               </div>
             </div>
 
@@ -193,7 +193,11 @@
   crossorigin=""></script>
 
   <script src="/resources/js/cart.js" defer>
-    test('hello')
+    
+  </script>
+  <script>
+    window.latitude = "{{ event.location.latitude }}";
+    window.longitude = "{{ event.location.longitude }}";
   </script>
 </body>
 </html>

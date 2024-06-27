@@ -1,8 +1,10 @@
 // Initialiser la carte centrée sur Liège
+
 let mapZoom = 13
 let map = L.map('map').setView([50.6333, 5.5667], mapZoom)
 // Bruxelles
 // let map = L.map('map').setView([50.85045, 4.34878], mapZoom)
+
 
 // Ajouter les tuiles OSM
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

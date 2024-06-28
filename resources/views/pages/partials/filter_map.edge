@@ -6,7 +6,8 @@
   </h2>
   
   {{-- Cities --}}
-<section class="flex flex-col lg:flex-row justify-center lg:border-2 lg:p-10 mt-12 bg-slate-100 shadow rounded-md p-4">
+  <section class="flex flex-col lg:flex-row justify-center lg:border-2 lg:p-10 mt-12 bg-slate-100 shadow rounded-md p-4">
+  <div class="flex flex-col">
   <div class="flex flex-col justify-center">
     <ul>
       <div class="flex flex-wrap justify-center my-4 mx-2 sm:mx-12 lg:mx-2 gap-4  lg:w-full">
@@ -36,42 +37,46 @@
         class="w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search"
         placeholder="Votre ville ou un code postal..." /> 
       </div>
-      {{-- GeoRadius --}}  
-      @!component('components/filters/geo_radius')
+
     </div> 
   </div> 
+
+  {{-- events types --}}
+
+  <ul>
+    <div class="flex flex-wrap justify-center mt-4 lg:mt-16 mb-8 gap-2 ">
+
+      @each((category, index) in categories)   
+      <div class="flex flex-col gap-2 w-36">  
+
+        <a href="/events/?category={{ category.id }}">
+          <div class=" flex  w-16 h-16 rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
+            <img src=/svg/categories/{{category.slug}}.svg
+            alt="category icon" title="{{category.slug}}">
+          </div>
+        </a>
+
+        <li>
+          <div class="flex justify-center items-center gap-2 rounded-md px-4 pb-1">
+            <a class=" text-xs font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
+          </div>
+        </li>
+      
+      </div>
+      @end
+    </div>
+  </ul>
+</div>  
   {{-- map  --}}
   <div class="flex flex-col w-full h-full justify-center items-center p-4 z-10">
     <div id="map" class="h-96 w-full  border shadow "></div>
+         {{-- GeoRadius --}}  
+         @!component('components/filters/geo_radius')
   </div>
 </section>
   
 
-{{-- events types --}}
 
-<ul>
-  <div class="flex flex-wrap justify-center mt-4 lg:mt-16 mb-8 gap-2 ">
-
-    @each((category, index) in categories)   
-    <div class="flex flex-col gap-2 w-36">  
-
-      <a href="/events/?category={{ category.id }}">
-        <div class=" flex  w-16 h-16 rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
-          <img src=/svg/categories/{{category.slug}}.svg
-          alt="category icon" title="{{category.slug}}">
-        </div>
-      </a>
-
-      <li>
-        <div class="flex justify-center items-center gap-2 rounded-md px-4 pb-1">
-          <a class=" text-xs font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
-        </div>
-      </li>
-    
-    </div>
-    @end
-  </div>
-</ul>
   
   {{-- searchbar --}}
   {{-- <div class='mt-4 mb-8'>

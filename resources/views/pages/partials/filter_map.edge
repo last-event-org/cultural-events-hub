@@ -1,13 +1,12 @@
 
 
-  <h2 class="relative mt-12 text-center text-2xl lg:text-3xl font-bold">Choisissez votre <span class="relative">emplacement
-      <hr class="absolute -z-10 w-16 h-2 bottom-0 right-0  bg-yellow-500">
-    </span>
-  </h2>
-  
-  {{-- Cities --}}
-  <section class="flex flex-col lg:flex-row justify-center lg:border-2 lg:p-10 mt-12 bg-slate-100 shadow rounded-md p-4">
+
+{{-- Cities --}}
+<section class="flex flex-col lg:flex-row justify-center lg:gap-16 lg:border lg:p-10 mt-12 bg-slate-100 shadow rounded-md p-4">
   <div class="flex flex-col">
+    <h2 class="relative  text-center text-xl lg:text-2xl font-bold my-4">
+      Choisissez votre emplacement
+    </h2>
   <div class="flex flex-col justify-center">
     <ul>
       <div class="flex flex-wrap justify-center my-4 mx-2 sm:mx-12 lg:mx-2 gap-4  lg:w-full">
@@ -23,9 +22,9 @@
       </div>
     </ul>
 
-  {{-- searchbar --}}
+      {{-- searchbar --}}
   
-    <div class='flex flex-col items-center my-8 mx-auto'>
+    <div class='flex flex-col items-center my-4 mx-auto'>
       <div class="flex justify-between items-center w-80 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden">
         <div class="flex px-4 justify-center items-center text-gray-300">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,20 +43,20 @@
   {{-- events types --}}
 
   <ul>
-    <div class="flex flex-wrap justify-center mt-4 lg:mt-16 mb-8 gap-2 ">
+    <div class="flex flex-wrap justify-center my-4 gap-2 ">
 
       @each((category, index) in categories)   
-      <div class="flex flex-col gap-2 w-36">  
+      <div class="flex flex-col gap-2 w-28">  
 
         <a href="/events/?category={{ category.id }}">
-          <div class=" flex  w-16 h-16 rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
+          <div class=" flex  w-12 h-12 rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
             <img src=/svg/categories/{{category.slug}}.svg
             alt="category icon" title="{{category.slug}}">
           </div>
         </a>
 
         <li>
-          <div class="flex justify-center items-center gap-2 rounded-md px-4 pb-1">
+          <div class="flex justify-center items-center gap-2 rounded-md  pb-1">
             <a class=" text-xs font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
           </div>
         </li>

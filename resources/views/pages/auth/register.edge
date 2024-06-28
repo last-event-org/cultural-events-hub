@@ -16,6 +16,13 @@
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
         Enregistrement
       </h2>
+      @if(flashMessages.has('duplicateEmail'))
+      <div>
+        <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+          {{ flashMessages.get('duplicateEmail') }}
+        </h2>
+      </div>
+      @endif
       <form action="" method="POST" class="space-y-4">
         {{ csrfField() }}
         <div>

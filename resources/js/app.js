@@ -1,4 +1,4 @@
-import './date_picker';
+
 
 // Burger menus
 document.addEventListener('DOMContentLoaded', function() {
@@ -56,7 +56,7 @@ userButton.addEventListener('click', () => {
   }
 });
 
-//Dashboard
+
 
 
 

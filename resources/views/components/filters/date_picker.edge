@@ -1,12 +1,22 @@
-<div class="container mx-auto p-4">
-  <label for="date" class="block text-sm font-medium text-gray-700">
-    Sélectionnez une date</label>
-  <input type="text" id="date" 
-  class="datepicker mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-</div>
 
-<script type="module" src="{{ asset('js/datepicker.js') }}"></script>
-
-
+<section class=" flex items-center justify-center ">
+  <div class="flex items-center">
+    <button id="prev-day" class="p-1 bg-indigo-50 rounded-full hover:bg-indigo-300 transition duration-300">
+      <svg width="20px" height="20px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#000000" d="M609.408 149.376 277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0 30.592 30.592 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.592 30.592 0 0 0 0-42.688 29.12 29.12 0 0 0-41.728 0z"/>
+      </svg>  
+    </button>
+    
+    <div class='flex bg-white shadow-md justify-start md:justify-center rounded-lg  mx-auto py-4 px-2 md:mx-12'>
+      <div id="date-picker" class="flex ">
+        <!-- dates will be generate here by the JS -->
+      </div>
+    </div>
+    
+    <button id="next-day" class="p-1 bg-indigo-50 rounded-full hover:bg-indigo-300 transition duration-300">
+      <svg width="20px" height="20px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#000000" d="M340.864 149.312a30.592 30.592 0 0 0 0 42.752L652.736 512 340.864 831.872a30.592 30.592 0 0 0 0 42.752 29.12 29.12 0 0 0 41.728 0L714.24 534.336a32 32 0 0 0 0-44.672L382.592 149.376a29.12 29.12 0 0 0-41.728 0z"/>
+      </svg>
+    </button>
+  </div>
+ </section> 
 
                

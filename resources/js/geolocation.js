@@ -22,32 +22,30 @@ function error(err) {
 
 // navigator.geolocation.getCurrentPosition(success, error, options)
 
-async function getCoordinatesFromAddress(city) {
-  console.log('VALUE')
+export async function getCoordinatesFromAddress(address) {
+  console.log('getCoordinatesFromAddress')
   console.log(address)
   try {
     const response = await fetch(
-      `https://api.openrouteservice.org/geocode/search/structured?api_key=${process.env.API_KEY_ROUTERSERVICE}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+      `https://api.openrouteservice.org/geocode/search/structured?api_key=${import.meta.env.VITE_API_KEY_ROUTERSERVICE}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
     )
     const datas = await response.json()
-    console.log(datas)
-    console.log(datas.features[0].geometry.coordinates)
+    return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
   } catch (e) {
     console.log('ERROR')
     console.log(e)
   }
 }
 
-async function getCoordinatesFromCity(city) {
-  console.log('VALUE')
+export async function getCoordinatesFromCity(city) {
+  console.log('getCoordinatesFromCity')
   console.log(city)
   try {
     const response = await fetch(
-      `https://api.openrouteservice.org/geocode/search/structured?api_key=${process.env.API_KEY_ROUTERSERVICE}&country=belgium&locality=${city}&boundary.country=BE`
+      `https://api.openrouteservice.org/geocode/search/structured?api_key=${import.meta.env.VITE_API_KEY_ROUTERSERVICE}&country=belgium&locality=${city}&boundary.country=BE`
     )
     const datas = await response.json()
-    console.log(datas)
-    console.log(datas.features[0].geometry.coordinates)
+    return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
   } catch (e) {
     console.log('ERROR')
     console.log(e)
@@ -55,10 +53,8 @@ async function getCoordinatesFromCity(city) {
 }
 
 
-// getCoordinates()
-
 // API KEY
-// API_KEY_ROUTERSERVICE = 5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41
+// VITE_API_KEY_ROUTERSERVICE = 5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41
 
 // API CALL to get the address based on a geoloc longitude/latitude
 // https://api.openrouteservice.org /geocode/reverse? api_key = 5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41& point.lon = 50.63373& point.lat = 5.56749
@@ -68,4 +64,3 @@ async function getCoordinatesFromCity(city) {
 
 // API CALL to get cities based on autocompletion
 // https://api.openrouteservice.org/geocode/autocomplete?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&text=Lie&boundary.country=BE
-

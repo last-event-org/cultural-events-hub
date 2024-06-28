@@ -1,7 +1,7 @@
 //DropDown Billing Adress
 
 const billingAdressButton = document.getElementById('billing__adress--button');
-const shippingAdressComponent = document.getElementById('shipping__adress--component');
+const shippingAdressComponent = document.getElementById('billing__adress--component');
 
 billingAdressButton.addEventListener('click', () => {
   if (shippingAdressComponent.classList.contains('block')) {

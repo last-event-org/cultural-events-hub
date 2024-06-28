@@ -1,7 +1,7 @@
 import vine from '@vinejs/vine'
 
 
-export const updateUserProfileValidator = vine.compile(
+export const updateUserProfileMandatoryValidator = vine.compile(
     vine.object({
         first_name: vine
             .string()
@@ -22,7 +22,7 @@ export const updateUserProfileValidator = vine.compile(
             .email()
             .maxLength(255)
             .normalizeEmail({
-              all_lowercase: true,
+                all_lowercase: true,
             }),
-    })
+        })
 )

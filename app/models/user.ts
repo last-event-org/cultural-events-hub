@@ -59,7 +59,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare shippingAddressId: number | null
 
-  @hasOne(() => Address)
+  @hasOne(() => Address, {
+    foreignKey: 'id',
+    localKey: 'billingAddressId'
+  })
   declare billingAddress: HasOne<typeof Address>
 
   @hasOne(() => Address)

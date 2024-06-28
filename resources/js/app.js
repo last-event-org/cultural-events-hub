@@ -1,3 +1,5 @@
+import './date_picker';
+
 // Burger menus
 document.addEventListener('DOMContentLoaded', function() {
   // open

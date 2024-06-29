@@ -1,4 +1,5 @@
-<article class="hover:shadow border-gray-300 sm:rounded-lg  sm:w-full ">
+
+<article href="/events/{{event?.id?? ''}}" class="hover:shadow cursor-pointer border-gray-300 sm:rounded-lg  sm:w-full ">
 
   <div class="relative  pb-[56%]">
     <img src="/images/hbk_vs_undertaker.jpg" alt="Event Image" class=" absolute w-full h-full sm:rounded-t-lg  object-cover border-b-4 border-yellow-500">
@@ -70,7 +71,7 @@
       </div>
       <div class="flex flex-col">
         <div class="flex rounded shadow mb-1">
-          <a href="#" class="bg-indigo-800 hover:bg-indigo-700 rounded  text-white text-sm font-bold px-2 py-1">
+          <a href="/events/{{event?.id?? ''}}" class="bg-indigo-800 hover:bg-indigo-700 rounded  text-white text-sm font-bold px-2 py-1">
             Tickets</a>
       </div>
         <p class="text-xs text-center">
@@ -91,8 +92,6 @@
       </p>
     </div>
   </div>
-
-  
 
 </article>
 

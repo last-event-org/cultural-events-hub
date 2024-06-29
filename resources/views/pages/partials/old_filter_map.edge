@@ -1,0 +1,132 @@
+{{-- Cities --}}
+<section class="flex flex-col lg:flex-row justify-center lg:gap-16 lg:p-10  p-4">
+  <div class="flex flex-col">
+    <div class='flex flex-col items-center my-4 mx-auto relative'>
+      <div class="flex justify-between items-center w-80 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden">
+        <div class="flex px-4 justify-center items-center text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input
+          class="w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search"
+          placeholder="Votre ville ou un code postal..." /> 
+      </div>
+      <div id="city-list" class="absolute w-80 top-10 z-[100] bg-white border border-gray-200 rounded-lg shadow-lg mt-1 hidden">
+        @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Anvers","Gand","Ostende","Arlon","Marche-en-Famenne"])
+          <a class="block text-slate-500 font-semibold text-sm px-4 py-2 hover:bg-slate-100" href="/events/?city={{ city }}">{{city}}</a>
+        @end
+      </div>
+    </div>
+    
+    <script>
+      document.getElementById('search').addEventListener('focus', function() {
+        document.getElementById('city-list').classList.remove('hidden');
+      });
+    
+      document.addEventListener('click', function(event) {
+        const isClickInside = document.getElementById('search').contains(event.target) || document.getElementById('city-list').contains(event.target);
+        if (!isClickInside) {
+          document.getElementById('city-list').classList.add('hidden');
+        }
+      });
+    </script>
+    
+  {{-- <div class="flex flex-col justify-center">
+    <ul>
+      <div class="flex flex-wrap justify-center my-4 mx-2 sm:mx-12 lg:mx-2 gap-4  lg:w-full">
+        <li>
+          @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Anvers","Gand","Ostende","Arlon","Marche-en-Famenne"])
+          {{-- <div class="flex items-center gap-3 bg-blue-600 hover:bg-blue-500 rounded-md px-0 py-0 border-2 border-blue-800">
+            <div class="flex items-center gap-3 bg-blue-700 hover:bg-blue-500 border-2 border-white rounded-md px-4 pb-1">
+              <a class="lg:text-xl font-semibold  text-white"href="/events/?city={{ city }}">{{city}}</a>
+            </div>
+          </div> --}}
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-600 rounded-sm py-1 px-2">
+
+            <a class="text-slate-500 font-semibold text-sm"href="/events/?city={{ city }}">{{city}}</a>
+          </div>
+        </li>
+        @end      
+      </div>
+    </ul> --}}
+    @!component('components/filters/geo_radius')
+      {{-- searchbar --}}
+  
+    {{-- <div class='flex flex-col items-center my-4 mx-auto'>
+      <div class="flex justify-between items-center w-80 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden">
+        <div class="flex px-4 justify-center items-center text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
+
+        <input
+        class="w-full outline-none text-sm text-gray-700 pr-2" type="text" id="search"
+        placeholder="Votre ville ou un code postal..." /> 
+      </div>
+
+    </div> 
+  </div>  --}}
+
+  {{-- events types --}}
+
+  <ul>
+    <div class="flex flex-wrap justify-center my-4 gap-2 ">
+
+      @each((category, index) in categories)   
+      <div class="flex flex-col gap-2 w-28">  
+
+        <a href="/events/?category={{ category.id }}">
+          <div class=" flex  w-12 h-12 rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
+            <img src=/svg/categories/{{category.slug}}.svg
+            alt="category icon" title="{{category.slug}}">
+          </div>
+        </a>
+
+        <li>
+          <div class="flex justify-center items-center gap-2 rounded-md  pb-1">
+            <a class=" text-xs font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
+          </div>
+        </li>
+      
+      </div>
+      @end
+    </div>
+  </ul>
+</div>  
+  {{-- map  --}}
+  <div class="hidden flex flex-col w-full h-full justify-center items-center p-4 z-10">
+    <div id="map" class="h-96 w-full  border shadow "></div>
+         {{-- GeoRadius --}}  
+        </div>
+        
+</section>
+  
+
+
+  
+  {{-- searchbar --}}
+  {{-- <div class='mt-4 mb-8'>
+    <div class="flex justify-between items-center w-80 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden">
+        <div class="flex px-4 justify-center items-center text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
+
+        <input
+        class="w-full outline-none text-sm text-gray-700 pr-2"
+        type="text"
+        id="search"
+        placeholder="Type d'évènement..." /> 
+    </div>
+  </div>  --}}
+
+
+{{-- POI List --}}
+
+{{-- <div id="poi-list" class="mt-4"></div> --}}
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+

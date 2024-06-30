@@ -28,12 +28,12 @@
 </section>
  {{-- Cities --}}
 
-<section class=" flex flex-col lg:flex-row justify-center  items-center mb-8 ">
-  <button title="Ouvrir la carte"class="open-map-button flex justify-center items-center rounded-md p-1 bg-white shadow border h-10 w-10 mr-4">
+<section class=" flex justify-center  items-center mt-4 mb-8 scale-[.90] sm:scale-100 ">
+  <button title="Ouvrir la carte"class="open-map-button flex justify-center items-center rounded-md p-1 bg-white shadow border h-10 w-10 mr-2 sm:mr-4">
     <img src="svg/map-target.svg" alt="carte">
   </button>
 
-  <div class='flex flex-col mb-4 lg:my-4 relative'>
+  <div class='flex flex-col relative'>
 
     <div class="flex justify-between items-center space-x-2 px-2 w-64 h-10 rounded-lg shadow focus-within:shadow-lg bg-white overflow-hidden ">
       <div class="flex  justify-center items-center text-gray-300">
@@ -54,56 +54,21 @@
 
   </div>
 
-  <button id="calendar-button" title="Choisir une date"class=" flex justify-center items-center rounded-md p-1 bg-white shadow border h-10 w-10 ml-4">
+  <button id="calendar-button" title="Choisir une date"class=" flex justify-center items-center rounded-md p-1 bg-white shadow border h-10 w-10 ml-2 sm:ml-4">
     <img src="/svg/calendar.svg" alt="calendrier">
   </button>
   <section id="calendar" class="scale-[.79] sm:scale-100 lg:scale-[.79] hidden">
     @!component('components/filters/date_picker')
   </section>
 
+  <div id="map-popup" class="hidden fixed top-0 left-0 right-0 bottom-0  justify-center items-center bg-gray-800 bg-opacity-50 z-50">
+    <div class="bg-white rounded-md p-4 h-80 w-80 max-w-80 sm:h-96 sm:w-96 sm:max-w-96
+    flex flex-col justify-center items-center">
+    <div id="map" class="h-full w-full border shadow"></div>
+    @!component('components/filters/geo_radius')
+  </div>
+</div>
 </section> 
 
 
-{{-- POI List --}}
-
-{{-- <div id="poi-list" class="mt-4"></div> --}}
-
-
-
-<script>
-  //drop-down city list
-  document.getElementById('search').addEventListener('focus', function() {
-    document.getElementById('city-list').classList.remove('hidden');
-  });
-
-  document.addEventListener('click', function(event) {
-    const isClickInside = document.getElementById('search').contains(event.target) || document.getElementById('city-list').contains(event.target);
-    if (!isClickInside) {
-      document.getElementById('city-list').classList.add('hidden');
-    }
-  });
-
-  //calendar
-  document.getElementById('calendar-button').addEventListener('click', function() {
-    this.classList.add('hidden'); // Masquer le bouton
-    document.getElementById('calendar').classList.remove('hidden'); // Afficher le calendrier
-    document.getElementById('calendar').focus(); // Mettre le focus sur le calendrier
-  });
-  
-  // Gestion de l'événement de clic en dehors du calendrier
-  document.addEventListener('click', function(event) {
-    const calendarButton = document.getElementById('calendar-button');
-    const calendar = document.getElementById('calendar');
-    const isClickInside = calendarButton.contains(event.target) || calendar.contains(event.target);
-  
-    if (!isClickInside) {
-      calendar.classList.add('hidden'); // Masquer le calendrier
-      calendarButton.classList.remove('hidden'); // Afficher le bouton
-    }
-  });
-  // Empêcher la fermeture du calendrier lorsqu'il est cliqué
-document.getElementById('calendar').addEventListener('click', function(event) {
-  event.stopPropagation();
-});
-</script>
 

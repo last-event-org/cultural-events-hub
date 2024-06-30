@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Next Event: A cultural events hub</title>
-  {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  {{-- @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js']) --}}
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
 
@@ -15,7 +15,15 @@
 @include("pages/partials/header")
 @include("pages/partials/intro")
 
-<section class="flex flex-col items-center justify-center ">
+<section class="relative flex flex-col items-center justify-center ">
+  <div id="map-popup" class="hidden fixed z-[500] top-0 left-0 right-0 bottom-0  justify-center items-center bg-gray-800 bg-opacity-50">
+    <div class="z-[500] bg-white rounded-md p-4 h-80 w-80 max-w-80 sm:h-96 sm:w-96 sm:max-w-96
+    flex flex-col justify-center items-center">
+    <div id="map" class="h-full w-full border shadow"></div>
+    @!component('components/filters/geo_radius')
+  </div>
+</div>
+
   @include("pages/partials/filter_map")
 </section>
 
@@ -47,6 +55,7 @@
 @include("pages/partials/footer")  
 
 
+<script src="/resources/js/map_home.js"></script>
 <script src="/resources/js/date_format.js"></script>
 <script src="/resources/js/date_picker.js"></script>
 <script src="/resources/js/dropdown_cities.js"></script>

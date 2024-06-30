@@ -15,6 +15,7 @@ mapPopup.addEventListener('click', function(event) {
   if (event.target === mapPopup) {
     mapPopup.classList.add('hidden');
     mapPopup.classList.remove('active', 'flex');
+
   }
 });
 
@@ -49,6 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
     fillOpacity: 0.2,
     radius: baseRadius
   }).addTo(map);
+
+  setTimeout(function() {
+    map.invalidateSize(); // Redimensionne la carte après un léger délai
+  }, 500);
 
   function updateSlider() {
     const value = sliderInput.value;

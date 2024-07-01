@@ -307,16 +307,28 @@ export default class RegistersController {
 
     try {
       user = await User.query()
-      .where('id', auth.user?.$attributes.id)
-      .preload('billingAddress')
-      .firstOrFail()
+        .where('id', auth.user?.$attributes.id)
+        .preload('billingAddress')
+        .firstOrFail()
     } catch (error) {
       console.log('\nNot a Vendor');
     }
 
+    const userWishlist = await user.related('wishlistEvents')
+      .query()
+      .preload('location')
+
+    const userFavourites = await user.related('favouritesUser')
+      .query()
+      .preload('favouritesVendor', (query) => {
+        query.select(['id', 'companyName'])
+      })
+
     await auth.use('web').login(user)
     return view.render('pages/dashboard/profile', {
       user: user,
+      userWishlist: userWishlist,
+      userFavourites: userFavourites,
     })
   }
 
@@ -331,10 +343,10 @@ export default class RegistersController {
 
     try {
       user = await User.query()
-      .where('id', auth.user?.$attributes.id)
-      .preload('billingAddress')
-      .preload('role')
-      .firstOrFail()
+        .where('id', auth.user?.$attributes.id)
+        .preload('billingAddress')
+        .preload('role')
+        .firstOrFail()
 
     } catch (error) {
       console.log('\nNot a Vendor');

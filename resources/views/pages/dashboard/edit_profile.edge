@@ -144,13 +144,17 @@
         @endif
 
         <div class="hidden opacity-0 scale-50 duration-500" id="billing__adress--component">
-          @!component('components/dashboard/billing_address_form', {
-            street: user.billingAddress.street,
-            number: user.billingAddress.number,
-            zipCode: user.billingAddress.zipCode,
-            city: user.billingAddress.city,
-            country: user.billingAddress.country,
-          })
+          @if(user.billingAddress)
+            @!component('components/dashboard/billing_address_form', {
+              street: user.billingAddress.street,
+              number: user.billingAddress.number,
+              zipCode: user.billingAddress.zipCode,
+              city: user.billingAddress.city,
+              country: user.billingAddress.country,
+            })
+          @else
+            @!component('components/dashboard/billing_address_form')
+          @endif
         </div>
        
         <div>

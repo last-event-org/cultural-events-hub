@@ -80,18 +80,9 @@
 
         @if(userWishlist.length > 0)
           @each(event in userWishlist)
-          <li>
-              <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-                <a class="font-semibold text-white" href="{{ route('events.show', [event.id]) }}">
-                  <p>{{event.title}}</p>
-                  <p>{{event.location.name}}</p>
-                </a>
-              </div>
-                <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class="space-y-4"  enctype="multipart/form-data">
-                  {{ csrfField() }}
-                  <button type="submit" class="text-yellow">Effacer</button>
-                </form>
-          </li>
+            @!component('components/dashboard/wishlist_element', {
+              event: event,
+            })
           @end
         @else
         <p>Pas d'évènement dans votre wishlist pour le moment.</p>
@@ -110,22 +101,17 @@
         <div class="flex flex-col gap-4 pb-8">
 
           @if(userFavourites.length > 0)
-          @each(vendor in userFavourites)
-          <li>
-            <a href="/events/?vendor={{ vendor.id }}" class="space-y-4">
-                <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-                    <p>{{vendor.companyName}}</p>
-                </div>
-              </a>
-                <form action="{{ route('favourite.destroy', [vendor.id]) }}" method="post" class="space-y-4"  enctype="multipart/form-data">
-                  {{ csrfField() }}
-                  <button type="submit" class="text-yellow">Effacer</button>
-                </form>
-          </li>
-          @end
+            @each(vendor in userFavourites)
+            
+              @!component('components/dashboard/favourite_element', {
+                vendor: vendor,
+              })
+              
+            @end
           @else
-          <p>Votre Liste de Favoris est vide</p>
+            <p>Votre Liste de Favoris est vide</p>
           @endif
+          
         </div>
       </div>
     </div>

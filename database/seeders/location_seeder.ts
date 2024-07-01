@@ -13,6 +13,9 @@ export default class extends BaseSeeder {
         zipCode: 4000,
         city: 'Liège',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.643309,
+        longitude: 5.56793,
       },
       {
         id: 2,
@@ -22,6 +25,9 @@ export default class extends BaseSeeder {
         zipCode: 5000,
         city: 'Namur',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.464848,
+        longitude: 4.85732,
       },
       {
         id: 3,
@@ -31,6 +37,9 @@ export default class extends BaseSeeder {
         zipCode: 4020,
         city: 'Liège',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.631248,
+        longitude: 5.57452,
       },
       {
         id: 4,
@@ -40,6 +49,9 @@ export default class extends BaseSeeder {
         zipCode: 6041,
         city: 'Charleroi',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.412742,
+        longitude: 4.4477,
       },
       {
         id: 5,
@@ -49,6 +61,9 @@ export default class extends BaseSeeder {
         zipCode: 5500,
         city: 'Dinant',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.260948,
+        longitude: 4.91289,
       },
       {
         id: 6,
@@ -58,6 +73,9 @@ export default class extends BaseSeeder {
         zipCode: 6900,
         city: 'Marche-en-Famenne',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.2527,
+        longitude: 5.26859,
       },
       {
         id: 7,
@@ -67,6 +85,9 @@ export default class extends BaseSeeder {
         zipCode: 7500,
         city: 'Tournai',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.607755,
+        longitude: 3.38258,
       },
       {
         id: 8,
@@ -76,6 +97,9 @@ export default class extends BaseSeeder {
         zipCode: 1348,
         city: 'Louvain-la-Neuve',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.66829,
+        longitude: 4.61443,
       },
       {
         id: 9,
@@ -85,6 +109,9 @@ export default class extends BaseSeeder {
         zipCode: 4500,
         city: 'Huy',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.527026,
+        longitude: 5.23307,
       },
       {
         id: 10,
@@ -94,6 +121,9 @@ export default class extends BaseSeeder {
         zipCode: 4100,
         city: 'Seraing',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.58362,
+        longitude: 5.50115,
       },
       {
         id: 11,
@@ -103,6 +133,9 @@ export default class extends BaseSeeder {
         zipCode: 5580,
         city: 'Rochefort',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.159261,
+        longitude: 5.22326,
       },
       {
         id: 12,
@@ -112,6 +145,9 @@ export default class extends BaseSeeder {
         zipCode: 4900,
         city: 'Spa',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.491922,
+        longitude: 5.86434,
       },
       {
         id: 13,
@@ -121,6 +157,9 @@ export default class extends BaseSeeder {
         zipCode: 1348,
         city: 'Louvain-la-Neuve',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.66829,
+        longitude: 4.61443,
       },
       {
         id: 14,
@@ -130,6 +169,9 @@ export default class extends BaseSeeder {
         zipCode: 6900,
         city: 'Marche-en-Famenne',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.2527,
+        longitude: 5.26859,
       },
       {
         id: 15,
@@ -139,6 +181,9 @@ export default class extends BaseSeeder {
         zipCode: 4000,
         city: 'Liège',
         country: 'Belgium',
+        userId: 3,
+        latitude: 50.633231,
+        longitude: 5.58557,
       },
     ])
   }

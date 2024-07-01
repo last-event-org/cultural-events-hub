@@ -5,67 +5,61 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Next Event: A cultural events hub</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  {{-- @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js']) --}}
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-</head>
+  <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
 
 <body class=" bg-gray-50">
 
 @include("pages/partials/header")
 @include("pages/partials/intro")
 
-<section class="flex flex-col bg-gray-50 items-center  mb-6 mx-auto ">
+<section class="relative flex flex-col items-center justify-center ">
+  <div id="map-popup" class="hidden fixed z-[500] top-0 left-0 right-0 bottom-0  justify-center items-center bg-gray-800 bg-opacity-50">
+    <div class="z-[500] bg-white rounded-md p-4 h-80 w-80 max-w-80 sm:h-96 sm:w-96 sm:max-w-96
+    flex flex-col justify-center items-center">
+    <div id="map" class="h-full w-full border shadow"></div>
+    @!component('components/filters/geo_radius')
+  </div>
+</div>
+
   @include("pages/partials/filter_map")
 </section>
-{{-- <div id="poi-list">
-  poi-list: 
-</div> --}}
-@!component('components/filters/date_picker')
-<main>
-  <div class="flex justify-center my-10">
-    <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h2 class="text-2xl md:text-3xl font-bold relative">
-        xt Events à prix réduit<span class="relative">s</span>
-        <hr class="absolute -z-10 w-[130px] md:w-40 h-2 bottom-1 right-0  bg-yellow-500">
-    </h2>
-  </div>     
 
-
-  <section class=" py-10 mb-10 mx-4">
-    <div class="flex flex-wrap justify-center  gap-x-12 2xl:gap-x-24 gap-y-16 lg:gap-y-24 2xl:gap-y-32 mb-20 ">
+<main> 
+  <div class="container mx-auto px-4">
+    <div class="mb-4">
+      <div class="flex items-center">
+        <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+        <h2 class="text-xl md:text-2xl font-bold relative">xt Events à prix réduit<span class="relative">s</span>
+          <hr class="absolute -z-10 w-[128px] h-2 bottom-1.5 right-0 bg-yellow-500">
+        </h2>
+      </div>
+    </div>
+    <div class="grid gap-x-8 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]" >
       @each(event in events)
-        @!component('components/events_cards', {event})
+      @!component('components/events_cards', {event})
+      @!component('components/events_cards', {event})
+      @!component('components/events_cards', {event})
+      @!component('components/events_cards', {event})
       @end
     </div>
-
-
-
-    <div class="flex justify-center my-10">
-      <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-      <h2 class="text-2xl md:text-3xl font-bold relative">
-          xt Events populaire<span class="relative">s</span>
-        <hr class="absolute -z-10 w-full lg:w-1/2 h-1.5 bottom-1 right-0  bg-yellow-500">
-      </h2>
-    </div>
-
-    <div class="flex flex-wrap justify-center bg-gray-50  gap-6  my-6 py-10">   
-      @include("pages/partials/events_cards")
-      @include("pages/partials/events_cards")
-      @include("pages/partials/events_cards")
-      @include("pages/partials/events_cards")
-      @include("pages/partials/events_cards")
-      @include("pages/partials/events_cards")
-      @include("pages/partials/events_cards")
-      @include("pages/partials/events_cards")
-    </div>
-  </section>
+  </div>
+  
 </main>
+
 <div id="poi-list"></div>
 
 
 @include("pages/partials/footer")  
+
+
+<script src="/resources/js/map_home.js"></script>
 <script src="/resources/js/date_format.js"></script>
 <script src="/resources/js/date_picker.js"></script>
+<script src="/resources/js/dropdown_cities.js"></script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 {{-- <script src="/resources/js/geolocation.js" defer></script> --}}
 </body>
 </html>

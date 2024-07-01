@@ -4,7 +4,7 @@
       Rue
   </label>
   <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
+focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ street || ''}}">
   @inputError('street')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end
@@ -13,7 +13,7 @@ focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') |
       Numéro
   </label>
   <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
+focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ number || '' }}">
   @inputError('number')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end
@@ -22,7 +22,7 @@ focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') |
       Code Postal
   </label>
   <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
+focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ zipCode || '' }}">
   @inputError('zip_code')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end
@@ -31,7 +31,7 @@ focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code')
       Ville
   </label>
   <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
+focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ city || '' }}">
   @inputError('city')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end
@@ -40,7 +40,7 @@ focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || 
       Pays
   </label>
   <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
+focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ country || '' }}">
   @inputError('country')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end

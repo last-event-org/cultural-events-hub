@@ -308,9 +308,7 @@ export default class RegistersController {
     try {
       user = await User.query()
       .where('id', auth.user?.$attributes.id)
-      .whereHas('billingAddress', (address) => {
-        address.where('user_id', user.id)
-      })
+      .preload('billingAddress')
       .firstOrFail()
     } catch (error) {
       console.log('\nNot a Vendor');
@@ -329,7 +327,6 @@ export default class RegistersController {
     let user = await User.query()
       .where('id', auth.user?.$attributes.id)
       .preload('role')
-      // .preload('billingAddress')
       .firstOrFail()
 
     try {

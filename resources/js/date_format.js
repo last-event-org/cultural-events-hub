@@ -1,20 +1,50 @@
-// utils/formatDate.js
-function formatDate(dateString) {
-  const date = new Date(dateString);
+function formatDate(startString, endString) {
+
+  const date = new Date(startString);
+  const endDate = new Date(endString);
   
-  // Tableau des jours et des mois en français
   const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
   const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
-
-  // Obtenir les composants de la date
+  
   const dayName = days[date.getUTCDay()];
   const day = date.getUTCDate();
   const month = months[date.getUTCMonth()];
   const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+  const minutes = date.getUTCMinutes();
 
-  // Retourner la date formatée
-  return console.log(`${dayName} ${day} ${month}, ${hours}h${minutes}`);
+  const endDayName = days[endDate.getUTCDay()];;
+  const endDay = endDate.getUTCDate();
+  const endMonth = months[endDate.getUTCMonth()];
+  const endHours = endDate.getUTCHours();
+  const endMinutes = endDate.getUTCMinutes();
+  
+  let formattedEnd = 0;
+  let formattedDate = 0;
+  const formattedTime = minutes > 0 ? `${hours}h${minutes}` : `${hours}h`;
+  
+  if (endDay !== day){
+
+    formattedEnd = endMinutes > 0 ? `au ${endDayName} ${endDay} ${endMonth} ${endHours}h${endMinutes}` 
+                                  : `au ${endDayName} ${endDay} ${endMonth} ${endHours}h`;
+    formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} ${formattedEnd}`;
+  }else{
+    
+    formattedEnd = endMinutes > 0 ? `à ${endHours}h${endMinutes}` : `${endHours}h`;
+    formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} ${formattedEnd}`;
+  }
+  
+  
+  
+  return formattedDate;
 }
 
-// export default { formatDate };
+const dateElements = document.querySelectorAll('.formated-date');
+
+dateElements.forEach(function(dateElement) {
+    const eventStart = dateElement.getAttribute('data-event-start');
+    const eventEnd = dateElement.getAttribute('data-event-end');
+    const formattedDate = formatDate(eventStart, eventEnd);
+    dateElement.textContent = formattedDate;
+  });
+
+

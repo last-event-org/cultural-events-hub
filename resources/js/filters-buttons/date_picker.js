@@ -55,21 +55,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
   //calendar
-  document.getElementById('calendar-button').addEventListener('click', function() {
-    this.classList.add('hidden'); 
+  document.getElementById('button-date').addEventListener('click', function() {
     document.getElementById('calendar').classList.remove('hidden'); 
     document.getElementById('calendar').focus(); 
   });
   
   // Click out of the datepicker then close it
   document.addEventListener('click', function(event) {
-    const calendarButton = document.getElementById('calendar-button');
+    const calendarButton = document.getElementById('button-date');
     const calendar = document.getElementById('calendar');
     const isClickInside = calendarButton.contains(event.target) || calendar.contains(event.target);
   
     if (!isClickInside) {
       calendar.classList.add('hidden'); 
-      calendarButton.classList.remove('hidden'); 
+       
     }
   });
   // To avoid close by clicking on the date picker

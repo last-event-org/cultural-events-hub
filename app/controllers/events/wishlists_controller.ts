@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Event from '#models/event'
+import Media from '#models/media'
 
 export default class WishlistsController {
 
@@ -12,6 +13,7 @@ export default class WishlistsController {
         const userWishlist = await user.related('wishlistEvents')
             .query()
             .preload('location')
+            .preload('media')
 
         return view.render('pages/dashboard/my-wishlist', { userWishlist: userWishlist })
     }

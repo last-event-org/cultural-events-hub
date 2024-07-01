@@ -317,6 +317,7 @@ export default class RegistersController {
     const userWishlist = await user.related('wishlistEvents')
       .query()
       .preload('location')
+      .preload('media')
 
     const userFavourites = await user.related('favouritesUser')
       .query()

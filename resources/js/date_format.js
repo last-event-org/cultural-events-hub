@@ -17,20 +17,23 @@ function formatDate(startString, endString) {
   const endMonth = months[endDate.getUTCMonth()];
   const endHours = endDate.getUTCHours();
   const endMinutes = endDate.getUTCMinutes();
+  
   let formattedEnd = 0;
+  let formattedDate = 0;
+  const formattedTime = minutes > 0 ? `${hours}h${minutes}` : `${hours}h`;
   
   if (endDay !== day){
 
-    formattedEnd = endMinutes > 0 ? `au ${endDayName} ${endDay} ${endMonth}, ${endHours}h${endMinutes}` 
-                                  : `au ${endDayName} ${endDay} ${endMonth}, ${endHours}h`;
+    formattedEnd = endMinutes > 0 ? `au ${endDayName} ${endDay} ${endMonth} ${endHours}h${endMinutes}` 
+                                  : `au ${endDayName} ${endDay} ${endMonth} ${endHours}h`;
+    formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} ${formattedEnd}`;
   }else{
     
     formattedEnd = endMinutes > 0 ? `à ${endHours}h${endMinutes}` : `${endHours}h`;
+    formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} ${formattedEnd}`;
   }
   
   
-  const formattedTime = minutes > 0 ? `${hours}h${minutes}` : `${hours}h`;
-  const formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} ${formattedEnd}`;
   
   return formattedDate;
 }

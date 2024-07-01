@@ -1,5 +1,3 @@
-
-
 // Burger menus
 document.addEventListener('DOMContentLoaded', function () {
   // open

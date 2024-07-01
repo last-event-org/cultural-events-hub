@@ -209,7 +209,7 @@ export default class EventsController {
         .preload('media')
         .orderBy('event_start', 'asc')
 
-      title = 'Event pour un endroit ' + requestQuery['city']
+      title = 'Event sur ' + requestQuery['city']
     }
 
     return [events, title]

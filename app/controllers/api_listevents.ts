@@ -17,7 +17,6 @@ export default class ListEvents {
       .preload('prices')
       .preload('media')
       .orderBy('event_start', 'asc')
-    console.log(events)
     return events
   }
 }

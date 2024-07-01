@@ -1,0 +1,12 @@
+<li>
+    <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
+      <a class="font-semibold text-white" href="{{ route('events.show', [event.id]) }}">
+        <p>{{event.title}}</p>
+        <p>{{event.location.name}}</p>
+      </a>
+    </div>
+      <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class="space-y-4"  enctype="multipart/form-data">
+        {{ csrfField() }}
+        <button type="submit" class="text-yellow">Effacer</button>
+      </form>
+</li>

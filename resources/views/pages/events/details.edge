@@ -132,9 +132,9 @@
         </section> 
           <div class="flex flex-col lg:flex-row gap-8 bg-slate-100 rounded-md border shadow mt-10">
             <div class="flex flex-col justify-center items-center text-center gap-4 p-8 md:px-16 lg:w-1/2  "> 
-              <p class="text-sm font-bold text-gray-400 ">
-                Sam 15 juin 2024, de 12h à 20h
-              </p>
+              <p id="" class="formated-date text-xs text-gray-500/60 font-bold"
+              data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
+            </p>
               <p class="font-bold text-xl text-gray-700">
                 {{event.location.name}}
               </p>
@@ -192,6 +192,7 @@
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""></script>
 
+  <script src="/resources/js/date_format.js">  </script>
   <script src="/resources/js/cart.js" defer>
     
   </script>

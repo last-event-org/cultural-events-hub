@@ -77,14 +77,6 @@
         </h2>
       </div>
       <div class="flex flex-col gap-4 pb-8 ">
-        {{-- @if wishlist is empty --}}
-        {{-- <p>Pas d'évènement dans votre wishlist pour le moment.</p> --}}
-        {{-- @else --}}
-        {{-- @!component('components/dashboard/mini-event')
-        @!component('components/dashboard/mini-event')
-        @!component('components/dashboard/mini-event')
-        @!component('components/dashboard/mini-event')
-        @!component('components/dashboard/mini-event') --}}
 
         @if(userWishlist.length > 0)
           @each(event in userWishlist)
@@ -102,7 +94,7 @@
           </li>
           @end
         @else
-        <p>Votre WishList est vide</p>
+        <p>Pas d'évènement dans votre wishlist pour le moment.</p>
         @endif
       </div>
     </div>
@@ -116,9 +108,7 @@
         </h2>
       </div>
         <div class="flex flex-col gap-4 pb-8">
-          {{-- @!component('components/dashboard/vendor')
-          @!component('components/dashboard/vendor')
-          @!component('components/dashboard/vendor') --}}
+
           @if(userFavourites.length > 0)
           @each(vendor in userFavourites)
           <li>
@@ -133,9 +123,9 @@
                 </form>
           </li>
           @end
-        @else
-        <p>Votre Liste de Favoris est vide</p>
-        @endif
+          @else
+          <p>Votre Liste de Favoris est vide</p>
+          @endif
         </div>
       </div>
     </div>

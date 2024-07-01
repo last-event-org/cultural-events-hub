@@ -48,6 +48,14 @@
             @end
         </div>
 
+        @if(flashMessages.has('mandatoryProfileData'))
+        <div>
+          <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+            {{ flashMessages.get('mandatoryProfileData') }}
+          </h2>
+        </div>
+        @endif
+
         <div>
           <label for="password" class="block text-gray-600">
             Mot de passe
@@ -77,24 +85,29 @@
         @end
         </div>
 
+        @if(flashMessages.has('userPassword'))
+        <div>
+          <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+            {{ flashMessages.get('userPassword') }}
+          </h2>
+        </div>
+        @endif
+
         <button type="button" id="billing__adress--button" class="flex justify-center   text-sm font-semibold text-gray-600 hover:text-gray-950 w-full">
           <div class="flex justify-between items-center w-full text-gray-800 text-xl font-semibold my-4">
-            <h2>Adresse de facturation</h2>
+            <h2>Données de facturation</h2>
             <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
             </svg>
           </div>
         </button>
 
-        <div class="hidden opacity-0 scale-50 duration-500" id="billing__adress--component">
-          @!component('components/dashboard/billing_address')
-        </div>
         <div>
           <label for="company_name" class="block text-gray-600">
               Nom Société
           </label>
           <input type="text" id="company_name" name="company_name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value={{ user.firstname || '' }}>
+         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value={{ user.companyName || '' }}>
           @inputError('company_name')
           <div style="color: red;">{{ $messages.join(', ') }}</div>
           @end
@@ -108,6 +121,27 @@
           @inputError('vat_number')
           <div style="color: red;">{{ $messages.join(', ') }}</div>
           @end
+        </div>
+
+        @if(flashMessages.has('userVendorData'))
+        <div>
+          <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+            {{ flashMessages.get('userVendorData') }}
+          </h2>
+        </div>
+        @endif
+
+
+        @if(flashMessages.has('billingAddressError'))
+        <div>
+          <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+            {{ flashMessages.get('billingAddressError') }}
+          </h2>
+        </div>
+        @endif
+
+        <div class="hidden opacity-0 scale-50 duration-500" id="billing__adress--component">
+          @!component('components/dashboard/billing_address')
         </div>
 
         <div>

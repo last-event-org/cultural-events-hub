@@ -1,11 +1,12 @@
 import { createRegisterValidator } from '#validators/register'
 import { createVendorDataValidator } from '#validators/vendor_data'
-import { updateUserProfileValidator } from '#validators/user_profile'
+import { updateUserProfileMandatoryValidator } from '#validators/user_profile'
 import { HttpContext, Route } from '@adonisjs/core/http'
 import User from '#models/user'
 import Role from '#models/role'
 import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
+import { updateUserPasswordValidator } from '#validators/password_change'
 
 export default class RegistersController {
   /**
@@ -65,21 +66,160 @@ export default class RegistersController {
     return view.render('pages/auth/switch-to-vendor')
   }
 
-  async update({ request, response, session, auth }: HttpContext) {
-    
-    const user = await User.findOrFail(auth.user?.$attributes.id)
-
-    const userProfilePayload = await request.validateUsing(updateUserProfileValidator)
-    user.firstname = userProfilePayload.first_name
-    user.lastname = userProfilePayload.last_name
-    user.email = userProfilePayload.email
-
-    await user.save()
-
-    // TODO recreate updateProfileType() here
+  async getUserBillingAddress(user: User) {
+    const userBillingAddressId = user.$attributes.billingAddressId
+    if (user && userBillingAddressId) {
+      const vendorAddress = await Address.query()
+        .where('id', '=', userBillingAddressId)
+        .first()
+      return vendorAddress
+    }
+    return false
   }
 
-  async updateProfileType({request, response, auth}: HttpContext) {
+  async updateUserRole(user: User) {
+    const vendorRole = await Role.findBy('role_name', 'VENDOR')
+    const userRole = await Role.findBy('role_name', 'USER')
+    const userBillingAddress = await this.getUserBillingAddress(user)
+
+    if (vendorRole && userRole) {
+      if (userBillingAddress && (
+        userBillingAddress.street &&
+        userBillingAddress.number &&
+        userBillingAddress.city &&
+        userBillingAddress.zipCode &&
+        userBillingAddress.country
+      )) {
+        user.roleId = vendorRole.id
+      } else {
+        user.roleId = userRole.id
+      }
+    }
+    await user.save()
+  }
+
+  async updateMandatoryProfileData(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    user: User) {
+
+    let userProfilePayload = null
+
+    try {
+      userProfilePayload = await request.validateUsing(updateUserProfileMandatoryValidator)
+      user.firstname = userProfilePayload.first_name
+      user.lastname = userProfilePayload.last_name
+      user.email = userProfilePayload.email
+    } catch (error) {
+      console.log('\n\n\n\n\n\n TEST3');
+      const errorMsg = 'Les champs Prénom, Nom et Email sont requis'
+      session.flash('mandatoryProfileData', errorMsg)
+      return false
+    }
+    return true
+  }
+
+  async updateUserPasswordData(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    user: User) {
+
+    let userPasswordPayload = null
+    const isPasswordEntered = request.input('password');
+    if (isPasswordEntered) {
+      try {
+        userPasswordPayload = await request.validateUsing(updateUserPasswordValidator)
+        user.password = userPasswordPayload.password
+      } catch (error) {
+        const errorMsg = 'Le mot de passe doit contenir au moins une lettre majuscule, un chiffre, un symbole (@$!%*?&) et au moins 8 caractères au total.'
+        session.flash('userPassword', errorMsg)
+        return false
+      }
+    }
+    return true
+  }
+
+  async updateUserBillingAddress(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    user: User) {
+
+    let userBillingAddressPayload = null
+
+    const vendorAddress = await this.getUserBillingAddress(user)
+    if (vendorAddress) {
+      try {
+        userBillingAddressPayload = await request.validateUsing(createAddressValidator)
+        vendorAddress.street = userBillingAddressPayload.street
+        vendorAddress.number = userBillingAddressPayload.number
+        vendorAddress.zipCode = userBillingAddressPayload.zip_code
+        vendorAddress.city = userBillingAddressPayload.city
+        vendorAddress.country = userBillingAddressPayload.country
+
+        await vendorAddress.save()
+
+      } catch (error) {
+        const errorMsg = "Tous les champs de l'adresse de facturation doivent être complétés"
+        session.flash('billingAddressError', errorMsg)
+        return false
+      }
+    }
+    return true
+  }
+
+  async updateVendorData(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    user: User) {
+
+    let userVendorDataPayload = null
+
+    const isVatEntered = request.input('vat_number');
+    if (isVatEntered) {
+      try {
+        userVendorDataPayload = await request.validateUsing(createVendorDataValidator)
+        if (userVendorDataPayload.company_name && userVendorDataPayload.company_name.trim() != '') {
+          user.companyName = userVendorDataPayload.company_name
+        } else {
+          user.companyName = user.firstname + ' ' + user.lastname
+        }
+        user.vatNumber = userVendorDataPayload.vat_number
+
+      } catch (error) {
+        const errorMsg = "Pour devenir Organisateur toutes les données commerciales doivent être complétées (Nom de société, numéro de TVA et l'adresse complète de facturation)"
+        session.flash('userVendorData', errorMsg)
+        return false
+      }
+    }
+    return true
+  }
+
+  async update({ request, response, session, auth }: HttpContext) {
+
+    const user = await User.findOrFail(auth.user?.$attributes.id)
+    await this.updateUserRole(user)
+
+    if (user) {
+      if (!await this.updateMandatoryProfileData(request, session, user)) return response.redirect().back()
+      if (!await this.updateUserPasswordData(request, session, user)) return response.redirect().back()
+
+      const isVendorData = await this.updateVendorData(request, session, user)
+      if (!isVendorData) return response.redirect().back()
+
+      const isUserBillingAddress = await this.updateUserBillingAddress(request, session, user)
+      if (!isUserBillingAddress) return response.redirect().back()
+
+      if (isVendorData && isUserBillingAddress) {
+        await this.updateUserRole(user)
+        console.log('Update role');
+      }
+
+      await user.save()
+      return response.redirect().toRoute('auth.profile.show')
+    }
+  }
+
+  async updateProfileType({ request, response, auth }: HttpContext) {
     /*
     When registering on the website we are directed to a second page
     in which we are asked whether we would like to buy or sell event tickets:
@@ -98,7 +238,7 @@ export default class RegistersController {
       user.vatNumber = vendorDataPayload.vat_number
 
       await user.save()
-      
+
     } catch (error) {
       console.error('Vendor Validation Error:', error)
     }
@@ -134,13 +274,22 @@ export default class RegistersController {
   /**
    * Show individual record
    */
-  async show({ params, auth, view }: HttpContext) {
+  async show({ auth, view }: HttpContext) {
     let user = await User.query()
-      .where('id', '=', auth.user?.$attributes.id)
-      .preload('billingAddress')
-      .preload('shippingAddress')
+      .where('id', auth.user?.$attributes.id)
       .preload('role')
       .firstOrFail()
+
+    try {
+      user = await User.query()
+      .where('id', auth.user?.$attributes.id)
+      .whereHas('billingAddress', (address) => {
+        address.where('user_id', user.id)
+      })
+      .firstOrFail()
+    } catch (error) {
+      console.log('\nNot a Vendor');
+    }
 
     await auth.use('web').login(user)
     return view.render('pages/dashboard/profile', {
@@ -151,13 +300,22 @@ export default class RegistersController {
   /**
    * Edit individual record
    */
-  async edit({ params, auth, view }: HttpContext) {
+  async edit({ auth, view }: HttpContext) {
     let user = await User.query()
-      .where('id', '=', auth.user?.$attributes.id)
-      .preload('billingAddress')
-      .preload('shippingAddress')
+      .where('id', auth.user?.$attributes.id)
       .preload('role')
       .firstOrFail()
+
+    try {
+      user = await User.query()
+      .where('id', auth.user?.$attributes.id)
+      .whereHas('billingAddress', (address) => {
+        address.where('user_id', user.id)
+      })
+      .firstOrFail()
+    } catch (error) {
+      console.log('\nNot a Vendor');
+    }
 
     await auth.use('web').login(user)
     return view.render('pages/dashboard/edit_profile', {

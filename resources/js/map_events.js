@@ -1,6 +1,7 @@
 let mapZoom = 13
 
 let poi = []
+let poiWithinRadius = []
 let baseRadius = 1000
 const radiusButtons = document.querySelectorAll('.radius-btn')
 const city = window.city
@@ -48,7 +49,8 @@ function createPois(events) {
   console.log('createPois')
   events.forEach(function (event) {
     poi.push({
-      name: event.title,
+      id: event.id,
+      title: event.title,
       lat: event.location.latitude,
       lng: event.location.longitude,
       location: event.location.name,
@@ -94,6 +96,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 // Fonction pour afficher les POI dans un rayon de 1 km autour de la Place Saint-Lambert
 function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
   console.log('displayPOIsWithinRadius')
+  poiWithinRadius = []
   let poiList = document.getElementById('poi-list')
   poiList.innerHTML =
     `<h3 class="font-bold">Points d\'intérêt dans un rayon de ` +
@@ -105,11 +108,13 @@ function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
     let distance = getDistance(centerLat, centerLng, point.lat, point.lng)
     if (distance <= radiusKm) {
       let li = document.createElement('li')
-      li.textContent = point.name + ' ' + point.location + ' (' + distance.toFixed(2) + ' km)'
+      poiWithinRadius.push(point.id)
+      li.textContent = point.title + ' ' + point.location + ' (' + distance.toFixed(2) + ' km)'
       ul.appendChild(li)
     }
   })
 
+  console.log(poiWithinRadius)
   poiList.appendChild(ul)
 }
 //(latitude,longitude, rayon en km)
@@ -127,13 +132,12 @@ async function getCoordinatesFromCity(city) {
     const datas = await response.json()
     return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
   } catch (e) {
-    console.log('ERROR')
+    console.log('ERROR OPENROUTE')
     console.log(e)
   }
 }
 
 function newfunction() {
-  
   console.log(city)
   async function test() {
     try {

@@ -7,6 +7,9 @@ openMapButtons.forEach(function(button) {
     mapPopup.classList.remove('hidden');
     mapPopup.classList.add('active', 'flex');
   });
+  setTimeout(function() {
+    map.invalidateSize(); // Redimensionne la carte après un léger délai
+  }, 500);
 });
 
 
@@ -51,9 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     radius: baseRadius
   }).addTo(map);
 
-  setTimeout(function() {
-    map.invalidateSize(); // Redimensionne la carte après un léger délai
-  }, 500);
+
 
   function updateSlider() {
     const value = sliderInput.value;

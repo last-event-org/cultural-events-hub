@@ -17,9 +17,9 @@
     @each(event in userWishlist)
 
       @!component('components/dashboard/wishlist_element', {
-        event: event,
+        userWishlist: userWishlist,
       })
-      
+
     @end
 </main>
 

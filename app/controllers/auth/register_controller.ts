@@ -16,8 +16,28 @@ export default class RegistersController {
     return view.render('pages/auth/register')
   }
 
-  async dashboard({ view }: HttpContext) {
-    return view.render('pages/dashboard/dashboard')
+  async dashboard({ view, auth }: HttpContext) {
+    const user = await User.query()
+      .where('id', auth.user?.$attributes.id)
+      .preload('role')
+      .firstOrFail()
+
+    const userWishlist = await user.related('wishlistEvents')
+      .query()
+      .preload('location')
+      .preload('media')
+
+    const userFavourites = await user.related('favouritesUser')
+      .query()
+      .preload('favouritesVendor', (query) => {
+        query.select(['id', 'companyName'])
+      })
+    
+    return view.render('pages/dashboard/dashboard', {
+      user: user,
+      userWishlist: userWishlist,
+      userFavourites: userFavourites,
+    })
   }
 
   /**

@@ -11,14 +11,48 @@
 <body>
   
   @include("pages/partials/header")
-  <main class="bg-gray-100 flex  justify-center min-h-screen ">
+  <main class="flex flex-col items-center min-h-screen gap-10 mb-16">
     
     <div class="bg-white p-8 my-20  rounded shadow-md w-full max-w-md ">
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
         Dashboard
       </h2>
-      
     </div>
+
+    @!component('components/dashboard/profile_section', {
+      user: user,
+    })
+
+
+    <section>
+      <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-md shadow px-4 md:px-8">
+        <div class="justify-center flex">
+          <h2 class="relative z-10 font-bold text-xl mt-4 mb-8">Whishlist
+              <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+          </h2>
+        </div>
+        <div class="flex flex-col gap-4 pb-8 ">
+  
+          @if(userWishlist.length > 0)
+            @each(event in userWishlist)
+              @!component('components/dashboard/wishlist_element', {
+                event: event,
+              })
+            @end
+          @else
+          <p>Pas d'évènement dans votre wishlist pour le moment.</p>
+          @endif
+        </div>
+      </div>
+    </section>
+
+      <h1>Mes Favoris</h1>
+      @each(vendor in userFavourites)
+        @!component('components/dashboard/favourite_element', {
+          vendor: vendor,
+        })
+      @end
+
   </main>
   
 

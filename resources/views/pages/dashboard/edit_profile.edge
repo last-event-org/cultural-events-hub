@@ -144,52 +144,13 @@
         @endif
 
         <div class="hidden opacity-0 scale-50 duration-500" id="billing__adress--component">
-          <div class="flex flex-col gap-2 my-4">
-            <label for="street" class="block text-gray-600">
-                Rue
-            </label>
-            <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.street : ''}}">
-            @inputError('street')
-            <div style="color: red;">{{ $messages.join(', ') }}</div>
-            @end
-          
-            <label for="number" class="block text-gray-600">
-                Numéro
-            </label>
-            <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.number : ''}}">
-            @inputError('number')
-            <div style="color: red;">{{ $messages.join(', ') }}</div>
-            @end
-          
-            <label for="zip_code" class="block text-gray-600">
-                Code Postal
-            </label>
-            <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.zipCode : ''}}">
-            @inputError('zip_code')
-            <div style="color: red;">{{ $messages.join(', ') }}</div>
-            @end
-          
-            <label for="city" class="block text-gray-600">
-                Ville
-            </label>
-            <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.city : ''}}">
-            @inputError('city')
-            <div style="color: red;">{{ $messages.join(', ') }}</div>
-            @end
-          
-            <label for="country" class="block text-gray-600">
-                Pays
-            </label>
-            <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.country : ''}}">
-            @inputError('country')
-            <div style="color: red;">{{ $messages.join(', ') }}</div>
-            @end
-          </div>
+          @!component('components/dashboard/billing_address_form', {
+            street: user.billingAddress.street,
+            number: user.billingAddress.number,
+            zipCode: user.billingAddress.zipCode,
+            city: user.billingAddress.city,
+            country: user.billingAddress.country,
+          })
         </div>
        
         <div>

@@ -15,7 +15,7 @@
     
     <div class="bg-white p-8 my-20  rounded shadow-md w-full max-w-md ">
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
-        Edit profile - {{user.email}}
+        Modifier le Profil
       </h2>
       <form action={{ route('auth.register.update') }} method="POST" class="space-y-4">
         {{ csrfField() }}
@@ -36,7 +36,7 @@
 
         <div>
           <label for="email" class="block text-gray-600">
-            Email
+            Email et Login
           </label>
           <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 sm:text-sm" placeholder="vous@exemple.com" value={{ user.email }}>
@@ -94,8 +94,11 @@
         @endif
 
         <button type="button" id="billing__adress--button" class="flex justify-center   text-sm font-semibold text-gray-600 hover:text-gray-950 w-full">
-          <div class="flex justify-between items-center w-full text-gray-800 text-xl font-semibold my-4">
+          <div class="flex flex-col justify-between items-center w-full text-gray-800 text-xl font-semibold my-4">
             <h2>Données de facturation</h2>
+            <p class="text-sm">
+              Si toutes les données de facturation sont complétées correctement vous devenez Organisateur, vous pouvez donc mettre des places en vente.
+            </p>
             <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
             </svg>
@@ -141,9 +144,54 @@
         @endif
 
         <div class="hidden opacity-0 scale-50 duration-500" id="billing__adress--component">
-          @!component('components/dashboard/billing_address')
+          <div class="flex flex-col gap-2 my-4">
+            <label for="street" class="block text-gray-600">
+                Rue
+            </label>
+            <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.street : ''}}">
+            @inputError('street')
+            <div style="color: red;">{{ $messages.join(', ') }}</div>
+            @end
+          
+            <label for="number" class="block text-gray-600">
+                Numéro
+            </label>
+            <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.number : ''}}">
+            @inputError('number')
+            <div style="color: red;">{{ $messages.join(', ') }}</div>
+            @end
+          
+            <label for="zip_code" class="block text-gray-600">
+                Code Postal
+            </label>
+            <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.zipCode : ''}}">
+            @inputError('zip_code')
+            <div style="color: red;">{{ $messages.join(', ') }}</div>
+            @end
+          
+            <label for="city" class="block text-gray-600">
+                Ville
+            </label>
+            <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.city : ''}}">
+            @inputError('city')
+            <div style="color: red;">{{ $messages.join(', ') }}</div>
+            @end
+          
+            <label for="country" class="block text-gray-600">
+                Pays
+            </label>
+            <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.billingAddress ? user.billingAddress.country : ''}}">
+            @inputError('country')
+            <div style="color: red;">{{ $messages.join(', ') }}</div>
+            @end
+          </div>
         </div>
-
+       
         <div>
           <button type="submit" class="mt-10 w-full bg-yellow-500 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-yellow-400 
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:border-yellow-500  ">

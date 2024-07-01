@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+  /* font-family: "PT Sans", sans-serif; */
+}
 .video-container {
   position: relative;
   width: 100%;

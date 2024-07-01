@@ -54,5 +54,3 @@ if (userButton) {
     }
   })
 }
-
-//Dashboard

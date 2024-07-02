@@ -21,7 +21,9 @@ export default class EventsController {
    */
   async index({ request, view, auth }: HttpContext) {
     await auth.check()
+    console.log('INDEX')
     const requestQuery = request.qs()
+    console.log(requestQuery)
     let events
     let title: string | null = ''
     let categories: any[] = []
@@ -231,6 +233,10 @@ export default class EventsController {
 
       return response.redirect().toRoute('events.show', { id: event.id })
     }
+  }
+
+  async search({ request }: HttpContext) {
+    console.log('SEARCH')
   }
 
   async createEvent(

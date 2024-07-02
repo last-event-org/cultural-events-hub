@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Event Edit profile</title>
+  <title>{{ i18n.t('messages.switch_account_title') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/dropdown_address.js'])
 </head>
 
@@ -17,7 +17,7 @@
       <div class="justify-center flex">  
         
         <h2 class="relative z-10 font-bold text-black text-2xl my-4">
-         Devenir organisateur
+          {{ i18n.t('messages.switch_account_becomeVendor') }}
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
       </div>
@@ -25,17 +25,17 @@
       <div class="flex flex-col gap-4  w-full text-slate-800  font-semibold my-4">
         <div class="flex flex-col gap-6">
           <p class=" text-red-600 text-center text-xs sm:text-sm">
-            Pour pouvoir vendre des places d'événements il faut obtenir un compte 'vendeur'.
+            {{ i18n.t('messages.switch_account_instruction1') }}
           </p>
           <p>
-            Il est nécessaire de remplir des informations dans votre profil:
+            {{ i18n.t('messages.switch_account_instruction2') }}
           </p>
 
         </div>
         <ul class="text-slate-500 text-base my-4">
-            <li>- Nom de société</li>
-            <li>- Numéro de TVA</li>
-            <li>- Adresse de facturation</li>
+            <li>{{ i18n.t('messages.switch_account_company') }}</li>
+            <li>{{ i18n.t('messages.switch_account_vat') }}</li>
+            <li>{{ i18n.t('messages.switch_account_billingAddr') }}</li>
         </ul>
 			</div>
 
@@ -43,7 +43,7 @@
 				<a href={{ route('auth.profile.edit') }}>
 					<button type="submit" class="bg-yellow-500 uppercase font-bold py-2 px-4 rounded-md hover:bg-yellow-400 
                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Créer votre compte organisateur
+                  {{ i18n.t('messages.switch_account_createAccount') }}
 					</button>
 				</a>
 			</div>       

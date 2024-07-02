@@ -56,18 +56,18 @@
       @if(await auth.user.isVendor())
       <li>
         <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('events.create') }}>
-          Ajouter un événement</a>
+          {{ i18n.t('messages.header_add_event') }}</a>
       </li>
       @else
       <li>
         <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.profile.switch-to-vendor') }}>
-          Ajouter un événement</a>
+          {{ i18n.t('messages.header_add_event') }}</a>
       </li>
       @end
     @else
       <li>
         <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.login.show') }}>
-        Ajouter un événement</a>
+        {{ i18n.t('messages.header_add_event') }}</a>
       </li>
     @end
  
@@ -77,9 +77,9 @@
 
   <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-md transition duration-200"
     href={{ route('auth.login.show') }}>
-    Connexion</a>
+    {{ i18n.t('messages.header_login') }}</a>
   <a class="hidden lg:inline-block py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm   font-bold rounded-md transition duration-200" href={{ route('auth.register') }}>
-    Enregistement</a>
+    {{ i18n.t('messages.header_signup') }}</a>
 
   @else
     
@@ -108,21 +108,21 @@
     <div id="drop_down_profile" class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white opacity-0 transition-opacity duration-500">
       <div class="py-1">
         <a href={{ route('auth.dashboard') }} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Dashboard</a>
+          {{ i18n.t('messages.header_dashboard') }}</a>
         <a href={{ route('auth.profile.show') }} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Profil</a>
+          {{ i18n.t('messages.header_profile') }}</a>
         <a href={{ route('wishlist.index') }} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Ma wishlist</a>
+          {{ i18n.t('messages.header_wishlist') }}</a>
         <a href={{ route('favourite.index') }} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Mes vendeurs favoris</a>
+          {{ i18n.t('messages.header_favourites') }}</a>
         <a href="{{route('auth.profile.orders')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Mes tickets achetés</a>
+          {{ i18n.t('messages.header_boughtTickets') }}</a>
 
         @if(await auth.user.isVendor())
         <a href="/events/?vendor={{ auth.user.id }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Événements publiés</a>
+          {{ i18n.t('messages.header_eventsPublished') }}</a>
         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-          Tickets vendus</a>
+          {{ i18n.t('messages.header_soldTickets') }}</a>
         @endif
           
         {{-- if Auth as SuperAdmin --}}
@@ -134,7 +134,7 @@
               <button type="submit"
                 class="hidden lg:inline-block mt-4 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-red-800 font-bold  rounded-md transition duration-200"
                 href={{ route('auth.login.show') }}>
-                Déconnexion</button>
+                {{ i18n.t('messages.header_logout') }}</button>
             </div>
           </form>
         </div> 
@@ -142,6 +142,7 @@
     </div>
   </div>
   @end
+
 </nav>
 
 
@@ -165,11 +166,11 @@
         <ul>
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-              href="{{route('cart.show')}}">Panier</a>
+              href="{{route('cart.show')}}">{{ i18n.t('messages.header_cart') }}</a>
           </li>
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400  hover:bg-gray-50  hover:text-gray-600 rounded"
-              href={{ route('auth.profile.show') }}>Profil</a>
+              href={{ route('auth.profile.show') }}>{{ i18n.t('messages.header_profile') }}</a>
           </li>
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400  hover:bg-gray-50 hover:text-gray-600 rounded"
@@ -183,21 +184,21 @@
           @if(!auth.isAuthenticated)
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-              href={{ route('auth.login.show') }}>Ajouter un événement</a>
+              href={{ route('auth.login.show') }}>{{ i18n.t('messages.header_add_event') }}</a>
           </li>
           @else
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-              href={{ route('events.create') }}>Ajouter un événement</a>
+              href={{ route('events.create') }}>{{ i18n.t('messages.header_add_event') }}</a>
           </li>
           @end
           <li class="mb-1">
             <button  class="open-map-button block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-             >Carte</button>
+             >{{ i18n.t('messages.header_map') }}</button>
           </li>
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-              href="#">Dark/Light Mode</a>
+              href="#">{{ i18n.t('messages.header_mode') }}</a>
           </li>
         </ul>
       </div>
@@ -208,11 +209,11 @@
       <div class="flex text-center mb-1 mx-5 gap-4">
         <a class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
           href={{ route('auth.login.show') }}>
-          Connexion</a>
+          {{ i18n.t('messages.header_login') }}</a>
 
         <a class="block lg:inline-block py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href={{ route('auth.register') }}>
 
-          Enregistement</a>
+          {{ i18n.t('messages.header_signup') }}</a>
       </div>
 
       @else
@@ -222,7 +223,7 @@
         <button type="submit"
           class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
           href={{ route('auth.login.show') }}>
-          Déconnexion</button>
+          {{ i18n.t('messages.header_logout') }}</button>
       </form>
 
       @end

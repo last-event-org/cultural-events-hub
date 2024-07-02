@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Type de Profil</title>
+  <title>{{ i18n.t('messages.profile_type_title') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -14,16 +14,17 @@
 
     <div class="bg-white p-8 rounded shadow-md w-full max-w-3xl">
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
-            Bienvenue {{ user.firstname }}! Que voulez vous faire ?
+            {{-- Bienvenue {{ user.firstname }}! Que voulez vous faire ? --}}
+            {{ i18n.t('messages.profile_type_welcome', { userFirstname: user.firstname }) }}
         </h2>
         <div class="flex gap-4 justify-center">
             <a href={{ route('events.index') }}>
               <button class="p-4 bg-teal-400 rounded-md">
-              Acheter des places
+                {{ i18n.t('messages.profile_type_buy') }}
               </button>
             </a>
             <button onclick="displayVendorDataForm()" class="p-4 bg-teal-400 rounded-md">
-              Vendre des places
+                {{ i18n.t('messages.profile_type_sell') }}
             </button>
         </div>
 
@@ -38,7 +39,7 @@
 
         <div>
             <label for="company_name" class="block text-gray-600">
-                Nom Société
+                {{ i18n.t('messages.profile_type_company') }}
             </label>
             <input type="text" id="company_name" name="company_name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
    focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('company_name') || '' }}">
@@ -49,7 +50,7 @@
 
         <div>
             <label for="vat_number" class="block text-gray-600">
-                Numéro de TVA
+                {{ i18n.t('messages.profile_type_vat') }}
             </label>
             <input type="text" id="vat_number" name="vat_number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
    focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('vat_number') || '' }}">
@@ -60,11 +61,11 @@
 
         <div>
             <div class="block text-gray-800 text-xl font-semibold my-4">
-                <h2>Adresse de facturation</h2>
+                <h2>{{ i18n.t('messages.profile_type_billingAddr') }}</h2>
             </div>
             <div class="flex flex-col gap-2 my-4">
                 <label for="street" class="block text-gray-600">
-                    Rue
+                    {{ i18n.t('messages.profile_type_street') }}
                 </label>
                 <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
@@ -73,7 +74,7 @@
                 @end
 
                 <label for="number" class="block text-gray-600">
-                    Numéro
+                    {{ i18n.t('messages.profile_type_nb') }}
                 </label>
                 <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
@@ -82,7 +83,7 @@
                 @end
 
                 <label for="zip_code" class="block text-gray-600">
-                    Code Postal
+                    {{ i18n.t('messages.profile_type_zip') }}
                 </label>
                 <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
@@ -91,7 +92,7 @@
                 @end
 
                 <label for="city" class="block text-gray-600">
-                    Ville
+                    {{ i18n.t('messages.profile_type_city') }}
                 </label>
                 <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
@@ -100,7 +101,7 @@
                 @end
 
                 <label for="country" class="block text-gray-600">
-                    Pays
+                    {{ i18n.t('messages.profile_type_country') }}
                 </label>
                 <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
@@ -112,7 +113,7 @@
 
         <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-            Créer votre compte organisateur
+                  {{ i18n.t('messages.profile_type_createAccount') }}
         </button>
 
       </form>

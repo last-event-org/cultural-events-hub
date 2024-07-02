@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Form</title>
+  <title>{{ i18n.t('messages.login_title') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -14,7 +14,7 @@
 
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md mt-20 mb-auto">
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
-        Connexion
+        {{ i18n.t('messages.login_title') }}
       </h2>
       <form action="{{ route('auth.login.store') }}" method="POST" class="space-y-4">
         {{ csrfField() }}
@@ -27,14 +27,14 @@
 
         <div>
           <label for="email" class="block text-gray-600">
-            Email
+            {{ i18n.t('messages.login_email') }}
           </label>
           <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="you@example.com">
         </div>
         <div>
           <label for="password" class="block text-gray-600">
-            Mot de passe
+            {{ i18n.t('messages.login_password') }}
           </label>
           <input type="password" id="password" name="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="********">
@@ -42,7 +42,7 @@
         <div>
           <button type="submit" class="w-full bg-yellow-500 text-gray-800 font-semibold py-2 px-4 mt-8 rounded-md hover:bg-yellow-400
            focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 ">
-            Login
+           {{ i18n.t('messages.login_login') }}
           </button>
         </div>
       </form>

@@ -237,6 +237,13 @@ export default class EventsController {
 
   async search({ request }: HttpContext) {
     console.log('SEARCH')
+    const requestQuery = request.qs()
+    const city = requestQuery['city']
+    const response = await fetch(
+      `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${city}&boundary.country=BE`
+    )
+    const datas = await response.json()
+    console.log(datas)
   }
 
   async createEvent(

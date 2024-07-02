@@ -32,15 +32,15 @@
   {{item.discountedPrice}}
 @end --}}
 
-@each(item in event.media) 
+{{-- @each(item in event.media) 
   <img src="{{item.path}}" alt="{{item.path}}">
-@end
+@end --}}
 
 
   <div class="p-2">
-    <p class="text-xs text-gray-500/60 font-bold ">
-      {{(event.eventStart)}}
-    </p>
+    <div class="formated-date text-xs text-gray-500/60 font-bold"
+     data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
+    </div>
     <h2 class="text-xl font-bold tracking-tight text-gray-700 " >
       {{event.title}}
     </h2>

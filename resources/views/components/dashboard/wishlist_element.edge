@@ -1,0 +1,27 @@
+<a href="{{ route('events.show', [event.id]) }}" class="flex gap-2 hover:bg-slate-100">
+
+  @if(event.media.length > 0)
+    <div class="w-24">
+      @each(media in event.media)
+        <img class="object-cover overflow-hidden w-full h-16" src="{{ media.path }}" alt="{{ media.altName }}">
+      @endeach
+    </div>
+  @else
+    <p>No media available</p>
+  @endif
+
+  <div class="w-full flex justify-between items-center">
+
+    <div class="flex flex-col">
+      <h3 class="font-semibold tracking-tight">{{event.title}}</h3>
+      <p class="text-xs font-bold text-slate-400">{{ event.eventStart }} - {{ event.eventEnd }} </p>
+      <p class="text-xs tracking-tight italic">{{event.location.name}} - {{event.location.city}}</p>  
+      
+    </div>
+    
+    <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class="p-4" enctype="multipart/form-data">
+      {{ csrfField() }}
+      <button type="submit" class="text-yellow"><img src="/svg/cancel.svg" alt="cancel"></button>
+    </form>
+  </div>
+</a>

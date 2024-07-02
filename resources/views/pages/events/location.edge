@@ -7,6 +7,8 @@
   <title>Next Event: A cultural events hub</title>
   @vite(['resources/css/app.css', 'resources/js/app.js', ])
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+   {{-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script> --}}
+
 </head>
 
 <body class=" bg-gray-100">
@@ -20,12 +22,15 @@
   
 @if(city)
 
-  {{-- <div id="map" class="h-96 w-full  border shadow "></div> --}}
   <section class="flex flex-col bg-gray-50 items-center  mb-6 mx-auto ">
     @include("pages/partials/filter_map")
   </section>
 @end
-<button onclick="newfunction()" type="submit">Click to fetch</button>
+
+
+<div id="poi-list">
+
+</div>
 
 
   {{-- events types --}}
@@ -40,12 +45,23 @@
     @end
     </div>
 </ul>
-
+ <div id="poi-list"></div>
      <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-10 container mx-auto my-6 py-10">
-        <div id="poi-list"></div>
-   @each(event in events)
-    @!component('components/events_cards', {event})
-  @end
+
+    <div x-data="dataHandler()" x-init="dataHandler()">
+    <button @click="fetchData">Fetch Data</button>
+      <div x-show="data.length > 0">
+      <template x-for="event in data" :key="event.id">
+        @!component('components/events_cards_alpine')
+      </template>
+      </div>
+    </div>
+   
+
+
+   {{-- @each(event in events)
+    {{-- @!component('components/events_cards', {event}) --}}
+  @end --}}
   </div>
   
 
@@ -57,7 +73,11 @@
 <script>
     window.city = "{{ city }}";
 </script>
-<script src="/resources/js/map_events.js" defer></script>
+
+
+<script type='module' src="/resources/js/alpine.js" ></script>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script src="/resources/js/map_events.js" defer></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ import Event from '#models/event'
 import Order from '#models/order'
 
 export default class HomeController {
-  async index({ i18n, view, auth, response }: HttpContext) {
+  async index({ view, auth, response }: HttpContext) {
     await auth.check()
     const categories = await Category.query().select('name', 'slug', 'id')
 
@@ -36,6 +36,6 @@ export default class HomeController {
       })
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/home', { categories: categories, events: events, i18n: i18n })
+    return view.render('pages/home', { categories: categories, events: events })
   }
 }

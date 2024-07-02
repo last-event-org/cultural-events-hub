@@ -20,10 +20,9 @@ const i18nConfig = defineConfig({
     }),
   ],
   fallbackLocales: {
-    'fr-FR': 'fr',
-    'en': 'en'
+    'fr': 'fr'
   },
-  supportedLocales: ['fr', 'en']
+  supportedLocales: ['en', 'fr']
 })
 
 export default i18nConfig

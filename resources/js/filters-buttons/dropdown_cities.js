@@ -1,3 +1,6 @@
+import { getCoordinatesFromCity } from '../geolocation'
+import { createMap } from '../map_home'
+
 //drop-down city list
 const section = document.getElementById('big-search-bar-container')
 const cityInput = document.getElementById('city-chosen')
@@ -26,8 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 })
 
-function updateCity(city) {
+async function updateCity(city) {
   cityInput.value = city
+  const [latitude, longitude] = await getCoordinatesFromCity(city)
+  console.log(latitude + ' - ' + longitude)
+  map.setView([latitude, longitude], 13)
+  // createMap(latitude, longitude)
   mapPopup.focus()
 }
 

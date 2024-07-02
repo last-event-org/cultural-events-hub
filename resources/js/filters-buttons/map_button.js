@@ -10,10 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 
   document.addEventListener('click', (event) => {
-    console.log('EVENT')
-    console.log(event.target)
     const isClickInside = buttonMap.contains(event.target) || mapPopup.contains(event.target)
-    console.log()
     if (!isClickInside && !(document.activeElement === inputRadius)) {
       mapPopup.classList.add('hidden')
     }

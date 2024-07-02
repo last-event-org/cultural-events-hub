@@ -46,5 +46,5 @@ dateElements.forEach(function(dateElement) {
     const formattedDate = formatDate(eventStart, eventEnd);
     dateElement.textContent = formattedDate;
   });
-
+console.log ('date_format')
 

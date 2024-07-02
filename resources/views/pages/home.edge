@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
@@ -14,6 +14,8 @@
 
 @include("pages/partials/header")
 @include("pages/partials/intro")
+
+<h1>{{ i18n.t('messages.greeting') }}</h1>
 
 <section class="relative flex flex-col items-center justify-center ">
   <div id="map-popup" class="hidden fixed z-[500] top-0 left-0 right-0 bottom-0  justify-center items-center bg-gray-800 bg-opacity-50">

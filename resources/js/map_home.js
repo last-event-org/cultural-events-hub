@@ -1,28 +1,8 @@
-//open-map button
-const openMapButtons = document.querySelectorAll('.open-map-button');
-const mapPopup = document.getElementById('map-popup');
 
-openMapButtons.forEach(function(button) {
-  button.addEventListener('click', function() {
-    mapPopup.classList.remove('hidden');
-    mapPopup.classList.add('active', 'flex');
-  });
-  setTimeout(function() {
-    map.invalidateSize(); // Redimensionne la carte après un léger délai
-  }, 500);
-});
-
-
-mapPopup.addEventListener('click', function(event) {
-
-  if (event.target === mapPopup) {
-    mapPopup.classList.add('hidden');
-    mapPopup.classList.remove('active', 'flex');
-
-  }
-});
 
 document.addEventListener('DOMContentLoaded', function() {
+
+  
   const latitude = 50.645138;  // Remplacez par les coordonnées réelles
   const longitude = 5.573420;  // Remplacez par les coordonnées réelles
   const poi = [
@@ -41,6 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
+
+  setTimeout(function() {
+    map.invalidateSize(); // Redimensionne la carte après un léger délai
+  }, 500);
 
   poi.forEach(function(point) {
     L.marker([point.lat, point.lng]).addTo(map).bindPopup(point.name);

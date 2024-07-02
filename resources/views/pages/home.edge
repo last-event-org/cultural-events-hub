@@ -22,19 +22,19 @@
 <main> 
   <div class="container mx-auto px-4">
     <div class="mb-4">
-      <div class="flex items-center">
+      {{-- <div class="flex items-center">
         <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
         <h2 class="text-xl md:text-2xl font-bold relative">xt Events à prix réduit<span class="relative">s</span>
           <hr class="absolute -z-10 w-[128px] h-2 bottom-1.5 right-0 bg-yellow-500">
         </h2>
-      </div>
+      </div> --}}
     </div>
     <div class="grid gap-x-8 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]" >
       @each(event in events)
       @!component('components/events_cards', {event})
-      {{-- @!component('components/events_cards', {event})
       @!component('components/events_cards', {event})
-      @!component('components/events_cards', {event}) --}}
+      @!component('components/events_cards', {event})
+      @!component('components/events_cards', {event})
       @end
     </div>
   </div>

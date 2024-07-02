@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class='${date.toDateString() === selectedDate.toDateString() ? "text-indigo-900" : "text-slate-600 group-hover:text-indigo-900"} ${isFontBold} text-xs transition-all duration-300'>${month}</p>
           </div>
         </div>
+        
       `;
       dayElement.addEventListener('click', function() {
         selectedDate = new Date(date);

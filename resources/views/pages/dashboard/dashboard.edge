@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>{{ i18n.t('messages.dashboard_title') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-slate-50">
   
   @include("pages/partials/header")
+
   <main class="flex flex-col items-center min-h-screen ">
     <section>
       <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-md shadow px-4 md:px-8 mt-10">
@@ -29,7 +30,7 @@
               })
             @end
           @else
-          <p>Pas d'évènement dans votre wishlist pour le moment.</p>
+          <p>{{ i18n.t('messages.dashboard_emptyWishlist') }}</p>
           @endif
         </div>
       </div>
@@ -50,7 +51,7 @@
         })
       @end
       @else
-        <p>Pas d'organisateurs favoris pour le moment.</p>
+        <p>{{ i18n.t('messages.dashboard_emptyFavourites') }}</p>
       @endif
     </div>
   </div>

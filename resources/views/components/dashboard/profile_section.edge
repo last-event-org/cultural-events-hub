@@ -1,6 +1,6 @@
 <section class=" bg-white text-slate-600 flex flex-col border rounded-md shadow mt-16">
     <div class="justify-center flex">
-      <h2 class="relative z-10 font-bold text-xl my-4">Profil
+      <h2 class="relative z-10 font-bold text-xl my-4">{{ i18n.t('messages.profile_title') }}
           <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
       </h2>
     </div>
@@ -12,20 +12,20 @@
         </div>
         <div class="flex flex-col gap-1 mb-2 lg:my-2  mx-4 text-xs md:text-sm">
           <div class="flex gap-2">
-            <p class="font-bold">Prénom:</p>
+            <p class="font-bold">{{ i18n.t('messages.profile_firstname') }}:</p>
             <p>{{ user.firstname }}</p>
           </div>
           <div class="flex gap-2">
-            <p class="font-bold">Nom:</p>
+            <p class="font-bold">{{ i18n.t('messages.profile_lastname') }}:</p>
             <p>{{ user.lastname }}</p>
           </div>
           <div class="flex gap-2">
-            <p class="font-bold">Email:</p>
+            <p class="font-bold">{{ i18n.t('messages.profile_email') }}:</p>
             <p>{{ user.email }}</p>
           </div>
           @if (user.billingAddress)
             <div class="flex gap-2">
-              <p class="font-bold">Adresse:</p>
+              <p class="font-bold">{{ i18n.t('messages.profile_address') }}:</p>
               <p>{{ user.billingAddress.street || '' }} 
                 {{ user.billingAddress.number || '' }}, 
                 {{ user.billingAddress.zipCode || '' }} 
@@ -34,11 +34,11 @@
             </div>
           @endif
           <div class="flex gap-2">
-            <p class="font-bold">Nom de société:</p>
+            <p class="font-bold">{{ i18n.t('messages.profile_company') }}:</p>
             <p>{{ user.companyName || '' }}</p>
           </div>
           <div class="flex gap-2">
-            <p class="font-bold">N° de TVA:</p>
+            <p class="font-bold">{{ i18n.t('messages.profile_vat') }}:</p>
             <p>{{ user.vatNumber || '' }}</p>
           </div>
         </div>
@@ -48,7 +48,7 @@
     <div class="flex justify-center my-8">
       <div class="flex bg-indigo-700 text-white text-sm py-1 px-2 rounded-md font-bold">
         <a href="{{route('auth.profile.edit')}} ">
-          Éditer le profil
+          {{ i18n.t('messages.profile_edit') }}
         </a>
       </div>
     </div>

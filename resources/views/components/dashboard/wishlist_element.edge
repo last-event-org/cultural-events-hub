@@ -1,27 +1,33 @@
-<a href="{{ route('events.show', [event.id]) }}" class="flex gap-2 hover:bg-slate-100">
-
-  @if(event.media.length > 0)
-    <div class="w-24">
-      @each(media in event.media)
-        <img class="object-cover overflow-hidden w-full h-16" src="{{ media.path }}" alt="{{ media.altName }}">
-      @endeach
+<div class="flex items-center">
+  <a href="{{ route('events.show', [event.id]) }} "class="hover:scale-[1.01] duration-300">
+    @if(event.media.length > 0)
+      <div class="w-24 hidden sm:block">
+          <img class=" object-cover overflow-hidden w-full h-16" src="{{ event.media[0].path }}" alt="{{event.media[0].altName }}">
+      </div>
+    @else
+    <div class="w-24 hidden sm:block">
+    <img class=" object-cover overflow-hidden w-full h-16" src="/images/dummy-96X64.png" alt="no image">
     </div>
-  @else
-    <p>{{ i18n.t('messages.wishlist_noMedia') }}</p>
-  @endif
 
-  <div class="w-full flex justify-between items-center">
+    @endif
+  </a>
+  <div class=" w-1 min-h-16  bg-yellow-500"></div>
 
-    <div class="flex flex-col">
-      <h3 class="font-semibold tracking-tight">{{event.title}}</h3>
-      <p class="text-xs font-bold text-slate-400">{{ event.eventStart }} - {{ event.eventEnd }} </p>
-      <p class="text-xs tracking-tight italic">{{event.location.name}} - {{event.location.city}}</p>  
-      
+  <a href="{{ route('events.show', [event.id]) }}" class="hover:scale-[1.01] sm:rounded-full px-4 duration-300">
+      <div class="flex flex-col">
+        <h3 class="font-semibold tracking-tight">{{event.title}}</h3>
+        <div class="formated-date text-xs tracking-tight text-gray-500/60 font-bold"
+            data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
+        </div>
+        <p class="text-xs tracking-tight italic">{{event.location.name}}</p>
+        <p class="text-xs tracking-tight">{{event.location.city}}</p>      
     </div>
+  </a>
     
-    <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class="p-4" enctype="multipart/form-data">
+    <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class=" ml-auto" enctype="multipart/form-data">
       {{ csrfField() }}
-      <button type="submit" class="text-yellow"><img src="/svg/cancel.svg" alt="cancel"></button>
+      <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel"></button>
     </form>
   </div>
-</a>
+
+ 

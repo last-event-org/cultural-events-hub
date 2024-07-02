@@ -8,29 +8,19 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-slate-50">
   
   @include("pages/partials/header")
-  <main class="flex flex-col items-center min-h-screen gap-10 mb-16">
-    
-    <div class="bg-white p-8 my-20  rounded shadow-md w-full max-w-md ">
-      <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
-        {{ i18n.t('messages.dashboard_title') }}
-      </h2>
-    </div>
 
-    @!component('components/dashboard/profile_section', {
-      user: user,
-    })
-
-
+  <main class="flex flex-col items-center min-h-screen ">
     <section>
-      <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-md shadow px-4 md:px-8">
-        <div class="justify-center flex">
-          <h2 class="relative z-10 font-bold text-xl mt-4 mb-8">Whishlist
-              <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+      <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-md shadow px-4 md:px-8 mt-10">
+        <div class=" flex justify-center my-6 ">
+          <h2 class="relative font-bold text-xl self-center border bg-slate-100 rounded-full py-2 pr-4 pl-10 shadow">Whishlist
+            <img class="absolute left-0 top-0 h-10 w-10 p-2" src="/svg/favourite-star.svg" alt="étoile">
           </h2>
         </div>
+        
         <div class="flex flex-col gap-4 pb-8 ">
   
           @if(userWishlist.length > 0)
@@ -47,10 +37,10 @@
     </section>
 
     <section>
-      <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-md shadow px-4 md:px-8">
-        <div class="justify-center flex">
-          <h2 class="relative z-10 font-bold text-xl mt-4 mb-8">Mes Favoris
-              <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
+      <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-md shadow px-4 md:px-8 mt-10">
+        <div class=" flex justify-center my-6 ">
+          <h2 class="relative font-bold text-xl self-center border bg-slate-100 rounded-full py-2 pr-4 pl-10 shadow">Favoris
+            <img class="absolute left-1 top-1 h-10 w-10 p-2" src="/svg/heart-full.svg" alt="coeur">
           </h2>
         </div>
         <div class="flex flex-col gap-4 pb-8 ">
@@ -71,7 +61,7 @@
   
 
     @include("pages/partials/footer")
-  
-<script scr="resources/js/app.js"></script>
+
+<script src="/resources/js/date_format.js"></script>
 </body>
 </html>

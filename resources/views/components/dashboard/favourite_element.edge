@@ -1,13 +1,40 @@
-<li>
-    <a href="/events/?vendor={{ vendor.id }}" class="flex gap-2 hover:bg-slate-100">
-        <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-            <p>{{vendor.companyName}}</p>
-        </div>
-    </a>
-    <form action="{{ route('favourite.destroy', [vendor.id]) }}" method="post" class="space-y-4"
-        enctype="multipart/form-data">
-        {{ csrfField() }}
-        <button type="submit" class="text-yellow">{{ i18n.t('messages.delete_btn') }}</button>
-    </form>
-</li>
+
+{{-- Todo
+
+connect the profile picture 
+count events since profile creation
+count events publications from today --}}
   
+<div class="flex items-center w-full ">
+
+  <a href="/events/?vendor={{ vendor.id }}" class="sm:flex justify-center items-center w-24 h-24 border shadow rounded-3xl p-2 hidden hover:scale-[1.01] duration-300">
+    <img class="p-1 object-cover" src="/public/svg/profile_picture_dummy.svg" alt="image name">
+  </a>
+  <div class="sm:hidden w-1 min-h-14  bg-indigo-700"></div>
+
+  <a href="/events/?vendor={{ vendor.id }}" class="px-4 py-2 hover:scale-[1.01] duration-300 ">
+    <div class="w-full flex justify-between items-center gap-8">
+  
+      <div class="flex flex-col">
+        <h3 class="font-semibold tracking-tight">{{vendor.companyName}}</h3>
+        <p class="text-xs font-bold text-slate-400">4 évènements en ce moment</p>
+        <p class="text-xs tracking-tight italic">47 publications depuis 2014</p>   
+      </div>
+      <svg class="hidden sm:block h-5 w-5 text-gray-400 hover:scale-[1.10] duration-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </div>
+  </a>
+  
+    
+  <div class="ml-auto ">
+    <form action="{{ route('favourite.destroy', [vendor.id]) }}" method="post"
+    enctype="multipart/form-data">
+    {{ csrfField() }}
+    <button type="submit" class="hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel">{{ i18n.t('messages.delete_btn') }}
+    </button>
+
+    </form>
+  </div>
+
+</div>

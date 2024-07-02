@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Event - {{event.title}} </title>
+  <title>{{event.title}} </title>
   @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/map_details.js','resources/js/favourites.js'])
 </head>
 
@@ -21,7 +21,7 @@
           <a href="{{route('events.edit', {id : event.id})}}"
            class="hover:text-yellow-500 text-xs underline  font-bold rounded-xl transition duration-200" 
            target="" rel="noopener noreferrer" type="button">
-            Modifier</a>
+           {{ i18n.t('messages.event_edit') }}</a>
         </div>
 
         {{-- nom de la société --}}
@@ -60,7 +60,7 @@
                 <div class= "flex gap-2 items-center absolute top-4 lg:top-8 right-4 lg:right-8 z-10  transition duration-300">
                   <p class="hidden opacity-0 transform scale-50 -translate-x-full animate-pulse bg-slate-400/50
                     text-white font-semibold px-2 " id="add-to-favourites">
-                    Add to wishlist
+                    {{ i18n.t('messages.event_wish') }}
                   </p>
                   <form action="{{ route('wishlist.add', [event.id]) }}" method="post"  enctype="multipart/form-data">
                     {{ csrfField() }}
@@ -109,7 +109,7 @@
                     </form>
                     <a href="/events/?vendor={{ event.vendor.id }}" class="">
                         <p class="text-sm text-right text-slate-500 mb-1 text-clip overflow-hidden">
-                          Organisé par: <span class="text-indigo-700 font-semibold">{{ event.vendor.companyName }}</span>
+                          {{ i18n.t('messages.event_org') }}: <span class="text-indigo-700 font-semibold">{{ event.vendor.companyName }}</span>
                         </p>
                     </a>
                   </div>

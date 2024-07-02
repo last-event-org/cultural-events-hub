@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Event - Dashboard - Mes commandes </title>
+  <title>{{ i18n.t('messages.orders_title') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -17,22 +17,22 @@
     <div class="flex justify-center  gap-10  mx-auto my-6 py-10"> 
       <article class="bg-slate-50 border-gray-300 rounded-lg w-full">
         <h2 class="text-4xl font-semibold tracking-tight text-gray-700">
-            Vos commandes
+          {{ i18n.t('messages.orders_title') }}
         </h2>
         <div class="flex flex-col justify-center items-center mb-4">
             @if(orders.length === 0)
-                <p>Vous n'avez pas encore passé de commandes</p>
+                <p>{{ i18n.t('messages.orders_noOrders') }}</p>
             @else
              @each(order in orders)
                 <div class="flex flex-col lg:flex-row w-full lg:border-2 bg-slate-400 border-yellow-500 rounded-md">
-                    Commande: {{order.id}}
-                    Date d'achat: {{order.purchaseDate}}
+                  {{ i18n.t('messages.orders_order') }}: {{order.id}}
+                  {{ i18n.t('messages.orders_purchaseDate') }}: {{order.purchaseDate}}
                     @each(orderLine in order.orderLineId)
-                        Qté: {{orderLine.qty}}
-                        Evénement: {{orderLine.price.event.title}}
-                        Date: {{orderLine.price.event.eventStart}}
-                        Type de billet: {{orderLine.price.description}}
-                        Prix: {{orderLine.price.discountedPrice}}
+                    {{ i18n.t('messages.orders_qty') }}: {{orderLine.qty}}
+                    {{ i18n.t('messages.orders_event') }}: {{orderLine.price.event.title}}
+                    {{ i18n.t('messages.orders_date') }}: {{orderLine.price.event.eventStart}}
+                    {{ i18n.t('messages.orders_ticketType') }}: {{orderLine.price.description}}
+                    {{ i18n.t('messages.orders_price') }}: {{orderLine.price.discountedPrice}}
                     @end
                 </div>
              @end

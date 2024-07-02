@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un Événement</title>
+    <title>{{ i18n.t('messages.event_create_title') }}</title>
     @vite(['resources/css/app.css', 'resources/js/hours_create_event.js'])
 
 </head>
@@ -16,7 +16,7 @@
         {{-- <div class="bg-white p-8 rounded shadow-md w-full max-w-3xl"> --}}
             <div class="bg-white p-8 rounded shadow-md w-full max-w-6xl">
                 <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
-                    Créer un Événement
+                    {{ i18n.t('messages.event_create_title') }}
                 </h2>
                 <form action={{ route('events.store') }} method="POST" class="space-y-4" enctype="multipart/form-data">
 
@@ -32,12 +32,12 @@
                     <section class="flex justify-around gap-10">
                         <div class="w-full">
                             <div class="block text-gray-800 text-xl font-semibold my-4 text-center">
-                                Événement
+                                {{ i18n.t('messages.event_event') }}
                             </div>
                             <div class="text-sm">
                                 <div class="flex flex-col mb-3">
                                     <label for="title" class="block text-gray-600">
-                                        Titre
+                                        {{ i18n.t('messages.event_title') }}
                                     </label>
                                     <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                        focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
@@ -48,7 +48,7 @@
 
                                 <div class="flex flex-col mb-3">
                                     <label for="subtitle" class="block text-gray-600">
-                                        Sous-Titre
+                                        {{ i18n.t('messages.event_subtitle') }}
                                     </label>
                                     <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
@@ -59,7 +59,7 @@
 
                                 <div class="flex flex-col mb-3">
                                     <label for="description" class="block text-gray-600">
-                                        Description
+                                        {{ i18n.t('messages.event_desc') }}
                                     </label>
                                     <textarea type="text" id="description" name="description"
                                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
@@ -72,7 +72,7 @@
                             <div class="flex text-sm gap-2">
                                 <div class="flex-1">
                                     <label for="event_start" class="block text-gray-600">
-                                        Début
+                                        {{ i18n.t('messages.event_start') }}
                                     </label>
                                     <input type="datetime-local" id="event_start" name="event_start"
                                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
@@ -81,7 +81,7 @@
 
                                 <div class="flex-1">
                                     <label for="event_end" class="block text-gray-600">
-                                        Fin
+                                        {{ i18n.t('messages.event_end') }}
                                     </label>
                                     <input type="datetime-local" id="event_end" name="event_end"
                                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
@@ -96,12 +96,12 @@
 
                         <div class="px-5 w-full bg-blue-50 rounded-lg">
                             <div class="block text-gray-800 text-xl font-semibold my-4 text-center">
-                                Lieu
+                                {{ i18n.t('messages.event_location') }}
                             </div>
                             <div class="flex flex-col text-sm">
                                 <div class="flex flex-col mb-3">
                                     <label for="name" class="block text-gray-600">
-                                        Nom
+                                        {{ i18n.t('messages.event_locationName') }}
                                     </label>
                                     <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
@@ -113,7 +113,7 @@
                                 <div class="flex mb-3 gap-2">
                                     <div class="flex flex-col w-5/6">
                                         <label for="street" class="block text-gray-600">
-                                            Rue
+                                            {{ i18n.t('messages.event_locationStreet') }}
                                         </label>
                                         <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
@@ -124,7 +124,7 @@
 
                                     <div class="flex flex-col w-1/6">
                                         <label for="number" class="block text-gray-600">
-                                            Numéro
+                                            {{ i18n.t('messages.event_locationStreetNb') }}
                                         </label>
                                         <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
@@ -137,7 +137,7 @@
                                 <div class="flex mb-3 gap-2">
                                     <div class="flex flex-col w-2/6">
                                         <label for="zip_code" class="block text-gray-600">
-                                            Code Postal
+                                            {{ i18n.t('messages.event_locationZip') }}
                                         </label>
                                         <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                              focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
@@ -149,7 +149,7 @@
 
                                     <div class="flex flex-col">
                                         <label for="city" class="block text-gray-600">
-                                            Ville
+                                            {{ i18n.t('messages.event_locationCity') }}
                                         </label>
                                         <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
@@ -160,7 +160,7 @@
 
                                     <div class="flex flex-col mb-3">
                                         <label for="country" class="block text-gray-600">
-                                            Pays
+                                            {{ i18n.t('messages.event_locationCountry') }}
                                         </label>
                                         <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
@@ -175,19 +175,19 @@
 
                     <section class="p-10 bg-emerald-700 rounded-lg flex flex-col items-center">
                         <label for="images_link" class="text-center text-white">
-                            Charger des images (max. 3)
+                            {{ i18n.t('messages.event_uploadImg') }}
                         </label>
                         <input class="mt-4 max-w-56 text-white" type="file" id="images_link" name="images_link[]"
                             onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
                         @inputError('images_link')
-                        <div style="color: yellow;">Au moins une image doit être ajoutée à l'événement</div>
+                        <div style="color: yellow;">{{ i18n.t('messages.event_imgMin') }}</div>
                         @end
                         <div id="imagePreviewContainer" class="flex flex-wrap mt-4"></div>
                     </section>
 
                     <div class="flex w-full p-3 bg-lime-50 rounded-lg">
                         <fieldset class="py-2 w-1/2">
-                            <legend class="block text-gray-600">Catégories:</legend>
+                            <legend class="block text-gray-600">{{ i18n.t('messages.event_categ') }}:</legend>
                             @each(category in categories)
                             <ul>
                                 <li>
@@ -217,7 +217,7 @@
                         @end --}}
 
                         <fieldset class="py-2 w-1/2">
-                            <legend class="block text-gray-600">Indicateurs:</legend>
+                            <legend class="block text-gray-600">{{ i18n.t('messages.event_indic') }}:</legend>
                             @each(indicator in indicators)
                             <ul>
                                 <li>
@@ -233,7 +233,7 @@
                     <div class="text-sm">
                         <div class="pb-3">
                             <label for="facebook_link" class="block text-gray-600">
-                                Lien Facebook
+                                {{ i18n.t('messages.event_fbLink') }}
                             </label>
                             <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('facebook_link') || '' }}">
@@ -241,7 +241,7 @@
 
                         <div class="pb-3">
                             <label for="instagram_link" class="block text-gray-600">
-                                Lien Instagram
+                                {{ i18n.t('messages.event_igLink') }}
                             </label>
                             <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('instagram_link') || '' }}">
@@ -249,7 +249,7 @@
 
                         <div class="pb-3">
                             <label for="website_link" class="block text-gray-600">
-                                Site Web
+                                {{ i18n.t('messages.event_webLink') }}
                             </label>
                             <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
                focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
@@ -257,7 +257,7 @@
 
                         <div class="pb-3">
                             <label for="youtube_link" class="block text-gray-600">
-                                Lien vidéo YouTube
+                                {{ i18n.t('messages.event_ytLink') }}
                             </label>
                             <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
              focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('youtube_link') || '' }}">
@@ -281,7 +281,7 @@
 
                     <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                        Ajouter des tarifs
+                    {{ i18n.t('messages.event_addPrice') }}
                     </button>
 
                     {{-- <div>
@@ -310,7 +310,7 @@
 
                         <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                            Créer
+            {{ i18n.t('messages.event_create') }}
                         </button>
                     </div>
 

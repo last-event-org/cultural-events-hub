@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Favoris</title>
+  <title>{{ i18n.t('messages.favourites_title') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -13,7 +13,7 @@
 
 <main class="container py-10 mb-10 mx-auto">
 
-    <h1>Mes Favoris</h1>
+    <h1>{{ i18n.t('messages.favourites_my') }}</</h1>
     @each(vendor in userFavourites)
       @!component('components/dashboard/favourite_element', {
         vendor: vendor,

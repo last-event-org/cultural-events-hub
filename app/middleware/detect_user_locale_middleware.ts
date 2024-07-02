@@ -31,11 +31,9 @@ export default class DetectUserLocaleMiddleware {
 
     // Fetch the supported locales
     const supportedLocales = i18nManager.supportedLocales()
-    console.log('\n\n\n\nsupportedLocales: ', supportedLocales);
 
     // Check for the locale query parameter first
     const queryLocale = ctx.request.input('locale')
-    console.log('queryLocale: ', queryLocale);
 
     if (queryLocale && supportedLocales.includes(queryLocale)) {
       // Set cookie if query parameter is present

@@ -7,7 +7,7 @@
     <form action="{{ route('favourite.destroy', [vendor.id]) }}" method="post" class="space-y-4"
         enctype="multipart/form-data">
         {{ csrfField() }}
-        <button type="submit" class="text-yellow">Effacer</button>
+        <button type="submit" class="text-yellow">{{ i18n.t('messages.delete_btn') }}</button>
     </form>
 </li>
   

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Event: A cultural events hub</title>
+  <title>Next Event: {{ i18n.t('messages.event_hub') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js'])
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
@@ -13,7 +13,7 @@
 @include("pages/partials/header")
 <div class="flex justify-center mt-12">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h1 class="text-3xl md:text-3xl font-bold">xt Events - {{title}}</h1>
+    <h1 class="text-3xl md:text-3xl font-bold">xt Events - {{ i18n.t('messages.events_title') }}</h1>
   </div>
 
 <main class=" container  py-10 mb-10 mx-auto">

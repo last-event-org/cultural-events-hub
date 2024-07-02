@@ -1,4 +1,4 @@
-<a href="#" class="flex gap-2 hover:bg-slate-100">
+<a href="/events/?vendor={{ vendor.id }}" class="flex gap-2 hover:bg-slate-100">
 
   <div class="flex justify-center items-center w-24 h-24">
     <img class="p-2" src="/public/svg/profile_picture_dummy.svg" alt="image name">
@@ -7,15 +7,20 @@
   <div class="w-full flex justify-between items-center">
 
     <div class="flex flex-col">
-      <h3 class="font-semibold tracking-tight">Jean-Claude Dusse</h3>
+      <h3 class="font-semibold tracking-tight">{{vendor.companyName}}</h3>
       <p class="text-xs font-bold text-slate-400">4 évènements en ce moment</p>
       <p class="text-xs tracking-tight italic">47 publications depuis 2014</p>   
     </div>
     
     <div class="p-4">
-      <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-      </svg>
+      <form action="{{ route('favourite.destroy', [vendor.id]) }}" method="post" class="space-y-4"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+          </svg>
+      </form>
+      
     </div>
 
   </div>

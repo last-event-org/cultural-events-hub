@@ -176,6 +176,7 @@
   "event_fetch": "Récupérer les données",
   "events_title": "Agenda complet",
   "events_title_location": "le",
+  "events_no_events": "Malheureusement, il n'y a pas d'événements à la date sélectionnée.",
 
   "map_when": "Quand sortir ?",
   "map_whenDesc": "Choisir une date",

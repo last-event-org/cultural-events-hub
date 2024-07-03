@@ -176,6 +176,7 @@
   "event_fetch": "Fetch data",
   "events_title": "Full agenda",
   "events_title_location": "the",
+  "events_no_events": "Unfortunately, there are no events for the selected date.",
 
   "map_when": "When ?",
   "map_whenDesc": "Select date",

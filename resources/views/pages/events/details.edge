@@ -69,7 +69,8 @@
                   <form action="{{ route('wishlist.add', [event.id]) }}" method="post"  enctype="multipart/form-data">
                     {{ csrfField() }}
                     <button type="submit" id="favourite-star">
-                      <img  src="/public/svg/favourite-star.svg" alt="Add to favourites" >
+                      <img src="/public/svg/favourite-star-empty.svg"  id="star_empty" alt="Add to favourites" >
+                      <img  src="/public/svg/favourite-star.svg" id="star_full" alt="Add to favourites" class="hidden">
                     </button>
                 </form>
                 </div>

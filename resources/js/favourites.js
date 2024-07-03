@@ -28,3 +28,21 @@ heartTrigger.addEventListener('mouseleave', () => {
   heartEmpty.classList.remove('hidden')
   heartEmpty.classList.add('block')
 })
+
+const starTrigger = document.getElementById('favourite-star')
+const starEmpty = document.getElementById('star_empty')
+const starFull = document.getElementById('star_full')
+
+starTrigger.addEventListener('mouseenter', () => {
+  starFull.classList.remove('hidden')
+  starFull.classList.add('block')
+  starEmpty.classList.remove('block')
+  starEmpty.classList.add('hidden')
+})
+
+starTrigger.addEventListener('mouseleave', () => {
+  starFull.classList.remove('block')
+  starFull.classList.add('hidden')
+  starEmpty.classList.remove('hidden')
+  starEmpty.classList.add('block')
+})

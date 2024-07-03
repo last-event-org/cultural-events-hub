@@ -13,7 +13,7 @@
 @include("pages/partials/header")
 <div class="flex justify-center mt-12">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h1 class="text-3xl md:text-3xl font-bold">xt Events - {{location ?? ''}} {{ location ? i18n.t('messages.events_title_location') : "" }} {{date ?? ''}} {{categoryName ?? ''}} {{categoryTypeName ? '-' : ""}} {{categoryTypeName ?? ''}}</h1>
+    <h1 class="text-3xl md:text-3xl font-bold">xt Events - {{location ? location : i18n.t('messages.events_title')}} {{ location ? i18n.t('messages.events_title_location') : "" }} {{date ?? ''}} {{categoryName ?? ''}} {{categoryTypeName ? '-' : ""}} {{categoryTypeName ?? ''}}</h1>
   </div>
 
 <main>

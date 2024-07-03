@@ -43,19 +43,15 @@ export default class RegistersController {
   /**
    * Handle form submission for the create action
    */
-  async store({ session, request, response, auth, view }: HttpContext) {
+  async store({ i18n, session, request, response, auth, view }: HttpContext) {
     const payload = await request.validateUsing(createRegisterValidator)
 
     // check if user email is already in the db
     const userEmail = await User.findBy('email', payload.email)
     if (userEmail) {
-      session.flash('duplicateEmail', 'Cet email a déjà été utilisé')
+      const errorMsg = i18n.t('messages.register_duplicateEmail')
+      session.flash('duplicateEmail', errorMsg)
       return response.redirect().back()
-    }
-
-    if (request.input('password') !== request.input('password_confirmation')) {
-      session.flash('password', 'Password do not match')
-      response.redirect().back()
     }
 
     const user = new User()
@@ -69,7 +65,6 @@ export default class RegistersController {
     if (role) {
       user.roleId = role.id
     }
-    // await user.related('role').associate(role)
 
     await user.save()
     if (user.$isPersisted) {
@@ -131,7 +126,6 @@ export default class RegistersController {
       user.lastname = userProfilePayload.last_name
       user.email = userProfilePayload.email
     } catch (error) {
-      console.log('\n\n\n\n\n\n TEST3');
       const errorMsg = 'Les champs Prénom, Nom et Email sont requis'
       session.flash('mandatoryProfileData', errorMsg)
       return false
@@ -140,6 +134,7 @@ export default class RegistersController {
   }
 
   async updateUserPasswordData(
+    i18n: HttpContext['i18n'],
     request: HttpContext['request'],
     session: HttpContext['session'],
     user: User) {
@@ -151,7 +146,7 @@ export default class RegistersController {
         userPasswordPayload = await request.validateUsing(updateUserPasswordValidator)
         user.password = userPasswordPayload.password
       } catch (error) {
-        const errorMsg = 'Le mot de passe doit contenir au moins une lettre majuscule, un chiffre, un symbole (@$!%*?&) et au moins 8 caractères au total.'
+        const errorMsg = i18n.t('messages.error_psw')
         session.flash('userPassword', errorMsg)
         return false
       }
@@ -242,7 +237,7 @@ export default class RegistersController {
     return true
   }
 
-  async update({ request, response, session, auth }: HttpContext) {
+  async update({ i18n, request, response, session, auth }: HttpContext) {
 
     const user = await User.query()
       .where('id', auth.user?.$attributes.id)
@@ -251,7 +246,7 @@ export default class RegistersController {
 
     if (user) {
       if (!await this.updateMandatoryProfileData(request, session, user)) return response.redirect().back()
-      if (!await this.updateUserPasswordData(request, session, user)) return response.redirect().back()
+      if (!await this.updateUserPasswordData(i18n, request, session, user)) return response.redirect().back()
       const hasVendorData = await this.updateVendorData(request, session, response, user)
       if (!hasVendorData) return response.redirect().back()
 

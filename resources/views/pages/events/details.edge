@@ -17,7 +17,7 @@
     <div class="flex justify-center  gap-10  mx-auto my-6 py-10"> 
       <article class="w-full">
         {{-- Check if the logged user is the vendor that created the event. If yes, display edit button --}}
-        @if((await auth.user.id === event.vendorId) || await auth.user.isAdmin() )
+        @if((await auth.user?.id === event.vendorId) || await auth.user?.isAdmin() )
           <div class="flex justify-center items-center mb-4">
 
           <a href="{{route('events.edit', {id : event.id})}}"

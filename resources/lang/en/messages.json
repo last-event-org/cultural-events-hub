@@ -22,6 +22,9 @@
   "register_password": "Password",
   "register_confirm_pass": "Confirm password",
   "register_create_account": "Sign up",
+  "register_pswDesc": "<p>The password must contain:</p><ul><li>- at least 8 characters in total</li><li>- at least one uppercase letter</li><li>- at least one digit</li><li>- at least one symbol (@$!%*?&)</li></ul>",
+  "register_duplicateEmail": "This email has already been used",
+  "register_mandatoryProfileData": "All fields are required",
 
   "login_title": "Log in",
   "login_email": "Email",

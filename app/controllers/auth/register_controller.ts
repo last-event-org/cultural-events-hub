@@ -43,19 +43,15 @@ export default class RegistersController {
   /**
    * Handle form submission for the create action
    */
-  async store({ session, request, response, auth, view }: HttpContext) {
+  async store({ i18n, session, request, response, auth, view }: HttpContext) {
     const payload = await request.validateUsing(createRegisterValidator)
 
     // check if user email is already in the db
     const userEmail = await User.findBy('email', payload.email)
     if (userEmail) {
-      session.flash('duplicateEmail', 'Cet email a déjà été utilisé')
+      const errorMsg = i18n.t('messages.register_duplicateEmail')
+      session.flash('duplicateEmail', errorMsg)
       return response.redirect().back()
-    }
-
-    if (request.input('password') !== request.input('password_confirmation')) {
-      session.flash('password', 'Password do not match')
-      response.redirect().back()
     }
 
     const user = new User()
@@ -69,7 +65,6 @@ export default class RegistersController {
     if (role) {
       user.roleId = role.id
     }
-    // await user.related('role').associate(role)
 
     await user.save()
     if (user.$isPersisted) {
@@ -131,7 +126,6 @@ export default class RegistersController {
       user.lastname = userProfilePayload.last_name
       user.email = userProfilePayload.email
     } catch (error) {
-      console.log('\n\n\n\n\n\n TEST3');
       const errorMsg = 'Les champs Prénom, Nom et Email sont requis'
       session.flash('mandatoryProfileData', errorMsg)
       return false

@@ -60,8 +60,15 @@
           <label for="password" class="block text-gray-600">
             {{ i18n.t('messages.editProfile_password') }}
           </label>
+          <div class="relative">
           <input type="password" id="password" name="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
           focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="********">
+          <span onclick="showPassword(password)" class="p-1 absolute top-1 right-2 field-icon toggle-password show ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none ">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+            </span>
           @inputError('password')
             @each(message in $messages)
               <p> {{ message }} </p>
@@ -70,19 +77,28 @@
           @flashMessage('password')
             <p> {{ $message }} </p>
           @end
+          </div>
         </div>
 
         <div>
           <label for="password_confirmation" class="block text-gray-600">
             {{ i18n.t('messages.editProfile_confirmPass') }}
           </label>
-        <input type="password" id="password_confirmation" name="password_confirmation" class="mt-1 block w-full px-4 py-2
-         border border-gray-300 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 0 sm:text-sm" placeholder="********">
-         @inputError('password_confirmation')
-          @each(message in $messages)
-            <p> {{ message }} </p>
+          <div class="relative">
+          <input type="password" id="password_confirmation" name="password_confirmation" class="mt-1 block w-full px-4 py-2
+          border border-gray-300 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 0 sm:text-sm" placeholder="********">
+          <span onclick="showPassword(password_confirmation)" class="p-1 absolute top-1 right-2 field-icon toggle-password show ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none ">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+            </span>
+          @inputError('password_confirmation')
+            @each(message in $messages)
+              <p> {{ message }} </p>
+            @end
           @end
-        @end
+        </div>
         </div>
 
         @if(flashMessages.has('userPassword'))
@@ -175,5 +191,6 @@
     @include("pages/partials/footer")
   
 <script scr="resources/js/app.js"></script>
+<script src="/resources/js/show_password.js"></script>
 </body>
 </html>

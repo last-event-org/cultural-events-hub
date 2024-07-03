@@ -104,13 +104,22 @@
                   <div class="lg:hidden w-1/2 border-t-2 border-gray-400"></div>
                   <div class="flex  items-center gap-2 ">
 
-                    <form action="{{ route('favourite.add', [event.vendor.id]) }}" method="post" class="" enctype="multipart/form-data">
-                      {{ csrfField() }}
-                      <button type="submit" id="favourite-heart">
-                          <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="h-6 w-6 self-center block" id="heart_empty" title="Ajouter aux favoris">
-                          <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="h-6 w-6 self-center hidden" id="heart_full" title="Ajouter aux favoris">                  
-                      </button>
-                    </form>
+                    @if(isUserFavourite)
+                      <form action="{{ route('favourite.destroy', [event.vendor.id]) }}" method="post" class="" enctype="multipart/form-data">
+                        {{ csrfField() }}
+                        <button type="submit">
+                            <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="h-6 w-6 self-center" id="heart_full" title="Ajouter aux favoris">                  
+                        </button>
+                      </form>
+                    @else
+                      <form action="{{ route('favourite.add', [event.vendor.id]) }}" method="post" class="" enctype="multipart/form-data">
+                        {{ csrfField() }}
+                        <button type="submit" id="favourite-heart">
+                            <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="h-6 w-6 self-center block" id="heart_empty" title="Ajouter aux favoris">
+                            <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="h-6 w-6 self-center hidden" id="heart_full" title="Ajouter aux favoris">                  
+                        </button>
+                      </form>
+                    @end
                     <a href="/events/?vendor={{ event.vendor.id }}" class="">
                         <p class="text-sm text-right text-slate-500 mb-1 text-clip overflow-hidden">
                           {{ i18n.t('messages.event_org') }}: <span class="text-indigo-700 font-semibold">{{ event.vendor.companyName }}</span>

@@ -31,7 +31,7 @@ count events publications from today --}}
     <form action="{{ route('favourite.destroy', [vendor.id]) }}" method="post"
     enctype="multipart/form-data">
     {{ csrfField() }}
-    <button type="submit" class="hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel">{{ i18n.t('messages.delete_btn') }}
+    <button type="submit" class="hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel">
     </button>
 
     </form>

@@ -8,12 +8,14 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-slate-50 ">
   @include("pages/partials/header")
-  <main class="bg-gray-100 flex  justify-center min-h-screen">
+  <main class="flex flex-col items-center  min-h-screen ">
+ 
+    <div class=" bg-white p-8 my-20 mb-auto text-slate-600 flex flex-col  border rounded-3xl shadow mt-10 w-screen sm:w-[500px]">
     
-    <div class="bg-white p-8 my-20 mb-auto rounded shadow-md w-full max-w-md ">
-      <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
+
+      <h2 class="inline font-bold text-xl mx-auto border bg-slate-100 rounded-full py-2 px-4 shadow-sm mb-4">
         {{ i18n.t('messages.register_signup') }}
       </h2>
       @if(flashMessages.has('duplicateEmail'))
@@ -84,7 +86,7 @@
         </div>
 
         <div>
-          <button type="submit" class="mt-10 w-full bg-yellow-500 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-yellow-400 
+          <button type="submit" class="mt-10 w-full bg-yellow-500 text-slate-800 font-semibold py-2 px-4 rounded-md hover:bg-yellow-400 
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:border-yellow-500  ">
           {{ i18n.t('messages.register_create_account') }}
           </button>
@@ -92,6 +94,7 @@
         
       </form>
     </div>
+  </div>
   </main>
   
 

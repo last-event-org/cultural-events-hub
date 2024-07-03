@@ -9,31 +9,15 @@ export const createRegisterValidator = vine.compile(
       .string()
       .minLength(8)
       .confirmed()
-      // regex rules: 
+      // regex rules:
       // - at least 1 uppercase letter
       // - at least 1 number
       // - at least 1 symbol
       .regex(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/),
-    first_name: vine
-      .string()
-      .escape()
-      .trim()
-      .alpha()
-      .maxLength(255),
-    last_name: vine
-      .string()
-      .escape()
-      .trim()
-      .alpha()
-      .maxLength(255),
-    email: vine
-      .string()
-      .trim()
-      .escape()
-      .email()
-      .maxLength(255)
-      .normalizeEmail({
-        all_lowercase: true,
-      })
-    })
+    first_name: vine.string().escape().trim().alpha().maxLength(255),
+    last_name: vine.string().escape().trim().alpha().maxLength(255),
+    email: vine.string().trim().email().normalizeEmail({
+      all_lowercase: true,
+    }),
+  })
 )

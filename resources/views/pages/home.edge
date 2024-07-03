@@ -10,7 +10,11 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
 
-<body class=" bg-gray-50">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+<body class=" bg-slate-50">
 
 @include("pages/partials/header")
 @include("pages/partials/intro")
@@ -19,18 +23,12 @@
 <section class="relative flex flex-col items-center justify-center ">
   @include("pages/partials/filter_map")
 </section>
+<hr class="my-10">
 
 <main> 
-  <div class="container mx-auto px-4">
-    <div class="mb-4">
-      {{-- <div class="flex items-center">
-        <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-        <h2 class="text-xl md:text-2xl font-bold relative">xt Events à prix réduit<span class="relative">s</span>
-          <hr class="absolute -z-10 w-[128px] h-2 bottom-1.5 right-0 bg-yellow-500">
-        </h2>
-      </div> --}}
-    </div>
-    <div class="grid gap-x-8 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]" >
+  <div class=" flex flex-col items-center mx-auto">
+    <div class="container grid gap-x-8 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]" > 
+    {{-- <div class="flex flex-wrap justify-center px-2  gap-x-4 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 "> --}}
       @each(event in events)
       @!component('components/events_cards', {event})
       {{-- @!component('components/events_cards', {event})

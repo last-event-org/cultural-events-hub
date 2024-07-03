@@ -5,10 +5,10 @@
     <div class="flex flex-wrap justify-center gap-y-4 ">
   
       @each((category, index) in categories)   
-      <div class="flex flex-col w-[92px] gap-x-4 lg:w-[140px] sm:w-[110px]">  
+      <div class="flex flex-col w-[92px] gap-x-4 lg:gap-x-8 lg:w-[128px] sm:w-[110px]">  
   
         <a href="/events/?category={{ category.id }}">
-          <div class="flex w-12 h-12 lg:w-16 lg:h-16 rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
+          <div class="flex w-12 h-12  rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
             <img src=/svg/categories/{{category.slug}}.svg
             alt="category icon" title="{{category.slug}}">
           </div>
@@ -16,7 +16,7 @@
   
         <li>
           <div class="flex justify-center items-center gap-2 rounded-md  pt-1">
-            <a class="text-[10px] sm:text-xs lg:text-sm text-slate-800 text-center font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
+            <a class="text-[10px] sm:text-xs lg:text-sm text-slate-700 text-center font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
           </div>
         </li>
       

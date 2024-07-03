@@ -8,23 +8,18 @@ export default class LoginController {
   }
 
   async store({ i18n, session, request, response, auth }: HttpContext) {
-    // const { email, password } = await request.validateUsing(loginValidator)
-    // const user = await User.verifyCredentials(email, password)
 
     try {
       const { email, password } = await request.validateUsing(loginValidator)
       const user = await User.verifyCredentials(email, password)
 
       await auth.use('web').login(user)
+      return response.redirect().toPath('/')
 
     } catch (error) {
       const errorMsg = i18n.t('messages.login_invalid')
       session.flash('loginInvalidData', errorMsg)
       return response.redirect().back()
-
-      // await auth.use('web').login(user)
-
-      // return response.redirect().toPath('/')
     }
   }
 }

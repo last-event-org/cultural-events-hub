@@ -1,7 +1,7 @@
 <div class="flex w-full gap-1">
     <div class="flex flex-col w-1/3">
         <label for="discounted_price_description" class="block text-gray-600">
-            Catégorie de Prix</label>
+            {{ i18n.t('messages.prices_categ') }}</label>
         <input type="text" id="discounted_price_description" name="discounted_price_description"
             class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
             value="{{old('discounted_price_description') || '' }}" placeholder="Ex: Adulte, Enfant, VIPO">
@@ -9,7 +9,7 @@
 
     <div class="flex flex-col w-1/3">
         <label for="available_qty" class="block text-gray-600">
-            Places disponibles</label>
+            {{ i18n.t('messages.prices_avl') }}</label>
         <input
             class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
             type="text" name="available_qty" id="available_qty" value="{{old('available_qty') || '' }}" placeholder="0">
@@ -17,7 +17,7 @@
 
     <div class="flex flex-col w-1/3">
         <label for="discounted_new_price" class="block text-gray-600">
-            Prix Réduit (€)</label>
+            {{ i18n.t('messages.prices_discount') }} (€)</label>
         <input
             class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
             type="text" name="discounted_new_price" id="discounted_new_price" value="{{old('discounted_price') || '0.00' }}"

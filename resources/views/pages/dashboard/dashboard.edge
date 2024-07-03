@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>{{ i18n.t('messages.dashboard_title') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-slate-50">
   
   @include("pages/partials/header")
+
   <main class="flex flex-col items-center min-h-screen">
     <section>
       @include("pages/partials/wishlist")
@@ -19,7 +20,6 @@
     <section class="mb-20">
       @include("pages/partials/favourites")
     </section>
-
   </main>
   
 

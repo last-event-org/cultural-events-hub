@@ -3,8 +3,8 @@
 <article href="/events/{{event?.id?? ''}}" class="hover:shadow cursor-pointer border-gray-300 sm:rounded-lg w-screen sm:w-full max-w-[400px] sm:max-w-[280px]">
 
 
-  <div class="relative pb-[56%]">
-    <img src="/images/hbk_vs_undertaker.jpg" alt="Event Image" class=" absolute w-full h-full sm:rounded-t-lg  object-cover border-b-4 border-yellow-500">
+  <div class="relative  pb-[56%]">
+    <img src="{{event.media[0]?.path ?? '/images/no_picture.png'}}" alt="{{event.media[0]?.altName ?? 'No picture available'}}" class=" absolute w-full h-full sm:rounded-t-lg  object-cover border-b-4 border-yellow-500">
     <div class=" absolute flex bg-{{event.categoryTypes[0].category.slug}} w-6 h-6 rounded-full top-4 left-4  ">
       <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">
     </div>  
@@ -71,10 +71,10 @@
       <div class="flex flex-col">
         <div class="flex rounded shadow mb-1">
           <a href="/events/{{event?.id?? ''}}" class="bg-indigo-800 hover:bg-indigo-700 rounded  text-white text-sm font-bold px-2 py-1">
-            Tickets</a>
+            {{ i18n.t('messages.eventCard_tickets') }}</a>
       </div>
         <p class="text-xs text-center">
-          àpd de
+          {{ i18n.t('messages.eventCard_from') }}
           <span class="font-bold">
             {{ minDiscountedPrice }}€
           </span> 
@@ -83,11 +83,11 @@
     </div>  
     <div class="flex justify-between mt-2">
       <p class="text-xs text-right text-red-700 font-semibold mb-2  ">
-        Expire dans: 9h17:51
+        {{ i18n.t('messages.eventCard_expire') }}: 9h17:51
       </p>
   
       <p class="text-xs text-right flex-end text-red-700 font-semibold animate-pulse mb-2 ">
-        Dernières places
+        {{ i18n.t('messages.eventCard_last') }}
       </p>
     </div>
   </div>

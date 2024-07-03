@@ -27,6 +27,4 @@ document.addEventListener('alpine:init', () => {
 
 dataHandler()
 
-
-
 Alpine.start()

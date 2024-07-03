@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ i18n.locale }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wishlist</title>
+  <title>{{ i18n.t('messages.wishlist_title') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class=" bg-slate-50">
 @include("pages/partials/header")
+
+
+ <h1>{{ i18n.t('messages.wishlist_my') }}</h1>
 
 <main class="flex flex-col items-center min-h-screen">
   @include("pages/partials/wishlist")

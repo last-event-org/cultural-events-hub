@@ -30,6 +30,7 @@
   "login_email": "Email",
   "login_password": "Mot de passe",
   "login_login": "Se connecter",
+  "login_invalid": "Identifiants invalides",
 
   "profile_type_title": "Type de Profil",
   "profile_type_welcome": "Bienvenue { userFirstname }! Que voulez vous faire ?",

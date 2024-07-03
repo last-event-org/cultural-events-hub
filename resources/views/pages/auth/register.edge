@@ -34,7 +34,7 @@
             
             @inputError('first_name')
               @each(message in $messages)
-                <p> {{ message }} </p>
+                <p style="color: red;"> {{ message }} </p>
               @end
             @end
         </div>
@@ -47,7 +47,7 @@
            
            @inputError('last_name')
               @each(message in $messages)
-                <p> {{ message }} </p>
+                <p style="color: red;"> {{ message }} </p>
               @end
             @end
         </div>
@@ -61,7 +61,7 @@
            
            @inputError('email')
               @each(message in $messages)
-                <p> {{ message }} </p>
+                <p style="color: red;"> {{ message }} </p>
               @end
             @end
         </div>

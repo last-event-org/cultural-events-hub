@@ -12,16 +12,8 @@
 @include("pages/partials/header")
 
 <main class="flex flex-col items-center min-h-screen ">
-
-@!include("pages/partials/favourites")  
-
-    <h1>{{ i18n.t('messages.favourites_my') }}</</h1>
-    @each(vendor in userFavourites)
-      @!component('components/dashboard/favourite_element', {
-        vendor: vendor,
-      })
-    @end
-
+    
+    @!include("pages/partials/favourites")  
 </main>
 
 

@@ -21,8 +21,7 @@ export default class EventsController {
   /**
    * Display a list of resource
    */
-  async index({ request, view, auth }: HttpContext) {
-    // await auth.check()
+  async index({ request, view }: HttpContext) {
     const requestQuery = request.qs()
     let events
     let title: string | null = ''

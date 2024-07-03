@@ -140,6 +140,7 @@ export default class RegistersController {
   }
 
   async updateUserPasswordData(
+    i18n: HttpContext['i18n'],
     request: HttpContext['request'],
     session: HttpContext['session'],
     user: User) {
@@ -151,7 +152,7 @@ export default class RegistersController {
         userPasswordPayload = await request.validateUsing(updateUserPasswordValidator)
         user.password = userPasswordPayload.password
       } catch (error) {
-        const errorMsg = 'Le mot de passe doit contenir au moins une lettre majuscule, un chiffre, un symbole (@$!%*?&) et au moins 8 caractères au total.'
+        const errorMsg = i18n.t('messages.error_psw')
         session.flash('userPassword', errorMsg)
         return false
       }
@@ -242,7 +243,7 @@ export default class RegistersController {
     return true
   }
 
-  async update({ request, response, session, auth }: HttpContext) {
+  async update({ i18n, request, response, session, auth }: HttpContext) {
 
     const user = await User.query()
       .where('id', auth.user?.$attributes.id)
@@ -251,7 +252,7 @@ export default class RegistersController {
 
     if (user) {
       if (!await this.updateMandatoryProfileData(request, session, user)) return response.redirect().back()
-      if (!await this.updateUserPasswordData(request, session, user)) return response.redirect().back()
+      if (!await this.updateUserPasswordData(i18n, request, session, user)) return response.redirect().back()
       const hasVendorData = await this.updateVendorData(request, session, response, user)
       if (!hasVendorData) return response.redirect().back()
 

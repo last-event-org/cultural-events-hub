@@ -20,21 +20,21 @@ const dbConfig = defineConfig({
         paths: ['database/migrations'],
       },
     },
-    localhost: {
-      client: 'mysql2',
-      connection: {
-        host: env.get('DB_HOST_LOCALHOST'),
-        port: env.get('DB_PORT_LOCALHOST'),
-        user: env.get('DB_USER_LOCALHOST'),
-        password: env.get('DB_PASSWORD_LOCALHOST'),
-        database: env.get('DB_DATABASE_LOCALHOST'),
-      },
-      debug: true,
-      migrations: {
-        naturalSort: true,
-        paths: ['database/migrations'],
-      },
-    },
+    // localhost: {
+    //   client: 'mysql2',
+    //   connection: {
+    //     host: env.get('DB_HOST_LOCALHOST'),
+    //     port: env.get('DB_PORT_LOCALHOST'),
+    //     user: env.get('DB_USER_LOCALHOST'),
+    //     password: env.get('DB_PASSWORD_LOCALHOST'),
+    //     database: env.get('DB_DATABASE_LOCALHOST'),
+    //   },
+    //   debug: true,
+    //   migrations: {
+    //     naturalSort: true,
+    //     paths: ['database/migrations'],
+    //   },
+    // },
   },
 })
 

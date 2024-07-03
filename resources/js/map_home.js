@@ -3,6 +3,8 @@
 let [latitude, longitude] = [50.645138, 5.57342]
 let mapZoom = 13
 let circle
+const cityList = document.getElementById('city-list')
+console.log(cityList)
 // const latitude = 50.645138 // Remplacez par les coordonnées réelles
 // const longitude = 5.57342 // Remplacez par les coordonnées réelles
 let map = L.map('map')
@@ -12,19 +14,12 @@ const poi = [
   // Ajoutez d'autres POIs ici
 ]
 
-const cityInput = document.getElementById('city-chosen')
 const sliderInput = document.getElementById('slider-input')
 const sliderThumb = document.getElementById('slider-thumb')
 const progressBar = document.getElementById('progress-bar')
 const inputRadius = document.getElementById('chosen-radius')
 const sliderValue = document.getElementById('slider-value').children[0]
 sliderInput.addEventListener('input', updateSlider)
-// const map = L.map('map').setView([latitude, longitude], 13)
-
-// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//   attribution:
-//     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-// }).addTo(map)
 
 setTimeout(function () {
   map.invalidateSize() // Redimensionne la carte après un léger délai
@@ -56,7 +51,7 @@ function updateSlider() {
   sliderValue.textContent = value
 
   updateCircleRadius(value * 1000)
-  displayPOIsWithinRadius(latitude, longitude, value)
+  // displayPOIsWithinRadius(latitude, longitude, value)
   updateMapZoom(value) // Ajoutez cette ligne pour mettre à jour le zoom de la carte
 }
 
@@ -126,7 +121,7 @@ async function getEvents() {
     const response = await fetch('/api/getEvents')
     const events = await response.json()
     createPois(events)
-    displayPOIsWithinRadius(latitude, longitude, baseRadius / 1000)
+    // displayPOIsWithinRadius(latitude, longitude, baseRadius / 1000)
     console.log(events)
   } catch (error) {
     console.log(error)

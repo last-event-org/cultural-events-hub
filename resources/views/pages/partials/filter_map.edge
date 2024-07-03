@@ -38,6 +38,7 @@
 
       {{ i18n.t('messages.map_when') }}</label>
     <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent"  autocomplete="off" required>
+    <input type="text" name="date" id="date-query" class="hidden">
 
     <div id="calendar" class="hidden absolute  top-[5.5rem] left-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg w-screen sm:w-auto px-2 py-8">
       <section  class="scale-[.79] sm:scale-125 sm:px-16">
@@ -51,7 +52,7 @@
     
     <label class="text-slate-800 font-semibold cursor-pointer">
       {{ i18n.t('messages.map_where') }}</label>
-    <input type="text" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent" autocomplete="off" required>
+    <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent" autocomplete="off" required>
 
     
     <div id="city-list" class="absolute w-full top-[5.5rem] right-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
@@ -67,7 +68,7 @@
     
     <label class="text-slate-800 font-semibold cursor-pointer">
       {{ i18n.t('messages.map_map') }}</label>
-    <input type="text" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent" id="chosen-radius" autocomplete="off" required>
+    <input type="text" name="radius" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent" id="chosen-radius" autocomplete="off" required>
 
     <div id="map-popup" class="bg-white border rounded-3xl shadow hidden absolute z-10 left-0 top-[5.5rem] justify-center items-center">
       <div class="z-10 rounded-xl p-8 h-80 w-80 max-w-80 sm:h-96 sm:w-96 sm:max-w-96">
@@ -129,7 +130,7 @@
 {{-- </section>  --}}
 
 
-<form action="{{ route('events.search') }}" method="post">
+<form action="{{ route('events.search') }}" method="get">
   {{ csrfField() }}
   <section id="big-search-bar-container" class="relative hidden sm:flex lg:hidden bg-white border shadow rounded-full h-full md:mb-14 w-[90vw] lg:w-auto justify-between text-sm items-center">
     
@@ -137,7 +138,7 @@
       
       <label class="text-slate-800 font-semibold cursor-pointer">
         {{ i18n.t('messages.map_when') }}</label>
-      <input type="text" placeholder="Choisir une date" class="button bg-transparent" required autocomplete="off">
+      <input type="text" name="date" placeholder="Choisir une date" class="button bg-transparent" required autocomplete="off">
       <div id="calendar" class="hidden absolute  top-[5.5rem] left-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg w-screen sm:w-auto px-2 py-8">
         <section  class="scale-[.79] sm:scale-125 sm:px-16">
           @!component('components/filters/date_picker')
@@ -150,7 +151,7 @@
       
       <label class="text-slate-800 font-semibold cursor-pointer">
         {{ i18n.t('messages.map_where') }}</label>
-      <input type="text" placeholder="Rechercher une ville" class="bg-transparent" autocomplete="off" required>
+      <input type="text" name="city" placeholder="Rechercher une ville" class="bg-transparent" autocomplete="off" required>
      
       <div id="city-list" class="absolute w-full top-[5.5rem] right-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
         @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons","Marche-en-Famenne", "Eupen","Arlon"])
@@ -165,7 +166,7 @@
       
       <label class="text-slate-800 font-semibold cursor-pointer">
         {{ i18n.t('messages.map_map') }}</label>
-      <input type="text" placeholder="Rayon de recherche" class="bg-transparent" autocomplete="off" required>
+      <input type="text" name="radius" placeholder="Rayon de recherche" class="bg-transparent" autocomplete="off" required>
   
       <div id="map-popup" class="bg-white border rounded-3xl shadow hidden absolute z-10 left-0 top-[5.5rem] justify-center items-center">
         <div class="z-10 rounded-xl p-8 h-80 w-80 max-w-80 sm:h-96 sm:w-96 sm:max-w-96">

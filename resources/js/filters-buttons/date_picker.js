@@ -51,9 +51,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateDateInput(date) {
     const inputDate = document.getElementById('date-chosen')
+    const queryDate = document.getElementById('date-query')
     selectedDate = new Date(date)
     inputDate.value =
-      selectedDate.getDay() + '-' + (selectedDate.getMonth() + 1) + '-' + selectedDate.getFullYear()
+      (selectedDate.getDay() < 10 ? '0' + selectedDate.getDay() : selectedDate.getDay()) +
+      '-' +
+      (selectedDate.getMonth() <= 9
+        ? '0' + (selectedDate.getMonth() + 1)
+        : selectedDate.getMonth() + 1) +
+      '-' +
+      selectedDate.getFullYear()
+
+    queryDate.value =
+      selectedDate.getFullYear() +
+      '-' +
+      (selectedDate.getMonth() <= 9
+        ? '0' + (selectedDate.getMonth() + 1)
+        : selectedDate.getMonth() + 1) +
+      '-' +
+      (selectedDate.getDay() < 10 ? '0' + selectedDate.getDay() : selectedDate.getDay())
     document.getElementById('calendar').classList.add('hidden')
   }
 

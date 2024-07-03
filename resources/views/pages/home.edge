@@ -33,17 +33,14 @@
     <div class="grid gap-x-8 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]" >
       @each(event in events)
       @!component('components/events_cards', {event})
+      {{-- @!component('components/events_cards', {event})
       @!component('components/events_cards', {event})
-      @!component('components/events_cards', {event})
-      @!component('components/events_cards', {event})
+      @!component('components/events_cards', {event}) --}}
       @end
     </div>
   </div>
   
 </main>
-
-<div id="poi-list"></div>
-
 
 @include("pages/partials/footer")  
 

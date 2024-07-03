@@ -13,10 +13,11 @@
 @include("pages/partials/header")
 <div class="flex justify-center mt-12">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h1 class="text-3xl md:text-3xl font-bold">xt Events - {{ i18n.t('messages.events_title') }}</h1>
+    <h1 class="text-3xl md:text-3xl font-bold">xt Events - {{location ?? ''}} {{ location ? i18n.t('messages.events_title_location') : "" }} {{date ?? ''}} {{categoryName ?? ''}} {{categoryTypeName ? '-' : ""}} {{categoryTypeName ?? ''}}</h1>
   </div>
 
-<main class=" container  py-10 mb-10 mx-auto">
+<main>
+  <div class="container mx-auto px-4">
 {{-- events types --}}
 
 <ul>
@@ -32,12 +33,12 @@
     </div>
 </ul>
 
-     <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-10 container mx-auto my-6 py-10">   
+     <div class="grid gap-x-8 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]">   
    @each(event in events)
     @!component('components/events_cards', {event})
   @end
   </div>
-
+</div>
 </main>
 
 

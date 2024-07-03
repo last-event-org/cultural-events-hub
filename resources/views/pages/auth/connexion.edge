@@ -8,12 +8,13 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-slate-50">
   @include("pages/partials/header")
-  <main class="bg-gray-100 flex  justify-center min-h-screen ">
+  <main class="flex flex-col items-center min-h-screen ">
 
-    <div class="bg-white p-8 rounded shadow-md w-full max-w-md mt-20 mb-auto">
-      <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
+    <div class=" bg-white p-8 my-20 mb-auto text-slate-600 flex flex-col border rounded-3xl shadow mt-10 w-screen sm:w-[500px]">
+
+      <h2 class="inline font-bold text-xl mx-auto border bg-slate-100 rounded-full py-2 px-4 shadow-sm mb-4">
         {{ i18n.t('messages.login_title') }}
       </h2>
       <form action="{{ route('auth.login.store') }}" method="POST" class="space-y-4">

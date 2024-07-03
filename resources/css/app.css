@@ -4,7 +4,17 @@
 
 body{
   /* font-family: "PT Sans", sans-serif; */
+  /* font-family: "Open Sans", sans-serif; */
 }
+nav{
+  font-family: "Open Sans", sans-serif;
+}
+.open-sans {
+  font-family: "Open Sans", sans-serif;
+  
+ 
+}
+
 .video-container {
   position: relative;
   width: 100%;

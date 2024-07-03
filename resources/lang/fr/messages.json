@@ -1,7 +1,7 @@
 {
   "header_add_event": "Ajouter un événement",
   "header_login": "Se connecter",
-  "header_signup": "S'enregistrer",
+  "header_signup": "Enregistrement",
   "header_dashboard": "Tableau de bord",
   "header_profile": "Profil",
   "header_wishlist": "Ma wishlist",
@@ -15,7 +15,7 @@
   "header_mode": "Mode Sombre/Clair",
 
   "register_title": "Next Event Formulaire d'enregistrement",
-  "register_signup": "S'enregistrer",
+  "register_signup": "Enregistrement",
   "register_name": "Nom",
   "register_firstname": "Prénom",
   "register_email": "Email",

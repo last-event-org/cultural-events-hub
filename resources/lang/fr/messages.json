@@ -21,12 +21,16 @@
   "register_email": "Email",
   "register_password": "Mot de passe",
   "register_confirm_pass": "Confirmez le mot de passe",
-  "register_create_account": "Accepter",
+  "register_create_account": "S'enregistrer",
+  "register_pswDesc": "<p>Le mot de passe doit contenir:</p><ul><li>- au moins 8 caractères au total</li><li>- au moins une lettre majuscule</li><li>- au moins un chiffre</li><li>- au moins un symbole (@$!%*?&)</li></ul>",
+  "register_duplicateEmail": "Cet email a déjà été utilisé",
+  "register_mandatoryProfileData": "Tous les champs sont requis",
 
   "login_title": "Se connecter",
   "login_email": "Email",
   "login_password": "Mot de passe",
   "login_login": "Se connecter",
+  "login_invalid": "Identifiants invalides",
 
   "profile_type_title": "Type de Profil",
   "profile_type_welcome": "Bienvenue { userFirstname }! Que voulez vous faire ?",
@@ -130,7 +134,7 @@
 
   "eventCard_more": "VOIR PLUS DE DÉTAILS",
   "eventCard_tickets": "Tickets",
-  "eventCard_from": "À partir de",
+  "eventCard_from": "Àpd",
   "eventCard_expire": "Expire dans",
   "eventCard_last": "Dernières places",
 
@@ -190,5 +194,7 @@
   "intro_banner1": "À la recherche d'une sortie originale ?",
   "intro_banner2": "Trouvez rapidement ce qu'il se passe près de chez vous.",
   "intro_banner3": "Choisissez votre emplacement, définissez votre rayon de recherche et laissez-vous surprendre !",
-  "intro_banner4": "Next Event répertorie les meilleurs événements de votre région avec des billets à prix réduits disponibles 7 jours avant le spectacle."
+  "intro_banner4": "Next Event répertorie les meilleurs événements de votre région avec des billets à prix réduits disponibles 7 jours avant le spectacle.",
+
+  "error_psw": "Le mot de passe doit contenir au moins une lettre majuscule, un chiffre, un symbole (@$!%*?&) et au moins 8 caractères au total."
 }

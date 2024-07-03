@@ -22,9 +22,17 @@
 
         @error('E_INVALID_CREDENTIALS')
 
-        {{ $message }}
+        {{ $messages }}
 
         @end
+
+        @if(flashMessages.has('loginInvalidData'))
+      <div>
+        <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+          {{ flashMessages.get('loginInvalidData') }}
+        </h2>
+      </div>
+      @endif
 
         <div>
           <label for="email" class="block text-gray-600">

@@ -577,10 +577,29 @@ export default class EventsController {
       session.flash('errorEventDates', errorMsg)
       return response.redirect().back()
     }
-    if (payload.facebook_link) event.facebookLink = payload.facebook_link
-    if (payload.instagram_link) event.instagramLink = payload.instagram_link
-    if (payload.website_link) event.websiteLink = payload.website_link
-    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
+
+    // Links (allow empty links)
+    if (payload.facebook_link && payload.facebook_link != '') {
+      event.facebookLink = payload.facebook_link
+    } else {
+      event.facebookLink = ''
+    }
+    if (payload.instagram_link && payload.instagram_link != '') {
+      event.instagramLink = payload.instagram_link
+    } else {
+      event.instagramLink = ''
+    }
+    if (payload.website_link && payload.website_link != '') {
+      event.websiteLink = payload.website_link
+    } else {
+      event.websiteLink = ''
+    }
+    // TODO: build the embed youtube url from the normal url
+    if (payload.youtube_link && payload.youtube_link != '') {
+      event.youtubeLink = payload.youtube_link
+    } else {
+      event.youtubeLink = ''
+    }
 
     await event.save()
     return response.redirect().toRoute('events.show', { id: params.id })

@@ -209,7 +209,7 @@
                 {{ i18n.t('messages.event_fbLink') }}
               </label>
               <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.facebookLink || old('facebook_link') || '' }}">
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ event.facebookLink || '' }}">
           </div>
 
           <div>
@@ -217,7 +217,7 @@
                 {{ i18n.t('messages.event_igLink') }}
               </label>
               <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.instagramLink|| old('instagram_link') || '' }}">
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ event.instagramLink || '' }}">
           </div>
 
           <div>
@@ -225,7 +225,7 @@
                 {{ i18n.t('messages.event_webLink') }}
               </label>
               <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.websiteLink || old('website_link') || '' }}">
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ event.websiteLink || '' }}">
           </div>
 
           <div>
@@ -233,7 +233,7 @@
                 {{ i18n.t('messages.event_ytLink') }}
               </label>
               <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{event.youtubeLink || old('youtube_link') || '' }}">
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ event.youtubeLink || '' }}">
           </div>
 
         </div>

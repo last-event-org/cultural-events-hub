@@ -6,7 +6,9 @@
   <div class="relative  pb-[56%]">
     <img src="{{event.media[0]?.path ?? '/images/no_picture.png'}}" alt="{{event.media[0]?.altName ?? 'No picture available'}}" class=" absolute w-full h-full sm:rounded-t-lg  object-cover border-b-4 border-yellow-500">
     <div class=" absolute flex bg-{{event.categoryTypes[0].category.slug}} w-6 h-6 rounded-full top-4 left-4  ">
-      <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">
+      {{-- <a href="/events/search?category={{event.categoryTypes[0].category.id}}"> --}}
+        <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">
+      {{-- </a> --}}
     </div>  
     <div class="flex mb-1 absolute top-4 right-4  ">
       <p class=" bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-gray-600 text-xs font-bold px-3 py-1 mb-1">

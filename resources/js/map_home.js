@@ -8,13 +8,12 @@ console.log(sliderInput)
 
 // Bruxelles
 // let [latitude, longitude] = [50.85045, 4.34878]
-let [latitude, longitude] = [50.645138, 5.57342]
+let [latitude, longitude] = [window.latitude ?? 50.645138, window.longitude ?? 5.57342]
 let mapZoom = 13
 let circle
 let poi = []
 let events
 const cityList = document.getElementById('city-list')
-console.log(cityList)
 // const latitude = 50.645138 // Remplacez par les coordonnées réelles
 // const longitude = 5.57342 // Remplacez par les coordonnées réelles
 let map = L.map('map')
@@ -94,6 +93,12 @@ function getDistance(lat1, lon1, lat2, lon2) {
 // }
 
 export async function createMap(lat, long) {
+  console.log('CREATEMAP')
+  console.log(lat)
+  console.log(long)
+  // if (window.latitude) {
+  //   console.log(window.latitude)
+  // }
   map.setView([lat, long], mapZoom)
 
   // Ajouter les tuiles OSM

@@ -13,7 +13,7 @@
 @include("pages/partials/header")
 <div class="flex justify-center mt-12">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h1 class="text-xl md:text-2xl font-bold">xt Events</h1>  
+    <h1 class="text-xl md:text-2xl font-bold ">xt Events</h1>  
   </div>
   <h2 class=" text-center text-xl md:text-2xl font-bold"> {{location ? location : i18n.t('messages.events_title')}} {{ location ? i18n.t('messages.events_title_location') : "" }} {{date ?? ''}} {{categoryName ?? ''}} {{categoryTypeName ? '-' : ""}} {{categoryTypeName ?? ''}}</h2>
 
@@ -32,7 +32,7 @@
     </div>
 </ul>
 <div class="flex flex-col z-10 sm:rounded-3xl h-96 w-full sm:max-w-[400px] lg:max-w-[700px] my-4 mx-auto">
-  <div id="map" class="h-full w-full sm:rounded-3xl mb-6"></div>
+  <div id="map" class="z-10 h-full w-full sm:rounded-3xl mb-6"></div>
   @!component('components/filters/geo_radius')
 </div>
 {{-- <div class="z-10 rounded-xl p-4 pt-6 max-w-80"></div>

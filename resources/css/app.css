@@ -15,13 +15,30 @@ nav{
  
 }
 
+.city-pl{
+  padding-left:80px;
+}
+
 
 @media (min-width:500px){
   .flex-categories{
     display:flex;
     
   }
+  .city-pl{
+    padding-left:30px;
+  }
 } 
+@media (min-width:380px){
+  .city-pl{
+  padding-left:45px;
+  }
+}
+@media (min-width:550px){
+  .city-pl{
+  padding-left:10px;
+  }
+}
 
 .video-container {
   position: relative;

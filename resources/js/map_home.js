@@ -1,33 +1,31 @@
-// Bruxelles
-// let [latitude, longitude] = [50.85045, 4.34878]
-let [latitude, longitude] = [50.645138, 5.57342]
-let mapZoom = 13
-let circle
-const cityList = document.getElementById('city-list')
-console.log(cityList)
-// const latitude = 50.645138 // Remplacez par les coordonnées réelles
-// const longitude = 5.57342 // Remplacez par les coordonnées réelles
-let map = L.map('map')
-const poi = [
-  { name: 'POI 1', lat: 50.647, lng: 5.575 },
-  { name: 'POI 2', lat: 50.64, lng: 5.57 },
-  // Ajoutez d'autres POIs ici
-]
-
 const sliderInput = document.getElementById('slider-input')
 const sliderThumb = document.getElementById('slider-thumb')
 const progressBar = document.getElementById('progress-bar')
 const inputRadius = document.getElementById('chosen-radius')
 const sliderValue = document.getElementById('slider-value').children[0]
+
+// Bruxelles
+// let [latitude, longitude] = [50.85045, 4.34878]
+let [latitude, longitude] = [50.645138, 5.57342]
+let mapZoom = 13
+let circle
+let poi = []
+let events
+const cityList = document.getElementById('city-list')
+console.log(cityList)
+// const latitude = 50.645138 // Remplacez par les coordonnées réelles
+// const longitude = 5.57342 // Remplacez par les coordonnées réelles
+let map = L.map('map')
+
 sliderInput.addEventListener('input', updateSlider)
 
 setTimeout(function () {
   map.invalidateSize() // Redimensionne la carte après un léger délai
 }, 500)
 
-poi.forEach(function (point) {
-  L.marker([point.lat, point.lng]).addTo(map).bindPopup(point.name)
-})
+// poi.forEach(function (point) {
+//   L.marker([point.lat, point.lng]).addTo(map).bindPopup(point.name)
+// })
 
 let baseRadius = sliderInput.value * 1000
 // let circle = L.circle([latitude, longitude], {
@@ -73,27 +71,27 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 // Fonction pour afficher les POI dans un rayon défini autour de la Place Saint-Lambert
-function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
-  let poiList = document.getElementById('poi-list')
-  poiList.innerHTML =
-    '<h3 class="font-bold">Points d\'intérêt dans un rayon de ' +
-    radiusKm +
-    ' km autour de la Place Saint-Lambert :</h3>'
-  let ul = document.createElement('ul')
+// function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
+//   let poiList = document.getElementById('poi-list')
+//   poiList.innerHTML =
+//     '<h3 class="font-bold">Points d\'intérêt dans un rayon de ' +
+//     radiusKm +
+//     ' km autour de la Place Saint-Lambert :</h3>'
+//   let ul = document.createElement('ul')
 
-  poi.forEach(function (point) {
-    let distance = getDistance(centerLat, centerLng, point.lat, point.lng)
-    if (distance <= radiusKm) {
-      let li = document.createElement('li')
-      li.textContent = point.name + ' (' + distance.toFixed(2) + ' km)'
-      ul.appendChild(li)
-    }
-  })
+//   poi.forEach(function (point) {
+//     let distance = getDistance(centerLat, centerLng, point.lat, point.lng)
+//     if (distance <= radiusKm) {
+//       let li = document.createElement('li')
+//       li.textContent = point.name + ' (' + distance.toFixed(2) + ' km)'
+//       ul.appendChild(li)
+//     }
+//   })
 
-  poiList.appendChild(ul)
-}
+//   poiList.appendChild(ul)
+// }
 
-export function createMap(lat, long) {
+export async function createMap(lat, long) {
   map.setView([lat, long], mapZoom)
 
   // Ajouter les tuiles OSM
@@ -114,14 +112,30 @@ export function createMap(lat, long) {
     // de la fonction displayPOIsWithinRadius
     // pour récupérer les POI
   }).addTo(map)
+
+  await getEvents()
+  createPois(events)
+  return (data = 'test')
+}
+
+function createPois(eventsPoi) {
+  console.log('createPois')
+  eventsPoi.forEach(function (event) {
+    poi.push({
+      id: event.id,
+      title: event.title,
+      lat: event.location.latitude,
+      lng: event.location.longitude,
+      location: event.location.name,
+    })
+    L.marker([event.location.latitude, event.location.longitude]).addTo(map).bindPopup(event.title)
+  })
 }
 
 async function getEvents() {
   try {
     const response = await fetch('/api/getEvents')
-    const events = await response.json()
-    createPois(events)
-    // displayPOIsWithinRadius(latitude, longitude, baseRadius / 1000)
+    events = await response.json()
     console.log(events)
   } catch (error) {
     console.log(error)

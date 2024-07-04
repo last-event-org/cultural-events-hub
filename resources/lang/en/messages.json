@@ -196,5 +196,6 @@
   "intro_banner3": "Choose your location, set your search radius, and be surprised !",
   "intro_banner4": "Next Event lists the best events in your area with discounted tickets available 7 days before the show.",
 
-  "error_psw": "The password must contain at least one uppercase letter, one digit, one symbol (@$!%*?&), and at least 8 characters in total."
+  "error_psw": "The password must contain at least one uppercase letter, one digit, one symbol (@$!%*?&), and at least 8 characters in total.",
+  "errorEventDates": "The start date and time must occur before the end date and time."
 }

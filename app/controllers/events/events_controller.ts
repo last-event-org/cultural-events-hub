@@ -1,20 +1,24 @@
-import { HttpContext } from '@adonisjs/core/http'
-import { createEventValidator } from '#validators/event'
-import Event from '#models/event'
+import env from '#start/env'
 import { DateTime } from 'luxon'
+import fs from 'fs'
+import { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
+import vine, { errors } from '@vinejs/vine'
+
+import Event from '#models/event'
 import Category from '#models/category'
 import CategoryType from '#models/category_type'
-import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import Price from '#models/price'
-import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
-import AddressesController from '#controllers/addresses_controller'
-import fs from 'fs'
 import Indicator from '#models/indicator'
-import { createPricesValidator } from '#validators/price'
 import User from '#models/user'
-import db from '@adonisjs/lucid/services/db'
+import AddressesController from '#controllers/addresses_controller'
+
+import { createEventValidator } from '#validators/event'
+import { createAddressValidator } from '#validators/address'
+import { createMediaValidator } from '#validators/media'
+import { createPricesValidator } from '#validators/price'
 import { queryValidator } from '#validators/query'
 
 export default class EventsController {
@@ -240,42 +244,78 @@ export default class EventsController {
     }
   }
 
-  async search({ request, view }: HttpContext) {
+  async search({ request, response, view }: HttpContext) {
+    // TODO define beginDate today
+    const qs = request.qs()
+    console.log(qs)
     let payload
     try {
       payload = await request.validateUsing(queryValidator)
-      const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${payload.city}&boundary.country=BE`
-      )
-      const datas = await response.json()
-      let [latitude, longitude] = [0, 0]
-      if (datas) {
-        ;[latitude, longitude] = [
-          datas.features[0].geometry.coordinates[1],
-          datas.features[0].geometry.coordinates[0],
-        ]
-      }
-
-      const [dayBegin, dayEnd] = await this.formatDate(payload.date)
-      const events = await this.findEventsByLocation(
-        latitude,
-        longitude,
-        payload.radius,
-        dayBegin,
-        dayEnd
-      )
-
-      let date = new Date(dayBegin).toISOString()
-      let newDate = DateTime.fromISO(date)
-
-      return view.render('pages/events/list', {
-        events: events,
-        location: payload.city,
-        date: newDate.toLocaleString({ day: 'numeric', month: 'long' }),
-      })
+      console.log(payload)
     } catch (error) {
-      console.error('Error at search():', error)
+      if (error instanceof errors.E_VALIDATION_ERROR) {
+        // array created by SimpleErrorReporter
+        console.log(error.messages)
+      }
     }
+
+    let [latitude, longitude] = [0, 0]
+    let ids: any
+    let radius = 15
+    let [dayBegin, dayEnd]: any = [0, 0]
+    let dateTitle
+
+    console.log('IFFFSSSS')
+
+    if (qs.city) {
+      console.log('CITYYYY')
+      try {
+        const res = await fetch(
+          `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&country=belgium&locality=${payload.city}&boundary.country=BE`
+        )
+        const datas = await res.json()
+        if (datas) {
+          ;[latitude, longitude] = [
+            datas.features[0].geometry.coordinates[1],
+            datas.features[0].geometry.coordinates[0],
+          ]
+        }
+        if (qs.radius) {
+          radius = payload.radius
+        }
+        ids = await this.findEventsIDByLocation(latitude, longitude, radius)
+      } catch (error) {
+        console.log(error)
+        response.redirect().back()
+      }
+    }
+
+    if (qs.date) {
+      console.log('DATE   ' + qs.date)
+      ;[dayBegin, dayEnd] = await this.formatDate(payload.date)
+      let date = new Date(dayBegin).toISOString()
+      dateTitle = DateTime.fromISO(date)
+    }
+
+    const events = await Event.query()
+      .if(qs.city, (query) => query.whereIn('id', ids))
+      .if(qs.date, (query) => query.whereBetween('event_start', [dayBegin, dayEnd]))
+      .if(!qs.date, (query) => query.where('event_start', '>=', new Date().toISOString()))
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
+      .preload('media')
+      .orderBy('event_start', 'asc')
+    console.log(events)
+
+    return view.render('pages/events/list', {
+      events: events,
+      location: payload.city,
+      date: dateTitle?.toLocaleString({ day: 'numeric', month: 'long' }),
+    })
   }
 
   async formatDate(dateQuery: any) {
@@ -286,13 +326,7 @@ export default class EventsController {
     return [dayBegin, dayEnd]
   }
 
-  async findEventsByLocation(
-    lat: number,
-    long: number,
-    radius: number,
-    dayBegin: string,
-    dayEnd: string
-  ) {
+  async findEventsIDByLocation(lat: number | null, long: number | null, radius: number | null) {
     const eventsId = await db.rawQuery(`
     SELECT e.id
     FROM events e
@@ -300,7 +334,7 @@ export default class EventsController {
     WHERE ST_Distance_Sphere(
         POINT(l.longitude, l.latitude), 
         POINT(${long}, ${lat})
-    ) <= ${radius * 1000}
+    ) <= ${radius ? radius * 1000 : 15 * 1000}
   `)
     // Radius in meters
 
@@ -309,19 +343,7 @@ export default class EventsController {
       ids.push(element.id)
     })
 
-    const events = await Event.query()
-      .whereIn('id', ids)
-      .whereBetween('event_start', [dayBegin, dayEnd])
-      .preload('location')
-      .preload('categoryTypes', (categoryTypesQuery) => {
-        categoryTypesQuery.preload('category')
-      })
-      .preload('indicators')
-      .preload('prices')
-      .preload('media')
-      .orderBy('event_start', 'asc')
-
-    return events
+    return ids
   }
 
   async createEvent(
@@ -407,19 +429,21 @@ export default class EventsController {
     const address = new Address()
 
     address.name = addressPayload.name ?? ''
-    address.street = addressPayload.street
+    address.street = addressPayload.street.replace('&#x27;', "'")
     address.number = addressPayload.number
     address.zipCode = addressPayload.zip_code
     address.city = addressPayload.city
     address.country = addressPayload.country
-    const [latitude, longitude] = await this.getCoordinatesFromAddress(
-      addressPayload.city,
-      addressPayload.street,
-      addressPayload.zip_code,
-      addressPayload.number
-    )
-    address.latitude = latitude
-    address.longitude = longitude
+    try {
+      const [latitude, longitude] = await this.getCoordinatesFromAddress(
+        address.city,
+        address.street,
+        address.zipCode,
+        address.number
+      )
+      address.latitude = latitude
+      address.longitude = longitude
+    } catch (error) { }
 
     await address.save()
     await event.related('location').associate(address)
@@ -429,9 +453,10 @@ export default class EventsController {
     console.log('getCoordinatesFromAddress')
     try {
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=${process.env.API_KEY_ROUTERSERVICE}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
+      console.log(datas)
       return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
     } catch (e) {
       console.log('ERROR')
@@ -557,32 +582,68 @@ export default class EventsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, response }: HttpContext) {
+  async update({ i18n, params, request, session, response }: HttpContext) {
     const payload = await request.validateUsing(createEventValidator)
-    const event = await Event.findOrFail(params['id'])
-    console.log(event)
+    // const event = await Event.findOrFail(params['id'])
+    const event = await Event.query()
+      .where('id', '=', params['id'])
+      .preload('location')
+      .first()
+    console.log('\n\n\n\n\n', event?.location.name)
 
-    event.title = payload.title
-    event.subtitle = payload.subtitle
-    event.description = payload.description
-    // event.eventStart = DateTime.fromISO(payload.event_start)
-    // event.eventEnd = DateTime.fromISO(payload.event_end)
-    // if (event.eventStart > event.eventEnd) {
-    //   session.flash('date', {
-    //     message: "La début de l'événement doit être avant la fin",
-    //   })
-    // }
-    if (payload.facebook_link) event.facebookLink = payload.facebook_link
-    if (payload.instagram_link) event.instagramLink = payload.instagram_link
-    if (payload.website_link) event.websiteLink = payload.website_link
-    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
+    if (event) {
 
-    await event.save()
+      event.title = payload.title
+      event.subtitle = payload.subtitle
+      event.description = payload.description
+
+      // TODO practical data (address)
+
+
+      // Date
+      event.eventStart = DateTime.fromISO(payload.event_start)
+      event.eventEnd = DateTime.fromISO(payload.event_end)
+      if (event.eventStart > event.eventEnd) {
+        const errorMsg = i18n.t('messages.errorEventDates')
+        session.flash('errorEventDates', errorMsg)
+        return response.redirect().back()
+      }
+
+      // Links (allow empty links)
+      if (payload.facebook_link && payload.facebook_link != '') {
+        event.facebookLink = payload.facebook_link
+      } else {
+        event.facebookLink = ''
+      }
+      if (payload.instagram_link && payload.instagram_link != '') {
+        event.instagramLink = payload.instagram_link
+      } else {
+        event.instagramLink = ''
+      }
+      if (payload.website_link && payload.website_link != '') {
+        event.websiteLink = payload.website_link
+      } else {
+        event.websiteLink = ''
+      }
+      // TODO: build the embed youtube url from the normal url
+      if (payload.youtube_link && payload.youtube_link != '') {
+        event.youtubeLink = payload.youtube_link
+      } else {
+        event.youtubeLink = ''
+      }
+
+      // TODO categories
+      // TODO subcategories
+      // TODO indicators
+      // TODO prices
+
+      await event.save()
+    }
     return response.redirect().toRoute('events.show', { id: params.id })
   }
 
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params }: HttpContext) { }
 }

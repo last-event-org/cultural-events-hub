@@ -8,11 +8,11 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-slate-50">
   @include("pages/partials/header")
-  <main class="bg-gray-100 flex items-center justify-center min-h-screen ">
+  <main class="flex items-center justify-center min-h-screen ">
 
-    <div class="bg-white p-8 rounded shadow-md w-full max-w-3xl">
+    <div class="bg-white p-8 sm:rounded-3xl shadow-md w-full max-w-3xl">
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
             {{-- Bienvenue {{ user.firstname }}! Que voulez vous faire ? --}}
             {{ i18n.t('messages.profile_type_welcome', { userFirstname: user.firstname }) }}
@@ -23,7 +23,7 @@
                 {{ i18n.t('messages.profile_type_buy') }}
               </button>
             </a>
-            <button onclick="displayVendorDataForm()" class="p-4 bg-teal-400 rounded-md">
+            <button onclick="displayVendorDataForm()" class="p-4 bg-yellow-500 rounded-md">
                 {{ i18n.t('messages.profile_type_sell') }}
             </button>
         </div>

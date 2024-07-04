@@ -407,19 +407,21 @@ export default class EventsController {
     const address = new Address()
 
     address.name = addressPayload.name ?? ''
-    address.street = addressPayload.street
+    address.street = addressPayload.street.replace('&#x27;', "'")
     address.number = addressPayload.number
     address.zipCode = addressPayload.zip_code
     address.city = addressPayload.city
     address.country = addressPayload.country
-    const [latitude, longitude] = await this.getCoordinatesFromAddress(
-      addressPayload.city,
-      addressPayload.street,
-      addressPayload.zip_code,
-      addressPayload.number
-    )
-    address.latitude = latitude
-    address.longitude = longitude
+    try {
+      const [latitude, longitude] = await this.getCoordinatesFromAddress(
+        address.city,
+        address.street,
+        address.zipCode,
+        address.number
+      )
+      address.latitude = latitude
+      address.longitude = longitude
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -429,9 +431,10 @@ export default class EventsController {
     console.log('getCoordinatesFromAddress')
     try {
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=${process.env.API_KEY_ROUTERSERVICE}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
+      console.log(datas)
       return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
     } catch (e) {
       console.log('ERROR')

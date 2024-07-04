@@ -16,6 +16,7 @@ import { createPricesValidator } from '#validators/price'
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
 import { queryValidator } from '#validators/query'
+import env from '#start/env'
 
 export default class EventsController {
   /**
@@ -241,11 +242,12 @@ export default class EventsController {
   }
 
   async search({ request, view }: HttpContext) {
+    const qs = request.qs()
     let payload
     try {
       payload = await request.validateUsing(queryValidator)
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${payload.city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&country=belgium&locality=${payload.city}&boundary.country=BE`
       )
       const datas = await response.json()
       let [latitude, longitude] = [0, 0]
@@ -431,7 +433,7 @@ export default class EventsController {
     console.log('getCoordinatesFromAddress')
     try {
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
       console.log(datas)

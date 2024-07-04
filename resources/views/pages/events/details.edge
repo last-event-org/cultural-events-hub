@@ -60,19 +60,43 @@
         <div class="flex flex-col lg:flex-row w-full">
 
             <div class="lg:w-1/2 relative" href="#">
-              <img src="{{event.media[0]?.path ?? '/images/no_picture.png'}}" alt="{{event.media[0]?.altName ?? 'No picture available'}} class="lg:p-4 h-auto object-cover">  
+              <img src="{{event.media[0]?.path ?? '/images/no_picture.png'}}" alt="{{event.media[0]?.altName ?? 'No picture available'}}" class="lg:p-4 h-auto object-cover">  
                 <div class= "flex gap-2 items-center absolute top-4 lg:top-8 right-4 lg:right-8 z-10  transition duration-300">
                   <p class="hidden opacity-0 transform scale-50 -translate-x-full animate-pulse bg-slate-400/50
-                    text-white font-semibold px-2 " id="add-to-favourites">
+                    text-white font-semibold px-2 " id="add-to-wishlist">
                     {{ i18n.t('messages.event_wish') }}
                   </p>
-                  <form action="{{ route('wishlist.add', [event.id]) }}" method="post"  enctype="multipart/form-data">
-                    {{ csrfField() }}
-                    <button type="submit" id="favourite-star">
-                      <img src="/public/svg/favourite-star-empty.svg"  id="star_empty" alt="Add to favourites" >
-                      <img  src="/public/svg/favourite-star.svg" id="star_full" alt="Add to favourites" class="hidden">
-                    </button>
-                </form>
+
+                  @if(!auth.isAuthenticated)
+                    <form action="{{ route('auth.login.show')}}" method="get" class="" enctype="multipart/form-data">
+                      {{ csrfField() }}
+                      <button type="submit" id="favourite-star">
+                        <img src="/public/svg/favourite-star-empty.svg"  id="star_empty" alt="Add to favourites" class="block">
+                        <img  src="/public/svg/favourite-star.svg" id="star_full" alt="Add to favourites" class="hidden">
+                      </button>
+                    </form>
+                  @else
+                    @if(isInUserWishlist)
+                      <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post"  enctype="multipart/form-data">
+                        {{ csrfField() }}
+                        <button type="submit" id="favourite-star">
+                          <img  src="/public/svg/favourite-star.svg" id="star_full" alt="Add to wishlist">
+                        </button>
+                      </form>
+                    @else
+                      <form action="{{ route('wishlist.add', [event.id]) }}" method="post" class="" enctype="multipart/form-data">
+                        {{ csrfField() }}
+                        <button type="submit" id="favourite-star">
+                          <img src="/public/svg/favourite-star-empty.svg"  id="star_empty" alt="Add to favourites" class="block">
+                          <img  src="/public/svg/favourite-star.svg" id="star_full" alt="Add to favourites" class="hidden">
+                        </button>
+                      </form>
+                    @end
+                  @end
+
+                  
+
+
                 </div>
               </div>
               <div class="flex flex-col justify-between gap-4 lg:gap-8 lg:w-1/2 lg:p-4">

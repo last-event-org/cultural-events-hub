@@ -126,11 +126,19 @@ function createPois(eventsPoi) {
       lat: event.location.latitude,
       lng: event.location.longitude,
       location: event.location.name,
+      category: event.categoryTypes[0].category.slug,
     })
     let popup = L.popup().setContent(
       `<a href="/events/${event?.id ?? ''}"'>${event.title}</a><br/>${event.location.name}`
     )
-    L.marker([event.location.latitude, event.location.longitude]).addTo(map).bindPopup(popup)
+    let myIcon = L.icon({
+      className: `bg-${event.categoryTypes[0].category.slug} w-12 h-12 rounded-full`,
+      iconSize: [25, 25],
+      iconUrl: `/svg/categories/${event.categoryTypes[0].category.slug}.svg`,
+    })
+    L.marker([event.location.latitude, event.location.longitude], { icon: myIcon })
+      .addTo(map)
+      .bindPopup(popup)
   })
 }
 

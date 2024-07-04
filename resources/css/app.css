@@ -15,6 +15,14 @@ nav{
  
 }
 
+
+@media (min-width:500px){
+  .flex-categories{
+    display:flex;
+    
+  }
+} 
+
 .video-container {
   position: relative;
   width: 100%;

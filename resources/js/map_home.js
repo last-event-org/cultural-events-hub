@@ -115,7 +115,6 @@ export async function createMap(lat, long) {
 
   await getEvents()
   createPois(events)
-  return (data = 'test')
 }
 
 function createPois(eventsPoi) {
@@ -128,7 +127,10 @@ function createPois(eventsPoi) {
       lng: event.location.longitude,
       location: event.location.name,
     })
-    L.marker([event.location.latitude, event.location.longitude]).addTo(map).bindPopup(event.title)
+    let popup = L.popup().setContent(
+      `<a href="/events/${event?.id ?? ''}"'>${event.title}</a><br/>${event.location.name}`
+    )
+    L.marker([event.location.latitude, event.location.longitude]).addTo(map).bindPopup(popup)
   })
 }
 

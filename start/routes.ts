@@ -105,3 +105,4 @@ router.post('/events/:id', [CartController, 'store']).as('store').use(middleware
 
 // API CALLS
 router.get('/api/getEvents', [ListEvents, 'getEvents'])
+router.get('/api/getEventsByDate', [ListEvents, 'getEventsByDate'])

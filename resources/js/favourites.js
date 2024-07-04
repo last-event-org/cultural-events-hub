@@ -1,15 +1,30 @@
-const hoverTarget = document.getElementById('favourite-star')
-const changeClass = document.getElementById('add-to-favourites')
+const starHoverTarget = document.getElementById('favourite-star')
+const starChangeClass = document.getElementById('add-to-wishlist')
 
-hoverTarget.addEventListener('mouseenter', () => {
-  changeClass.classList.add('block', 'opacity-100', 'scale-100', 'translate-x-0')
-  changeClass.classList.remove('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
+starHoverTarget.addEventListener('mouseenter', () => {
+  starChangeClass.classList.add('block', 'opacity-100', 'scale-100', 'translate-x-0')
+  starChangeClass.classList.remove('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
 })
 
-hoverTarget.addEventListener('mouseleave', () => {
-  changeClass.classList.add('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
-  changeClass.classList.remove('block', 'opacity-100', 'scale-100', 'translate-x-0')
+starHoverTarget.addEventListener('mouseleave', () => {
+  starChangeClass.classList.add('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
+  starChangeClass.classList.remove('block', 'opacity-100', 'scale-100', 'translate-x-0')
 })
+
+
+const heartHoverTarget = document.getElementById('favourite-heart')
+const heartChangeClass = document.getElementById('add-to-favourites')
+
+heartHoverTarget.addEventListener('mouseenter', () => {
+  heartChangeClass.classList.add('block', 'opacity-100', 'scale-100', 'translate-x-0')
+  heartChangeClass.classList.remove('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
+})
+
+heartHoverTarget.addEventListener('mouseleave', () => {
+  heartChangeClass.classList.add('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
+  heartChangeClass.classList.remove('block', 'opacity-100', 'scale-100', 'translate-x-0')
+})
+
 
 const heartTrigger = document.getElementById('favourite-heart')
 const heartEmpty = document.getElementById('heart_empty')

@@ -74,7 +74,7 @@ export default class EventsController {
 
         dayBegin = date.toSQL() ?? ''
         dayEnd = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
-        events = await await Event.query()
+        events = await Event.query()
           .whereHas('categoryTypes', (query) => {
             query.whereInPivot('category_type_id', categoryTypesId)
           })
@@ -88,7 +88,7 @@ export default class EventsController {
           .preload('media')
           .orderBy('event_start', 'asc')
       } else {
-        events = await await Event.query()
+        events = await Event.query()
           .whereHas('categoryTypes', (query) => {
             query.whereInPivot('category_type_id', categoryTypesId)
           })
@@ -470,6 +470,9 @@ export default class EventsController {
    */
   async show({ view, params, session, response, auth }: HttpContext) {
     await auth.check()
+
+    let isUserFavourite = false
+
     try {
       const event = await Event.query()
         .where('id', '=', params.id)
@@ -481,13 +484,29 @@ export default class EventsController {
         .preload('prices')
         .preload('media')
         .preload('vendor')
+        .first()
 
-      if (event === undefined || event.length === 0) {
+        // If the User is authenticated we check if the Vendor is already on the user favourites
+        if (event) {
+          const user = auth.user
+          if (user) {
+            const userFavourites = await user.related('favouritesUser')
+            .query()
+            .preload('favouritesVendor', (query) => {
+                query.select(['id', 'companyName'])
+              })
+
+            isUserFavourite = userFavourites.length > 0
+          }
+        }
+
+      if (!event) {
         response.redirect().back()
       } else {
         session.forget('item-added')
         return view.render('pages/events/details', {
-          event: event[0],
+          event: event,
+          isUserFavourite: isUserFavourite,
         })
       }
     } catch (error) {

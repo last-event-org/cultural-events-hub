@@ -487,28 +487,28 @@ export default class EventsController {
         .preload('vendor')
         .first()
 
-        // If the User is authenticated
-        if (event) {
-          const user = auth.user
-          if (user) {
-            // we check if the Vendor is already on user favourites
-            const userFavourites = await user.related('favouritesUser')
+      // If the User is authenticated
+      if (event) {
+        const user = auth.user
+        if (user) {
+          // we check if the Vendor is already on user favourites
+          const userFavourites = await user
+            .related('favouritesUser')
             .query()
-            .preload('favouritesVendor', (query) => {
-                query.select(['id', 'companyName'])
-              })
+            .where('vendor_id', event.vendorId)
 
-            isUserFavourite = userFavourites.length > 0
+          isUserFavourite = userFavourites.length > 0
 
-            // we check if the event is already on user wishlist
-            const alreadyWishlisted = await event.related('usersWhoWishlisted')
+          // we check if the event is already on user wishlist
+          const alreadyWishlisted = await event
+            .related('usersWhoWishlisted')
             .query()
             .where('user_id', user.id)
             .first()
 
-            if (alreadyWishlisted) isInUserWishlist = true
-          }
+          if (alreadyWishlisted) isInUserWishlist = true
         }
+      }
 
       if (!event) {
         response.redirect().back()
@@ -517,7 +517,7 @@ export default class EventsController {
         return view.render('pages/events/details', {
           event: event,
           isUserFavourite: isUserFavourite,
-          isInUserWishlist: isInUserWishlist
+          isInUserWishlist: isInUserWishlist,
         })
       }
     } catch (error) {

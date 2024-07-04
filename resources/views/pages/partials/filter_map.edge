@@ -10,7 +10,7 @@
     <label class="text-slate-800 font-semibold cursor-pointer">
 
       {{ i18n.t('messages.map_when') }}</label>
-    <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off" required>
+    <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off" >
     <input type="text" name="date" id="date-query" class="hidden">
 
     <div id="calendar" class="hidden absolute  top-[5.5rem] left-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg w-screen sm:w-auto px-2 py-8">
@@ -25,7 +25,7 @@
     
     <label class="text-slate-800 font-semibold cursor-pointer">
       {{ i18n.t('messages.map_where') }}</label>
-    <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off" required>
+    <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off" >
 
     
     <div id="city-list" class="absolute w-full top-[5.5rem] right-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
@@ -41,7 +41,7 @@
     
     <label class="text-slate-800 font-semibold cursor-pointer">
       {{ i18n.t('messages.map_map') }}</label>
-    <input type="text" name="radius" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent text-slate-400" id="chosen-radius" autocomplete="off" required>
+    <input type="text" name="radius" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent text-slate-400" id="chosen-radius" autocomplete="off" >
 
     <div id="map-popup" class="bg-white border rounded-3xl shadow hidden absolute z-10 left-0 top-[5.5rem] justify-center items-center">
       {{-- <div class="z-10 rounded-xl p-8 h-80 w-80 max-w-80 sm:h-96 sm:w-96 sm:max-w-96">

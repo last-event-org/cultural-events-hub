@@ -472,6 +472,7 @@ export default class EventsController {
     await auth.check()
 
     let isUserFavourite = false
+    let isInUserWishlist = false
 
     try {
       const event = await Event.query()
@@ -486,10 +487,11 @@ export default class EventsController {
         .preload('vendor')
         .first()
 
-        // If the User is authenticated we check if the Vendor is already on the user favourites
+        // If the User is authenticated
         if (event) {
           const user = auth.user
           if (user) {
+            // we check if the Vendor is already on user favourites
             const userFavourites = await user.related('favouritesUser')
             .query()
             .preload('favouritesVendor', (query) => {
@@ -497,6 +499,14 @@ export default class EventsController {
               })
 
             isUserFavourite = userFavourites.length > 0
+
+            // we check if the event is already on user wishlist
+            const alreadyWishlisted = await event.related('usersWhoWishlisted')
+            .query()
+            .where('user_id', user.id)
+            .first()
+
+            if (alreadyWishlisted) isInUserWishlist = true
           }
         }
 
@@ -507,6 +517,7 @@ export default class EventsController {
         return view.render('pages/events/details', {
           event: event,
           isUserFavourite: isUserFavourite,
+          isInUserWishlist: isInUserWishlist
         })
       }
     } catch (error) {

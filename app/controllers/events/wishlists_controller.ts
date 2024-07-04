@@ -31,15 +31,15 @@ export default class WishlistsController {
             return response.status(404).json({ message: 'Event not found' })
         }
 
-        const alreadyWishlisted = await event
-            .related('usersWhoWishlisted')
-            .query()
-            .where('user_id', user.id)
-            .first()
+        // const alreadyWishlisted = await event
+        //     .related('usersWhoWishlisted')
+        //     .query()
+        //     .where('user_id', user.id)
+        //     .first()
 
-        if (alreadyWishlisted) {
-            return response.status(400).json({ message: 'Event is already in your wishlist' })
-        }
+        // if (alreadyWishlisted) {
+        //     return response.status(400).json({ message: 'Event is already in your wishlist' })
+        // }
 
         if (user) await event.related('usersWhoWishlisted').attach([user.id])
 

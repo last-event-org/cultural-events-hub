@@ -1,20 +1,24 @@
-import { HttpContext } from '@adonisjs/core/http'
-import { createEventValidator } from '#validators/event'
-import Event from '#models/event'
+import env from '#start/env'
 import { DateTime } from 'luxon'
+import fs from 'fs'
+import { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
+import vine, { errors } from '@vinejs/vine'
+
+import Event from '#models/event'
 import Category from '#models/category'
 import CategoryType from '#models/category_type'
-import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import Price from '#models/price'
-import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
-import AddressesController from '#controllers/addresses_controller'
-import fs from 'fs'
 import Indicator from '#models/indicator'
-import { createPricesValidator } from '#validators/price'
 import User from '#models/user'
-import db from '@adonisjs/lucid/services/db'
+import AddressesController from '#controllers/addresses_controller'
+
+import { createEventValidator } from '#validators/event'
+import { createAddressValidator } from '#validators/address'
+import { createMediaValidator } from '#validators/media'
+import { createPricesValidator } from '#validators/price'
 import { queryValidator } from '#validators/query'
 
 export default class EventsController {
@@ -240,42 +244,78 @@ export default class EventsController {
     }
   }
 
-  async search({ request, view }: HttpContext) {
+  async search({ request, response, view }: HttpContext) {
+    // TODO define beginDate today
+    const qs = request.qs()
+    console.log(qs)
     let payload
     try {
       payload = await request.validateUsing(queryValidator)
-      const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${payload.city}&boundary.country=BE`
-      )
-      const datas = await response.json()
-      let [latitude, longitude] = [0, 0]
-      if (datas) {
-        ;[latitude, longitude] = [
-          datas.features[0].geometry.coordinates[1],
-          datas.features[0].geometry.coordinates[0],
-        ]
-      }
-
-      const [dayBegin, dayEnd] = await this.formatDate(payload.date)
-      const events = await this.findEventsByLocation(
-        latitude,
-        longitude,
-        payload.radius,
-        dayBegin,
-        dayEnd
-      )
-
-      let date = new Date(dayBegin).toISOString()
-      let newDate = DateTime.fromISO(date)
-
-      return view.render('pages/events/list', {
-        events: events,
-        location: payload.city,
-        date: newDate.toLocaleString({ day: 'numeric', month: 'long' }),
-      })
+      console.log(payload)
     } catch (error) {
-      console.error('Error at search():', error)
+      if (error instanceof errors.E_VALIDATION_ERROR) {
+        // array created by SimpleErrorReporter
+        console.log(error.messages)
+      }
     }
+
+    let [latitude, longitude] = [0, 0]
+    let ids: any
+    let radius = 15
+    let [dayBegin, dayEnd]: any = [0, 0]
+    let dateTitle
+
+    console.log('IFFFSSSS')
+
+    if (qs.city) {
+      console.log('CITYYYY')
+      try {
+        const res = await fetch(
+          `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&country=belgium&locality=${payload.city}&boundary.country=BE`
+        )
+        const datas = await res.json()
+        if (datas) {
+          ;[latitude, longitude] = [
+            datas.features[0].geometry.coordinates[1],
+            datas.features[0].geometry.coordinates[0],
+          ]
+        }
+        if (qs.radius) {
+          radius = payload.radius
+        }
+        ids = await this.findEventsIDByLocation(latitude, longitude, radius)
+      } catch (error) {
+        console.log(error)
+        response.redirect().back()
+      }
+    }
+
+    if (qs.date) {
+      console.log('DATE   ' + qs.date)
+      ;[dayBegin, dayEnd] = await this.formatDate(payload.date)
+      let date = new Date(dayBegin).toISOString()
+      dateTitle = DateTime.fromISO(date)
+    }
+
+    const events = await Event.query()
+      .if(qs.city, (query) => query.whereIn('id', ids))
+      .if(qs.date, (query) => query.whereBetween('event_start', [dayBegin, dayEnd]))
+      .if(!qs.date, (query) => query.where('event_start', '>=', new Date().toISOString()))
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
+      .preload('media')
+      .orderBy('event_start', 'asc')
+    console.log(events)
+
+    return view.render('pages/events/list', {
+      events: events,
+      location: payload.city,
+      date: dateTitle?.toLocaleString({ day: 'numeric', month: 'long' }),
+    })
   }
 
   async formatDate(dateQuery: any) {
@@ -286,13 +326,7 @@ export default class EventsController {
     return [dayBegin, dayEnd]
   }
 
-  async findEventsByLocation(
-    lat: number,
-    long: number,
-    radius: number,
-    dayBegin: string,
-    dayEnd: string
-  ) {
+  async findEventsIDByLocation(lat: number | null, long: number | null, radius: number | null) {
     const eventsId = await db.rawQuery(`
     SELECT e.id
     FROM events e
@@ -300,7 +334,7 @@ export default class EventsController {
     WHERE ST_Distance_Sphere(
         POINT(l.longitude, l.latitude), 
         POINT(${long}, ${lat})
-    ) <= ${radius * 1000}
+    ) <= ${radius ? radius * 1000 : 15 * 1000}
   `)
     // Radius in meters
 
@@ -309,19 +343,7 @@ export default class EventsController {
       ids.push(element.id)
     })
 
-    const events = await Event.query()
-      .whereIn('id', ids)
-      .whereBetween('event_start', [dayBegin, dayEnd])
-      .preload('location')
-      .preload('categoryTypes', (categoryTypesQuery) => {
-        categoryTypesQuery.preload('category')
-      })
-      .preload('indicators')
-      .preload('prices')
-      .preload('media')
-      .orderBy('event_start', 'asc')
-
-    return events
+    return ids
   }
 
   async createEvent(
@@ -431,7 +453,7 @@ export default class EventsController {
     console.log('getCoordinatesFromAddress')
     try {
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
       console.log(datas)

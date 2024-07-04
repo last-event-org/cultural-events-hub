@@ -26,9 +26,8 @@
 <hr class="mb-6 mt-2 ">
 
 <main> 
-  <div class=" flex flex-col items-center mx-auto">
-    <div class="container grid gap-x-8 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]" > 
-    {{-- <div class="flex flex-wrap justify-center px-2  gap-x-4 gap-y-4 sm:gap-y-16 lg:gap-y-12 2xl:gap-y-16 mb-20 "> --}}
+  
+    <div class="sm:mx-4 gap-x-[2%] gap-y-[8%] grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
       @each(event in events)
       @!component('components/events_cards', {event})
       {{-- @!component('components/events_cards', {event})
@@ -36,7 +35,7 @@
       @!component('components/events_cards', {event}) --}}
       @end
     </div>
-  </div>
+
   
 </main>
 

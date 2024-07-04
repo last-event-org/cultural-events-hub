@@ -167,15 +167,21 @@
 
 
                   <div class="flex justify-center items-center gap-8">
-                    <a href="{{event.facebookLink}}" class="hover:animate-pulse">
-                      <img src="/public/svg/facebook-color.svg" alt="facebook link">
-                    </a>
-                    <a href="{{event.instagramLink}}" class="hover:animate-pulse">
-                      <img src="/public/svg/instagram-color.svg" alt="instagram link">
-                    </a>
-                    <a href="{{event.websiteLink}}" class="hover:animate-pulse">
-                      <img src="/public/svg/web.svg" alt="website link">
-                    </a>
+                    @if(event.facebookLink)
+                      <a href="{{event.facebookLink}}" class="hover:animate-pulse">
+                        <img src="/public/svg/facebook-color.svg" alt="facebook link">
+                      </a>
+                    @endif
+                    @if(event.instagramLink)
+                      <a href="{{event.instagramLink}}" class="hover:animate-pulse">
+                        <img src="/public/svg/instagram-color.svg" alt="instagram link">
+                      </a>
+                    @endif
+                    @if(event.websiteLink)
+                      <a href="{{event.websiteLink}}" class="hover:animate-pulse">
+                        <img src="/public/svg/web.svg" alt="website link">
+                      </a>
+                    @endif
                   </div>  
                 </div>
             </div>     
@@ -207,6 +213,7 @@
             <div class="w-full h-full lg:w-3/5 lg:h-3/5 ">
               <div class="video-container ">
                 <iframe src="https://www.youtube.com/embed/xm3YgoEiEDc" frameborder="0" allowfullscreen></iframe>
+                {{-- <iframe src="{{ event.youtubeLink || '' }}" frameborder="0" allowfullscreen></iframe> --}}
               </div>
             </div>
 

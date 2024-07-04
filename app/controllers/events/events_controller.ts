@@ -443,7 +443,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) {}
+    } catch (error) { }
 
     await address.save()
     await event.related('location').associate(address)
@@ -582,32 +582,68 @@ export default class EventsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, response }: HttpContext) {
+  async update({ i18n, params, request, session, response }: HttpContext) {
     const payload = await request.validateUsing(createEventValidator)
-    const event = await Event.findOrFail(params['id'])
-    console.log(event)
+    // const event = await Event.findOrFail(params['id'])
+    const event = await Event.query()
+      .where('id', '=', params['id'])
+      .preload('location')
+      .first()
+    console.log('\n\n\n\n\n', event?.location.name)
 
-    event.title = payload.title
-    event.subtitle = payload.subtitle
-    event.description = payload.description
-    // event.eventStart = DateTime.fromISO(payload.event_start)
-    // event.eventEnd = DateTime.fromISO(payload.event_end)
-    // if (event.eventStart > event.eventEnd) {
-    //   session.flash('date', {
-    //     message: "La début de l'événement doit être avant la fin",
-    //   })
-    // }
-    if (payload.facebook_link) event.facebookLink = payload.facebook_link
-    if (payload.instagram_link) event.instagramLink = payload.instagram_link
-    if (payload.website_link) event.websiteLink = payload.website_link
-    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
+    if (event) {
 
-    await event.save()
+      event.title = payload.title
+      event.subtitle = payload.subtitle
+      event.description = payload.description
+
+      // TODO practical data (address)
+
+
+      // Date
+      event.eventStart = DateTime.fromISO(payload.event_start)
+      event.eventEnd = DateTime.fromISO(payload.event_end)
+      if (event.eventStart > event.eventEnd) {
+        const errorMsg = i18n.t('messages.errorEventDates')
+        session.flash('errorEventDates', errorMsg)
+        return response.redirect().back()
+      }
+
+      // Links (allow empty links)
+      if (payload.facebook_link && payload.facebook_link != '') {
+        event.facebookLink = payload.facebook_link
+      } else {
+        event.facebookLink = ''
+      }
+      if (payload.instagram_link && payload.instagram_link != '') {
+        event.instagramLink = payload.instagram_link
+      } else {
+        event.instagramLink = ''
+      }
+      if (payload.website_link && payload.website_link != '') {
+        event.websiteLink = payload.website_link
+      } else {
+        event.websiteLink = ''
+      }
+      // TODO: build the embed youtube url from the normal url
+      if (payload.youtube_link && payload.youtube_link != '') {
+        event.youtubeLink = payload.youtube_link
+      } else {
+        event.youtubeLink = ''
+      }
+
+      // TODO categories
+      // TODO subcategories
+      // TODO indicators
+      // TODO prices
+
+      await event.save()
+    }
     return response.redirect().toRoute('events.show', { id: params.id })
   }
 
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params }: HttpContext) { }
 }

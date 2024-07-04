@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ i18n.t('messages.event_editEvent_title') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/hours_create_event.js'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/hours_create_event.js']) --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
@@ -170,7 +171,7 @@
                       {{-- <p class="text-[8px]">Event start: {{event.eventStart.toISO({})}}</p> --}}
                       <input type="datetime-local" id="event_start" name="event_start"
                           class="mt-1 block w-full px-0 sm:px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm"
-                          value="">
+                          value="{{ event.eventStart.toFormat('yyyy-MM-dd\'T\'HH:mm') || '' }}">
                   </div>
 
                   <div class="flex flex-col w-1/2">
@@ -180,14 +181,17 @@
                       {{-- <p class="text-[8px]">Event End: {{event.eventEnd.toISO({})}}</p> --}}
                       <input type="datetime-local" id="event_end" name="event_end"
                           class="mt-1 block w-full px-0 sm:px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm"
-                          value="">
+                          value="{{ event.eventEnd.toFormat('yyyy-MM-dd\'T\'HH:mm') || '' }}">
                   </div>
              
-
-              @flashMessage('date')
-              <div style="color: red;">{{ $message.message }}</div>
-              @end
             </div>
+            @if(flashMessages.has('errorEventDates'))
+              <div>
+                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                  {{ flashMessages.get('errorEventDates') }}
+                </h2>
+              </div>
+            @endif
         </section>
       </div>  
 

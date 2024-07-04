@@ -560,7 +560,7 @@ export default class EventsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, response }: HttpContext) {
+  async update({ i18n, params, request, session, response }: HttpContext) {
     const payload = await request.validateUsing(createEventValidator)
     const event = await Event.findOrFail(params['id'])
     console.log(event)
@@ -568,13 +568,15 @@ export default class EventsController {
     event.title = payload.title
     event.subtitle = payload.subtitle
     event.description = payload.description
-    // event.eventStart = DateTime.fromISO(payload.event_start)
-    // event.eventEnd = DateTime.fromISO(payload.event_end)
-    // if (event.eventStart > event.eventEnd) {
-    //   session.flash('date', {
-    //     message: "La début de l'événement doit être avant la fin",
-    //   })
-    // }
+
+    // Date
+    event.eventStart = DateTime.fromISO(payload.event_start)
+    event.eventEnd = DateTime.fromISO(payload.event_end)
+    if (event.eventStart > event.eventEnd) {
+      const errorMsg = i18n.t('messages.errorEventDates')
+      session.flash('errorEventDates', errorMsg)
+      return response.redirect().back()
+    }
     if (payload.facebook_link) event.facebookLink = payload.facebook_link
     if (payload.instagram_link) event.instagramLink = payload.instagram_link
     if (payload.website_link) event.websiteLink = payload.website_link

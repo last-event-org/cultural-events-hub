@@ -126,10 +126,10 @@
   "delete_btn": "Effacer",
 
   "prices_categ": "Catégorie de Prix",
-  "prices_tarif": "Tarif",
+  "prices_tarif": "Tarif (€)",
   "prices_avl": "Places disponibles",
-  "prices_avlAt": "Place(s) disponible(s) à",
-  "prices_discount": "Prix réduit",
+  "prices_avlAt": "Places disponibles",
+  "prices_discount": "Prix réduit (€)",
   "prices_discount_pl": "Prix réduits",
 
   "eventCard_more": "VOIR PLUS DE DÉTAILS",

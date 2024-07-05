@@ -1,5 +1,4 @@
-<div class="container w-screen sm:w-full p-6  bg-blue-50   my-4">
-<fieldset class="price-section" name="prices[]">
+<fieldset class="price-section w-screen sm:w-[90%] sm:rounded-3xl p-6  bg-indigo-50   my-4" name="prices[]">
 
   <div class="flex  gap-2 w-full">
     {{-- Categories --}}
@@ -15,8 +14,8 @@
     </div>
     {{-- Places  --}}
     <div class=" w-1/2">
-      {{-- {{ i18n.t('messages.prices_avlAt') }}  --}}
-      <label class="block text-gray-600">Places disponibles</label>
+      
+      <label class="block text-gray-600">{{ i18n.t('messages.prices_avlAt') }}</label>
       <input class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
           focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
         type="text" name="prices[0][available_qty]" value="{{ price && price.availableQty ? price.availableQty : '' }}" placeholder="0">  
@@ -36,39 +35,30 @@
     </div>
     {{-- Prix discount   --}}
       <div class="discounted-row w-1/2 ">
-        <label class="block text-gray-600">{{ i18n.t('messages.prices_tarif') }} discount</label>
+        <label class="block text-gray-600">{{ i18n.t('messages.prices_discount') }}</label>
         <input class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
           focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
           type="text" name="prices[0][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
       </div>  
     </div>
+    <div class="w-full flex justify-center mt-4">
+    <button class="cursor-pointer  text-xs underline text-red-600 hover:text-red-400 duration-300">
+      {{ i18n.t('messages.delete_btn')}}</button>
+  </div>
+    
   </fieldset>
-</div>
-  {{-- <div class="w-1/3 h-0.5 mx-auto bg-slate-800"></div> --}}
-  
-  
-  {{-- <div class="flex self-end w-1/4">
-    <a class="flex items-center px-2 h-10 text-semibold text-base cursor-pointer  text-slate-700"
-      onclick="toggleRowDiscountedPrice(this)">
-      {{ i18n.t('messages.prices_discount_pl') }}
-      <svg class="mt-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-      </svg>
-    </a>
-  </div> --}}
 
-{{-- </div> --}}
-
-  {{-- <div class="grid grid-cols-[40%,20%,40%]  lg:flex gap-2  discounted-row mt-2"> --}}
-    {{-- <div class="grid grid-cols-[40%,20%,auto] lg:flex gap-1 ml-10"> --}}
-
-    
-
-   
-    
     
       {{-- <button class=" items-center cursor-pointer  pt-6 pl-4 " onclick="">
         <img src="/public/svg/cancel.svg" alt="Delete" class="h-6 w-6">
       </button>  --}}
     {{-- </div> --}}
+
+    {{-- <a class="flex items-center px-2 h-10 text-semibold text-base cursor-pointer  text-slate-700"
+      onclick="toggleRowDiscountedPrice(this)">
+      {{ i18n.t('messages.prices_discount_pl') }}
+      <svg class="mt-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </a> --}}
     

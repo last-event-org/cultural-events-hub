@@ -1,7 +1,7 @@
 
 
 {{-- Big Search Bar --}}
-<form action="{{ route('events.search') }}" method="get" class="hidden sm:block">
+<form id='search' action="{{ route('events.search') }}" method="get" class="hidden sm:block">
   {{ csrfField() }}
   <section id="big-search-bar-container" class="open-sans relative hidden sm:flex bg-white border shadow rounded-full h-full my-4 w-[90vw] lg:w-auto justify-between text-sm md:text-base items-center">
     
@@ -10,7 +10,7 @@
       <label class="text-slate-800 font-semibold cursor-pointer">
 
         {{ i18n.t('messages.map_when') }}</label>
-        <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off" required>
+        <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off">
         <input type="text" name="date" id="date-query" class="hidden">
         
         <div id="calendar" class="hidden absolute  top-[5.5rem] left-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg w-screen sm:w-auto px-2 py-8">
@@ -25,7 +25,7 @@
         
         <label class="text-slate-800 font-semibold cursor-pointer">
           {{ i18n.t('messages.map_where') }}</label>
-          <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off" required>
+          <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off" >
           
           
           <div id="city-list" class="absolute w-full top-[5.5rem] right-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
@@ -68,7 +68,7 @@
       <section  class="grid grid-cols-[29%,1%,36%,1%,22%,10%] sm:hidden w-[98vw] open-sans relative bg-white border rounded-full shadow my-4 text-xs">
       {{-- date  --}}
         <div id="button-date" class="city-pl flex justify-center button  bg-white duration-500  rounded-full  cursor-pointer">
-          <input type="text" id="date-chosen" placeholder="09/10/24" class="text-slate-700 bg-transparent" autocomplete="off" required >
+          <input type="text" id="date-chosen" placeholder="09/10/24" class="text-slate-700 bg-transparent" autocomplete="off"  >
           <input type="text" name="date" id="date-query" class="hidden">
         </div> 
         <div id="calendar" class="hidden absolute w-[98vw] top-12 left-0 right-0 z-10 bg-white border border-gray-200 rounded-3xl shadow-lg  sm:w-auto px-2 py-4">
@@ -80,7 +80,7 @@
           <div class="h-6 my-auto border-l border-slate-200"></div>
           <div id="button-city" class="flex flex-col pl-2 justify-center button  bg-white cursor-pointer">
             
-            <input type="text" name="city" id="city-chosen" placeholder="Liège" class="text-slate-700 bg-transparent" autocomplete="off" required>
+            <input type="text" name="city" id="city-chosen" placeholder="Liège" class="text-slate-700 bg-transparent" autocomplete="off" >
             
             <div id="city-list" class="absolute w-[98vw] top-12 left-0 right-0 z-10 bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
               @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
@@ -92,7 +92,7 @@
         <div class="h-6 my-auto border-l border-slate-200"></div>
       {{-- radius  --}}
         <div id="button-map" class="flex flex-col pl-2 justify-center button  bg-white cursor-pointer">
-          <input type="text" placeholder="11km" class="text-slate-700 bg-transparent" id="chosen-radius" autocomplete="off" required>
+          <input type="text" placeholder="11km" class="text-slate-700 bg-transparent" id="chosen-radius" autocomplete="off" >
           <div id="map-popup" class="bg-white border rounded-3xl shadow hidden absolute z-10 left-0 right-0 top-12 justify-center items-center  pt-10 w-[98vw]">
             @!component('components/filters/geo_radius')
           </div>
@@ -149,5 +149,6 @@
 
 </section> --}}
 
-
-
+<script src="/resources/js/filters-buttons/date_picker.js"></script>
+<script src="/resources/js/filters-buttons/dropdown_cities.js" type="module"  defer ></script>
+<script src="/resources/js/filters-buttons/map_button.js"></script>

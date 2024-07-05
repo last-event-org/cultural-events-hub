@@ -1,50 +1,74 @@
-<fieldset class="price-section flex justify-start p-2" name="prices[]">
-  <div class="flex gap-2 justify-end">
-    <div class="flex flex-col w-4/12">
+<div class="container w-screen sm:w-full p-6  bg-blue-50   my-4">
+<fieldset class="price-section" name="prices[]">
+
+  <div class="flex  gap-2 w-full">
+    {{-- Categories --}}
+    <div class="w-1/2 ">
       <label for="price_description" class="block text-gray-600">{{ i18n.t('messages.prices_categ') }}</label>
       <input type="text" id="price_description" name="prices[0][price_description]"
-        class="mt-1 w-full block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
         value="{{ price && price.description ? price.description : '' }}" placeholder="Ex: Adulte, Enfant, VIPO">
         @inputError('prices.0.price_description')
           <div style="color: red;">{{ $messages.join(', ') }}</div>
-        @end
+        @end       
     </div>
-    <div class="flex flex-col w-2/12">
-      <label for="regular_price" class="block text-gray-600">{{ i18n.t('messages.prices_tarif') }}</label>
-      <input class="mt-1 block px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+    {{-- Places  --}}
+    <div class=" w-1/2">
+      {{-- {{ i18n.t('messages.prices_avlAt') }}  --}}
+      <label class="block text-gray-600">Places disponibles</label>
+      <input class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        type="text" name="prices[0][available_qty]" value="{{ price && price.availableQty ? price.availableQty : '' }}" placeholder="0">  
+    </div> 
+  </div>
+    
+  <div class="flex gap-2 w-full">
+    {{-- Prix Normal --}}
+    <div class="w-1/2">
+      <label for="regular_price" class="flex text-gray-600">{{ i18n.t('messages.prices_tarif') }}</label>
+      <input class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
         type="text" name="prices[0][regular_price]" id="regular_price" value="{{ price && price.regularPrice ? price.regularPrice : '' }}" placeholder="0.00">
         @inputError('prices.0.regular_price')
           <div style="color: red;">{{ $messages.join(', ') }}</div>
         @end
     </div>
-    <div class="flex justify-end self-end pb-1 mr-10">
-      <h6>€</h6>
+    {{-- Prix discount   --}}
+      <div class="discounted-row w-1/2 ">
+        <label class="block text-gray-600">{{ i18n.t('messages.prices_tarif') }} discount</label>
+        <input class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
+          focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+          type="text" name="prices[0][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
+      </div>  
     </div>
-    <div class="content-end w-3/12 ml-6 mr-6">
-      <a class="flex items-center px-2 h-10 text-base justify-center cursor-pointer bg-indigo-400 hover:bg-indigo-500 rounded-lg text-slate-50"
-        onclick="toggleRowDiscountedPrice(this)">
-        {{ i18n.t('messages.prices_discount_pl') }}
-      </a>
-    </div>
-  </div>
-  <div class="w-full">
-    <div class="flex gap-2 hidden discounted-row">
-      <input class="mt-5 w-3/12 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-        type="text" name="prices[0][available_qty]" value="{{ price && price.availableQty ? price.availableQty : '' }}" placeholder="0">
-      <div class="self-end pb-1 w-7/12">
-        <p>{{ i18n.t('messages.prices_avlAt') }}</p>
-      </div>
-      <input class="mt-5 block w-4/12 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-        type="text" name="prices[0][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
-      <div class="flex justify-end self-end pb-1 mr-10">
-        <h6>€</h6>
-      </div>
-      <div class="content-end w-3/12">
-        <a class="flex items-center w-10 px-2 h-10 cursor-pointer bg-red-600 hover:bg-red-700 rounded-lg text-slate-50"
-          onclick="">
-          <img src="/public/svg/delete-button.svg" alt="Delete" class="w-6 h-6">
-        </a>
-      </div>
-    </div>
-  </div>
-</fieldset>
+  </fieldset>
+</div>
+  {{-- <div class="w-1/3 h-0.5 mx-auto bg-slate-800"></div> --}}
+  
+  
+  {{-- <div class="flex self-end w-1/4">
+    <a class="flex items-center px-2 h-10 text-semibold text-base cursor-pointer  text-slate-700"
+      onclick="toggleRowDiscountedPrice(this)">
+      {{ i18n.t('messages.prices_discount_pl') }}
+      <svg class="mt-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </a>
+  </div> --}}
+
+{{-- </div> --}}
+
+  {{-- <div class="grid grid-cols-[40%,20%,40%]  lg:flex gap-2  discounted-row mt-2"> --}}
+    {{-- <div class="grid grid-cols-[40%,20%,auto] lg:flex gap-1 ml-10"> --}}
+
+    
+
+   
+    
+    
+      {{-- <button class=" items-center cursor-pointer  pt-6 pl-4 " onclick="">
+        <img src="/public/svg/cancel.svg" alt="Delete" class="h-6 w-6">
+      </button>  --}}
+    {{-- </div> --}}
+    

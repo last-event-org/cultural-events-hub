@@ -12,7 +12,7 @@
 
 <body class="bg-slate-50">
   @include("pages/partials/header")
-  <main class="flex flex-col justify-center items-center  min-h-screen mx-auto mb-16 w-screen sm:w-full xl:w-[1200px]">
+  <main class="flex flex-col justify-center items-center  min-h-screen mx-auto mb-16 w-full xl:w-[1200px]">
     <div class="md:mt-10 md:px-12">
 
     
@@ -341,17 +341,19 @@
         </section>
       </div>  
 {{-- Prices  --}}
-      <section class="flex flex-col items-center text-sm bg-indigo-50 w-full xl:w-[1100px] 2xl:w-[1500px] rounded-3xl  border shadow mb-5 p-6">
-        <h2 class=" relative z-10 font-bold text-black text-xl my-4 text-center max-w-fit">
+    <section class="bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl ">
+      
+        <h2 class="mx-auto relative z-10 font-bold text-black text-xl my-4 text-center ">
           {{ i18n.t('messages.event_prix') }}
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
-
+        
           @each(price in event.prices)
             @!component('components/price_fields', {
               price: price
-            })
+            })   
           @end
+        
 
           <template id="priceFieldsTemplate">
               @!component('components/price_fields', {
@@ -365,12 +367,14 @@
               <div style="color: red;">{{ $messages.join(', ') }}</div>
           @end
 
-          <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+          <button type="button" onclick="addPriceFields()" class=" bg-indigo-800 text-white font-bold py-2 px-4 ml-2 mb-6 mt-4  rounded-md hover:bg-indigo-600 
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-800">
                   {{ i18n.t('messages.event_addPrice') }}
           </button>
+      {{-- </div> --}}
+    </section>
 
-        </section>
+
         <div class="flex justify-center my-2">
           <button type="submit" class="bg-yellow-500 text-black font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 
                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">

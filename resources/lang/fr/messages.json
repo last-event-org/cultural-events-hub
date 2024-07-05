@@ -152,7 +152,7 @@
   "event_locationName": "Nom",
   "event_locationStreet": "Rue",
   "event_locationStreetNb": "Numéro",
-  "event_locationZip": "Code postal",
+  "event_locationZip": "CP",
   "event_locationCity": "Ville",
   "event_locationCountry": "Pays",
   "event_uploadImg": "Charger des images (max. 3)",

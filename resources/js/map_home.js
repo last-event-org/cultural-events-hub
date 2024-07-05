@@ -129,8 +129,8 @@ function createPois(eventsPoi) {
       `<a href="/events/${event?.id ?? ''}"'>${event.title}</a><br/>${event.location.name}`
     )
     let myIcon = L.icon({
-      className: `bg-${event.categoryTypes[0].category.slug} w-12 h-12 rounded-full`,
-      iconSize: [25, 25],
+      className: `bg-${event.categoryTypes[0].category.slug} rounded-full`,
+      iconSize: [24, 24],
       iconUrl: `/svg/categories/${event.categoryTypes[0].category.slug}.svg`,
     })
     L.marker([event.location.latitude, event.location.longitude], { icon: myIcon })

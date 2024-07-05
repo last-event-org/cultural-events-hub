@@ -461,7 +461,8 @@ export default class EventsController {
   /**
    * Edit individual record
    */
-  async edit({ params, view }: HttpContext) {
+  async edit({ params, view, auth }: HttpContext) {
+    await auth.check()
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
     const indicators = await Indicator.all()

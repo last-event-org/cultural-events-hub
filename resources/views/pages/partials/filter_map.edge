@@ -1,7 +1,7 @@
 
 
 {{-- Big Search Bar --}}
-{{-- <form action="{{ route('events.search') }}" method="get" class="hidden sm:block">
+<form action="{{ route('events.search') }}" method="get" class="hidden sm:block">
   {{ csrfField() }}
   <section id="big-search-bar-container" class="open-sans relative hidden sm:flex bg-white border shadow rounded-full h-full my-4 w-[90vw] lg:w-auto justify-between text-sm md:text-base items-center">
     
@@ -60,7 +60,7 @@
           </button>
           
         </section>
-      </form> --}}
+      </form>
       {{-- Mobile search bar  --}} 
       
       <form class="sm:hidden"action="{{ route('events.search') }}" method="get" >
@@ -120,7 +120,8 @@
       
       
       {{-- Categories  --}}
-      <section>
+       @!component('components/categories', {categories})
+      {{-- <section>
         
         <ul>
           <div class="grid grid-cols-3 flex-categories lg:justify-center gap-y-2 sm:gap-y-4 gap-x-8 lg:gap-x-16 my-2 ">
@@ -146,7 +147,7 @@
     </div>
   </ul>
 
-</section>
+</section> --}}
 
 
 

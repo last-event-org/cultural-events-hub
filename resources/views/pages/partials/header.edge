@@ -1,6 +1,5 @@
-
-<nav class="2xl:mx-[5vw] z-50  px-4 py-2 flex justify-between items-center bg-slate-50 sticky top-0 ">
-  <a class="flex items-end text-xl  uppercase font-bold leading-none" href={{ route('home') }}>
+<nav class="z-50  px-4 py-2 flex justify-between items-center bg-slate-50 sticky top-0 ">
+  <a class="flex items-center text-2xl font-bold leading-none" href={{ route('home') }}>
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
       <h1 class="relative">xt <span class="relative">Event
         <hr class="absolute -z-10 w-16 h-2 bottom-1 left-0  bg-yellow-500">
@@ -31,7 +30,7 @@
 
   <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
     <li>
-      <a class="text-[10px] uppercase font-bold tracking-wider text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('home') }}>
+      <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href="{{route('events.tickets')}}">
       Tickets</a>
     </li>
 
@@ -43,7 +42,7 @@
       </svg>
     </li>
 
-    <li><a class="text-[10px] uppercase font-bold tracking-wider text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href="{{route('events.index')}}">
+    <li><a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href="{{route('events.index')}}">
       Agenda</a></li>
     <li class="text-gray-300">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
@@ -54,18 +53,18 @@
     @if(await auth.isAuthenticated)
       @if((await auth.user.isVendor() || await auth.user.isAdmin()))
       <li>
-        <a class="text-[10px] uppercase font-bold tracking-wider text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('events.create') }}>
+        <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('events.create') }}>
           {{ i18n.t('messages.header_add_event') }}</a>
       </li>
       @else
       <li>
-        <a class="text-[10px] uppercase font-bold tracking-wider text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.profile.switch-to-vendor') }}>
+        <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.profile.switch-to-vendor') }}>
           {{ i18n.t('messages.header_add_event') }}</a>
       </li>
       @end
     @else
       <li>
-        <a class="text-[10px] uppercase font-bold tracking-wider text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.login.show') }}>
+        <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('auth.login.show') }}>
         {{ i18n.t('messages.header_add_event') }}</a>
       </li>
     @end
@@ -74,10 +73,10 @@
 
   @if(!auth.isAuthenticated)
 
-  <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-3.5 px-8 bg-gray-50 hover:bg-gray-200  text-gray-900 text-[10px]  uppercase font-bold  tracking-wider transition duration-200"
+  <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-md transition duration-200"
     href={{ route('auth.login.show') }}>
     {{ i18n.t('messages.header_login') }}</a>
-  <a class="hidden lg:inline-block py-3.5 px-8 bg-yellow-500 hover:bg-yellow-400 text-[10px]  uppercase font-bold text-slate-800  tracking-wider   transition duration-200" href={{ route('auth.register') }}>
+  <a class="hidden lg:inline-block py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm   font-bold rounded-md transition duration-200" href={{ route('auth.register') }}>
     {{ i18n.t('messages.header_signup') }}</a>
 
   @else
@@ -173,11 +172,11 @@
           </li>
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400  hover:bg-gray-50 hover:text-gray-600 rounded"
-              href="#">Tickets</a>
+              href="{{route('events.tickets')}}">Tickets</a>
           </li>
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-              href="#">Agenda</a>
+              href="{{route('events.index')}}">Agenda</a>
           </li>
 
           @if(!auth.isAuthenticated)

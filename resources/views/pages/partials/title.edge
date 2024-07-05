@@ -1,0 +1,14 @@
+  <div class="flex justify-center mt-12">
+    <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+    <h1 class="text-xl md:text-2xl font-bold ">xt Events</h1>
+  </div>
+  <h2 class=" text-center text-xl md:text-2xl font-bold"> 
+    {{i18n.t('messages.events_search_title')}}
+    {{city ? i18n.t('messages.events_search_city') + " " + city : "" }} 
+    {{date ? i18n.t('messages.events_search_date') + " " + date : "" }}
+    {{category?.name ? i18n.t('messages.events_search_category') : " " }}
+    {{category?.name ?? ''}} {{categoryType ? '-' : ""}} 
+    {{categoryType ?? ''}}
+    {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
+    {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
+  </h2>

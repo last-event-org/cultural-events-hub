@@ -4,63 +4,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Event: {{ i18n.t('messages.event_hub') }}</title>
+  <title>Next Event: {{ i18n.t('messages.event_hub') }} - 
+    {{city ? i18n.t('messages.events_search_city') + " " + city : "" }} 
+    {{date ? i18n.t('messages.events_search_date') + " " + date : "" }}
+    {{category?.name ? i18n.t('messages.events_search_category') : " " }}
+    {{category?.name ?? ''}} {{categoryType ? '-' : ""}} 
+    {{categoryType ?? ''}}
+    {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
+    {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
+  </title>
   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js'])
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 
 <body class=" bg-slate-50">
 @include("pages/partials/header")
-<div class="flex justify-center mt-12">
-    <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
-    <h1 class="text-xl md:text-2xl font-bold ">xt Events</h1>  
-  </div>
-  <h2 class=" text-center text-xl md:text-2xl font-bold"> {{location ? location : i18n.t('messages.events_title')}} {{ location ? i18n.t('messages.events_title_location') : "" }} {{date ?? ''}} {{categoryName ?? ''}} {{categoryTypeName ? '-' : ""}} {{categoryTypeName ?? ''}}</h2>
 
-<main class="py-10 mb-10 mx-auto min-h-screen">
-{{-- events types --}}
-
-<ul>
-  <div class="flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto">
-    @each(category in categories)
-      <li>
-          <div class="flex items-center gap-3 bg-slate-700 hover:bg-slate-500 rounded-md px-4 pb-1">
-            <a class="font-semibold  text-white"href="/events/?category-type={{category.id}}">{{category.name}}</a>
-          </div>
-      </li>
-    @end
-    </div>
-</ul>
-<div class="flex flex-col z-10 sm:rounded-3xl h-96 w-full sm:max-w-[400px] lg:max-w-[700px] my-4 mx-auto">
-  <div id="map" class="z-10 h-full w-full sm:rounded-3xl mb-6"></div>
-  @!component('components/filters/geo_radius')
-</div>
-{{-- <div class="z-10 rounded-xl p-4 pt-6 max-w-80"></div>
-    </div> --}}
-<hr class="my-6">
-
+<main class="2xl:mx-[5vw]"></main>
   
-<div class="sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
-    {{-- @if(events)
-      <p>{{i18n.t('messages.events_no_events')}}</p>
-    @end --}}
-     @each(event in events)
-      @!component('components/events_cards', {event})
-    @end
-    </div>
+  @include("pages/partials/title")
 
+  @!component('components/categories', {categories})
+  <ul class="flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto mt-5">
+      @each(type in categoryTypes)
+        <li>
+            <div class="flex items-center bg-{{category.slug}} gap-3 text-slate-700  rounded-md px-4 pb-1">
+              <a class="font-semibold"href="/events/search?categoryType={{type.id}}">{{type.name}}</a>
+            </div>
+        </li>
+      @end
+  </ul>
+
+  <div class="flex flex-col z-10 sm:rounded-3xl h-96 w-full sm:max-w-[400px] lg:max-w-[700px] my-4 mx-auto">
+    <div id="map" class="z-10 h-full w-full sm:rounded-3xl mb-6"></div>
+    @!component('components/filters/geo_radius')
+  </div>
+  {{-- <div class="z-10 rounded-xl p-4 pt-6 max-w-80"></div>
+      </div> --}}
+  <hr class="my-6">
+
+  @if(!events)
+    <p>{{i18n.t('messages.events_no_events')}}</p>
+  @else
+    <div class=" sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
+      @each(event in events)
+        @!component('components/events_cards', {event})
+      @end
+    </div>
+  @end
 
 </main>
 
+@include("pages/partials/footer")
 
-@include("pages/partials/footer")  
 <script src="/resources/js/date_format.js"></script>
 <script src="/resources/js/map_home.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
   crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""></script>
+  <script>
+    window.latitude = "{{ latitude }}";
+    window.longitude = "{{ longitude }}";
+</script>
+
+
+
 </body>
 </html>

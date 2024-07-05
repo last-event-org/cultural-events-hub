@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const datePicker = document.getElementById('date-picker')
   const prevButton = document.getElementById('prev-day')
   const nextButton = document.getElementById('next-day')
-  const city = document.getElementById('city-chosen')
 
   const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
   const today = new Date()
@@ -43,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedDate = new Date(date)
         updateDateInput(selectedDate)
         updateDatePicker()
-        city.focus()
       })
       datePicker.appendChild(dayElement)
     }
@@ -90,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //calendar
 document.getElementById('button-date').addEventListener('click', function () {
+  console.log('click date')
   document.getElementById('calendar').classList.contains('hidden')
     ? document.getElementById('calendar').classList.remove('hidden')
     : document.getElementById('calendar').classList.add('hidden')

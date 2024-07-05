@@ -30,7 +30,7 @@
 
   <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
     <li>
-      <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href={{ route('home') }}>
+      <a class="text-sm text-gray-400 hover:text-gray-500 hover:underline hover:decoration-yellow-500 decoration-4" href="{{route('events.tickets')}}">
       Tickets</a>
     </li>
 
@@ -172,11 +172,11 @@
           </li>
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400  hover:bg-gray-50 hover:text-gray-600 rounded"
-              href="#">Tickets</a>
+              href="{{route('events.tickets')}}">Tickets</a>
           </li>
           <li class="mb-1">
             <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
-              href="#">Agenda</a>
+              href="{{route('events.index')}}">Agenda</a>
           </li>
 
           @if(!auth.isAuthenticated)

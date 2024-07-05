@@ -8,7 +8,6 @@
       <label class="text-slate-800 font-semibold cursor-pointer">
 
         {{ i18n.t('messages.map_when') }}</label>
-
         <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off" >
         <input type="text" name="date" id="date-query" class="hidden">
         
@@ -26,7 +25,8 @@
         <label class="text-slate-800 font-semibold cursor-pointer">
           {{ i18n.t('messages.map_where') }}</label>
         <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off">
-         
+          
+          
         <div id="city-list" class="absolute sm:w-full w-[98vw] top-16 left-0 right-0 sm:top-[5.2rem]  z-20 bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
           @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
           <option name="city" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
@@ -46,45 +46,9 @@
             @!component('components/filters/geo_radius')
           </div>
         </div>
-        </section>
-      </form>
-      {{-- Mobile search bar  --}} 
-      
-      <form class="sm:hidden"action="{{ route('events.search') }}" method="get" >
-        {{ csrfField() }}
-      <section  class="grid grid-cols-[29%,1%,36%,1%,22%,10%] sm:hidden w-[98vw] open-sans relative bg-white border rounded-full shadow my-4 text-xs">
-      {{-- date  --}}
-        <div id="button-date" class="city-pl flex justify-center button  bg-white duration-500  rounded-full  cursor-pointer">
-          <input type="text" id="date-chosen" placeholder="09/10/24" class="text-slate-700 bg-transparent" autocomplete="off"  >
-          <input type="text" name="date" id="date-query" class="hidden">
-        </div> 
-        <div id="calendar" class="hidden absolute w-[98vw] top-12 left-0 right-0 z-10 bg-white border border-gray-200 rounded-3xl shadow-lg  sm:w-auto px-2 py-4">
-          <section  class="scale-[.79]">
-            @!component('components/filters/date_picker')
-          </section>  
-        </div>
-        {{-- city   --}}
-          <div class="h-6 my-auto border-l border-slate-200"></div>
-          <div id="button-city" class="flex flex-col pl-2 justify-center button  bg-white cursor-pointer">
-            
-            <input type="text" name="city" id="city-chosen" placeholder="Liège" class="text-slate-700 bg-transparent" autocomplete="off" >
-            
-            <div id="city-list" class="absolute w-[98vw] top-12 left-0 right-0 z-10 bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
-              @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
-              <option name="city" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
-              @end
-            
-            </div>
-          </div> 
-        <div class="h-6 my-auto border-l border-slate-200"></div>
-      {{-- radius  --}}
-        <div id="button-map" class="flex flex-col pl-2 justify-center button  bg-white cursor-pointer">
-          <input type="text" placeholder="11km" class="text-slate-700 bg-transparent" id="chosen-radius" autocomplete="off" >
-          <div id="map-popup" class="bg-white border rounded-3xl shadow hidden absolute z-10 left-0 right-0 top-12 justify-center items-center  pt-10 w-[98vw]">
-            @!component('components/filters/geo_radius')
-          </div>
-        </div> 
-      {{-- submit  --}}
+
+          
+          
         <button id="button-search" type="submit"
           class="absolute lg:static right-0 button  flex items-center gap-4 bg-yellow-500 p-3 sm:p-4 rounded-full border-8 border-white hover:bg-yellow-400 duration-500">
         
@@ -95,19 +59,13 @@
       
     </section>
   </form>
+
    
   {{-- map  --}}
   <div class="z-0 rounded-3xl h-80 w-full sm:max-w-[400px] lg:max-w-[700px] my-4">
     <div id="map" class="h-full w-full sm:rounded-3xl"></div>
   </div>
-      
-      
-      {{-- map  --}}
-      <div class="z-0 rounded-3xl h-80 w-full sm:max-w-[400px] lg:max-w-[700px] my-4">
-        <div id="map" class="h-full w-full sm:rounded-3xl"></div>
-      </div>
-      
-      
+
       {{-- Categories  --}}
        @!component('components/categories', {categories})
 

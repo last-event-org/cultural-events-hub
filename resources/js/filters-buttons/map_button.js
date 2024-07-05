@@ -15,8 +15,4 @@ document.addEventListener('DOMContentLoaded', function () {
       mapPopup.classList.add('hidden')
     }
   })
-
-  inputRadius.addEventListener('focus', () => {
-    mapPopup.classList.remove('hidden')
-  })
 })

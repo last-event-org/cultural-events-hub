@@ -13,9 +13,6 @@ let mapZoom = 13
 let circle
 let poi = []
 let events
-const cityList = document.getElementById('city-list')
-// const latitude = 50.645138 // Remplacez par les coordonnées réelles
-// const longitude = 5.57342 // Remplacez par les coordonnées réelles
 let map = L.map('map')
 
 sliderInput.addEventListener('input', updateSlider)
@@ -93,12 +90,6 @@ function getDistance(lat1, lon1, lat2, lon2) {
 // }
 
 export async function createMap(lat, long) {
-  console.log('CREATEMAP')
-  console.log(lat)
-  console.log(long)
-  // if (window.latitude) {
-  //   console.log(window.latitude)
-  // }
   map.setView([lat, long], mapZoom)
 
   // Ajouter les tuiles OSM
@@ -106,10 +97,9 @@ export async function createMap(lat, long) {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map)
-
+  // L.removelayer(circle)
+  // L.circle().removeFrom(map)
   circle = L.circle([lat, long], {
-    // color: 'blue',
-    // fillColor: '#30f',
     color: 'rgb(234 179 8)',
     fillColor: 'rgb(234 179 8)',
     fillOpacity: 0.2,

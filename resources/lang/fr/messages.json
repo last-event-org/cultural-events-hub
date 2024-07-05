@@ -182,9 +182,9 @@
   "events_title_location": "le",
   "events_no_events": "Malheureusement, il n'y a pas d'événements à la date sélectionnée.",
 
-  "map_when": "Quand sortir ?",
+  "map_when": "Quand sortir?",
   "map_whenDesc": "Choisir une date",
-  "map_where": "Où sortir ?",
+  "map_where": "Où sortir?",
   "map_whereDesc": "Rechercher une ville",
   "map_map": "Carte",
   "map_mapDesc": "Rayon de recherche",

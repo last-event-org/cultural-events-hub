@@ -15,8 +15,8 @@ nav{
  
 }
 
-.city-pl{
-  padding-left:80px;
+.date-pl{
+  padding-left:10px;
 }
 
 
@@ -25,18 +25,18 @@ nav{
     display:flex;
     
   }
-  .city-pl{
+  .date-pl{
     padding-left:30px;
   }
 } 
 @media (min-width:380px){
-  .city-pl{
-  padding-left:45px;
+  .date-pl{
+  padding-left:20px;
   }
 }
 @media (min-width:550px){
-  .city-pl{
-  padding-left:10px;
+  .date-pl{
+  padding-left:30px;
   }
 }
 

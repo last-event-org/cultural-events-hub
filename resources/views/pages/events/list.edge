@@ -21,6 +21,8 @@
 @include("pages/partials/header")
 
 <main class="2xl:mx-[5vw]"></main>
+{{latitude}}
+{{longitude}}
   
   @include("pages/partials/title")
 
@@ -58,7 +60,9 @@
 @include("pages/partials/footer")
 
 <script src="/resources/js/date_format.js"></script>
-<script type="module" src="/resources/js/map_home.js"></script>
+<script type="module" src="/resources/js/map_home.js">
+
+</script>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -70,8 +74,6 @@
     window.latitude = "{{ latitude }}";
     window.longitude = "{{ longitude }}";
 </script>
-
-
 
 </body>
 </html>

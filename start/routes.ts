@@ -106,4 +106,6 @@ router.post('/events/:id', [CartController, 'store']).as('store').use(middleware
 
 // API CALLS
 router.get('/api/getEvents', [ListEvents, 'getEvents'])
+router.get('/api/getAllEvents', [ListEvents, 'getAllEvents'])
 router.get('/api/getEventsByDate', [ListEvents, 'getEventsByDate'])
+router.get('/api/search', [ListEvents, 'getEventsSearch'])

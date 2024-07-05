@@ -88,6 +88,8 @@ function getDistance(lat1, lon1, lat2, lon2) {
 // }
 
 export async function createMap(lat, long) {
+  console.log(lat)
+  console.log(long)
   map.setView([lat, long], mapZoom)
 
   // Ajouter les tuiles OSM
@@ -107,8 +109,15 @@ export async function createMap(lat, long) {
     // de la fonction displayPOIsWithinRadius
     // pour récupérer les POI
   }).addTo(map)
-
-  await getEvents()
+  const urlParams = new URLSearchParams(window.location.search)
+  console.log(urlParams)
+  console.log('api/search?' + urlParams)
+  for (const [key, value] of urlParams) {
+    console.log(key + '  ' + value)
+  }
+  // await getEventsSearch(urlParams)
+  await getAllEvents()
+  // await getEvents()
   createPois(events)
 }
 
@@ -147,9 +156,37 @@ async function getEvents() {
   }
 }
 
+async function getEventsSearch(params) {
+  try {
+    console.log('\n\ngetEventsSearch\n\n')
+    console.log('\nRESPONSE\n\n')
+    const response = await fetch(`/api/search?${params}`)
+    console.log('\nRESPONSE\n\n')
+    console.log(response)
+    events = await response.json()
+    console.log(events)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function getAllEvents() {
+  try {
+    const response = await fetch('/api/getAllEvents')
+    events = await response.json()
+    console.log(events)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 createMap(latitude, longitude)
 
 function updateMapZoom(radiusKm) {
+  console.log('updateMapZoom')
+  console.log(longitude)
+  console.log(latitude)
+
   let zoomLevel
   if (radiusKm <= 1) {
     zoomLevel = 13

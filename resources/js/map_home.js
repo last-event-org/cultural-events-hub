@@ -4,8 +4,6 @@ const progressBar = document.getElementById('progress-bar')
 const inputRadius = document.getElementById('chosen-radius')
 const sliderValue = document.getElementById('slider-value').children[0]
 
-console.log(sliderInput)
-
 // Bruxelles
 // let [latitude, longitude] = [50.85045, 4.34878]
 let [latitude, longitude] = [window.latitude ?? 50.645138, window.longitude ?? 5.57342]

@@ -13,7 +13,7 @@
     {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
     {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
   </title>
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 
@@ -58,7 +58,7 @@
 @include("pages/partials/footer")
 
 <script src="/resources/js/date_format.js"></script>
-<script src="/resources/js/map_home.js"></script>
+<script type="module" src="/resources/js/map_home.js"></script>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="

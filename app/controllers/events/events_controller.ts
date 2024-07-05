@@ -734,6 +734,8 @@ export default class EventsController {
       await this.updateEventIndicators(request, event)
       // if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
 
+      // TODO images
+
       await event.save()
     }
     return response.redirect().toRoute('events.show', { id: params.id })

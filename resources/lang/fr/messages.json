@@ -187,9 +187,9 @@
   "events_search_category": "pour",
   "events_no_events": "Malheureusement, il n'y a pas d'événements pour votre sélection.",
 
-  "map_when": "Quand sortir ?",
+  "map_when": "Quand sortir?",
   "map_whenDesc": "Choisir une date",
-  "map_where": "Où sortir ?",
+  "map_where": "Où sortir?",
   "map_whereDesc": "Rechercher une ville",
   "map_map": "Carte",
   "map_mapDesc": "Rayon de recherche",

@@ -732,7 +732,7 @@ export default class EventsController {
       if (!await this.updateEventAddress(request, session, i18n, event)) return response.redirect().back()
       if (!await this.updateEventCategoryTypes(request, session, i18n, event)) return response.redirect().back()
       await this.updateEventIndicators(request, event)
-      if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
+      // if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
 
       await event.save()
     }

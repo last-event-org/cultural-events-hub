@@ -6,12 +6,19 @@ const sliderValue = document.getElementById('slider-value').children[0]
 
 // Bruxelles
 // let [latitude, longitude] = [50.85045, 4.34878]
-let [latitude, longitude] = [window.latitude ?? 50.645138, window.longitude ?? 5.57342]
+let [latitude, longitude] = [50.645138, 5.57342]
+// let latitude = window.latitude === undefined ? window.latitude : 50.645138
+// let longitude = window.longitude ? 2 : 5.57342
+
 let mapZoom = 13
 let circle
 let poi = []
 let events
 let map = L.map('map')
+
+console.log('MAP HOME LAT LONG')
+console.log(latitude + '    ' + longitude)
+console.log(window.latitude + '    ' + window.longitude)
 
 sliderInput.addEventListener('input', updateSlider)
 
@@ -54,17 +61,17 @@ function updateCircleRadius(newRadius) {
 }
 
 // Fonction pour calculer la distance entre deux points (en km)
-function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371 // Rayon de la Terre en km
-  let dLat = ((lat2 - lat1) * Math.PI) / 180
-  let dLon = ((lon2 - lon1) * Math.PI) / 180
-  let a =
-    0.5 -
-    Math.cos(dLat) / 2 +
-    (Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * (1 - Math.cos(dLon))) / 2
+// function getDistance(lat1, lon1, lat2, lon2) {
+//   const R = 6371 // Rayon de la Terre en km
+//   let dLat = ((lat2 - lat1) * Math.PI) / 180
+//   let dLon = ((lon2 - lon1) * Math.PI) / 180
+//   let a =
+//     0.5 -
+//     Math.cos(dLat) / 2 +
+//     (Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * (1 - Math.cos(dLon))) / 2
 
-  return R * 2 * Math.asin(Math.sqrt(a))
-}
+//   return R * 2 * Math.asin(Math.sqrt(a))
+// }
 
 // Fonction pour afficher les POI dans un rayon défini autour de la Place Saint-Lambert
 // function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
@@ -87,10 +94,13 @@ function getDistance(lat1, lon1, lat2, lon2) {
 //   poiList.appendChild(ul)
 // }
 
-export async function createMap(lat, long) {
-  console.log(lat)
-  console.log(long)
-  map.setView([lat, long], mapZoom)
+export async function createMap() {
+  // console.log('CREATE MAP')
+  // console.log(lat + '   ' + long)
+  if (window.latitude) latitude = window.latitude
+  if (window.longitude) longitude = window.longitude
+  // console.log(lat + '   ' + long)
+  map.setView([latitude, longitude], mapZoom)
 
   // Ajouter les tuiles OSM
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -99,7 +109,7 @@ export async function createMap(lat, long) {
   }).addTo(map)
   // L.removelayer(circle)
   // L.circle().removeFrom(map)
-  circle = L.circle([lat, long], {
+  circle = L.circle([latitude, longitude], {
     color: 'rgb(234 179 8)',
     fillColor: 'rgb(234 179 8)',
     fillOpacity: 0.2,
@@ -123,15 +133,15 @@ export async function createMap(lat, long) {
 
 function createPois(eventsPoi) {
   console.log('createPois')
-  eventsPoi.forEach(function (event) {
-    poi.push({
-      id: event.id,
-      title: event.title,
-      lat: event.location.latitude,
-      lng: event.location.longitude,
-      location: event.location.name,
-      category: event.categoryTypes[0].category.slug,
-    })
+  eventsPoi.forEach((event) => {
+    // poi.push({
+    //   id: event.id,
+    //   title: event.title,
+    //   lat: event.location.latitude,
+    //   lng: event.location.longitude,
+    //   location: event.location.name,
+    //   category: event.categoryTypes[0].category.slug,
+    // })
     let popup = L.popup().setContent(
       `<a href="/events/${event?.id ?? ''}"'>${event.title}</a><br/>${event.location.name}`
     )

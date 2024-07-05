@@ -197,7 +197,7 @@ export default class ListEvents {
   }
 
   async findEventsIDByLocation(lat: number, long: number, radius: number) {
-    console.log('\n GETEVENTSEARCH \n')
+    console.log('\n findEventsIDByLocation \n')
     const eventsId = await db.rawQuery(`
     SELECT e.id
     FROM events e
@@ -213,6 +213,9 @@ export default class ListEvents {
     eventsId[0].forEach((element: any) => {
       ids.push(element.id)
     })
+
+    console.log(ids)
+
     return ids
   }
 }

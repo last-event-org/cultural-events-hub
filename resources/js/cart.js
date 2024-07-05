@@ -54,15 +54,17 @@ function removeQuantity(id) {
   showErrorNotification('Ticket retiré')
 }
 
-function removeOrderLine(id) {
+async function removeOrderLine(id) {
   const orderLineRowQty = document.getElementsByName('orderLineQtyRow-' + id)
-  // const removeOrderLineForm = document.getElementsByName('removeOrderLine-' + id)[0]
+  // TODO error in log when deleting an order line, code looks for a submit form [look previous code]
+  const removeOrderLineForm = document.getElementsByName('removeOrderLine-' + id)[0]
   // removeOrderLineForm.style.display = 'none'
-  // removeOrderLineForm.submit()
   if (orderLineRowQty[0]) {
     orderLineRowQty[0].remove()
     updateTotalOrder()
   }
+
+  removeOrderLineForm.submit()
 
   showErrorNotification('Ticket(s) supprimé(s)')
 }

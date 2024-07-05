@@ -197,5 +197,8 @@
   "intro_banner4": "Next Event lists the best events in your area with discounted tickets available 7 days before the show.",
 
   "error_psw": "The password must contain at least one uppercase letter, one digit, one symbol (@$!%*?&), and at least 8 characters in total.",
-  "errorEventDates": "The start date and time must occur before the end date and time."
+  "errorEventDates": "The start date and time must occur before the end date and time.",
+  "errorMissingCategType": "At least one category and sub-category must be selected.",
+  "errorMissingAddress": "All address fields are required.",
+  "errorEditEventPrices": "There is a problem with the prices. Please check."
 }

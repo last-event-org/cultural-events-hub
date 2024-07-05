@@ -197,5 +197,8 @@
   "intro_banner4": "Next Event répertorie les meilleurs événements de votre région avec des billets à prix réduits disponibles 7 jours avant le spectacle.",
 
   "error_psw": "Le mot de passe doit contenir au moins une lettre majuscule, un chiffre, un symbole (@$!%*?&) et au moins 8 caractères au total.",
-  "errorEventDates": "La date et l'heure de début doivent se produire avant la date et l'heure de fin."
+  "errorEventDates": "La date et l'heure de début doivent se produire avant la date et l'heure de fin.",
+  "errorMissingCategType": "Au moins une catégorie et sous-catégorie doit être sélectionnée.",
+  "errorMissingAddress": "Tous les champs de l'adresse sont requis.",
+  "errorEditEventPrices": "Il y a un problème avec les prix. Veuillez vérifier."
 }

@@ -383,6 +383,8 @@ export default class EventsController {
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {
+
+    // TODO create 5 prices per event
     // try {
     const pricePayloads = await request.validateUsing(createPricesValidator)
 
@@ -557,6 +559,110 @@ export default class EventsController {
     })
   }
 
+  async updateEventAddress(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    i18n: HttpContext['i18n'],
+    event: Event) {
+    try {
+      const addressPayload = await request.validateUsing(createAddressValidator)
+      event.location.name = addressPayload.name ?? ''
+      event.location.street = addressPayload.street.replace('&#x27;', "'")
+      event.location.number = addressPayload.number
+      event.location.zipCode = addressPayload.zip_code
+      event.location.city = addressPayload.city
+      event.location.country = addressPayload.country
+
+      try {
+        const [latitude, longitude] = await this.getCoordinatesFromAddress(
+          event.location.city,
+          event.location.street,
+          event.location.zipCode,
+          event.location.number
+        )
+        event.location.latitude = latitude
+        event.location.longitude = longitude
+      } catch (error) { }
+
+      await event.location.save()
+      return true
+    } catch (error) {
+      const errorMsg = i18n.t('messages.errorMissingAddress')
+      session.flash('errorMissingAddress', errorMsg)
+      return false
+    }
+  }
+
+  async updateEventCategoryTypes(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    i18n: HttpContext['i18n'],
+    event: Event) {
+    const selectedCategoryTypes = request.body().categoryTypes
+
+    if (selectedCategoryTypes) {
+      // attach new sub-categories selected 
+      // without re-attaching old ones otherwise we get a SQL error
+      const eventCategTypes: number[] = []
+      event.categoryTypes.forEach(async (categType: CategoryType) => {
+        eventCategTypes.push(categType.id)
+      })
+      selectedCategoryTypes.forEach(async (categ: number) => {
+        if (!eventCategTypes.includes(Number(categ))) {
+          await event.related('categoryTypes').attach([categ])
+        }
+      })
+
+      // detach sub-categories that have been removed from the event
+      event.categoryTypes.forEach(async (categType: CategoryType) => {
+        if (!selectedCategoryTypes.includes(String(categType.id))) {
+          await event.related('categoryTypes').detach([categType.id])
+        }
+      })
+    } else {
+      const errorMsg = i18n.t('messages.errorMissingCategType')
+      session.flash('errorMissingCategType', errorMsg)
+      return false
+    }
+    return true
+  }
+
+  async updateEventIndicators(
+    request: HttpContext['request'],
+    event: Event) {
+
+    const selectedIndicators = request.body().indicators
+
+    // attach new indicators selected 
+    // without re-attaching old ones otherwise we get a SQL error
+    if (selectedIndicators) {
+      const eventIndicators: number[] = []
+      event.indicators.forEach(async (indicator: Indicator) => {
+        eventIndicators.push(indicator.id)
+      })
+      selectedIndicators.forEach(async (indicatorId: number) => {
+        if (!eventIndicators.includes(Number(indicatorId))) {
+          await event.related('indicators').attach([indicatorId])
+        }
+      })
+    } else {
+      // detach indicators that have been removed from the event
+      event.indicators.forEach(async (indicator: Indicator) => {
+        await event.related('indicators').detach([indicator.id])
+      })
+    }
+    // No error handling here because indicators are not required
+  }
+
+  async updateEventPrices(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    i18n: HttpContext['i18n'],
+    event: Event) {
+
+    // TODO create 5 prices per event (-> createEventPrices())
+  }
+
   /**
    * Handle form submission for the edit action
    */
@@ -566,17 +672,18 @@ export default class EventsController {
     const event = await Event.query()
       .where('id', '=', params['id'])
       .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
       .first()
-    console.log('\n\n\n\n\n', event?.location.name)
 
     if (event) {
 
       event.title = payload.title
       event.subtitle = payload.subtitle
       event.description = payload.description
-
-      // TODO practical data (address)
-
 
       // Date
       event.eventStart = DateTime.fromISO(payload.event_start)
@@ -603,17 +710,29 @@ export default class EventsController {
       } else {
         event.websiteLink = ''
       }
-      // TODO: build the embed youtube url from the normal url
       if (payload.youtube_link && payload.youtube_link != '') {
+        // TODO constructing the embed youtube url from the normal url
+        // ex of normal url: https://www.youtube.com/watch?v=Ij6We_hu4Lg&ab_channel=LotuSProject-Topic
+        // in this one there is also a 'channel' part that MUST be removed
+        // this should become: https://www.youtube.com/embed/Ij6We_hu4Lg
         event.youtubeLink = payload.youtube_link
+        const watch = "watch?v="
+        if (event.youtubeLink.includes(watch)) {
+          event.youtubeLink = event.youtubeLink.replace(watch, 'embed/')
+        }
+        const channel = '&ab_channel='
+        if (event.youtubeLink.includes(channel)) {
+          const toDeleteIndex = event.youtubeLink.indexOf(channel)
+          event.youtubeLink.substring(0, toDeleteIndex)
+        }
       } else {
         event.youtubeLink = ''
       }
 
-      // TODO categories
-      // TODO subcategories
-      // TODO indicators
-      // TODO prices
+      if (!await this.updateEventAddress(request, session, i18n, event)) return response.redirect().back()
+      if (!await this.updateEventCategoryTypes(request, session, i18n, event)) return response.redirect().back()
+      await this.updateEventIndicators(request, event)
+      if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
 
       await event.save()
     }

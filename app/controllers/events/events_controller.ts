@@ -26,6 +26,9 @@ export default class EventsController {
    */
   async index({ view }: HttpContext) {
     // get all events up to now
+
+    const categories = await Category.all()
+
     const events = await Event.query()
       .where('event_start', '>=', new Date().toISOString())
       .preload('location')
@@ -37,12 +40,13 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/events/list', { events: events })
+    return view.render('pages/events/list', { events: events, categories: categories })
   }
 
   // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
 
   async tickets({ view }: HttpContext) {
+    const categories = await Category.all()
     // get all events with tickets up to now
     const events = await Event.query()
       .andWhere('event_start', '>=', new Date().toISOString())
@@ -58,7 +62,7 @@ export default class EventsController {
       })
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/events/list', { events: events })
+    return view.render('pages/events/list', { events: events, categories: categories })
   }
 
   /**

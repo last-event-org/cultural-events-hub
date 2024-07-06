@@ -13,7 +13,10 @@ let mapZoom = 13
 let circle
 let poi = []
 let events
-let map = L.map('map')
+map = L.map('map', {
+  scrollWheelZoom: false  // Désactive le zoom par molette par défaut
+});
+
 
 sliderInput.addEventListener('input', updateSlider)
 
@@ -90,7 +93,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 // }
 
 export async function createMap(lat, long) {
-  map.setView([lat, long], mapZoom)
+  map.setView([lat, long], mapZoom);
 
   // Ajouter les tuiles OSM
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -69,6 +69,7 @@
   "cart_new": "New",
   "cart_avl": "There are",
   "cart_places": "places available",
+  "cart_full":"Full",
   "cart_add": "Add to cart",
   "cart_icon": "Check icon",
   "cart_close": "Close",

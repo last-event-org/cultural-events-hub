@@ -10,9 +10,9 @@
 
 <body class="bg-slate-50 ">
   @include("pages/partials/header")
-  <main class="flex flex-col items-center  min-h-screen ">
+  <main class="flex flex-col items-center min-h-screen ">
  
-    <div class=" bg-yellow-500 my-20 mb-auto text-slate-600 flex flex-col border rounded-3xl shadow mt-10 w-screen sm:w-[500px]">
+    <div class=" bg-yellow-500 mb-20 text-slate-600 flex flex-col border rounded-3xl shadow mt-10 w-screen sm:w-[500px]">
 
       <h2 class=" font-bold text-xl uppercase text-center rounded-t-3xl  my-6 bg-yellow-500  ">
         {{ i18n.t('messages.register_signup') }}
@@ -125,7 +125,7 @@
           </div>
           {{-- <div class="pb-20 bg-red-500 "> --}}
 
-            <p class="pb-6">Si vous êtes déjà enregistré, <a href="#" class="font-semibold text-yellow-500 hover:text-yellow-400 duration-300">connectez-vous</a> ici.</p>
+            <p class="pb-6">Si vous êtes déjà enregistré, <a href="/login" class="font-semibold text-yellow-500 hover:text-yellow-400 duration-300">connectez-vous</a> ici.</p>
           {{-- </div> --}}
       </form>
       </div>

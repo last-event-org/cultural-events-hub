@@ -1,8 +1,8 @@
 {{-- Big Search Bar --}}
 <form id="BSB" action="{{ route('events.search') }}" method="get">
   {{ csrfField() }}
-  <section id="big-search-bar-container" class="grid grid-cols-[34%,1%,31%,1%,22%,10%] open-sans text-xs sm:text-base relative sm:flex bg-white border shadow rounded-full h-full my-4 w-[98vw] lg:w-auto justify-between items-center max-w-[900px]">
-  
+  <section id="big-search-bar-container" class=" grid grid-cols-[34%,1%,31%,1%,22%,10%] open-sans text-xs sm:text-base relative sm:flex bg-white border shadow rounded-full h-full my-4 w-[98vw] lg:w-auto justify-between items-center max-w-[900px]">
+    
     <div id="button-date" class="relative flex flex-col button text-left bg-white hover:bg-slate-100 date-pl lg:px-6 xl:px-10 py-4 rounded-full duration-500 cursor-pointer">
   
       <label class="text-slate-800 font-semibold cursor-pointer">
@@ -62,9 +62,21 @@
 
    
   {{-- map  --}}
-  <div class="z-0 rounded-3xl h-80 w-full sm:max-w-[400px] lg:max-w-[700px] my-4">
-    <div id="map" class="h-full w-full sm:rounded-3xl"></div>
-  </div>
+  <section class="flex justify-around items-center w-full gap-y-12 lg:my-8">
+    <div class="hidden lg:block">
+        @!include('pages/partials/top_events')
+    </div>
+
+    <div class="z-0 rounded-3xl h-80 w-full sm:max-w-96 xl:max-w-[700px] my-4">
+      <div id="map" class="h-full w-full sm:rounded-3xl"></div>
+    </div>
+
+    <div class="hidden lg:block">
+      @!include('pages/partials/today_events')
+    </div>
+
+  </section>
+
 
       {{-- Categories  --}}
        @!component('components/categories', {categories})

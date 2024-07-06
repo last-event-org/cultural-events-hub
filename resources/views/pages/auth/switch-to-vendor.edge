@@ -12,15 +12,20 @@
   
   @include("pages/partials/header")
   <main class="w-full flex justify-center mt-5 my-auto ">
+    <div class=" bg-yellow-500 my-20 mb-auto text-slate-600 flex flex-col border rounded-3xl shadow mt-10 w-screen sm:w-[500px]">
+      <h2 class=" font-bold text-xl uppercase text-center rounded-t-3xl my-6 bg-yellow-500  ">
+        {{ i18n.t('messages.switch_account_becomeVendor') }}
+      </h2>
+      <div class="p-8 bg-white rounded-b-3xl">
     
-    <div class="bg-white p-8 my-20 rounded shadow-md w-screen sm:max-w-xl ">
+    {{-- <div class="bg-white p-8 my-20 rounded shadow-md w-screen sm:max-w-xl ">
       <div class="justify-center flex">  
         
         <h2 class="relative z-10 font-bold text-black text-2xl my-4">
           {{ i18n.t('messages.switch_account_becomeVendor') }}
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
-      </div>
+      </div> --}}
 
       <div class="flex flex-col gap-4  w-full text-slate-800  font-semibold my-4">
         <div class="flex flex-col gap-6">
@@ -41,8 +46,8 @@
 
 			<div class="flex justify-center mt-10">
 				<a href={{ route('auth.profile.edit') }}>
-					<button type="submit" class="bg-yellow-500 uppercase font-bold py-2 px-4 rounded-md hover:bg-yellow-400 
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+					<button type="submit" class="text-white bg-indigo-700 uppercase font-bold py-2 px-6 rounded-md hover:bg-indigo-500 
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 duration-300">
                   {{ i18n.t('messages.switch_account_createAccount') }}
 					</button>
 				</a>

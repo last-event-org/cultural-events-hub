@@ -21,18 +21,18 @@
 
 
 <section class="relative flex flex-col items-center justify-center ">
+  {{-- <div class="hidden lg:block absolute ml-[6vw] mt-8 top-24 left-0 ">
+    @!include('pages/partials/top_events')
+  </div> --}}
   @include("pages/partials/filter_map")
 </section>
 <hr class="mb-6 mt-2 ">
 
-<main class="2xl:mx-[5vw]"> 
+<main> 
   
     <div class=" sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
       @each(event in events)
       @!component('components/events_cards', {event})
-      {{-- @!component('components/events_cards', {event})
-      @!component('components/events_cards', {event})
-      @!component('components/events_cards', {event}) --}}
       @end
     </div>
 

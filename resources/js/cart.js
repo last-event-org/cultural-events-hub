@@ -71,8 +71,9 @@ async function removeOrderLine(id) {
 function updateTotalRow(id, orderLineQtyRow) {
   const totalRow = document.getElementsByName('total-price-' + id)[0]
   const discountPrice = document.getElementsByName('discount-price-' + id)[0]
+  console.log(discountPrice)
   totalRow.textContent =
-    Number.parseInt(orderLineQtyRow.textContent) * Number.parseInt(discountPrice.textContent)
+    Number.parseInt(orderLineQtyRow.textContent) * Number.parseFloat(discountPrice.textContent)
 }
 
 function updateTotalOrder() {
@@ -80,7 +81,7 @@ function updateTotalOrder() {
   const totalOrder = document.querySelector('span[data-total-order]')
   let sum = 0
   totalRows.forEach((element) => {
-    sum += Number.parseInt(element.textContent)
+    sum += Number.parseFloat(element.textContent)
   })
 
   totalOrder.textContent = sum

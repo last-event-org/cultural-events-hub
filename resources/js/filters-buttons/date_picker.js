@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
   const datePicker = document.getElementById('date-picker')
   const prevButton = document.getElementById('prev-day')
+  const dateChosen = document.getElementById('date-chosen')
   const nextButton = document.getElementById('next-day')
+
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.get('date') !== '') {
+    dateChosen.value = urlParams.get('date')
+  }
 
   const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
   const today = new Date()
@@ -109,6 +115,3 @@ document.addEventListener('click', function (event) {
 document.getElementById('calendar').addEventListener('click', function (event) {
   event.stopPropagation()
 })
-
-
- 

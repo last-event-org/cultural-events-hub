@@ -24,7 +24,11 @@
   
   @include("pages/partials/title")
 
-  @!component('components/categories', {categories})
+  <section class="relative flex flex-col items-center justify-center ">
+    @include("pages/partials/filter_map")
+  </section>
+
+  {{-- @!component('components/categories', {categories})
   <ul class="flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto mt-5">
       @each(type in categoryTypes)
         <li>
@@ -41,7 +45,7 @@
   </div>
   {{-- <div class="z-10 rounded-xl p-4 pt-6 max-w-80"></div>
       </div> --}}
-  <hr class="my-6">
+  <hr class="my-6"> --}}
 
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>

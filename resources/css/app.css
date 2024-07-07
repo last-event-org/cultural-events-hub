@@ -36,13 +36,17 @@ nav{
     padding-left:30px;
   }
 } 
+@media (min-width:330px){
+  
+  .grid-categories{  
+    grid-template-columns: repeat(3,minmax(0,1fr));
+  }
+} 
 @media (min-width:375px){
   .date-pl{
   padding-left:20px;
   }
-  .grid-categories{  
-    grid-template-columns: repeat(3,minmax(0,1fr));
-  }
+  
 }
 @media (min-width:550px){
   .date-pl{

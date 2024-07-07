@@ -74,7 +74,6 @@ export default class ListEvents {
   }
 
   async getEventsSearch({ request }: HttpContext) {
-    console.log('\n GETEVENTSEARCH \n')
     let qs = request.qs()
 
     let payload
@@ -82,21 +81,15 @@ export default class ListEvents {
     let ids: any
     let radius: any = 15
     let [dayBegin, dayEnd]: any = [0, 0]
-    let dateTitle
-    let categoryTypeName: string | undefined
     let category: any
-    let vendorName: string | undefined | null
-    let locationName: string | undefined
     let categoryTypesId: any[] = []
     let categoryTypes: any
 
-    const categories = await Category.query().select('name', 'slug', 'id')
-
-    // try {
-    //   payload = await request.validateUsing(queryValidator)
-    // } catch (error) {
-    //   return 'ERROR'
-    // }
+    try {
+      payload = await request.validateUsing(queryValidator)
+    } catch (error) {
+      return 'ERROR'
+    }
 
     if (qs.city) {
       console.log('\n CITY \n')
@@ -115,23 +108,10 @@ export default class ListEvents {
     if (qs.date) {
       console.log('\n DATE \n')
       ;[dayBegin, dayEnd] = await this.formatDate(payload?.date)
-      let date = new Date(dayBegin).toISOString()
-      dateTitle = DateTime.fromISO(date)
-    }
-
-    if (qs.location) {
-      const location = await Address.query().select('name').where('id', qs.location).first()
-      locationName = location?.name
-    }
-
-    if (qs.vendor) {
-      const vendor = await User.query().select('company_name').where('id', qs.vendor).first()
-      vendorName = vendor?.companyName
     }
 
     if (qs.categoryType) {
       const categoryTypeId = await CategoryType.find(qs.categoryType)
-      categoryTypeName = categoryTypeId?.name
       category = await categoryTypeId
         ?.related('category')
         .query()

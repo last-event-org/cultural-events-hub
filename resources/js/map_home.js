@@ -120,13 +120,13 @@ export async function createMap() {
     // pour récupérer les POI
   }).addTo(map)
   const urlParams = new URLSearchParams(window.location.search)
-  // console.log(urlParams)
+  console.log(urlParams)
   // console.log('api/search?' + urlParams)
   // for (const [key, value] of urlParams) {
   //   console.log(key + '  ' + value)
   // }
-  // await getEventsSearch(urlParams)
-  await getAllEvents()
+  await getEventsSearch(urlParams)
+  // await getAllEvents()
   // await getEvents()
   createPois(events)
 }
@@ -174,7 +174,7 @@ async function getEventsSearch(params) {
     // console.log('\nRESPONSE\n\n')
     // console.log(response)
     events = await response.json()
-    // console.log(events)
+    console.log(events)
   } catch (error) {
     console.log(error)
   }

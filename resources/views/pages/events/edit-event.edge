@@ -13,11 +13,11 @@
 <body class="bg-slate-50">
   @include("pages/partials/header")
   <main class="flex flex-col justify-center items-center  min-h-screen mx-auto mb-16 w-full  container">
-    <div class="md:mt-10 md:px-12">
+    <div class="mt-10">
 
     
       
-    <h2 class="text-center font-semibold text-slate-600 text-xl mt-5 xl:mt-8 xl:mb-2">
+    <h2 class="text-center font-semibold text-slate-600 text-xl mb-5">
       {{ i18n.t('messages.event_editEvent') }}
     </h2>
 
@@ -30,7 +30,7 @@
 
     <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
    {{-- Description    --}}
-      <section class=" bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl  p-4 xl:w-1/2">
+      <section class=" bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl  p-4 xl:w-1/2">
         <div class="w-screen sm:w-full text-sm px-2 sm:px-4">
           <div class="justify-center flex">  
             <h2 class="relative z-10 font-bold text-black text-xl my-4">
@@ -83,7 +83,7 @@
         </section>
 
 {{-- Informations pratiques --}}
-        <section class=" bg-blue-50 text-slate-600 flex flex-col items-center border shadow rounded-3xl  p-4 xl:w-1/2 xl:h-full">
+        <section class=" bg-blue-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl  p-4 xl:w-1/2 xl:h-full">
           <div class="w-screen sm:w-full h-full px-2 sm:px-4 mb-8">
             <div class="justify-center flex">  
               <h2 class="relative z-10 font-bold text-black text-xl my-4">
@@ -198,7 +198,7 @@
 
     <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
       {{-- Links  --}}
-      <section class=" bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl  p-4 xl:w-1/2 wl:h-full">
+      <section class=" bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl  p-4 xl:w-1/2 wl:h-full">
         <h2 class="relative z-10 font-bold text-black text-xl my-4">
           {{ i18n.t('messages.event_links') }} 
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
@@ -240,7 +240,7 @@
       </section>  
 
       {{-- Categories  --}}
-      <section class=" bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl p-6 xl:w-1/2 xl:h-full">
+      <section class=" bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl p-6 xl:w-1/2 xl:h-full">
         <div class="flex w-screen sm:w-full px-4">
           <fieldset class="py-2 w-full">
             <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto ">
@@ -291,7 +291,7 @@
  
       <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
         {{-- Indicators          --}}
-        <section class="bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl  xl:w-1/2 my-0 p-6">
+        <section class="bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl  xl:w-1/2 my-0 p-6">
           <div class="flex w-screen sm:w-full px-4">    
             <fieldset class="py-2 w-full">
               <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto ">
@@ -320,7 +320,7 @@
         </section>
         
         {{-- Image loading --}}
-        <section class=" bg-emerald-50 text-slate-600 flex flex-col xl:w-1/2 items-center border shadow rounded-3xl  p-6"> 
+        <section class=" bg-emerald-50 text-slate-600 flex flex-col xl:w-1/2 items-center sm:border sm:shadow rounded-3xl  p-6"> 
           <h2 class="relative z-10 font-bold text-black text-xl my-4">
             {{ i18n.t('messages.event_images') }}
               <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
@@ -341,7 +341,7 @@
         </section>
       </div>  
 {{-- Prices  --}}
-    <section class="bg-indigo-50 text-slate-600 flex flex-col items-center border shadow rounded-3xl lg:w-[800px] xl:w-[1100px]">
+    <section class="bg-indigo-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl lg:w-[800px] xl:w-[1100px]">
       
         <h2 class="mx-auto relative z-10 font-bold text-black text-xl my-4 text-center ">
           {{ i18n.t('messages.event_prix') }}

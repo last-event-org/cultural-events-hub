@@ -1,26 +1,18 @@
 {{-- Categories  --}}
 <section>
-    <ul>
-        <div class="grid grid-cols-3 flex-categories lg:justify-center gap-y-2 sm:gap-y-4 gap-x-8 lg:gap-x-16 my-2 ">
+    <ul class="grid grid-cols-3 flex-categories lg:justify-center gap-y-2 sm:gap-y-4 gap-x-8 lg:gap-x-16 my-2 ">
 
-            @each((category) in categories)   
-                <div class="flex flex-col w-[60px] gap-x-4 lg:gap-x-8 ">  
+        @each((category) in categories)   
 
-                    <a href="/events/search?category={{ category.id }}">
-                        <div class="flex w-12 h-12  rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
-                        <img src=/svg/categories/{{category.slug}}.svg
-                        alt="category icon" title="{{category.slug}}">
-                        </div>
-                    </a>
-
-                    <li>
-                        <div class="flex justify-center items-center gap-2 rounded-md  pt-1">
-                            <a class="text-[10px] sm:text-xs lg:text-sm text-slate-700 text-center font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
-                        </div>
-                    </li>
-
-                </div>
-            @end
-        </div>
+            <a href="/events/search?category={{ category.id }}">
+                <li class="flex flex-col w-[60px] gap-x-4 lg:gap-x-8 items-center justify-center">
+                    <img src=/svg/categories/{{category.slug}}.svg
+                    alt="category icon" title="{{category.slug}}" class="flex w-12 h-12  rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
+                    <p class="text-[10px] sm:text-xs lg:text-sm text-slate-700 pt-1 text-center font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</p>
+                </li>
+            </a>
+            
+        @end
+        
     </ul>
 </section>

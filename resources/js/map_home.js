@@ -16,9 +16,9 @@ let poi = []
 let events
 let map = L.map('map')
 
-console.log('MAP HOME LAT LONG')
-console.log(latitude + '    ' + longitude)
-console.log(window.latitude + '    ' + window.longitude)
+// console.log('MAP HOME LAT LONG')
+// console.log(latitude + '    ' + longitude)
+// console.log(window.latitude + '    ' + window.longitude)
 
 sliderInput.addEventListener('input', updateSlider)
 
@@ -120,11 +120,11 @@ export async function createMap() {
     // pour récupérer les POI
   }).addTo(map)
   const urlParams = new URLSearchParams(window.location.search)
-  console.log(urlParams)
-  console.log('api/search?' + urlParams)
-  for (const [key, value] of urlParams) {
-    console.log(key + '  ' + value)
-  }
+  // console.log(urlParams)
+  // console.log('api/search?' + urlParams)
+  // for (const [key, value] of urlParams) {
+  //   console.log(key + '  ' + value)
+  // }
   // await getEventsSearch(urlParams)
   await getAllEvents()
   // await getEvents()
@@ -160,7 +160,7 @@ async function getEvents() {
   try {
     const response = await fetch('/api/getEvents')
     events = await response.json()
-    console.log(events)
+    // console.log(events)
   } catch (error) {
     console.log(error)
   }
@@ -168,13 +168,13 @@ async function getEvents() {
 
 async function getEventsSearch(params) {
   try {
-    console.log('\n\ngetEventsSearch\n\n')
-    console.log('\nRESPONSE\n\n')
+    // console.log('\n\ngetEventsSearch\n\n')
+    // console.log('\nRESPONSE\n\n')
     const response = await fetch(`/api/search?${params}`)
-    console.log('\nRESPONSE\n\n')
-    console.log(response)
+    // console.log('\nRESPONSE\n\n')
+    // console.log(response)
     events = await response.json()
-    console.log(events)
+    // console.log(events)
   } catch (error) {
     console.log(error)
   }
@@ -184,7 +184,7 @@ async function getAllEvents() {
   try {
     const response = await fetch('/api/getAllEvents')
     events = await response.json()
-    console.log(events)
+    // console.log(events)
   } catch (error) {
     console.log(error)
   }
@@ -193,9 +193,9 @@ async function getAllEvents() {
 createMap(latitude, longitude)
 
 function updateMapZoom(radiusKm) {
-  console.log('updateMapZoom')
-  console.log(longitude)
-  console.log(latitude)
+  // console.log('updateMapZoom')
+  // console.log(longitude)
+  // console.log(latitude)
 
   let zoomLevel
   if (radiusKm <= 1) {

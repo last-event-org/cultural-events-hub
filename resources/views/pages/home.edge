@@ -20,17 +20,17 @@
 @include("pages/partials/intro")
 
 
-<section class="relative flex flex-col items-center justify-center ">
+<section class="relative flex flex-col items-center justify-center mb-10">
   {{-- <div class="hidden lg:block absolute ml-[6vw] mt-8 top-24 left-0 ">
     @!include('pages/partials/top_events')
   </div> --}}
   @include("pages/partials/filter_map")
 </section>
-<hr class="container mx-auto mb-6 mt-2">
+
 
 <main class="flex justify-center "> 
   
-    <div class=" container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
+    <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
       @each(event in events)
       @!component('components/events_cards', {event})
       @end

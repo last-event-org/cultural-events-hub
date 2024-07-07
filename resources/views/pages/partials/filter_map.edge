@@ -62,8 +62,8 @@
 
    
   {{-- map and Ads --}}
-  <section class="container flex justify-center lg:justify-between items-center w-full gap-y-12 lg:my-8">
-    <div class="hidden lg:block">
+  <section class="2xl:container flex justify-center lg:justify-between items-center w-full gap-y-12 lg:my-8 ">
+    <div class="hidden lg:block mx-4 2xl:mx-0">
         @!include('pages/partials/top_events')
     </div>
 
@@ -71,13 +71,13 @@
       <div id="map" class="h-full w-full sm:rounded-3xl"></div>
     </div>
 
-    <div class="hidden lg:block">
+    <div class="hidden lg:block mx-4 2xl:mx-0">
       @!include('pages/partials/today_events')
     </div>
 
   </section>
 
-
+  <hr class="2xl:container mx-auto mt-2">
   {{-- Categories  --}}
     @!component('components/categories', {categories})
 

@@ -32,12 +32,14 @@
   </div>
   {{-- <div class="z-10 rounded-xl p-4 pt-6 max-w-80"></div>
       </div> --}}
-<div class="mt-6">
-  
-  @!component('components/categories', {categories})
-</div>
 
-  <ul class="container flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto mt-12">
+  
+  <hr class="2xl:container mx-auto mt-2">
+  {{-- Categories  --}}
+    @!component('components/categories', {categories})
+
+
+  <ul class="2xl:container flex flex-wrap justify-center items-center  gap-4 mx-auto mt-8 mb-16">
     @each(type in categoryTypes)
       <li>
         <div class="flex items-center bg-{{category.slug}} gap-3 text-slate-700 text-xs sm:text-md lg:text-base rounded-3xl shadow px-4 py-1 pb-2 duration-300">
@@ -47,13 +49,13 @@
     @end
   </ul>    
 
-  <hr class="my-6">
+  
 
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>
   @else
 
-    <div class=" container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5" > 
+    <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5" > 
       @each(event in events)
         @!component('components/events_cards', {event})
       @end

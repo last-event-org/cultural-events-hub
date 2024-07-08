@@ -357,7 +357,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) {}
+    } catch (error) { }
 
     await address.save()
     await event.related('location').associate(address)
@@ -416,9 +416,9 @@ export default class EventsController {
   }
 
   async updateEventMedia(
-    request: HttpContext['request'], 
-    session: HttpContext['session'], 
-    i18n: HttpContext['i18n'], 
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    i18n: HttpContext['i18n'],
     event: Event) {
     const { images_link } = await request.validateUsing(createMediaValidator)
 
@@ -436,13 +436,13 @@ export default class EventsController {
 
         await media.save()
       }
-      } catch (error) {
-        const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error
-        session.flash('errorEditingMedia', errorMsg)
-        return false
-      }
+      return true
+    } catch (error) {
+      const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error
+      session.flash('errorEditingMedia', errorMsg)
+      return false
     }
-    return true
+
   }
 
   async getTodayEvents() {
@@ -613,7 +613,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) {}
+      } catch (error) { }
 
       await event.location.save()
       return true
@@ -801,5 +801,5 @@ export default class EventsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params }: HttpContext) { }
 }

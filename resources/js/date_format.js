@@ -24,8 +24,8 @@ function formatDate(startString, endString) {
   
   if (endDay !== day){
 
-    formattedEnd = endMinutes > 0 ? `au ${endDayName} ${endDay} ${endMonth} ${endHours}h${endMinutes}` 
-                                  : `au ${endDayName} ${endDay} ${endMonth} ${endHours}h`;
+    formattedEnd = endMinutes > 0 ? `au ${endDayName} ${endDay} ${endMonth} à ${endHours}h${endMinutes}` 
+                                  : `au ${endDayName} ${endDay} ${endMonth} à ${endHours}h`;
     formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} à ${formattedEnd}`;
   }else{
     

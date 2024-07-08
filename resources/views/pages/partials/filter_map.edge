@@ -29,7 +29,7 @@
           
         <div id="city-list" class="absolute sm:w-full w-[98vw] top-16 left-0 right-0 sm:top-[5.2rem]  z-20 bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
           @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
-          <option name="city" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
+          <option name="city-list" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
           @end
         </div>
           
@@ -85,5 +85,4 @@
 
 
 <script src="/resources/js/filters-buttons/date_picker.js"></script>
-<script src="/resources/js/filters-buttons/dropdown_cities.js" type="module"  defer ></script>
 <script src="/resources/js/filters-buttons/map_button.js"></script>

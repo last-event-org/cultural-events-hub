@@ -21,6 +21,8 @@ import { queryValidator } from '#validators/query'
 import User from '#models/user'
 import { updatePricesValidator } from '#validators/update_price'
 import { error } from 'console'
+import app from '@adonisjs/core/services/app'
+import { cuid } from '@adonisjs/core/helpers'
 
 export default class EventsController {
   /**
@@ -379,23 +381,17 @@ export default class EventsController {
     const { images_link } = await request.validateUsing(createMediaValidator)
 
     for (const file of images_link) {
+
       const media = new Media()
-      media.path = '' // TODO if needed, setup a path method if we'll use an external server
+      const uniqueFileName = `${cuid()}.${file.extname}`
+      await file.move(app.publicPath('uploads/'), {
+        name: uniqueFileName
+      })
+      media.path = `/uploads/${uniqueFileName}`
       media.altName = file.clientName
       media.eventId = event.id
 
-      if (!file.tmpPath) {
-        console.error('Skipping file due to missing tmpPath:', file)
-        continue // Skip this iteration if tmpPath is undefined
-      }
-
-      try {
-        const binaryData = fs.readFileSync(file.tmpPath)
-        media.binary = binaryData
-        await media.save()
-      } catch (error) {
-        console.error('Media binary upload error:', error)
-      }
+      await media.save()
     }
   }
 

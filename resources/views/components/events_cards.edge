@@ -26,7 +26,7 @@
         -{{ percentage.toFixed(0) }}%
       </p>
     </div>
-    @else(regPrices === 0 || discPrices == 0)
+    @elseif(regPrices === 0 || discPrices == 0)
     <div class="flex mb-1 absolute top-4 right-4  ">
       <p class=" bg-indigo-800 rounded-2xl shadow border border-indigo-700 text-white text-xs font-bold px-3 py-1 mb-1">
         Gratuit

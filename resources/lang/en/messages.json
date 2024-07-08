@@ -187,6 +187,8 @@
   "events_search_date": "the",
   "events_search_category": "for",
   "events_linked_events": "Linked events",
+  "events_top": "Top events",
+  "events_today": "Today's events",
   "events_video_events": "YouTube video",
   "events_no_events": "Unfortunately, there are no events for your selection.",
 

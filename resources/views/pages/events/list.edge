@@ -20,49 +20,16 @@
 <body class=" bg-slate-50">
 @include("pages/partials/header")
 
-<main class="flex flex-col items-center">
+
   
   @include("pages/partials/title")
+  <section class="relative flex flex-col items-center justify-center mb-10">
+  @include("pages/partials/filter_map")
+</section>
 
-    @include("pages/partials/filter_map")
-
-  {{-- @!component('components/categories', {categories})
-  <ul class="flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto mt-5">
-      @each(type in categoryTypes)
-        <li>
-            <div class="flex items-center bg-{{category.slug}} gap-3 text-slate-700  rounded-md px-4 pb-1">
-              <a class="font-semibold"href="/events/search?categoryType={{type.id}}">{{type.name}}</a>
-            </div>
-        </li>
-      @end
-  </ul>
-
-  <div class="flex flex-col z-10 sm:rounded-3xl h-96 w-full sm:max-w-[400px] lg:max-w-[700px] my-4 mx-auto">
-    <div id="map" class="z-10 h-full w-full sm:rounded-3xl mb-6"></div>
-    @!component('components/filters/geo_radius')
-  </div>
-  {{-- <div class="z-10 rounded-xl p-4 pt-6 max-w-80"></div>
-      </div> --}}
-
+  {{-- @include("pages/partials/filter_map") --}}
+<main class="flex justify-center "> 
   
-  <hr class="2xl:container mx-auto mt-2">
-  {{-- Categories  --}}
-    @!component('components/categories', {categories})
-
-
-  <ul class="2xl:container flex flex-wrap justify-center items-center  gap-4 mx-auto mt-8 mb-16">
-    @each(type in categoryTypes)
-      <li>
-        <div class="flex items-center bg-{{category.slug}} gap-3 text-slate-700 text-xs sm:text-md lg:text-base rounded-3xl shadow px-4 py-1 pb-2 duration-300">
-          <a class="font-semibold"href="/events/search?categoryType={{type.id}}">{{type.name}}</a>
-        </div>
-      </li>
-    @end
-  </ul>    
-
-  <hr class="my-6"> --}}
-
-
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>
   @else

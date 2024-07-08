@@ -11,7 +11,7 @@ const EventsController = () => import('#controllers/events/events_controller')
 const WishlistsController = () => import('#controllers/events/wishlists_controller')
 const FavouritesController = () => import('#controllers/vendors/favourites_controller')
 
-router.get('/', [HomeController, 'index']).as('home')
+router.get('/', [EventsController, 'home']).as('home')
 
 router
   .group(() => {

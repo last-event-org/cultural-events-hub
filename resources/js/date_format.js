@@ -24,13 +24,13 @@ function formatDate(startString, endString) {
   
   if (endDay !== day){
 
-    formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} au ${formattedEnd}`;
     formattedEnd = endMinutes > 0 ? `${endDayName} ${endDay} ${endMonth}, ${endHours}h${endMinutes}` 
                                   : `${endDayName} ${endDay} ${endMonth}, ${endHours}h`;
+    formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} au ${formattedEnd}`;
   }else{
     
-    formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} à ${formattedEnd}`;
     formattedEnd = endMinutes > 0 ? ` ${endHours}h${endMinutes}` : `${endHours}h`;
+    formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} à ${formattedEnd}`;
   }
   
   

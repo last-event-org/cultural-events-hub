@@ -1,7 +1,24 @@
 {{-- Categories  --}}
 
 <section class="2xl:container w-full mx-auto 2xl:mt-8 ">
+  {{-- Categories --}}
   <ul class="mx-4">
+    <div class="grid grid-cols-2 grid-categories lg:grid-cols-6 items-center gap-y-2 gap-x-1  my-2 ">
+
+      @each((category) in categories)   
+          <li class="bg-white hover:bg-slate-100 flex items-center justify-between p-2 border shadow rounded-full w-full max-w-[100px] sm:max-w-[140px] lg:max-w-[180px] mx-auto duration-300">
+            <a href="{{route('events.search')}}" data-category="{{ category.id }}" class="flex items-center rounded-md w-full justify-between">
+              <p class="uppercase text-[9px] sm:text-xs lg:text-sm xl:text-base text-slate-700 text-center font-semibold m:pl-2 lg:pl-2 pointer-events-none">{{ category.name }}</p>
+              <div class="rounded-full p-1.5 sm:p-2 bg-{{category.slug}} duration-300 w-7 h-7 sm:h-8 sm:w-8 lg:w-12 lg:h-12 pointer-events-none">
+              <img src=/svg/categories/{{category.slug}}.svg
+              alt="category icon" title="{{category.slug}}" class="pointer-events-none">
+              </div>
+            </a>
+          </li>
+      @end
+    </div>
+  </ul>
+  {{-- <ul class="mx-4">
     <div class="grid grid-cols-2 grid-categories lg:grid-cols-6 items-center gap-y-2 gap-x-1  my-2 ">
 
       @each((category) in categories)   
@@ -21,43 +38,11 @@
         </div>
       @end
     </div>
-  </ul>
+  </ul> --}}
 </section>
 
-{{-- <div class="flex flex-col w-[60px] gap-x-4 lg:gap-x-8 ">  
 
-    <a href="/events/search?category={{ category.id }}">
-        <div class="flex w-12 h-12  rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
-        <img src=/svg/categories/{{category.slug}}.svg
-        alt="category icon" title="{{category.slug}}">
-        </div>
-    </a>
-
-    <li>
-        <div class="flex justify-center items-center gap-2 rounded-md  pt-1">
-            <a class="text-[10px] sm:text-xs lg:text-sm text-slate-700 text-center font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
-        </div>
-    </li>
-
-</div> --}}
-
-{{-- <section>
-    {{-- Categories --}}
-    <ul class="grid grid-cols-3 flex-categories lg:justify-center gap-y-2 sm:gap-y-4 gap-x-8 lg:gap-x-16 my-2 ">
-        @each((category) in categories)   
-
-        <li class="flex flex-col w-[60px] gap-x-4 lg:gap-x-8 items-center justify-center ">
-                <a href="{{route('events.search')}}" data-category="{{ category.id }}" class="">
-                    <img src=/svg/categories/{{category.slug}}.svg
-                    alt="category icon" title="{{category.slug}}" class="flex w-12 h-12 pointer-events-none bg-{{category.slug}} rounded-full p-3 mx-auto ">
-                    <p class="text-[10px] pointer-events-none sm:text-xs lg:text-sm text-slate-700 pt-1 text-center font-semibold">{{ category.name }}</p>
-                </a>
-        </li>
-            
-        @end
-        
-    </ul>
-
+<section>
 
     {{-- Category Types --}}
     <ul class="flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto mt-5">
@@ -67,7 +52,7 @@
         </li>
       @end
   </ul>
-</section> --}}
+</section>
 
 <script src="/resources/js/categories.js"></script>
 

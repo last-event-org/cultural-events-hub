@@ -59,9 +59,9 @@ router
     router.get('/create', [EventsController, 'create']).as('create').use(middleware.auth())
     router.get('/:id', [EventsController, 'show']).as('show')
     router.post('/', [EventsController, 'store']).as('store').use(middleware.auth())
-    router.get('/:id/edit', [EventsController, 'edit']).as('edit')
-    router.patch('/:id', [EventsController, 'update']).as('update')
-    router.delete('/:id', [EventsController, 'destroy']).as('destroy')
+    router.get('/:id/edit', [EventsController, 'edit']).as('edit').use(middleware.auth())
+    router.patch('/:id', [EventsController, 'update']).as('update').use(middleware.auth())
+    router.delete('/:id', [EventsController, 'destroy']).as('destroy').use(middleware.auth())
   })
   .prefix('events')
   .as('events')
@@ -106,4 +106,6 @@ router.post('/events/:id', [CartController, 'store']).as('store').use(middleware
 
 // API CALLS
 router.get('/api/getEvents', [ListEvents, 'getEvents'])
+router.get('/api/getAllEvents', [ListEvents, 'getAllEvents'])
 router.get('/api/getEventsByDate', [ListEvents, 'getEventsByDate'])
+router.get('/api/search', [ListEvents, 'getEventsSearch'])

@@ -13,7 +13,7 @@
     {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
     {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
   </title>
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 
@@ -24,7 +24,20 @@
   
   @include("pages/partials/title")
 
-  
+  <section class="relative flex flex-col items-center justify-center ">
+    @include("pages/partials/filter_map")
+  </section>
+
+  {{-- @!component('components/categories', {categories})
+  <ul class="flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto mt-5">
+      @each(type in categoryTypes)
+        <li>
+            <div class="flex items-center bg-{{category.slug}} gap-3 text-slate-700  rounded-md px-4 pb-1">
+              <a class="font-semibold"href="/events/search?categoryType={{type.id}}">{{type.name}}</a>
+            </div>
+        </li>
+      @end
+  </ul>
 
   <div class="flex flex-col z-10 sm:rounded-3xl h-96 w-full sm:max-w-[400px] lg:max-w-[700px] my-4 mx-auto">
     <div id="map" class="z-10 h-full w-full sm:rounded-3xl mb-6"></div>
@@ -49,7 +62,8 @@
     @end
   </ul>    
 
-  
+  <hr class="my-6"> --}}
+
 
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>
@@ -69,7 +83,8 @@
 
 <script src="/resources/js/date_format.js"></script>
 <script src="/resources/js/countdown.js"></script>
-<script src="/resources/js/map_home.js"></script>
+<script type="module" src="/resources/js/map_home.js"></script>
+
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -78,11 +93,11 @@
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""></script>
   <script>
-    window.latitude = "{{ latitude }}";
-    window.longitude = "{{ longitude }}";
+    if({{latitude}}) {
+      window.latitude = "{{ latitude }}";
+      window.longitude = "{{ longitude }}";
+    }     
 </script>
-
-
 
 </body>
 </html>

@@ -75,9 +75,12 @@
 
   </section>
 
+
   <hr class="2xl:container mx-auto mt-2">
-  {{-- Categories  --}}
-    @!component('components/categories', {categories})
+
+      {{-- Categories & Category Types --}}
+       @!component('components/categories', {categories, categoryTypes, category})
+
 
 
 <script src="/resources/js/filters-buttons/date_picker.js"></script>

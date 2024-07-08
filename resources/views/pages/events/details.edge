@@ -105,14 +105,15 @@
                 <div class="flex flex-col lg:flex-row lg:justify-between gap-2 items-center ">
 
                   <div class="flex items-center gap-2 mt-4 lg:mt-0">
-                    <div class=" bg-{{event.categoryTypes[0].category.slug}} w-6 h-6 lg:w-10 lg:h-10 rounded-full  top-5 left-4 ">
+                    <div class=" bg-{{event.categoryTypes[0].category.slug}} w-6 h-6 lg:w-10 lg:h-10 rounded-full top-5 left-4 ">
                       <img class="p-1.5 lg:p-2 h-full w-full" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">
                     </div>  
                     <h4 class="font-semibold lg:text-lg">
-                      {{event.categoryTypes[0].category.name}} :
+                      <a href="/events/search?category={{event.categoryTypes[0].category.id}}">{{event.categoryTypes[0].category.name}}</a> :
                       <span>
                         @each(item in event.categoryTypes)
-                            {{item.name}}   
+                        <a href="/events/search?categoryType={{item.id}}">
+                            {{item.name}}</a>   
                         @end
                       </span></h4>
                   </div>
@@ -193,7 +194,7 @@
               data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
             </p>
               <p class="font-bold text-xl text-slate-700">
-                {{event.location.name}}
+                <a href='/events/search?location={{event.location.id}}'>{{event.location.name}}</a>
               </p>
               <p class="text-sm text-slate-500">
                 {{event.location.street}} {{event.location.number}}, {{event.location.zipCode}} {{event.location.city}} - {{event.location.country}}
@@ -211,8 +212,8 @@
           <section class="flex flex-col lg:flex-row justify-center items-center sm:bg-white sm:rounded-3xl sm:shadow sm:border mt-10 lg:p-4 sm:mx-4 lg:mx-8">
             <div class="w-full h-full lg:w-3/5 lg:h-3/5 ">
               <div class="video-container ">
-                <iframe src="https://www.youtube.com/embed/xm3YgoEiEDc" frameborder="0" allowfullscreen></iframe>
-                {{-- <iframe src="{{ event.youtubeLink || '' }}" frameborder="0" allowfullscreen></iframe> --}}
+                {{-- <iframe src="https://www.youtube.com/embed/xm3YgoEiEDc" frameborder="0" allowfullscreen></iframe> --}}
+                <iframe src="{{ event.youtubeLink || '' }}" frameborder="0" allowfullscreen></iframe>
               </div>
             </div>
 

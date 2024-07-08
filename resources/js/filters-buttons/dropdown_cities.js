@@ -1,12 +1,16 @@
 import { getCoordinatesFromCity } from '../geolocation'
 import { createMap } from '../map_home'
-console.log('dropdown cities')
+
 const cityInput = document.getElementById('city-chosen')
 const buttonCity = document.getElementById('button-city')
 const cityList = document.getElementById('city-list')
 
 document.addEventListener('DOMContentLoaded', () => {
   eventListenerOnList()
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.get('city') !== '') {
+    cityInput.value = urlParams.get('city')
+  }
 
   buttonCity.addEventListener('click', () => {
     console.log('click buttoncity')

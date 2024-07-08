@@ -161,7 +161,14 @@
                         <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
                     </div>
-                </div> 
+                  </div> 
+                  @if(flashMessages.has('errorMissingAddress'))
+                    <div>
+                      <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                        {{ flashMessages.get('errorMissingAddress') }}
+                      </h2>
+                    </div>
+                  @endif
 
                 <div class="flex text-sm gap-2 w-full">
                   <div class="flex flex-col w-1/2">
@@ -286,6 +293,13 @@
                   <div style="color: red;">{{ $message.message }}</div>
               @end
           </div>
+          @if(flashMessages.has('errorMissingCategType'))
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                {{ flashMessages.get('errorMissingCategType') }}
+              </h2>
+            </div>
+          @endif
         </section> 
       </div> 
  
@@ -381,6 +395,14 @@
       {{-- </div> --}}
     </section>
 
+        </section>
+        @if(flashMessages.has('errorEditEventPrices'))
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                {{ flashMessages.get('errorEditEventPrices') }}
+              </h2>
+            </div>
+          @endif
 
         <div class="flex justify-center my-2">
           <button type="submit" class="uppercase bg-yellow-500 text-black font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 

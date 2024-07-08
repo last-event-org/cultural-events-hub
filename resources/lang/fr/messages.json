@@ -32,6 +32,8 @@
   "login_login": "Connexion",
   "login_invalid": "Identifiants invalides",
 
+  "date_from": "du",
+
   "profile_type_title": "Type de Profil",
   "profile_type_welcome": "Bienvenue { userFirstname }! Que voulez vous faire ?",
   "profile_type_buy": "Acheter des places",

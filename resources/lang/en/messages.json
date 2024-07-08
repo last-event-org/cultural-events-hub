@@ -32,6 +32,8 @@
   "login_login": "Log in",
   "login_invalid": "Invalid credentials",
 
+  "date_from": "from",
+
   "profile_type_title": "Profile type",
   "profile_type_welcome": "Welcome { userFirstname }! What do you want to do ?",
   "profile_type_buy": "Buy tickets",

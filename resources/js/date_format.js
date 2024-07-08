@@ -26,10 +26,10 @@ function formatDate(startString, endString) {
 
     formattedEnd = endMinutes > 0 ? `au ${endDayName} ${endDay} ${endMonth} ${endHours}h${endMinutes}` 
                                   : `au ${endDayName} ${endDay} ${endMonth} ${endHours}h`;
-    formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} ${formattedEnd}`;
+    formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} à ${formattedEnd}`;
   }else{
     
-    formattedEnd = endMinutes > 0 ? `à ${endHours}h${endMinutes}` : `${endHours}h`;
+    formattedEnd = endMinutes > 0 ? ` ${endHours}h${endMinutes}` : `${endHours}h`;
     formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} à ${formattedEnd}`;
   }
   

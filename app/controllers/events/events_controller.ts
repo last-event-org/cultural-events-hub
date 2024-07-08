@@ -504,7 +504,7 @@ export default class EventsController {
       event.location.country = addressPayload.country
 
       try {
-        const [latitude, longitude] = await this.getCoordinatesFromAddress(
+        const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
           event.location.city,
           event.location.street,
           event.location.zipCode,

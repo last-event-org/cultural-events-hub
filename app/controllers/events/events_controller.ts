@@ -1,186 +1,68 @@
-import { HttpContext } from '@adonisjs/core/http'
-import { createEventValidator } from '#validators/event'
-import Event from '#models/event'
+import env from '#start/env'
 import { DateTime } from 'luxon'
+import fs from 'fs'
+import { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
+import { errors } from '@vinejs/vine'
+
+import Event from '#models/event'
 import Category from '#models/category'
 import CategoryType from '#models/category_type'
-import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import Price from '#models/price'
-import { createMediaValidator } from '#validators/media'
 import Media from '#models/media'
-import AddressesController from '#controllers/addresses_controller'
-import fs from 'fs'
 import Indicator from '#models/indicator'
+
+import { createEventValidator } from '#validators/event'
+import { createAddressValidator } from '#validators/address'
+import { createMediaValidator } from '#validators/media'
 import { createPricesValidator } from '#validators/price'
-import User from '#models/user'
-import db from '@adonisjs/lucid/services/db'
 import { queryValidator } from '#validators/query'
+import User from '#models/user'
 
 export default class EventsController {
   /**
    * Display a list of resource
    */
-  async index({ request, view }: HttpContext) {
-    const requestQuery = request.qs()
-    let events
-    let title: string | null = ''
-    let categories: any[] = []
-    let dayBegin: string
-    let dayEnd: string
-    let categoryName: string
-    let categoryTypeName: string
+  async index({ view }: HttpContext) {
+    // get all events up to now
 
-    // Check if there is no params in the query
-    if (Object.keys(request.qs()).length === 0) {
-      events = await Event.query()
-        .preload('location')
-        .preload('categoryTypes', (categoryTypesQuery) => {
-          categoryTypesQuery.preload('category')
-        })
-        .preload('indicators')
-        .preload('prices')
-        .preload('media')
-        .orderBy('event_start', 'desc')
+    const categories = await Category.all()
 
-      title = 'Agenda complet'
-      return view.render('pages/events/list', { events: events, title: title })
-    }
-    // get events by one category or category-type and date - OK
-    // TODO validate data if no category or category-type
-    // TODO preload datas as in home
-    if (requestQuery['category'] || requestQuery['category-type']) {
-      let categoryTypesId: any[] = []
-
-      if (requestQuery['category']) {
-        const category = await Category.find(requestQuery['category'])
-        categoryName = category?.name
-        categories = await category?.related('categoryTypes').query()
-        categories?.forEach((categoryType) => {
-          categoryTypesId.push(categoryType.$attributes.id)
-        })
-        title = 'Vos events pour ' + category?.name
-      } else if (requestQuery['category-type']) {
-        const categoryTypeId = await CategoryType.find(requestQuery['category-type'])
-        categoryTypeName = categoryTypeId?.name
-        const category = await Category.find(categoryTypeId?.categoryId)
-        categoryName = category?.name
-        categoryTypesId.push(categoryTypeId?.id ?? 1)
-        title = 'Vos events pour ' + category?.name + ' / ' + categoryTypeId?.name
-      }
-      if (requestQuery['date']) {
-        // TODO verify if the date is in the correct format
-        let date = DateTime.fromISO(requestQuery['date'])
-
-        dayBegin = date.toSQL() ?? ''
-        dayEnd = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
-        events = await Event.query()
-          .whereHas('categoryTypes', (query) => {
-            query.whereInPivot('category_type_id', categoryTypesId)
-          })
-          .whereBetween('event_start', [dayBegin, dayEnd])
-          .preload('location')
-          .preload('categoryTypes', (categoryTypesQuery) => {
-            categoryTypesQuery.preload('category')
-          })
-          .preload('indicators')
-          .preload('prices')
-          .preload('media')
-          .orderBy('event_start', 'asc')
-      } else {
-        events = await Event.query()
-          .whereHas('categoryTypes', (query) => {
-            query.whereInPivot('category_type_id', categoryTypesId)
-          })
-          .preload('location')
-          .preload('categoryTypes', (categoryTypesQuery) => {
-            categoryTypesQuery.preload('category')
-          })
-          .preload('indicators')
-          .preload('prices')
-          .preload('media')
-          .orderBy('event_start', 'asc')
-      }
-
-      // console.log(events.length)
-
-      return view.render('pages/events/list', {
-        events: events,
-        title: title,
-        categories: categories,
-        categoryName: categoryName,
-        categoryTypeName: categoryTypeName,
+    const events = await Event.query()
+      .where('event_start', '>=', new Date().toISOString())
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
       })
-    }
+      .preload('indicators')
+      .preload('prices')
+      .preload('media')
+      .orderBy('event_start', 'asc')
 
-    // get events by one locationID (i.e. le forum) - OK
-    // TODO validation if location do not exist
-    if (requestQuery['location']) {
-      const location = await Address.find(requestQuery['location'])
-      if (requestQuery['date']) {
-        console.log(requestQuery['date'])
-      } else {
-        if (location !== undefined) {
-          title = 'Vos événements à ' + location?.name
-          events = await Event.query()
-            .where('location_id', requestQuery['location'])
-            .orderBy('event_start', 'asc')
-            .preload('location')
-            .preload('categoryTypes', (categoryTypesQuery) => {
-              categoryTypesQuery.preload('category')
-            })
-            .preload('indicators')
-            .preload('prices')
-            .preload('media')
-            .orderBy('event_start', 'asc')
-          title = 'Events pour une location'
-          return view.render('pages/events/list', { events: events, title: title })
-        }
-      }
-    }
+    return view.render('pages/events/list', { events: events, categories: categories })
+  }
 
-    // get events based on one specifc date - OK
-    // TODO validation if date not in correct format
-    if (requestQuery['date']) {
-      console.log('DATE')
-      let date = DateTime.fromISO(requestQuery['date'])
+  // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
 
-      dayBegin: string = date.toSQL() ?? ''
-      dayEnd: string = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
-      events = await Event.query().whereBetween('event_start', [dayBegin, dayEnd])
-      title = date.setLocale('fr').toFormat('dd-MM-yyyy')
-      return view.render('pages/events/list', { events: events, title: title })
-    }
-
-    // get events by one vendorID - OK
-    // TODO validation if vendor do not exist
-    if (requestQuery['vendor']) {
-      events = await Event.query()
-        .where('vendor_id', requestQuery['vendor'])
-        .orderBy('event_start', 'asc')
-        .preload('location')
-        .preload('categoryTypes', (categoryTypesQuery) => {
-          categoryTypesQuery.preload('category')
-        })
-        .preload('indicators')
-        .preload('prices')
-        .preload('media')
-        .orderBy('event_start', 'asc')
-      title = 'Event pour un vendeur'
-
-      return view.render('pages/events/list', { events: events, title: title })
-    }
-
-    if (requestQuery['city']) {
-      let [events, title] = await this.citySearch(request)
-      return view.render('pages/events/location', {
-        // events: events,
-        title: title,
-        city: requestQuery['city'],
+  async tickets({ view }: HttpContext) {
+    const categories = await Category.all()
+    // get all events with tickets up to now
+    const events = await Event.query()
+      .andWhere('event_start', '>=', new Date().toISOString())
+      .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
       })
-    }
+      .preload('indicators')
+      .preload('prices')
+      .preload('media', (mediaQuery) => {
+        mediaQuery.select('path', 'altName')
+      })
+      .orderBy('event_start', 'asc')
 
-    // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
+    return view.render('pages/events/list', { events: events, categories: categories })
   }
 
   /**
@@ -196,30 +78,6 @@ export default class EventsController {
       categoryTypes: categoryTypes,
       indicators: indicators,
     })
-  }
-
-  async citySearch(request: HttpContext['request']) {
-    const requestQuery = request.qs()
-    let events
-    let title: string | null = ''
-
-    // TODO validation if city do not exist
-    if (requestQuery['city']) {
-      events = await Event.query()
-        .orderBy('event_start', 'asc')
-        .preload('location')
-        .preload('categoryTypes', (categoryTypesQuery) => {
-          categoryTypesQuery.preload('category')
-        })
-        .preload('indicators')
-        .preload('prices')
-        .preload('media')
-        .orderBy('event_start', 'asc')
-
-      title = 'Event sur ' + requestQuery['city']
-    }
-
-    return [events, title]
   }
 
   /**
@@ -240,42 +98,113 @@ export default class EventsController {
     }
   }
 
-  async search({ request, view }: HttpContext) {
+  async search({ request, response, view }: HttpContext) {
+    const qs = request.qs()
     let payload
+    let [latitude, longitude] = [50.645138, 5.57342]
+    let ids: any
+    let radius: any = 15
+    let [dayBegin, dayEnd]: any = [0, 0]
+    let dateTitle
+    let categoryTypeName: string | undefined
+    let category: any
+    let vendorName: string | undefined | null
+    let locationName: string | undefined
+    let categoryTypesId: any[] = []
+    let categoryTypes: any
+
+    const categories = await Category.query().select('name', 'slug', 'id')
+
     try {
       payload = await request.validateUsing(queryValidator)
-      const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${payload.city}&boundary.country=BE`
-      )
-      const datas = await response.json()
-      let [latitude, longitude] = [0, 0]
-      if (datas) {
-        ;[latitude, longitude] = [
-          datas.features[0].geometry.coordinates[1],
-          datas.features[0].geometry.coordinates[0],
-        ]
-      }
-
-      const [dayBegin, dayEnd] = await this.formatDate(payload.date)
-      const events = await this.findEventsByLocation(
-        latitude,
-        longitude,
-        payload.radius,
-        dayBegin,
-        dayEnd
-      )
-
-      let date = new Date(dayBegin).toISOString()
-      let newDate = DateTime.fromISO(date)
-
-      return view.render('pages/events/list', {
-        events: events,
-        location: payload.city,
-        date: newDate.toLocaleString({ day: 'numeric', month: 'long' }),
-      })
     } catch (error) {
-      console.error('Error at search():', error)
+      if (error instanceof errors.E_VALIDATION_ERROR) {
+        console.log(error.messages)
+      }
+      response.redirect().back()
     }
+
+    if (qs.city) {
+      try {
+        ;[latitude, longitude] = await this.getCoordinatesFromCity(payload?.city)
+
+        if (qs.radius) {
+          radius = payload?.radius
+        }
+        ids = await this.findEventsIDByLocation(latitude, longitude, radius)
+      } catch (error) {
+        response.redirect().back()
+      }
+    }
+
+    if (qs.date) {
+      ;[dayBegin, dayEnd] = await this.formatDate(payload?.date)
+      let date = new Date(dayBegin).toISOString()
+      dateTitle = DateTime.fromISO(date)
+    }
+
+    if (qs.location) {
+      const location = await Address.query().select('name').where('id', qs.location).first()
+      locationName = location?.name
+    }
+
+    if (qs.vendor) {
+      const vendor = await User.query().select('company_name').where('id', qs.vendor).first()
+      vendorName = vendor?.companyName
+    }
+
+    if (qs.categoryType) {
+      const categoryTypeId = await CategoryType.find(qs.categoryType)
+      categoryTypeName = categoryTypeId?.name
+      category = await categoryTypeId
+        ?.related('category')
+        .query()
+        .select('name', 'id', 'slug')
+        .preload('categoryTypes')
+        .first()
+      console.log(category)
+      categoryTypes = category?.categoryTypes
+      categoryTypesId = [qs.categoryType]
+    } else if (qs.category) {
+      category = await Category.find(qs.category)
+      categoryTypes = await category?.related('categoryTypes').query()
+      categoryTypes?.forEach((categoryType: any) => {
+        categoryTypesId.push(categoryType.$attributes.id)
+      })
+    }
+    const events = await Event.query()
+      .if(qs.city, (query) => query.whereIn('id', ids))
+      .if(qs.vendor, (query) => query.where('vendor_id', qs.vendor))
+      .if(qs.location, (query) => query.where('location_id', qs.location))
+      .if(qs.date, (query) => query.whereBetween('event_start', [dayBegin, dayEnd]))
+      .if(categoryTypesId.length > 0, (query) =>
+        query.whereHas('categoryTypes', (categoryTypeQuery) => {
+          categoryTypeQuery.whereInPivot('category_type_id', categoryTypesId)
+        })
+      )
+      .if(!qs.date, (query) => query.where('event_start', '>=', new Date().toISOString()))
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
+      .preload('media')
+      .orderBy('event_start', 'asc')
+
+    return view.render('pages/events/list', {
+      events: events.length === 0 ? null : events,
+      city: payload?.city ?? null,
+      date: dateTitle?.toLocaleString({ day: 'numeric', month: 'long' }) ?? null,
+      category: category ?? null,
+      categoryType: categoryTypeName ?? null,
+      vendor: vendorName ?? null,
+      location: locationName ?? null,
+      categoryTypes: categoryTypes ?? null,
+      categories: categories,
+      latitude: latitude,
+      longitude: longitude,
+    })
   }
 
   async formatDate(dateQuery: any) {
@@ -286,13 +215,7 @@ export default class EventsController {
     return [dayBegin, dayEnd]
   }
 
-  async findEventsByLocation(
-    lat: number,
-    long: number,
-    radius: number,
-    dayBegin: string,
-    dayEnd: string
-  ) {
+  async findEventsIDByLocation(lat: number, long: number, radius: number) {
     const eventsId = await db.rawQuery(`
     SELECT e.id
     FROM events e
@@ -300,7 +223,7 @@ export default class EventsController {
     WHERE ST_Distance_Sphere(
         POINT(l.longitude, l.latitude), 
         POINT(${long}, ${lat})
-    ) <= ${radius * 1000}
+    ) <= ${radius ? radius * 1000 : 15 * 1000}
   `)
     // Radius in meters
 
@@ -308,20 +231,7 @@ export default class EventsController {
     eventsId[0].forEach((element: any) => {
       ids.push(element.id)
     })
-
-    const events = await Event.query()
-      .whereIn('id', ids)
-      .whereBetween('event_start', [dayBegin, dayEnd])
-      .preload('location')
-      .preload('categoryTypes', (categoryTypesQuery) => {
-        categoryTypesQuery.preload('category')
-      })
-      .preload('indicators')
-      .preload('prices')
-      .preload('media')
-      .orderBy('event_start', 'asc')
-
-    return events
+    return ids
   }
 
   async createEvent(
@@ -415,7 +325,7 @@ export default class EventsController {
     address.city = addressPayload.city
     address.country = addressPayload.country
     try {
-      const [latitude, longitude] = await this.getCoordinatesFromAddress(
+      const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
         address.city,
         address.street,
         address.zipCode,
@@ -423,17 +333,34 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) { }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
+  }
+
+  async getCoordinatesFromCity(city: string) {
+    console.log('getCoordinatesFromCity')
+    try {
+      const response = await fetch(
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&country=belgium&locality=${city}&boundary.country=BE`
+      )
+      const datas = await response.json()
+      console.log(datas)
+      return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
+    } catch (e) {
+      console.log('ERROR')
+      console.log(e)
+    }
+    // lat: data.features[0].geometry.coordinates[1],
+    // lng: data.features[0].geometry.coordinates[0],
   }
 
   async getCoordinatesFromAddress(city: string, street: string, zip: number, number: string) {
     console.log('getCoordinatesFromAddress')
     try {
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
       console.log(datas)
@@ -536,7 +463,8 @@ export default class EventsController {
   /**
    * Edit individual record
    */
-  async edit({ params, view }: HttpContext) {
+  async edit({ params, view, auth }: HttpContext) {
+    await auth.check()
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
     const indicators = await Indicator.all()
@@ -669,6 +597,7 @@ export default class EventsController {
   async update({ i18n, params, request, session, response }: HttpContext) {
     const payload = await request.validateUsing(createEventValidator)
     // const event = await Event.findOrFail(params['id'])
+
     const event = await Event.query()
       .where('id', '=', params['id'])
       .preload('location')
@@ -679,11 +608,14 @@ export default class EventsController {
       .preload('prices')
       .first()
 
-    if (event) {
 
+    if (event) {
       event.title = payload.title
       event.subtitle = payload.subtitle
       event.description = payload.description
+
+
+      // TODO practical data (address)
 
       // Date
       event.eventStart = DateTime.fromISO(payload.event_start)
@@ -695,26 +627,28 @@ export default class EventsController {
       }
 
       // Links (allow empty links)
-      if (payload.facebook_link && payload.facebook_link != '') {
+      if (payload.facebook_link && payload.facebook_link !== '') {
         event.facebookLink = payload.facebook_link
       } else {
         event.facebookLink = ''
       }
-      if (payload.instagram_link && payload.instagram_link != '') {
+      if (payload.instagram_link && payload.instagram_link !== '') {
         event.instagramLink = payload.instagram_link
       } else {
         event.instagramLink = ''
       }
-      if (payload.website_link && payload.website_link != '') {
+      if (payload.website_link && payload.website_link !== '') {
         event.websiteLink = payload.website_link
       } else {
         event.websiteLink = ''
       }
+
       if (payload.youtube_link && payload.youtube_link != '') {
         // TODO constructing the embed youtube url from the normal url
         // ex of normal url: https://www.youtube.com/watch?v=Ij6We_hu4Lg&ab_channel=LotuSProject-Topic
         // in this one there is also a 'channel' part that MUST be removed
         // this should become: https://www.youtube.com/embed/Ij6We_hu4Lg
+
         event.youtubeLink = payload.youtube_link
         const watch = "watch?v="
         if (event.youtubeLink.includes(watch)) {
@@ -744,5 +678,5 @@ export default class EventsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) { }
+  async destroy({ params }: HttpContext) {}
 }

@@ -1,136 +1,75 @@
-
-
 {{-- Big Search Bar --}}
-<form action="{{ route('events.search') }}" method="get">
+<form id="BSB" action="{{ route('events.search') }}" method="get">
   {{ csrfField() }}
-<section id="big-search-bar-container" class="open-sans relative hidden sm:flex bg-white border shadow rounded-full h-full my-4 w-[90vw] lg:w-auto justify-between text-sm md:text-base items-center">
+  <section id="big-search-bar-container" class="grid grid-cols-[34%,1%,31%,1%,22%,10%] open-sans text-xs sm:text-base relative sm:flex bg-white border shadow rounded-full h-full my-4 w-[98vw] lg:w-auto justify-between items-center max-w-[900px]">
   
-  <div id="button-date" class="relative flex flex-col button text-left bg-white hover:bg-slate-100 pl-4 sm:pl-6 lg:px-6 xl:px-10 py-4 rounded-full duration-500 cursor-pointer">
-    
-    <label class="text-slate-800 font-semibold cursor-pointer">
-
-      {{ i18n.t('messages.map_when') }}</label>
-    <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off" required>
-    <input type="text" name="date" id="date-query" class="hidden">
-
-    <div id="calendar" class="hidden absolute  top-[5.5rem] left-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg w-screen sm:w-auto px-2 py-8">
-      <section  class="scale-[.79] sm:scale-125 sm:px-16">
-        @!component('components/filters/date_picker')
-      </section>  
-    </div>
-  </div>
-  <div class="h-12 h-max-full lg:my-4 my-2 border-l border-slate-200"></div>
-
-  <div id="button-city" class="relative flex flex-col button text-left bg-white focus:bg-white hover:bg-slate-100 lg:px-6 xl:px-10 xl:py-4 pl-2 py-4 rounded-full duration-500 cursor-pointer">
-    
-    <label class="text-slate-800 font-semibold cursor-pointer">
-      {{ i18n.t('messages.map_where') }}</label>
-    <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off" required>
-
-    
-    <div id="city-list" class="absolute w-full top-[5.5rem] right-0 z-[100] bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
-      @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
-        <option name="city" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
-      @end
-    </div>
+    <div id="button-date" class="relative flex flex-col button text-left bg-white hover:bg-slate-100 date-pl lg:px-6 xl:px-10 py-4 rounded-full duration-500 cursor-pointer">
   
-  </div>
-  <div class="h-12 h-max-full my-2 lg:my-4 border-l border-slate-200"></div>
+      <label class="text-slate-800 font-semibold cursor-pointer">
 
-  <div id="button-map" class="relative flex flex-col button text-left bg-white hover:bg-slate-100 pl-2 lg:px-6 py-4 xl:px-10 rounded-full duration-500">
-    
-    <label class="text-slate-800 font-semibold cursor-pointer">
-      {{ i18n.t('messages.map_map') }}</label>
-    <input type="text" name="radius" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent text-slate-400" id="chosen-radius" autocomplete="off" required>
-
-    <div id="map-popup" class="bg-white border rounded-3xl shadow hidden absolute z-10 left-0 top-[5.5rem] justify-center items-center">
-      {{-- <div class="z-10 rounded-xl p-8 h-80 w-80 max-w-80 sm:h-96 sm:w-96 sm:max-w-96">
-      <div id="map" class="h-full w-full rounded-md"></div>
-    </div> --}}
-    <div class="z-10 rounded-xl p-4 pt-6 w-80"></div>
-    @!component('components/filters/geo_radius')
-    </div>
-
-  </div>
-
-  <button id="button-search" type="submit"
-    class="button flex items-center gap-4 bg-yellow-500 py-4 px-4 rounded-full border-8 border-white hover:bg-yellow-400 duration-500">
-    {{-- <label class=" text-slate-800 text-xl font-semibold">
-      Rechercher</label> --}}
-    <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" fill="#000000" viewBox="0 0 512 512">
-      <path d="M 363.03660886319847 205.1946050096339 Q 363.03660886319847 162.77456647398844 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 Q 320.616570327553 89.77263969171483 284.11560693641616 68.0693641618497 Q 246.6281310211946 47.35260115606936 205.1946050096339 47.35260115606936 Q 163.76107899807323 47.35260115606936 126.27360308285164 68.0693641618497 Q 89.77263969171483 89.77263969171483 68.0693641618497 126.27360308285164 Q 47.35260115606936 162.77456647398844 47.35260115606936 205.1946050096339 Q 47.35260115606936 247.6146435452794 68.0693641618497 284.11560693641616 Q 89.77263969171483 320.616570327553 126.27360308285164 342.3198458574181 Q 163.76107899807323 363.03660886319847 205.1946050096339 363.03660886319847 Q 246.6281310211946 363.03660886319847 284.11560693641616 342.3198458574181 Q 320.616570327553 320.616570327553 342.3198458574181 284.11560693641616 Q 363.03660886319847 247.6146435452794 363.03660886319847 205.1946050096339 L 363.03660886319847 205.1946050096339 Z M 332.45472061657034 365.9961464354528 Q 279.1830443159923 409.402697495183 205.1946050096339 410.3892100192678 Q 118.38150289017341 408.4161849710983 60.177263969171484 350.21194605009634 Q 1.9730250481695568 292.0077071290944 0 205.1946050096339 Q 1.9730250481695568 118.38150289017341 60.177263969171484 60.177263969171484 Q 118.38150289017341 1.9730250481695568 205.1946050096339 0 Q 292.0077071290944 1.9730250481695568 350.21194605009634 60.177263969171484 Q 408.4161849710983 118.38150289017341 410.3892100192678 205.1946050096339 Q 409.402697495183 279.1830443159923 365.9961464354528 332.45472061657034 L 498.1888246628131 464.64739884393066 L 498.1888246628131 464.64739884393066 Q 512 481.4181117533719 498.1888246628131 498.1888246628131 Q 481.4181117533719 512 464.64739884393066 498.1888246628131 L 332.45472061657034 365.9961464354528 L 332.45472061657034 365.9961464354528 Z"/>
-    </svg>
-  </button>
-  
-</section>
-</form>
-
-
-
-
-
-{{-- Mobile search bar  --}} 
-
-<form class="sm:hidden"action="{{ route('events.search') }}" method="get" >
-  {{ csrfField() }}
-<section id="big-search-bar" class="grid grid-cols-[37%,1%,22%,1%,29%,10%] sm:hidden w-[98vw] open-sans relative bg-white border rounded-full shadow my-2 text-xs">
-  <div class="flex justify-center button text-left bg-white duration-500 pl-6 rounded-full  cursor-pointer">
-    <input type="text" placeholder="R-10km" class="text-slate-700 bg-transparent">
-  </div> 
-  <div class="h-10 my-auto border-l border-slate-200"></div>
-  <div class="flex flex-col justify-center button text-left bg-white cursor-pointer">
-    <input type="text" placeholder="Liège" class="text-slate-700 bg-transparent">
-  </div> 
-  <div class="h-10 my-auto border-l border-slate-200"></div>
-  <div class="flex flex-col justify-center button text-left bg-white cursor-pointer">
-    <input type="text" placeholder="09/10/24" class="text-slate-700 bg-transparent">
-  </div> 
-  <button id="button-search" type="submit"
-    class="w-[69px] justify-self-end button flex items-center gap-4 bg-yellow-500 py-4 px-4 rounded-full border-8 border-white hover:bg-yellow-400 duration-500">
-    {{-- <label class=" text-slate-800 text-xl font-semibold">
-      Rechercher</label> --}}
-    <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" fill="#000000" viewBox="0 0 512 512">
-      <path d="M 363.03660886319847 205.1946050096339 Q 363.03660886319847 162.77456647398844 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 Q 320.616570327553 89.77263969171483 284.11560693641616 68.0693641618497 Q 246.6281310211946 47.35260115606936 205.1946050096339 47.35260115606936 Q 163.76107899807323 47.35260115606936 126.27360308285164 68.0693641618497 Q 89.77263969171483 89.77263969171483 68.0693641618497 126.27360308285164 Q 47.35260115606936 162.77456647398844 47.35260115606936 205.1946050096339 Q 47.35260115606936 247.6146435452794 68.0693641618497 284.11560693641616 Q 89.77263969171483 320.616570327553 126.27360308285164 342.3198458574181 Q 163.76107899807323 363.03660886319847 205.1946050096339 363.03660886319847 Q 246.6281310211946 363.03660886319847 284.11560693641616 342.3198458574181 Q 320.616570327553 320.616570327553 342.3198458574181 284.11560693641616 Q 363.03660886319847 247.6146435452794 363.03660886319847 205.1946050096339 L 363.03660886319847 205.1946050096339 Z M 332.45472061657034 365.9961464354528 Q 279.1830443159923 409.402697495183 205.1946050096339 410.3892100192678 Q 118.38150289017341 408.4161849710983 60.177263969171484 350.21194605009634 Q 1.9730250481695568 292.0077071290944 0 205.1946050096339 Q 1.9730250481695568 118.38150289017341 60.177263969171484 60.177263969171484 Q 118.38150289017341 1.9730250481695568 205.1946050096339 0 Q 292.0077071290944 1.9730250481695568 350.21194605009634 60.177263969171484 Q 408.4161849710983 118.38150289017341 410.3892100192678 205.1946050096339 Q 409.402697495183 279.1830443159923 365.9961464354528 332.45472061657034 L 498.1888246628131 464.64739884393066 L 498.1888246628131 464.64739884393066 Q 512 481.4181117533719 498.1888246628131 498.1888246628131 Q 481.4181117533719 512 464.64739884393066 498.1888246628131 L 332.45472061657034 365.9961464354528 L 332.45472061657034 365.9961464354528 Z"/>
-    </svg>
-  </button>
-
-</section>  
-</form>  
-
-{{-- map  --}}
-<div class="z-0 rounded-3xl h-80 w-full sm:max-w-[400px] lg:max-w-[700px] my-4">
-  <div id="map" class="h-full w-full sm:rounded-3xl"></div>
-</div>
-
-
-{{-- Categories  --}}
-<section>
-
-  <ul>
-    <div class="grid grid-cols-3 flex-categories lg:justify-center gap-y-2 sm:gap-y-4 gap-x-8 lg:gap-x-16 my-2 ">
-  
-      @each((category, index) in categories)   
-      <div class="flex flex-col w-[60px] gap-x-4 lg:gap-x-8 ">  
-  
-        <a href="/events/?category={{ category.id }}">
-          <div class="flex w-12 h-12  rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
-            <img src=/svg/categories/{{category.slug}}.svg
-            alt="category icon" title="{{category.slug}}">
-          </div>
-        </a>
-  
-        <li>
-          <div class="flex justify-center items-center gap-2 rounded-md  pt-1">
-            <a class="text-[10px] sm:text-xs lg:text-sm text-slate-700 text-center font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
-          </div>
-        </li>
-      
+        {{ i18n.t('messages.map_when') }}</label>
+        <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off" >
+        <input type="text" name="date" id="date-query" class="hidden">
+        
+        <div id="calendar" class="hidden absolute w-[98vw] top-[70px] right-0 sm:top-[5.5rem] left-0 z-20 bg-white border border-gray-200 rounded-3xl shadow-lg lg:w-[560px] px-2 sm:py-8">
+          <section  class="scale-[.79] sm:scale-125 sm:px-16 ">
+            @!component('components/filters/date_picker')
+          </section>  
+        </div>
       </div>
-      @end
-    </div>
-  </ul>
-
-</section>
+      <div class="h-8 sm:h-12 h-max-full lg:my-4 my-2 border-l border-slate-200"></div>
 
 
+      <div id="button-city" class="lg:relative flex flex-col button text-left bg-white focus:bg-white hover:bg-slate-100 lg:px-6 xl:px-10 xl:py-4 pl-2 sm:px-6 py-4 rounded-full duration-500 cursor-pointer">
+        
+        <label class="text-slate-800 font-semibold cursor-pointer">
+          {{ i18n.t('messages.map_where') }}</label>
+        <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off">
+          
+          
+        <div id="city-list" class="absolute sm:w-full w-[98vw] top-16 left-0 right-0 sm:top-[5.2rem]  z-20 bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
+          @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
+          <option name="city" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
+          @end
+        </div>
+          
+      </div>
+      <div class="h-8 sm:h-12 h-max-full my-2 lg:my-4 border-l border-slate-200"></div>
 
+      <div id="button-map" class="lg:relative flex flex-col button text-left bg-white hover:bg-slate-100 pl-2 sm:pr-10 sm:pl-4 lg:px-6 py-4 xl:px-10 rounded-full duration-500">
+        
+        <label class="text-slate-800 font-semibold cursor-pointer">
+          {{ i18n.t('messages.map_map') }}</label>
+          <input type="text" name="radius" id="chosen-radius" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent text-slate-400" >
+          
+          <div id="map-popup" class="bg-white  border rounded-3xl shadow hidden absolute z-10 right-0 lg:right-auto top-[70px] sm:top-[5.5rem] justify-center items-center p-2 pt-10 w-80">
+            @!component('components/filters/geo_radius')
+          </div>
+        </div>
+
+          
+          
+        <button id="button-search" type="submit"
+          class="absolute lg:static right-0 button  flex items-center gap-4 bg-yellow-500 p-3 sm:p-4 rounded-full border-8 border-white hover:bg-yellow-400 duration-500">
+        
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-6" fill="#000000" viewBox="0 0 512 512">
+            <path d="M 363.03660886319847 205.1946050096339 Q 363.03660886319847 162.77456647398844 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 Q 320.616570327553 89.77263969171483 284.11560693641616 68.0693641618497 Q 246.6281310211946 47.35260115606936 205.1946050096339 47.35260115606936 Q 163.76107899807323 47.35260115606936 126.27360308285164 68.0693641618497 Q 89.77263969171483 89.77263969171483 68.0693641618497 126.27360308285164 Q 47.35260115606936 162.77456647398844 47.35260115606936 205.1946050096339 Q 47.35260115606936 247.6146435452794 68.0693641618497 284.11560693641616 Q 89.77263969171483 320.616570327553 126.27360308285164 342.3198458574181 Q 163.76107899807323 363.03660886319847 205.1946050096339 363.03660886319847 Q 246.6281310211946 363.03660886319847 284.11560693641616 342.3198458574181 Q 320.616570327553 320.616570327553 342.3198458574181 284.11560693641616 Q 363.03660886319847 247.6146435452794 363.03660886319847 205.1946050096339 L 363.03660886319847 205.1946050096339 Z M 332.45472061657034 365.9961464354528 Q 279.1830443159923 409.402697495183 205.1946050096339 410.3892100192678 Q 118.38150289017341 408.4161849710983 60.177263969171484 350.21194605009634 Q 1.9730250481695568 292.0077071290944 0 205.1946050096339 Q 1.9730250481695568 118.38150289017341 60.177263969171484 60.177263969171484 Q 118.38150289017341 1.9730250481695568 205.1946050096339 0 Q 292.0077071290944 1.9730250481695568 350.21194605009634 60.177263969171484 Q 408.4161849710983 118.38150289017341 410.3892100192678 205.1946050096339 Q 409.402697495183 279.1830443159923 365.9961464354528 332.45472061657034 L 498.1888246628131 464.64739884393066 L 498.1888246628131 464.64739884393066 Q 512 481.4181117533719 498.1888246628131 498.1888246628131 Q 481.4181117533719 512 464.64739884393066 498.1888246628131 L 332.45472061657034 365.9961464354528 L 332.45472061657034 365.9961464354528 Z"/>
+          </svg>
+      </button>
+      
+    </section>
+  </form>
+
+   
+  {{-- map  --}}
+  <div class="z-0 rounded-3xl h-80 w-full sm:max-w-[400px] lg:max-w-[700px] my-4">
+    <div id="map" class="h-full w-full sm:rounded-3xl"></div>
+  </div>
+
+      {{-- Categories & Category Types --}}
+       @!component('components/categories', {categories, categoryTypes, category})
+
+
+<script src="/resources/js/filters-buttons/date_picker.js"></script>
+<script src="/resources/js/filters-buttons/dropdown_cities.js" type="module"  defer ></script>
+<script src="/resources/js/filters-buttons/map_button.js"></script>

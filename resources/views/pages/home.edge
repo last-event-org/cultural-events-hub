@@ -25,14 +25,11 @@
 </section>
 <hr class="mb-6 mt-2 ">
 
-<main> 
+<main class="2xl:mx-[5vw]"> 
   
-    <div class="sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
+    <div class=" sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
       @each(event in events)
-      @!component('components/events_cards', {event})
-      {{-- @!component('components/events_cards', {event})
-      @!component('components/events_cards', {event})
-      @!component('components/events_cards', {event}) --}}
+       @!component('components/events_cards', {event})
       @end
     </div>
 
@@ -44,16 +41,12 @@
 
 <script type="module" src="/resources/js/map_home.js"></script>
 <script src="/resources/js/date_format.js"></script>
-<script src="/resources/js/filters-buttons/date_picker.js"></script>
-<script  type="module"  src="/resources/js/filters-buttons/dropdown_cities.js"></script>
-<script src="/resources/js/filters-buttons/map_button.js"></script>
-{{-- <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script> --}}
-{{-- <script src="/resources/js/geolocation.js" defer></script> --}}
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-  crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-  crossorigin=""></script>
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+crossorigin=""></script>
 </body>
 </html>

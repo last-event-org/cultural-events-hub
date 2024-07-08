@@ -54,10 +54,10 @@ function removeQuantity(id) {
   showErrorNotification('Ticket retiré')
 }
 
-function removeOrderLine(id) {
+async function removeOrderLine(id) {
   const orderLineRowQty = document.getElementsByName('orderLineQtyRow-' + id)
+  // TODO error in log when deleting an order line, code looks for a submit form [look previous code]
   const removeOrderLineForm = document.getElementsByName('removeOrderLine-' + id)[0]
-
   removeOrderLineForm.style.display = 'none'
   removeOrderLineForm.submit()
   if (orderLineRowQty[0]) {
@@ -71,8 +71,9 @@ function removeOrderLine(id) {
 function updateTotalRow(id, orderLineQtyRow) {
   const totalRow = document.getElementsByName('total-price-' + id)[0]
   const discountPrice = document.getElementsByName('discount-price-' + id)[0]
+  console.log(discountPrice)
   totalRow.textContent =
-    Number.parseInt(orderLineQtyRow.textContent) * Number.parseInt(discountPrice.textContent)
+    Number.parseInt(orderLineQtyRow.textContent) * Number.parseFloat(discountPrice.textContent)
 }
 
 function updateTotalOrder() {
@@ -80,7 +81,7 @@ function updateTotalOrder() {
   const totalOrder = document.querySelector('span[data-total-order]')
   let sum = 0
   totalRows.forEach((element) => {
-    sum += Number.parseInt(element.textContent)
+    sum += Number.parseFloat(element.textContent)
   })
 
   totalOrder.textContent = sum

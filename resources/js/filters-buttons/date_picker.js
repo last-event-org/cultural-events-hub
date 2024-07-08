@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
   const datePicker = document.getElementById('date-picker')
   const prevButton = document.getElementById('prev-day')
+  const dateChosen = document.getElementById('date-chosen')
   const nextButton = document.getElementById('next-day')
-  const city = document.getElementById('city-chosen')
+
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.get('date') !== ('' || null)) {
+    formatDateInput(urlParams.get('date'))
+    formatDateQuery(urlParams.get('date'))
+  }
 
   const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
   const today = new Date()
@@ -16,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const date = new Date(currentDate)
       date.setDate(currentDate.getDate() + i)
 
+      const month = date.toLocaleString('default', { month: 'short' })
       const dayOfWeek = daysOfWeek[date.getDay()]
       const dayOfMonth = date.getDate()
-      const month = date.toLocaleString('default', { month: 'short' })
 
       const isSelected =
         date.toDateString() === selectedDate.toDateString()
@@ -40,37 +46,13 @@ document.addEventListener('DOMContentLoaded', function () {
         
       `
       dayElement.addEventListener('click', function () {
-        selectedDate = new Date(date)
-        updateDateInput(selectedDate)
+        formatDateInput(date)
+        formatDateQuery(date)
+        document.getElementById('calendar').classList.add('hidden')
         updateDatePicker()
-        city.focus()
       })
       datePicker.appendChild(dayElement)
     }
-  }
-
-  function updateDateInput(date) {
-    const inputDate = document.getElementById('date-chosen')
-    const queryDate = document.getElementById('date-query')
-    selectedDate = new Date(date)
-    inputDate.value =
-      (selectedDate.getDay() < 10 ? '0' + selectedDate.getDay() : selectedDate.getDay()) +
-      '-' +
-      (selectedDate.getMonth() <= 9
-        ? '0' + (selectedDate.getMonth() + 1)
-        : selectedDate.getMonth() + 1) +
-      '-' +
-      selectedDate.getFullYear()
-
-    queryDate.value =
-      selectedDate.getFullYear() +
-      '-' +
-      (selectedDate.getMonth() <= 9
-        ? '0' + (selectedDate.getMonth() + 1)
-        : selectedDate.getMonth() + 1) +
-      '-' +
-      (selectedDate.getDay() < 10 ? '0' + selectedDate.getDay() : selectedDate.getDay())
-    document.getElementById('calendar').classList.add('hidden')
   }
 
   prevButton.addEventListener('click', function (e) {
@@ -87,6 +69,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
   updateDatePicker()
 })
+
+function formatDateInput(date) {
+  date = new Date(date)
+  const inputDate = document.getElementById('date-chosen')
+  inputDate.value =
+    (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) +
+    '-' +
+    (date.getMonth() <= 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) +
+    '-' +
+    date.getFullYear()
+}
+
+function formatDateQuery(date) {
+  date = new Date(date)
+  const queryDate = document.getElementById('date-query')
+  queryDate.value =
+    date.getFullYear() +
+    '-' +
+    (date.getMonth() <= 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) +
+    '-' +
+    (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())
+}
 
 //calendar
 document.getElementById('button-date').addEventListener('click', function () {

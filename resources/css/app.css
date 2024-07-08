@@ -2,26 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+:root {
+  --sports: #f5d0fe;
+  --sports-hover: #f0abfc;
+  --concerts: #bbf7d0;
+  --concerts-hover: #86efac;
+  --expos: #fed7aa;
+  --expos-hover: #fdba74;
+  --soirees: #fef08a;
+  --soirees-hover: #fde047;
+  --salons: #d9f99d;
+  --salons-hover: #bef264;
+  --spectacles: #ddd6fe;
+  --spectacles-hover: #c4b5fd;
+}
+
+body {
   /* font-family: "PT Sans", sans-serif; */
   /* font-family: "Open Sans", sans-serif; */
 }
-nav{
-  font-family: "Open Sans", sans-serif;
+nav {
+  font-family: 'Open Sans', sans-serif;
 }
 .open-sans {
-  font-family: "Open Sans", sans-serif;
-  
- 
+  font-family: 'Open Sans', sans-serif;
 }
 
+.date-pl {
+  padding-left: 10px;
+}
 
-@media (min-width:500px){
-  .flex-categories{
-    display:flex;
-    
+@media (min-width: 500px) {
+  .flex-categories {
+    display: flex;
   }
-} 
+  .date-pl {
+    padding-left: 30px;
+  }
+}
+@media (min-width: 380px) {
+  .date-pl {
+    padding-left: 20px;
+  }
+}
+@media (min-width: 550px) {
+  .date-pl {
+    padding-left: 30px;
+  }
+}
 
 .video-container {
   position: relative;
@@ -44,52 +72,64 @@ input:focus {
   outline: none; /* Remove the default browser focus outline */
 }
 
+/* Sports */
 .bg-sports {
-  background-color: #f5d0fe;
+  background-color: var(--sports);
 }
 
-.bg-sports:hover {
-  background-color: #f0abfc;
+.bg-sports:hover,
+a:hover .bg-sports {
+  background-color: var(--sports-hover);
 }
 
+/* Concerts */
 .bg-concerts {
-  background-color: #bbf7d0;
+  background-color: var(--concerts);
 }
 
-.bg-concerts:hover {
-  background-color: #86efac;
+.bg-concerts:hover,
+a:hover .bg-concerts {
+  background-color: var(--concerts-hover);
 }
 
+/* Soirées */
 .bg-soirees {
-  background-color: #fef08a;
+  background-color: var(--soirees);
 }
 
-.bg-soirees:hover {
-  background-color: #fde047;
+.bg-soirees:hover,
+a:hover .bg-soirees {
+  background-color: var(--soirees-hover);
 }
 
+/* Expos */
 .bg-expos {
-  background-color: #fed7aa;
+  background-color: var(--expos);
 }
 
-.bg-expos:hover {
-  background-color: #fdba74;
+.bg-expos:hover,
+a:hover .bg-expos {
+  background-color: var(--expos-hover);
 }
 
+/* Spectacles */
 .bg-theatre_spectacles {
-  background-color: #ddd6fe;
+  background-color: var(--spectacles);
 }
 
-.bg-theatre_spectacles:hover {
-  background-color: #c4b5fd;
+.bg-theatre_spectacles:hover,
+a:hover .bg-theatre_spectacles {
+  background-color: var(--spectacles-hover);
 }
 
+/* Salons */
 .bg-salons_foires {
-  background-color: #d9f99d;
+  background-color: var(--salons);
 }
 
-.bg-salons_foires:hover {
-  background-color: #bef264;
+.bg-salons_foires:hover,
+a:hover .bg-salons_foires {
+  background-color: var(--salons-hover);
 }
 
 @keyframes fadeOut {

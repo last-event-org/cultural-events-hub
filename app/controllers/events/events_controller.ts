@@ -44,7 +44,15 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/events/list', { events: events, categories: categories })
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+
+    return view.render('pages/events/list', {
+      events: events,
+      categories: categories,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
+    })
   }
 
   // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
@@ -66,7 +74,15 @@ export default class EventsController {
       })
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/events/list', { events: events, categories: categories })
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+
+    return view.render('pages/events/list', {
+      events: events,
+      categories: categories,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
+    })
   }
 
   /**
@@ -196,6 +212,9 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+
     return view.render('pages/events/list', {
       events: events.length === 0 ? null : events,
       city: payload?.city ?? null,
@@ -208,6 +227,8 @@ export default class EventsController {
       categories: categories,
       latitude: latitude,
       longitude: longitude,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
     })
   }
 
@@ -297,7 +318,6 @@ export default class EventsController {
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {
-
     // TODO create 5 prices per event
     // try {
     const pricePayloads = await request.validateUsing(createPricesValidator)
@@ -415,13 +435,47 @@ export default class EventsController {
         media.eventId = event.id
 
         await media.save()
-      } 
-    } catch (error) {
-      const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error
-      session.flash('errorEditingMedia', errorMsg)
-      return false
+      }
+      } catch (error) {
+        const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error
+        session.flash('errorEditingMedia', errorMsg)
+        return false
+      }
     }
     return true
+  }
+
+  async getTodayEvents() {
+    // get 5 events that occur today
+
+    const dayBegin = DateTime.now().toSQLDate()
+    let dayEnd: string = DateTime.now().set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+
+    const events = await Event.query()
+      .select('id', 'location_id', 'title')
+      .whereBetween('event_start', [dayBegin, dayEnd])
+      .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+      .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+      .orderBy('event_start', 'asc')
+      .limit(5)
+
+    return events
+  }
+
+  async getTopEvents() {
+    // get 5 events in the next 7 days
+
+    const dayBegin = DateTime.now().toSQLDate()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+
+    const events = await Event.query()
+      .select('id', 'location_id', 'title')
+      .whereBetween('event_start', [dayBegin, dayEnd])
+      .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+      .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+      .limit(5)
+
+    return events
   }
 
   /**
@@ -432,6 +486,7 @@ export default class EventsController {
 
     let isUserFavourite = false
     let isInUserWishlist = false
+    let linkedEvents
 
     try {
       const event = await Event.query()
@@ -467,6 +522,22 @@ export default class EventsController {
 
           if (alreadyWishlisted) isInUserWishlist = true
         }
+
+        linkedEvents = await Event.query()
+          .select('location_id', 'id', 'title', 'event_start', 'event_end')
+          .preload('location', (locationQuery) => locationQuery.select('name', 'city'))
+          .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery
+              .preload('category', (categoryQuery) => {
+                categoryQuery.where('id', event.categoryTypes[0].category.id).select('id')
+              })
+              .select('id', 'category_id')
+          })
+          .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+          .limit(5)
+
+        console.log('\n\n LINKEDEVENTS \n\n')
+        console.log(linkedEvents)
       }
 
       if (!event) {
@@ -475,6 +546,7 @@ export default class EventsController {
         session.forget('item-added')
         return view.render('pages/events/details', {
           event: event,
+          linkedEvents: linkedEvents,
           isUserFavourite: isUserFavourite,
           isInUserWishlist: isInUserWishlist,
         })
@@ -521,7 +593,8 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event) {
+    event: Event
+  ) {
     try {
       const addressPayload = await request.validateUsing(createAddressValidator)
       event.location.name = addressPayload.name ?? ''
@@ -540,7 +613,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) { }
+      } catch (error) {}
 
       await event.location.save()
       return true
@@ -555,11 +628,12 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event) {
+    event: Event
+  ) {
     const selectedCategoryTypes = request.body().categoryTypes
 
     if (selectedCategoryTypes) {
-      // attach new sub-categories selected 
+      // attach new sub-categories selected
       // without re-attaching old ones otherwise we get a SQL error
       const eventCategTypes: number[] = []
       event.categoryTypes.forEach(async (categType: CategoryType) => {
@@ -585,13 +659,10 @@ export default class EventsController {
     return true
   }
 
-  async updateEventIndicators(
-    request: HttpContext['request'],
-    event: Event) {
-
+  async updateEventIndicators(request: HttpContext['request'], event: Event) {
     const selectedIndicators = request.body().indicators
 
-    // attach new indicators selected 
+    // attach new indicators selected
     // without re-attaching old ones otherwise we get a SQL error
     if (selectedIndicators) {
       const eventIndicators: number[] = []
@@ -663,7 +734,6 @@ export default class EventsController {
       .preload('prices')
       .first()
 
-
     if (event) {
       event.title = payload.title
       event.subtitle = payload.subtitle
@@ -702,7 +772,7 @@ export default class EventsController {
         // this should become: https://www.youtube.com/embed/Ij6We_hu4Lg
 
         event.youtubeLink = payload.youtube_link
-        const watch = "watch?v="
+        const watch = 'watch?v='
         if (event.youtubeLink.includes(watch)) {
           event.youtubeLink = event.youtubeLink.replace(watch, 'embed/')
         }
@@ -715,8 +785,10 @@ export default class EventsController {
         event.youtubeLink = ''
       }
 
-      if (!await this.updateEventAddress(request, session, i18n, event)) return response.redirect().back()
-      if (!await this.updateEventCategoryTypes(request, session, i18n, event)) return response.redirect().back()
+      if (!(await this.updateEventAddress(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
+        return response.redirect().back()
       await this.updateEventIndicators(request, event)
       if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
       if (!await this.updateEventMedia(request, session, i18n, event)) return response.redirect().back()

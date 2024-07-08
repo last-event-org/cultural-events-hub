@@ -4,15 +4,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Event: {{ i18n.t('messages.event_hub') }}</title>
+    <title>Next Event: {{ i18n.t('messages.event_hub') }}
+    {{city ? i18n.t('messages.events_search_city') + " " + city : "" }} 
+    {{date ? i18n.t('messages.events_search_date') + " " + date : "" }}
+    {{category?.name ? i18n.t('messages.events_search_category') : " " }}
+    {{category?.name ?? ''}} {{categoryType ? '-' : ""}} 
+    {{categoryType ?? ''}}
+    {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
+    {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
+  </title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
-  {{-- @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/map_home.js']) --}}
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+</head>
 
 <body class=" bg-slate-50">
 
@@ -21,12 +29,8 @@
 
 
 <section class="relative flex flex-col items-center justify-center mb-10">
-  {{-- <div class="hidden lg:block absolute ml-[6vw] mt-8 top-24 left-0 ">
-    @!include('pages/partials/top_events')
-  </div> --}}
   @include("pages/partials/filter_map")
 </section>
-
 
 <main class="flex justify-center "> 
   

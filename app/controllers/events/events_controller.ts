@@ -297,7 +297,6 @@ export default class EventsController {
   }
 
   async createEventPrices(request: HttpContext['request'], event: Event) {
-
     // TODO create 5 prices per event
     // try {
     const pricePayloads = await request.validateUsing(createPricesValidator)
@@ -403,6 +402,7 @@ export default class EventsController {
 
     let isUserFavourite = false
     let isInUserWishlist = false
+    let linkedEvents
 
     try {
       const event = await Event.query()
@@ -438,6 +438,22 @@ export default class EventsController {
 
           if (alreadyWishlisted) isInUserWishlist = true
         }
+
+        linkedEvents = await Event.query()
+          .select('location_id', 'id', 'title', 'event_start', 'event_end')
+          .preload('location', (locationQuery) => locationQuery.select('name', 'city'))
+          .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery
+              .preload('category', (categoryQuery) => {
+                categoryQuery.where('id', event.categoryTypes[0].category.id).select('id')
+              })
+              .select('id', 'category_id')
+          })
+          .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+          .limit(5)
+
+        console.log('\n\n LINKEDEVENTS \n\n')
+        console.log(linkedEvents)
       }
 
       if (!event) {
@@ -446,6 +462,7 @@ export default class EventsController {
         session.forget('item-added')
         return view.render('pages/events/details', {
           event: event,
+          linkedEvents: linkedEvents,
           isUserFavourite: isUserFavourite,
           isInUserWishlist: isInUserWishlist,
         })
@@ -489,7 +506,8 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event) {
+    event: Event
+  ) {
     try {
       const addressPayload = await request.validateUsing(createAddressValidator)
       event.location.name = addressPayload.name ?? ''
@@ -508,7 +526,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) { }
+      } catch (error) {}
 
       await event.location.save()
       return true
@@ -523,11 +541,12 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event) {
+    event: Event
+  ) {
     const selectedCategoryTypes = request.body().categoryTypes
 
     if (selectedCategoryTypes) {
-      // attach new sub-categories selected 
+      // attach new sub-categories selected
       // without re-attaching old ones otherwise we get a SQL error
       const eventCategTypes: number[] = []
       event.categoryTypes.forEach(async (categType: CategoryType) => {
@@ -553,13 +572,10 @@ export default class EventsController {
     return true
   }
 
-  async updateEventIndicators(
-    request: HttpContext['request'],
-    event: Event) {
-
+  async updateEventIndicators(request: HttpContext['request'], event: Event) {
     const selectedIndicators = request.body().indicators
 
-    // attach new indicators selected 
+    // attach new indicators selected
     // without re-attaching old ones otherwise we get a SQL error
     if (selectedIndicators) {
       const eventIndicators: number[] = []
@@ -631,7 +647,6 @@ export default class EventsController {
       .preload('prices')
       .first()
 
-
     if (event) {
       event.title = payload.title
       event.subtitle = payload.subtitle
@@ -670,7 +685,7 @@ export default class EventsController {
         // this should become: https://www.youtube.com/embed/Ij6We_hu4Lg
 
         event.youtubeLink = payload.youtube_link
-        const watch = "watch?v="
+        const watch = 'watch?v='
         if (event.youtubeLink.includes(watch)) {
           event.youtubeLink = event.youtubeLink.replace(watch, 'embed/')
         }
@@ -683,8 +698,10 @@ export default class EventsController {
         event.youtubeLink = ''
       }
 
-      if (!await this.updateEventAddress(request, session, i18n, event)) return response.redirect().back()
-      if (!await this.updateEventCategoryTypes(request, session, i18n, event)) return response.redirect().back()
+      if (!(await this.updateEventAddress(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
+        return response.redirect().back()
       await this.updateEventIndicators(request, event)
       if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
 

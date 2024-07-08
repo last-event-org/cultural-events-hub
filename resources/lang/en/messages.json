@@ -69,7 +69,7 @@
   "cart_new": "New",
   "cart_avl": "There are",
   "cart_places": "places available",
-  "cart_full":"Full",
+  "cart_full": "Full",
   "cart_add": "Add to cart",
   "cart_icon": "Check icon",
   "cart_close": "Close",
@@ -186,6 +186,8 @@
   "events_search_location": "at",
   "events_search_date": "the",
   "events_search_category": "for",
+  "events_linked_events": "Linked events",
+  "events_video_events": "YouTube video",
   "events_no_events": "Unfortunately, there are no events for your selection.",
 
   "map_when": "When ?",

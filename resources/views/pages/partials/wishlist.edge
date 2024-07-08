@@ -9,8 +9,9 @@
   <div class="flex flex-col gap-4 pb-8 ">
     @if(userWishlist.length > 0)
       @each(event in userWishlist)
-        @!component('components/dashboard/wishlist_element', {
+        @!component('components/dashboard/mini-event', {
           event: event,
+          cancel: true,
         })
       @end
     @else

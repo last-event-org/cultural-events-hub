@@ -22,6 +22,41 @@ import User from '#models/user'
 
 export default class EventsController {
   /**
+   * Display events on the home page. All events within 7 days and for which there are available tickets
+   * @returns events, categories, topEvents and todayEvents
+   */
+  async home({ view, auth }: HttpContext) {
+    await auth.check()
+    const categories = await Category.query().select('name', 'slug', 'id')
+
+    const dayBegin = DateTime.now().toSQLDate()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+
+    const events = await Event.query()
+      .andWhereBetween('event_start', [dayBegin, dayEnd])
+      .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
+      .preload('media', (mediaQuery) => {
+        mediaQuery.select('path', 'altName')
+      })
+      .orderBy('event_start', 'asc')
+
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+    return view.render('pages/home', {
+      categories: categories,
+      events: events,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
+    })
+  }
+
+  /**
    * Display a list of resource
    */
   async index({ view }: HttpContext) {

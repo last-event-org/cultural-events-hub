@@ -180,7 +180,7 @@
                         <input class="mt-4 max-w-56 text-white" type="file" id="images_link" name="images_link[]"
                             onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
                         @inputError('images_link')
-                        <div style="color: yellow;">{{ i18n.t('messages.event_imgMin') }}</div>
+                        <div style="color: red;">{{ i18n.t('messages.event_imgMin') }}</div>
                         @end
                         <div id="imagePreviewContainer" class="flex flex-wrap mt-4"></div>
                     </section>

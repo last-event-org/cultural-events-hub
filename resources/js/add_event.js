@@ -75,14 +75,16 @@ function toggleCategoryTypes(categoryId) {
   })
 }
 
-function previewImages() {
+function previewImages(mediaLength=0) {
+  // mediaLength is used when editing the event only
+  // we set a default value so it can work while creating the event too
   const previewContainer = document.getElementById('imagePreviewContainer')
   const files = document.getElementById('images_link').files
   previewContainer.innerHTML = ''
 
   const maxFiles = 3
 
-  if (files.length > maxFiles) {
+  if (files.length > maxFiles || files.length + mediaLength > maxFiles) {
     alert(`Vous ne pouvez sélectionner que ${maxFiles} fichiers maximum.`)
     document.getElementById('images_link').value = '' // Clear the input to prevent submission with excess files
     return

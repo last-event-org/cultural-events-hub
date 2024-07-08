@@ -395,6 +395,35 @@ export default class EventsController {
     }
   }
 
+  async updateEventMedia(
+    request: HttpContext['request'], 
+    session: HttpContext['session'], 
+    i18n: HttpContext['i18n'], 
+    event: Event) {
+    const { images_link } = await request.validateUsing(createMediaValidator)
+
+    try {
+      for (const file of images_link) {
+
+        const media = new Media()
+        const uniqueFileName = `${cuid()}.${file.extname}`
+        await file.move(app.publicPath('uploads/'), {
+          name: uniqueFileName
+        })
+        media.path = `/uploads/${uniqueFileName}`
+        media.altName = file.clientName
+        media.eventId = event.id
+
+        await media.save()
+      } 
+    } catch (error) {
+      const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error
+      session.flash('errorEditingMedia', errorMsg)
+      return false
+    }
+    return true
+  }
+
   /**
    * Show individual record
    */
@@ -466,6 +495,8 @@ export default class EventsController {
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
     const indicators = await Indicator.all()
+    const media = await Media.query()
+      .where('event_id', '=', params.id)
 
     const event = await Event.query()
       .where('id', '=', params.id)
@@ -475,13 +506,14 @@ export default class EventsController {
       })
       .preload('indicators')
       .preload('prices')
-      .preload('media')
 
     return view.render('pages/events/edit-event', {
       event: event[0],
       categories: categories,
       categoryTypes: categoryTypes,
       indicators: indicators,
+      media: media,
+      mediaLength: media.length,
     })
   }
 
@@ -687,8 +719,7 @@ export default class EventsController {
       if (!await this.updateEventCategoryTypes(request, session, i18n, event)) return response.redirect().back()
       await this.updateEventIndicators(request, event)
       if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
-
-      // TODO images
+      if (!await this.updateEventMedia(request, session, i18n, event)) return response.redirect().back()
 
       await event.save()
     }

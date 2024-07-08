@@ -19,6 +19,8 @@ import { createMediaValidator } from '#validators/media'
 import { createPricesValidator } from '#validators/price'
 import { queryValidator } from '#validators/query'
 import User from '#models/user'
+import { updatePricesValidator } from '#validators/update_price'
+import { error } from 'console'
 
 export default class EventsController {
   /**
@@ -515,7 +517,7 @@ export default class EventsController {
       await event.location.save()
       return true
     } catch (error) {
-      const errorMsg = i18n.t('messages.errorMissingAddress')
+      const errorMsg = i18n.t('messages.errorMissingAddress') + ' ' + error
       session.flash('errorMissingAddress', errorMsg)
       return false
     }
@@ -588,7 +590,33 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event) {
 
-    // TODO create 5 prices per event (-> createEventPrices())
+    try {
+      const pricePayloads = await request.validateUsing(updatePricesValidator)
+
+      // if data validation if ok, we delete all prices associated with the event
+      const prices = event.prices
+      prices.forEach((price: Price) => {
+        price.delete()
+      })
+
+      // then we create new prices objects and associate them with the event
+      for (const pricePayload of pricePayloads.prices) {
+        const price = new Price()
+
+        if (pricePayload.price_description) price.description = pricePayload.price_description
+        if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
+        if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
+        if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
+
+        await price.save()
+        await price.related('event').associate(event)
+        return true
+      }
+    } catch (error) {
+      const errorMsg = i18n.t('messages.errorEditEventPrices') + ' ' + error
+      session.flash('errorEditEventPrices', errorMsg)
+      return false
+    }
   }
 
   /**
@@ -596,7 +624,6 @@ export default class EventsController {
    */
   async update({ i18n, params, request, session, response }: HttpContext) {
     const payload = await request.validateUsing(createEventValidator)
-    // const event = await Event.findOrFail(params['id'])
 
     const event = await Event.query()
       .where('id', '=', params['id'])
@@ -613,9 +640,6 @@ export default class EventsController {
       event.title = payload.title
       event.subtitle = payload.subtitle
       event.description = payload.description
-
-
-      // TODO practical data (address)
 
       // Date
       event.eventStart = DateTime.fromISO(payload.event_start)
@@ -666,7 +690,7 @@ export default class EventsController {
       if (!await this.updateEventAddress(request, session, i18n, event)) return response.redirect().back()
       if (!await this.updateEventCategoryTypes(request, session, i18n, event)) return response.redirect().back()
       await this.updateEventIndicators(request, event)
-      // if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
+      if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
 
       // TODO images
 

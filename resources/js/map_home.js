@@ -14,10 +14,9 @@ let mapZoom = 13
 let circle
 let poi = []
 let events
-map = L.map('map', {
-  scrollWheelZoom: false  // Désactive le zoom par molette par défaut
-});
-
+let map = L.map('map', {
+  scrollWheelZoom: false, // Désactive le zoom par molette par défaut
+})
 
 // console.log('MAP HOME LAT LONG')
 // console.log(latitude + '    ' + longitude)

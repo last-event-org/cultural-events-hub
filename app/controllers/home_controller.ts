@@ -2,7 +2,6 @@ import Category from '#models/category'
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 import Event from '#models/event'
-import Order from '#models/order'
 
 export default class HomeController {
   async index({ view, auth, response }: HttpContext) {
@@ -11,16 +10,6 @@ export default class HomeController {
 
     const dayBegin = DateTime.now().toSQLDate()
     const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
-
-    let order = await Order.query()
-      .where('user_id', '=', auth.user?.$attributes.id)
-      .andWhere('is_paid', '=', false)
-    console.log(order)
-    if (!auth.isAuthenticated || order.length === 0) {
-      response.clearCookie('orderId')
-    } else {
-      response.cookie('orderId', order[0].id)
-    }
 
     const events = await Event.query()
       .andWhereBetween('event_start', [dayBegin, dayEnd])
@@ -36,6 +25,51 @@ export default class HomeController {
       })
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/home', { categories: categories, events: events })
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+    return view.render('pages/home', {
+      categories: categories,
+      events: events,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
+    })
+  }
+
+  async getTodayEvents() {
+    console.log('getevents today')
+    // const events = await db.from('events').select('title', 'subtitle', 'description')
+
+    const dayBegin = DateTime.now().toSQLDate()
+    console.log(dayBegin)
+    let dayEnd: string = DateTime.now().set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+    console.log(dayEnd)
+
+    const events = await Event.query()
+      .select('id', 'location_id', 'title')
+      .whereBetween('event_start', [dayBegin, dayEnd])
+      .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+      .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+      .orderBy('event_start', 'asc')
+      .limit(5)
+
+    return events
+  }
+
+  async getTopEvents() {
+    console.log('getevents top')
+
+    const dayBegin = DateTime.now().toSQLDate()
+    console.log(dayBegin)
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+    console.log(dayEnd)
+
+    const events = await Event.query()
+      .select('id', 'location_id', 'title')
+      .whereBetween('event_start', [dayBegin, dayEnd])
+      .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+      .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+      .limit(5)
+
+    return events
   }
 }

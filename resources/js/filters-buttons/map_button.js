@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const mapPopup = document.getElementById('map-popup')
   const inputRadius = document.getElementById('chosen-radius')
 
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.get('radius') !== '') {
+    inputRadius.value = urlParams.get('radius')
+  }
+
   buttonMap.addEventListener('click', () => {
     mapPopup.classList.contains('hidden')
       ? mapPopup.classList.remove('hidden')

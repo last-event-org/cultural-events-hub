@@ -1,26 +1,30 @@
 {{-- Categories  --}}
 <section>
-    <ul>
-        <div class="grid grid-cols-3 flex-categories lg:justify-center gap-y-2 sm:gap-y-4 gap-x-8 lg:gap-x-16 my-2 ">
+    {{-- Categories --}}
+    <ul class="grid grid-cols-3 flex-categories lg:justify-center gap-y-2 sm:gap-y-4 gap-x-8 lg:gap-x-16 my-2 ">
+        @each((category) in categories)   
 
-            @each((category) in categories)   
-                <div class="flex flex-col w-[60px] gap-x-4 lg:gap-x-8 ">  
-
-                    <a href="/events/search?category={{ category.id }}">
-                        <div class="flex w-12 h-12  rounded-full shadow p-3 mx-auto bg-{{category.slug}}">
-                        <img src=/svg/categories/{{category.slug}}.svg
-                        alt="category icon" title="{{category.slug}}">
-                        </div>
-                    </a>
-
-                    <li>
-                        <div class="flex justify-center items-center gap-2 rounded-md  pt-1">
-                            <a class="text-[10px] sm:text-xs lg:text-sm text-slate-700 text-center font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
-                        </div>
-                    </li>
-
-                </div>
-            @end
-        </div>
+        <li class="flex flex-col w-[60px] gap-x-4 lg:gap-x-8 items-center justify-center ">
+                <a href="{{route('events.search')}}" data-category="{{ category.id }}" class="">
+                    <img src=/svg/categories/{{category.slug}}.svg
+                    alt="category icon" title="{{category.slug}}" class="flex w-12 h-12 pointer-events-none bg-{{category.slug}} rounded-full p-3 mx-auto ">
+                    <p class="text-[10px] pointer-events-none sm:text-xs lg:text-sm text-slate-700 pt-1 text-center font-semibold">{{ category.name }}</p>
+                </a>
+        </li>
+            
+        @end
+        
     </ul>
+
+
+    {{-- Category Types --}}
+    <ul class="flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto mt-5">
+      @each(type in categoryTypes)
+        <li class="flex items-center bg-{{category.slug}} gap-3 text-slate-700 pill rounded-md px-4 pb-1 ">
+            <a class="  font-semibold" href="{{route('events.search')}}" data-category-type="{{ type.id }}">{{type.name}}</a>
+        </li>
+      @end
+  </ul>
 </section>
+
+<script src="/resources/js/categories.js"></script>

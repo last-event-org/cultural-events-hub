@@ -166,20 +166,18 @@ export default class EventsController {
       categoryTypes = category?.categoryTypes
       categoryTypesId = [qs.categoryType]
     } else if (qs.category) {
-      console.log('CATEGORY')
       category = await Category.find(qs.category)
       categoryTypes = await category?.related('categoryTypes').query()
       categoryTypes?.forEach((categoryType: any) => {
         categoryTypesId.push(categoryType.$attributes.id)
       })
     }
-
     const events = await Event.query()
       .if(qs.city, (query) => query.whereIn('id', ids))
       .if(qs.vendor, (query) => query.where('vendor_id', qs.vendor))
       .if(qs.location, (query) => query.where('location_id', qs.location))
       .if(qs.date, (query) => query.whereBetween('event_start', [dayBegin, dayEnd]))
-      .if(categoryTypesId, (query) =>
+      .if(categoryTypesId.length > 0, (query) =>
         query.whereHas('categoryTypes', (categoryTypeQuery) => {
           categoryTypeQuery.whereInPivot('category_type_id', categoryTypesId)
         })
@@ -233,7 +231,6 @@ export default class EventsController {
     eventsId[0].forEach((element: any) => {
       ids.push(element.id)
     })
-
     return ids
   }
 
@@ -464,7 +461,8 @@ export default class EventsController {
   /**
    * Edit individual record
    */
-  async edit({ params, view }: HttpContext) {
+  async edit({ params, view, auth }: HttpContext) {
+    await auth.check()
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
     const indicators = await Indicator.all()

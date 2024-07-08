@@ -1,20 +1,25 @@
-<a href="#" class="flex gap-2 hover:bg-slate-100">
-
-  <div class="w-24">
-    <img class="object-cover overflow-hidden w-full h-16" src="/public/images/KISS.jpg" alt="image name">
+<a href="{{ route('events.show', [event.id]) }}" class="flex gap-2 hover:bg-slate-100">
+  
+  <div class="w-24 hidden sm:block">
+    <img  class="object-cover overflow-hidden w-full h-16" src="{{event.media[0]?.path ?? '/images/no_picture.png'}}" alt="{{event.media[0]?.altName ?? 'No picture available'}}" >
+    {{-- <img class="object-cover overflow-hidden w-full h-16" src="/public/images/KISS.jpg" alt="image name"> --}}
   </div>
-
+  <div class="w-1 min-h-16  bg-yellow-500"></div>
   <div class="w-full flex justify-between items-center">
 
     <div class="flex flex-col">
-      <h3 class="font-semibold tracking-tight">Concert de KISS</h3>
-      <p class="text-xs font-bold text-slate-400">26 juillet 2024, de 20h à 23h</p>
-      <p class="text-xs tracking-tight italic">Ancienne Belgique - Bruxelles</p>   
+      <h3 class="font-semibold tracking-tight">{{event.title}}</h3>
+      <div class="formated-date text-xs tracking-tight text-gray-500/60 font-bold"
+            data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
+        </div>
+      <p class="text-xs tracking-tight italic">{{event.location.name}} - {{event.location.city}}</p>   
     </div>
     
-    <div class="p-4">
-      <img src="/svg/cancel.svg" alt="cancel">
-    </div>
+    @if(cancel === true)
+      <div class="p-4">
+        <img src="/svg/cancel.svg" alt="cancel">
+      </div>
+    @end
     
   </div>
 </a>

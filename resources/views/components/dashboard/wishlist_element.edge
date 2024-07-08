@@ -1,5 +1,5 @@
-<div class="flex items-center">
-  <a href="{{ route('events.show', [event.id]) }} "class="hover:scale-[1.01] duration-300">
+<div class="flex items-center hover:bg-slate-100">
+  <a href="{{ route('events.show', [event.id]) }} "class="hover:scale-[1.01] duration-300 ">
     @if(event.media.length > 0)
       <div class="w-24 hidden sm:block">
           <img class=" object-cover overflow-hidden w-full h-16" src="{{ event.media[0].path }}" alt="{{event.media[0].altName }}">

@@ -209,24 +209,31 @@
           </section>
 
 
-          <section class="flex flex-col lg:flex-row justify-center items-center sm:bg-white sm:rounded-3xl sm:shadow sm:border mt-10 lg:p-4 sm:mx-4 lg:mx-8">
+          <section class="flex flex-col lg:flex-row justify-center sm:bg-white sm:rounded-3xl sm:shadow sm:border mt-10 lg:p-4 sm:mx-4 lg:mx-8">
             <div class="w-full h-full lg:w-3/5 lg:h-3/5 ">
               <div class="video-container ">
                 {{-- <iframe src="https://www.youtube.com/embed/xm3YgoEiEDc" frameborder="0" allowfullscreen></iframe> --}}
                 <iframe src="{{ event.youtubeLink || '' }}" frameborder="0" allowfullscreen></iframe>
               </div>
             </div>
-
-            <div class="flex flex-col h-3/5 justify-between gap-8  py-8">
-              @!component('components/dashboard/mini-event')
-              @!component('components/dashboard/mini-event')
+            
+            <div class="flex flex-col gap-4 py-8">
+              <h4>{{i18n.t('messages.events_linked_events')}}</h4>
+              <div class="justify-between flex-col flex gap-4">
+              @each(linkedEvent in linkedEvents)
+                @if(event.id !== linkedEvent.id) 
+                  @!component('components/dashboard/mini-event', {event: linkedEvent, cancel: false})
+                @end
+              @end
+              </div>
+              {{-- @!component('components/dashboard/mini-event')
               @!component('components/dashboard/mini-event')
               <div class="hidden 2xl:block">
                 @!component('components/dashboard/mini-event')
               </div>
               <div class="hidden xl:block">
                 @!component('components/dashboard/mini-event')
-              </div>
+              </div> --}}
               
             </div>
           </section>    

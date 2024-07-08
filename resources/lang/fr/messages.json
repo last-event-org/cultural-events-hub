@@ -69,7 +69,7 @@
   "cart_new": "Nouveau",
   "cart_avl": "Il reste",
   "cart_places": "places",
-  "cart_full":"Complet",
+  "cart_full": "Complet",
   "cart_add": "Ajouter au panier",
   "cart_icon": "Check icon",
   "cart_close": "Fermer",
@@ -186,6 +186,7 @@
   "events_search_location": "au",
   "events_search_date": "le",
   "events_search_category": "pour",
+  "events_linked_events": "Evénements similaires",
   "events_no_events": "Malheureusement, il n'y a pas d'événements pour votre sélection.",
 
   "map_when": "Quand sortir?",

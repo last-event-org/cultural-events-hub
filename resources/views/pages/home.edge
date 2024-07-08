@@ -20,16 +20,21 @@
 @include("pages/partials/intro")
 
 
-<section class="relative flex flex-col items-center justify-center ">
+<section class="relative flex flex-col items-center justify-center mb-10">
+  {{-- <div class="hidden lg:block absolute ml-[6vw] mt-8 top-24 left-0 ">
+    @!include('pages/partials/top_events')
+  </div> --}}
   @include("pages/partials/filter_map")
 </section>
-<hr class="mb-6 mt-2 ">
 
-<main class="2xl:mx-[5vw]"> 
+
+<main class="flex justify-center "> 
   
-    <div class=" sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
+    <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
       @each(event in events)
-       @!component('components/events_cards', {event})
+
+      @!component('components/events_cards', {event})
+
       @end
     </div>
 
@@ -41,6 +46,7 @@
 
 <script type="module" src="/resources/js/map_home.js"></script>
 <script src="/resources/js/date_format.js"></script>
+<script src="/resources/js/countdown.js"></script>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -48,5 +54,7 @@ crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
 integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 crossorigin=""></script>
+
+
 </body>
 </html>

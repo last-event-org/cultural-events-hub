@@ -28,27 +28,44 @@ nav {
   font-family: 'Open Sans', sans-serif;
 }
 
-.date-pl {
-  padding-left: 10px;
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
 }
 
-@media (min-width: 500px) {
-  .flex-categories {
-    display: flex;
-  }
-  .date-pl {
-    padding-left: 30px;
-  }
+.date-pl{
+  padding-left:10px;
 }
-@media (min-width: 380px) {
-  .date-pl {
-    padding-left: 20px;
+
+
+@media (min-width:500px){
+  
+  .date-pl{
+    padding-left:30px;
   }
+} 
+@media (min-width:330px){
+  
+  .grid-categories{  
+    grid-template-columns: repeat(3,minmax(0,1fr));
+  }
+} 
+@media (min-width:375px){
+  .date-pl{
+  padding-left:20px;
+  }
+  
 }
 @media (min-width: 550px) {
   .date-pl {
     padding-left: 30px;
   }
+  
 }
 
 .video-container {

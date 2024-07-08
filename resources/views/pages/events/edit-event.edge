@@ -12,12 +12,12 @@
 
 <body class="bg-slate-50">
   @include("pages/partials/header")
-  <main class="flex flex-col justify-center items-center  min-h-screen mx-auto mb-16 w-screen sm:w-full xl:w-[1200px]">
-    <div class="md:mt-10 md:px-12">
+  <main class="flex flex-col justify-center items-center  min-h-screen mx-auto mb-16 w-full  container">
+    <div class="mt-10">
 
     
       
-    <h2 class="text-center font-semibold text-slate-600 text-xl mt-5 xl:mt-8 xl:mb-2">
+    <h2 class="text-center font-semibold text-slate-600 text-xl mb-5">
       {{ i18n.t('messages.event_editEvent') }}
     </h2>
 
@@ -30,7 +30,7 @@
 
     <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
    {{-- Description    --}}
-      <section class=" bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl  p-4 xl:w-1/2">
+      <section class=" bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl  p-4 xl:w-1/2">
         <div class="w-screen sm:w-full text-sm px-2 sm:px-4">
           <div class="justify-center flex">  
             <h2 class="relative z-10 font-bold text-black text-xl my-4">
@@ -83,7 +83,7 @@
         </section>
 
 {{-- Informations pratiques --}}
-        <section class=" bg-blue-50 text-slate-600 flex flex-col items-center border shadow rounded-3xl  p-4 xl:w-1/2 xl:h-full">
+        <section class=" bg-blue-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl  p-4 xl:w-1/2 xl:h-full">
           <div class="w-screen sm:w-full h-full px-2 sm:px-4 mb-8">
             <div class="justify-center flex">  
               <h2 class="relative z-10 font-bold text-black text-xl my-4">
@@ -205,7 +205,7 @@
 
     <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
       {{-- Links  --}}
-      <section class=" bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl  p-4 xl:w-1/2 wl:h-full">
+      <section class=" bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl  p-4 xl:w-1/2 wl:h-full">
         <h2 class="relative z-10 font-bold text-black text-xl my-4">
           {{ i18n.t('messages.event_links') }} 
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
@@ -247,7 +247,7 @@
       </section>  
 
       {{-- Categories  --}}
-      <section class=" bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl p-6 xl:w-1/2 xl:h-full">
+      <section class=" bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl p-6 xl:w-1/2 xl:h-full">
         <div class="flex w-screen sm:w-full px-4">
           <fieldset class="py-2 w-full">
             <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto ">
@@ -305,7 +305,7 @@
  
       <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
         {{-- Indicators          --}}
-        <section class="bg-white text-slate-600 flex flex-col items-center border shadow rounded-3xl  xl:w-1/2 my-0 p-6">
+        <section class="bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl  xl:w-1/2 my-0 p-6">
           <div class="flex w-screen sm:w-full px-4">    
             <fieldset class="py-2 w-full">
               <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto ">
@@ -334,7 +334,7 @@
         </section>
         
         {{-- Image loading --}}
-        <section class=" bg-emerald-50 text-slate-600 flex flex-col xl:w-1/2 items-center border shadow rounded-3xl  p-6"> 
+        <section class=" bg-emerald-50 text-slate-600 flex flex-col xl:w-1/2 items-center sm:border sm:shadow rounded-3xl  p-6"> 
           <h2 class="relative z-10 font-bold text-black text-xl my-4">
             {{ i18n.t('messages.event_images') }}
               <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
@@ -355,34 +355,45 @@
         </section>
       </div>  
 {{-- Prices  --}}
-      <section class="flex flex-col items-center text-sm bg-indigo-50 w-full xl:w-[1100px] 2xl:w-[1500px] rounded-3xl  border shadow mb-5 p-6">
-        <h2 class=" relative z-10 font-bold text-black text-xl my-4 text-center max-w-fit">
+    <section class="bg-indigo-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl lg:w-[800px] xl:w-[1100px]">
+      
+        <h2 class="mx-auto relative z-10 font-bold text-black text-xl my-4 text-center ">
           {{ i18n.t('messages.event_prix') }}
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
-
+        
           @each(price in event.prices)
             @!component('components/price_fields', {
               price: price
-            })
+            })   
           @end
+        
 
           <template id="priceFieldsTemplate">
               @!component('components/price_fields', {
                 price: price
               })
           </template>
-          <div id="priceFieldsContainer" class="flex flex-col gap-4">
+          <div id="priceFieldsContainer" class="flex flex-col items-center justify-center w-full ">
               <!-- div to add the addionnal prices -->
           </div>
           @inputError('prices[]')
               <div style="color: red;">{{ $messages.join(', ') }}</div>
           @end
 
-          <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+          <a class="flex items-center px-2 h-10 text-bold text-lg cursor-pointer  text-slate-700 mb-6 mt-4"
+          onclick="addPriceFields()">
+          {{ i18n.t('messages.event_addPrice') }}
+      <svg class="mt-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </a>
+          {{-- <button type="button" onclick="addPriceFields()" class=" bg-indigo-800 text-white font-bold py-2 px-4 ml-2 mb-6 mt-4  rounded-md hover:bg-indigo-600 
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-800">
                   {{ i18n.t('messages.event_addPrice') }}
-          </button>
+          </button> --}}
+      {{-- </div> --}}
+    </section>
 
         </section>
         @if(flashMessages.has('errorEditEventPrices'))
@@ -392,8 +403,9 @@
               </h2>
             </div>
           @endif
+
         <div class="flex justify-center my-2">
-          <button type="submit" class="bg-yellow-500 text-black font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 
+          <button type="submit" class="uppercase bg-yellow-500 text-black font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 
                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
                   {{ i18n.t('messages.event_apply') }}
           </button> 

@@ -30,7 +30,7 @@ function formatDate(startString, endString) {
   }else{
     
     formattedEnd = endMinutes > 0 ? `à ${endHours}h${endMinutes}` : `${endHours}h`;
-    formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} ${formattedEnd}`;
+    formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} à ${formattedEnd}`;
   }
   
   

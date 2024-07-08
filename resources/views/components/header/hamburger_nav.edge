@@ -1,0 +1,84 @@
+<div class="navbar-menu relative z-50 hidden">
+  <div class="navbar-backdrop fixed inset-0 bg-slate-800/60"></div>
+    <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
+      <div class="flex justify-between mb-8">
+        <div class="flex">
+          <a class="flex justify-center text-2xl font-bold" href="/">
+            <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+            <h1 class="relative">xt<span class="ml-2 relative">Event
+              <hr class="absolute -z-10 w-16 h-2 bottom-1 left-0  bg-yellow-500">
+            </span>
+          </a>
+        </div>
+        <button class="navbar-close">
+          X
+        </button>
+      </div>
+      <div>
+        <ul>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="{{route('cart.show')}}">{{ i18n.t('messages.header_cart') }}</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400  hover:bg-gray-50  hover:text-gray-600 rounded"
+              href={{ route('auth.profile.show') }}>{{ i18n.t('messages.header_profile') }}</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400  hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="{{route('events.tickets')}}">Tickets</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="{{route('events.index')}}">Agenda</a>
+          </li>
+
+          @if(!auth.isAuthenticated)
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href={{ route('auth.login.show') }}>{{ i18n.t('messages.header_add_event') }}</a>
+          </li>
+          @else
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href={{ route('events.create') }}>{{ i18n.t('messages.header_add_event') }}</a>
+          </li>
+          @end
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-gray-50 hover:text-gray-600 rounded"
+              href="#">{{ i18n.t('messages.header_mode') }}</a>
+          </li>
+        </ul>
+      </div>
+    <div class="mt-auto">
+
+      @if(!auth.isAuthenticated)
+
+      <div class="flex text-center mb-1 mx-5 gap-4">
+        <a class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
+          href={{ route('auth.login.show') }}>
+          {{ i18n.t('messages.header_login') }}</a>
+
+        <a class="block lg:inline-block py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href={{ route('auth.register') }}>
+
+          {{ i18n.t('messages.header_signup') }}</a>
+      </div>
+
+      @else
+
+      <form method="POST" action="{{ route('auth.logout') }}">
+        {{ csrfField() }}
+        <button type="submit"
+          class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
+          href={{ route('auth.login.show') }}>
+          {{ i18n.t('messages.header_logout') }}</button>
+      </form>
+
+      @end
+      
+      <p class="my-4 text-xs text-center text-gray-400">
+        <span>Copyright © 2024 - SaJoCh</span>
+      </p>
+    </div>
+  </nav>
+</div>

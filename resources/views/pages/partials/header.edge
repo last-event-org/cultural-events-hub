@@ -10,6 +10,14 @@
 
  <div class="lg:hidden flex items-center gap-2 ">
     {{-- @if(request.cookie('orderId')) --}}
+    {{-- @else --}}
+    <button class="navbar-burger flex items-center text-gray-700 p-3">
+      
+      <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <title>Mobile menu</title>
+        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+      </svg>
+    </button>
     <a href={{route('cart.show')}}>
       <div class="flex cursor-pointer items-center justify-center h-8 w-8 p-1.5 bg-yellow-500 rounded-full border hover:bg-yellow-300 animate-pulse">
         <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" viewBox="0 0 512 512"><title>Mobile menu</title>
@@ -17,14 +25,6 @@
         </svg>
       </div>
     </a>
-   {{-- @else --}}
-    <button class="navbar-burger flex items-center text-gray-700 p-3">
-
-      <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        <title>Mobile menu</title>
-        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-      </svg>
-    </button>
     {{-- @end --}}
 
   </div>
@@ -74,11 +74,14 @@
 
   @if(!auth.isAuthenticated)
 
-  <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-slate-900 font-bold  rounded-md transition duration-200"
+  {{-- <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-slate-900 font-bold  rounded-md transition duration-200"
     href={{ route('auth.login.show') }}>
+    Langues</a> --}}
+    <div class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6  duration-200">
+      @!component('components/language')
+    </div>
+  <a class="hidden lg:inline-block py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm   font-bold rounded-md transition duration-300" href={{ route('auth.login.show') }}>
     {{ i18n.t('messages.header_login') }}</a>
-  <a class="hidden lg:inline-block py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm   font-bold rounded-md transition duration-200" href={{ route('auth.register') }}>
-    {{ i18n.t('messages.header_signup') }}</a>
 
   @else
     

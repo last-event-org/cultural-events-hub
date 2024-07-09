@@ -1,8 +1,6 @@
 function formatDate(startString, endString) {
   const date = new Date(startString)
   const endDate = new Date(endString)
-  const date = new Date(startString)
-  const endDate = new Date(endString)
 
   const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
   const months = [

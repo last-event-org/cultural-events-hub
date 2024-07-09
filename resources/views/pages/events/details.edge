@@ -64,37 +64,38 @@
               <img class="sm:p-4 h-auto max-h-[500px] w-full object-cover sm:rounded-3xl" src="{{event.media[0]?.path ?? '/images/no_picture.png'}}" alt="{{event.media[0]?.altName ?? 'No picture available'}}">  
                 <div class= "flex gap-2 items-center absolute top-4 sm:top-8 right-4 sm:right-8 z-10  transition duration-300">
 
-                  <p class="hidden opacity-0 transform scale-50 -translate-x-full animate-pulse bg-slate-400/50
+                  {{-- <p class="hidden opacity-0 transform scale-50 -translate-x-full animate-pulse bg-slate-400/50
                     text-white font-semibold px-2 " id="add-to-wishlist">
                     {{ i18n.t('messages.event_wish') }}
-                  </p>
+                  </p> --}}
 
                   @if(!auth.isAuthenticated)
-                    <form action="{{ route('auth.login.show')}}" method="get" class="" enctype="multipart/form-data">
-                      {{ csrfField() }}
-                      <button type="submit" id="favourite-star">
-                        <img src="/public/svg/favourite-star-empty.svg"  id="star_empty" alt="Add to favourites" class="block">
-                        <img  src="/public/svg/favourite-star.svg" id="star_full" alt="Add to favourites" class="hidden">
-                      </button>
-                    </form>
-                  @else
-                    @if(isInUserWishlist)
-                      <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post"  enctype="multipart/form-data">
-                        {{ csrfField() }}
-                        <button type="submit" id="favourite-star">
-                          <img  src="/public/svg/favourite-star.svg" id="star_full" alt="Add to wishlist">
-                        </button>
-                      </form>
-                    @else
-                      <form action="{{ route('wishlist.add', [event.id]) }}" method="post" class="" enctype="multipart/form-data">
-                        {{ csrfField() }}
-                        <button type="submit" id="favourite-star">
-                          <img src="/public/svg/favourite-star-empty.svg"  id="star_empty" alt="Add to favourites" class="block">
-                          <img  src="/public/svg/favourite-star.svg" id="star_full" alt="Add to favourites" class="hidden">
-                        </button>
-                      </form>
-                    @end
-                  @end
+  <form action="{{ route('auth.login.show')}}" method="get" class="" enctype="multipart/form-data">
+    {{ csrfField() }}
+    <button type="submit" class="favourite-star">
+      <img src="/public/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+      <img src="/public/svg/favourite-star.svg" class="star-full hidden" alt="Add to favourites">
+    </button>
+  </form>
+@else
+  @if(isInUserWishlist)
+    <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" enctype="multipart/form-data">
+      {{ csrfField() }}
+      <button type="submit" class="favourite-star">
+        <img src="/public/svg/favourite-star-empty.svg" class="star-empty hidden" alt="Remove from favourites">
+        <img src="/public/svg/favourite-star.svg" class="star-full" alt="Remove from favourites">
+      </button>
+    </form>
+  @else
+    <form action="{{ route('wishlist.add', [event.id]) }}" method="post" class="" enctype="multipart/form-data">
+      {{ csrfField() }}
+      <button type="submit" class="favourite-star">
+        <img src="/public/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+        <img src="/public/svg/favourite-star.svg" class="star-full hidden" alt="Add to favourites">
+      </button>
+    </form>
+  @end
+@end
                 </div>
               </div>
 
@@ -216,7 +217,7 @@
                 </div>
               
             </div>
-            <div class="flex flex-col gap-7">
+            <div class="flex flex-col gap-4">
               <h4 class="font-bold text-lg text-slate-800">{{i18n.t('messages.events_linked_events')}} :</h4>
               <div class="justify-between flex-col flex gap-2 ">
               @each(linkedEvent in linkedEvents)

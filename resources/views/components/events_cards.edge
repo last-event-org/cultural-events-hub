@@ -3,8 +3,12 @@
 <article class="relative hover:shadow cursor-pointer border-gray-300 sm:rounded-lg w-screen sm:w-full ">
   <a href="/events/{{event?.id ?? ''}}" class="absolute inset-0 z-50"></a>
 
-  <div class="relative  pb-[56%]">
-    <img src="{{event.media[0]?.path ?? '/images/dummies/No_image.png'}}" alt="{{event.media[0]?.altName ?? 'No picture available'}}" class=" absolute w-full h-full sm:rounded-t-lg  object-cover border-b-4 border-yellow-500">
+  <div class="relative pb-[56%]">
+    <img class=" absolute w-full h-full sm:rounded-t-lg  object-cover border-b-4 border-yellow-500"
+     src="{{event.media[0]?.path ?? '/images/dummies/No_image.png'}}" 
+     alt="{{event.media[0]?.altName ?? 'No picture available'}}"
+     onerror="this.onerror=null; this.src='/images/dummies/No_image.png';"> 
+    
 
     <div class=" absolute flex bg-{{event.categoryTypes[0].category.slug}} w-6 h-6 rounded-full top-4 left-4  ">
         <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">  
@@ -72,9 +76,11 @@
       </div>
     </div>  
     <div class="flex justify-between mt-2">
+      @if(new Date(event.eventStart) > new Date())
       <p class="text-xs text-right text-red-700 font-semibold mb-2" id="countdown-{{event.id}}" data-event-start="{{event.eventStart}}">
         {{ i18n.t('messages.eventCard_expire') }}: <span class="countdown-timer"></span>
       </p>
+      @endif
 
       @let(totalAvailableQty = 0)
       @each(price in event.prices)

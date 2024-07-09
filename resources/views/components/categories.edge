@@ -6,10 +6,10 @@
     <div class="grid grid-cols-2 grid-categories lg:grid-cols-6 items-center gap-y-2 gap-x-1  my-2 ">
 
       @each((category) in categories)   
-          <li class="bg-white hover:bg-slate-100 flex items-center justify-between p-2 border shadow rounded-full w-full max-w-[100px] sm:max-w-[140px] lg:max-w-[180px] mx-auto duration-300">
+          <li class="bg-white hover:bg-slate-100 flex items-center justify-between p-2 border shadow rounded-full w-full max-w-[100px] sm:max-w-[140px] lg:max-w-[160px] 2xl:max-w-[180px] mx-auto duration-300">
             <a href="{{route('events.search')}}" data-category="{{ category.id }}" class="flex items-center rounded-md w-full justify-between">
-              <p class="uppercase text-[9px] sm:text-xs lg:text-sm xl:text-base text-slate-700 text-center font-semibold m:pl-2 lg:pl-2 pointer-events-none">{{ category.name }}</p>
-              <div class="rounded-full p-1.5 sm:p-2 bg-{{category.slug}} duration-300 w-7 h-7 sm:h-8 sm:w-8 lg:w-12 lg:h-12 pointer-events-none">
+              <p class="uppercase text-[9px] sm:text-xs lg:text-sm 2xl:text-base text-slate-700 text-center font-semibold m:pl-2 lg:pl-2 pointer-events-none">{{ category.name }}</p>
+              <div class="rounded-full p-1.5 sm:p-2 bg-{{category.slug}} duration-300 w-7 h-7 sm:h-8 sm:w-8 lg:h-10 lg:w-10 2xl:w-12 2xl:h-12 pointer-events-none">
               <img src=/svg/categories/{{category.slug}}.svg
               alt="category icon" title="{{category.slug}}" class="pointer-events-none">
               </div>

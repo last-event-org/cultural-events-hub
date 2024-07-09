@@ -26,7 +26,7 @@ export default class EventsController {
    * @returns events, categories, topEvents and todayEvents
    */
   async home({ view, auth }: HttpContext) {
-    await auth.check()
+    // await auth.check()
     const categories = await Category.query().select('name', 'slug', 'id')
 
     const dayBegin = DateTime.now().toSQLDate()
@@ -48,11 +48,12 @@ export default class EventsController {
 
     const topEvents = await this.getTopEvents()
     const todayEvents = await this.getTodayEvents()
-    return view.render('pages/home', {
+    return view.render('pages/events/list', {
       categories: categories,
       events: events,
       topEvents: topEvents,
       todayEvents: todayEvents,
+      home: true,
     })
   }
 
@@ -83,6 +84,7 @@ export default class EventsController {
       categories: categories,
       topEvents: topEvents,
       todayEvents: todayEvents,
+      title: 'agenda',
     })
   }
 
@@ -113,6 +115,7 @@ export default class EventsController {
       categories: categories,
       topEvents: topEvents,
       todayEvents: todayEvents,
+      title: 'tickets',
     })
   }
 

@@ -5,9 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const nextButton = document.getElementById('next-day')
 
   const urlParams = new URLSearchParams(window.location.search)
-  if (urlParams.get('date') !== ('' || null)) {
-    formatDateInput(urlParams.get('date'))
-    formatDateQuery(urlParams.get('date'))
+  if (urlParams.size > 0) {
+    if (urlParams.get('date') !== '') {
+      formatDateInput(urlParams.get('date'))
+      formatDateQuery(urlParams.get('date'))
+    }
   }
 
   const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']

@@ -1,63 +1,119 @@
-const starHoverTarget = document.getElementById('favourite-star')
-const starChangeClass = document.getElementById('add-to-wishlist')
 
-starHoverTarget.addEventListener('mouseenter', () => {
-  starChangeClass.classList.add('block', 'opacity-100', 'scale-100', 'translate-x-0')
-  starChangeClass.classList.remove('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
-})
+document.addEventListener('DOMContentLoaded', () => {
+  const heartTrigger = document.querySelector('.favourite-heart');
+  const heartEmpty = heartTrigger.querySelector('.heart-empty');
+  const heartFull = heartTrigger.querySelector('.heart-full');
 
-starHoverTarget.addEventListener('mouseleave', () => {
-  starChangeClass.classList.add('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
-  starChangeClass.classList.remove('block', 'opacity-100', 'scale-100', 'translate-x-0')
-})
+  if (heartTrigger && heartEmpty && heartFull) {
+    let initialHeartState;
 
+    function isHeartFilled() {
+      return heartTrigger.classList.contains('heart-filled');
+    }
 
-const heartHoverTarget = document.getElementById('favourite-heart')
-const heartChangeClass = document.getElementById('add-to-favourites')
+    function fillHeart() {
+      heartTrigger.classList.add('heart-filled');
+    }
 
-heartHoverTarget.addEventListener('mouseenter', () => {
-  heartChangeClass.classList.add('block', 'opacity-100', 'scale-100', 'translate-x-0')
-  heartChangeClass.classList.remove('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
-})
+    function emptyHeart() {
+      heartTrigger.classList.remove('heart-filled');
+    }
 
-heartHoverTarget.addEventListener('mouseleave', () => {
-  heartChangeClass.classList.add('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
-  heartChangeClass.classList.remove('block', 'opacity-100', 'scale-100', 'translate-x-0')
-})
+    function saveInitialHeartState() {
+      initialHeartState = isHeartFilled();
+    }
 
+    function restoreInitialHeartState() {
+      if (initialHeartState) {
+        fillHeart();
+      } else {
+        emptyHeart();
+      }
+    }
 
-const heartTrigger = document.getElementById('favourite-heart')
-const heartEmpty = document.getElementById('heart_empty')
-const heartFull = document.getElementById('heart_full')
+    saveInitialHeartState();
 
-heartTrigger.addEventListener('mouseenter', () => {
-  heartFull.classList.remove('hidden')
-  heartFull.classList.add('block')
-  heartEmpty.classList.remove('block')
-  heartEmpty.classList.add('hidden')
-})
+    heartTrigger.addEventListener('mouseenter', () => {
+      if (isHeartFilled()) {
+        emptyHeart();
+      } else {
+        fillHeart();
+      }
+    });
 
-heartTrigger.addEventListener('mouseleave', () => {
-  heartFull.classList.remove('block')
-  heartFull.classList.add('hidden')
-  heartEmpty.classList.remove('hidden')
-  heartEmpty.classList.add('block')
-})
+    heartTrigger.addEventListener('mouseleave', restoreInitialHeartState);
 
-const starTrigger = document.getElementById('favourite-star')
-const starEmpty = document.getElementById('star_empty')
-const starFull = document.getElementById('star_full')
+    heartTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isHeartFilled()) {
+        emptyHeart();
+      } else {
+        fillHeart();
+      }
+      saveInitialHeartState();
+      setTimeout(() => {
+        e.target.closest('form').submit();
+      }, 300);
+    });
+  }
+});
 
-starTrigger.addEventListener('mouseenter', () => {
-  starFull.classList.remove('hidden')
-  starFull.classList.add('block')
-  starEmpty.classList.remove('block')
-  starEmpty.classList.add('hidden')
-})
+// WISHLIST BUTTON
+document.addEventListener('DOMContentLoaded', () => {
+  const starTrigger = document.querySelector('.favourite-star');
+  const starEmpty = starTrigger.querySelector('.star-empty');
+  const starFull = starTrigger.querySelector('.star-full');
 
-starTrigger.addEventListener('mouseleave', () => {
-  starFull.classList.remove('block')
-  starFull.classList.add('hidden')
-  starEmpty.classList.remove('hidden')
-  starEmpty.classList.add('block')
-})
+  if (starTrigger && starEmpty && starFull) {
+    let initialState;
+
+    function isStarFilled() {
+      return starTrigger.classList.contains('star-filled');
+    }
+
+    function fillStar() {
+      starTrigger.classList.add('star-filled');
+    }
+
+    function emptyStar() {
+      starTrigger.classList.remove('star-filled');
+    }
+
+    function saveInitialState() {
+      initialState = isStarFilled();
+    }
+
+    function restoreInitialState() {
+      if (initialState) {
+        fillStar();
+      } else {
+        emptyStar();
+      }
+    }
+
+    saveInitialState();
+
+    starTrigger.addEventListener('mouseenter', () => {
+      if (isStarFilled()) {
+        emptyStar();
+      } else {
+        fillStar();
+      }
+    });
+
+    starTrigger.addEventListener('mouseleave', restoreInitialState);
+
+    starTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isStarFilled()) {
+        emptyStar();
+      } else {
+        fillStar();
+      }
+      saveInitialState();
+      setTimeout(() => {
+        e.target.closest('form').submit();
+      }, 300);
+    });
+  }
+});

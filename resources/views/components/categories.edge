@@ -18,34 +18,13 @@
       @end
     </div>
   </ul>
-  {{-- <ul class="mx-4">
-    <div class="grid grid-cols-2 grid-categories lg:grid-cols-6 items-center gap-y-2 gap-x-1  my-2 ">
-
-      @each((category) in categories)   
-        <div class=" bg-white hover:bg-slate-100 flex items-center justify-between py-1.5 pr-1.5 border shadow rounded-full w-full max-w-[100px] sm:max-w-[140px] lg:max-w-[180px] mx-auto duration-300">       
-          <li>
-            <div class="flex justify-center items-center gap-2 rounded-md  pl-1.5 sm:pl-3 lg:pl-4  py-1.5 sm:py-2 lg:py-4 ">
-              <a class=" uppercase text-[9px] sm:text-xs lg:text-sm xl:text-base text-slate-700 text-center font-semibold" href="/events/?category={{ category.id }}">{{ category.name }}</a>
-            </div>
-          </li>
-          <a href="/events/search?category={{ category.id }}" class="lg:pr-0.5 xl:pr-1">
-            <div class="flex w-7 h-7 sm:h-8 sm:w-8 lg:w-12 lg:h-12  rounded-full p-1.5 sm:p-2 mx-auto bg-{{category.slug}} duration-300">
-            <img src=/svg/categories/{{category.slug}}.svg
-            alt="category icon" title="{{category.slug}}">
-            </div>
-          </a>
-
-        </div>
-      @end
-    </div>
-  </ul> --}}
 </section>
 
 
 <section>
 
     {{-- Category Types --}}
-    <ul class="flex flex-wrap justify-center items-center mb-10 gap-4 mx-auto mt-5">
+    <ul class="flex flex-wrap justify-center items-center gap-4 mx-auto mt-5">
       @each(type in categoryTypes)
         <li class="flex items-center bg-{{category.slug}} gap-3 text-slate-700 pill rounded-md px-4 pb-1 ">
             <a class="  font-semibold" href="{{route('events.search')}}" data-category-type="{{ type.id }}">{{type.name}}</a>
@@ -53,6 +32,7 @@
       @end
   </ul>
 </section>
+
 
 <script src="/resources/js/categories.js"></script>
 

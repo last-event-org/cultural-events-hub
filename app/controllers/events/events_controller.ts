@@ -868,5 +868,20 @@ export default class EventsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) { }
+  async destroy({ params, response, session, i18n }: HttpContext) {
+    console.log('\n\n\n DESTROY EVENT \n\n\n')
+    console.log(params)
+    try {
+      const event = await Event.findOrFail(params.id)
+      await event.delete()
+    } catch (error) {
+      console.log(error)
+      const errorMsg = i18n.t('messages.errorDestroyEvent')
+      session.flash('error', errorMsg)
+      return response.redirect().toRoute('auth.vendor.events')
+    }
+    const successMsg = i18n.t('messages.successDestroyEvent')
+    session.flash('success', successMsg)
+    return response.redirect().toRoute('auth.vendor.events')
+  }
 }

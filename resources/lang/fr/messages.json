@@ -13,6 +13,7 @@
   "header_cart": "Panier",
   "header_map": "Carte",
   "header_mode": "Mode Sombre/Clair",
+  "header_language": "Langue",
 
   "register_title": "Next Event Formulaire d'enregistrement",
   "register_signup": "Enregistrement",
@@ -77,7 +78,6 @@
   "cart_close": "Fermer",
   "cart_error": "Error icon",
   "cart_itemDeleted": "L'article a été supprimé.",
-  "cart_validated": "Merci pour votre commande ! Vous pouvez retrouver vos tickets ici: ",
   "cart_destroyed": "Panier vidé !",
 
   "dashboard_title": "Tableau de bord",
@@ -102,6 +102,8 @@
 
   "favourites_title": "Favoris",
   "favourites_my": "Mes favoris",
+  "add_to_favourites" : "Ajouter le vendeur aux favoris",
+  "remove_from_favourites" : "Enlever le vendeur des favoris",
 
   "wishlist_title": "Wishlist",
   "wishlist_my": "Ma wishlist",
@@ -176,6 +178,7 @@
   "event_create": "Créer",
   "event_edit": "Modifier",
   "event_wish": "Ajouter à la wishlist",
+  "event_remove_wish" : "Enlever de la wishlist",
   "event_org": "Organisé par",
   "event_editEvent_title": "Éditer un événement",
   "event_editEvent": "Éditer l'événement",
@@ -219,5 +222,11 @@
   "errorEventDates": "La date et l'heure de début doivent se produire avant la date et l'heure de fin.",
   "errorMissingCategType": "Au moins une catégorie et sous-catégorie doit être sélectionnée.",
   "errorMissingAddress": "Tous les champs de l'adresse sont requis.",
-  "errorEditingMedia": "Il y a un problème avec les images chargées."
+  "errorEditingMedia": "Il y a un problème avec les images chargées.",
+  "errorDestroyEvent": "Il y a un problème avec la suppression de l'événement. Réessayer ou contacter un admin.",
+  "errorDestroyCart": "Il y a un problème avec la suppression de votre panier. Réessayer ou contacter un admin.",
+
+  "successDestroyEvent": "Evénement supprimé.",
+  "successDestroyCart": "Panier supprimé.",
+  "successValidatedCart": "Merci pour votre achat !"
 }

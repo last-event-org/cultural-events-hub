@@ -23,27 +23,40 @@ import { updatePricesValidator } from '#validators/update_price'
 import { error } from 'console'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
+import Order from '#models/order'
+import OrderLine from '#models/order_line'
 
 export default class VendorController {
   async orders({ view, auth }: HttpContext) {
     await auth.check()
+    console.log('UUUUSSSERRRR')
+    console.log(auth.user.id)
 
     // get all events with tickets up to now
-    const orders = await Event.query()
-      .andWhere('event_start', '>=', new Date().toISOString())
-      .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
-      .preload('location')
-      .preload('categoryTypes', (categoryTypesQuery) => {
-        categoryTypesQuery.preload('category')
-      })
-      .preload('indicators')
-      .preload('prices')
-      .preload('media', (mediaQuery) => {
-        mediaQuery.select('path', 'altName')
-      })
-      .orderBy('event_start', 'asc')
+    // const orders = await OrderLine.query()
+    //   .preload('order', (orderQuery) => orderQuery.where('isPaid', '=', 1).preload('user'))
+    //   .preload('price', (priceQuery) =>
+    //     priceQuery.preload('event', (eventQuery) => eventQuery.where('vendor_id', auth.user.id))
+    //   )
+    //   .limit(1)
 
-    return view.render('pages/dashboard/vendors/events', {
+    const orders = await Order.query()
+      .where('is_paid', 1)
+      .preload('orderLineId', (orderLineQuery) =>
+        orderLineQuery.preload('price', (priceQuery) =>
+          priceQuery.preload('event', (eventQuery) => eventQuery.where('vendor_id', auth.user.id))
+        )
+      )
+      .preload('user')
+      .limit(1)
+    console.log('\n\n\n ORDERS \n\n\n')
+    orders.forEach((elem) => {
+      // console.log(elem)
+      console.log(elem.orderLineId)
+    })
+    // console.log(orders)
+
+    return view.render('pages/dashboard/vendor/orders', {
       orders: orders.length === 0 ? null : orders,
     })
   }
@@ -62,7 +75,7 @@ export default class VendorController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/dashboard/vendors/events', {
+    return view.render('pages/dashboard/vendor/events', {
       events: events.length === 0 ? null : events,
     })
   }

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages. "dashboard_vendor_events') }}</title>
+  <title>{{ i18n.t('messages. "dashboard_vendor_orders') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -17,33 +17,27 @@
   <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-3xl shadow px-4 md:px-8 mt-10">
   <div class=" flex justify-center mt-6 mb-12">
       <p class="relative font-bold text-xl self-center border bg-slate-100 rounded-full p-4 shadow">
-        {{ i18n.t('messages.dashboard_vendor_events') }}
+        {{ i18n.t('messages.dashboard_vendor_orders') }}
       </p>
   </div>
-  @if(flashMessages.has('error'))
-            @!component('components/notifications/error', { message: flashMessages.get('errorDestroyEvent') })
-            
-        @elseif(flashMessages.has('success'))
-            @!component('components/notifications/success', { message: flashMessages.get('successDestroyEvent') })
-      @end
-  @if(!events)
-
-    <p>{{i18n.t('messages.dashboard_vendor_no_events')}}</p>
+  Vendor : {{auth.user.id}}
+  @if(!orders)
+    <p>{{i18n.t('messages.dashboard_vendor_no_orders')}}</p>
     @else
     <div class="flex flex-col gap-4 pb-8 ">
-      @each(event in events)
-        @!component('components/dashboard/mini-event', {event, vendor : true})
+      @each(orderline in orders)
+      {{-- {{orderline.id}}
+      {{orderline.order.id}}
+      {{order.price.event.vendorId}} --}}
+        {{-- @!component('components/dashboard/mini-event', {event}) --}}
       @end
     </div>
 
   @end
   </div>
-  <div id="notification"></div>
 </main>
 
 @include("pages/partials/footer")  
 
 </body>
 </html>
-<script src="/resources/js/cart.js" defer></script>
-<script src="/resources/js/date_format.js"></script>

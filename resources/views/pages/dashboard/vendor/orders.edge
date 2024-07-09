@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages. "dashboard_vendor_tickets') }}</title>
+  <title>{{ i18n.t('messages. "dashboard_vendor_orders') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -20,13 +20,16 @@
         {{ i18n.t('messages.dashboard_vendor_orders') }}
       </p>
   </div>
-  
+  Vendor : {{auth.user.id}}
   @if(!orders)
     <p>{{i18n.t('messages.dashboard_vendor_no_orders')}}</p>
     @else
     <div class="flex flex-col gap-4 pb-8 ">
-      @each(event in events)
-        @!component('components/dashboard/mini-event', {event})
+      @each(orderline in orders)
+      {{-- {{orderline.id}}
+      {{orderline.order.id}}
+      {{order.price.event.vendorId}} --}}
+        {{-- @!component('components/dashboard/mini-event', {event}) --}}
       @end
     </div>
 

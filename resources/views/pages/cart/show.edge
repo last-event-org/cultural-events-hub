@@ -49,7 +49,9 @@
             {{-- User ID : {{order.userId}}  - Order ID : {{order.id}} --}}
             @each(item in order.orderLineId)
             <tr name="orderLineQtyRow-{{item.id}}" class="border-t border-slate-200">
-              <td class="p-2">{{item.price.event.title}}
+              
+              <td class="p-2"><a href="{{route('events.show', [item.price.event.id])}}">{{item.price.event.title}}
+                </a>
               <br><span class="italic">{{item.price.description}}</span></td>
               {{-- <td class="py-2 px-2">{{item.price.event.title}}</td>
               <td class=" px-2">{{item.price.description}}</td> --}}

@@ -24,21 +24,37 @@ import { error } from 'console'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 import Order from '#models/order'
+import OrderLine from '#models/order_line'
 
 export default class VendorController {
   async orders({ view, auth }: HttpContext) {
     await auth.check()
+    console.log('UUUUSSSERRRR')
+    console.log(auth.user.id)
 
     // get all events with tickets up to now
-    const orders = await Order.query().preload('orderLineId', (orderLineQuery) =>
-      orderLineQuery
-        .preload('price', (priceQuery) =>
+    // const orders = await OrderLine.query()
+    //   .preload('order', (orderQuery) => orderQuery.where('isPaid', '=', 1).preload('user'))
+    //   .preload('price', (priceQuery) =>
+    //     priceQuery.preload('event', (eventQuery) => eventQuery.where('vendor_id', auth.user.id))
+    //   )
+    //   .limit(1)
+
+    const orders = await Order.query()
+      .where('is_paid', 1)
+      .preload('orderLineId', (orderLineQuery) =>
+        orderLineQuery.preload('price', (priceQuery) =>
           priceQuery.preload('event', (eventQuery) => eventQuery.where('vendor_id', auth.user.id))
         )
-        .preload('user')
-    )
-
-    console.log(orders)
+      )
+      .preload('user')
+      .limit(1)
+    console.log('\n\n\n ORDERS \n\n\n')
+    orders.forEach((elem) => {
+      // console.log(elem)
+      console.log(elem.orderLineId)
+    })
+    // console.log(orders)
 
     return view.render('pages/dashboard/vendor/orders', {
       orders: orders.length === 0 ? null : orders,

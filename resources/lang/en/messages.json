@@ -228,8 +228,10 @@
   "errorEditingMedia": "There is a problem with the media uploaded.",
   "errorDestroyEvent": "There is a problem when deleting this event. Retry or contact an admin.",
   "errorDestroyCart": "There is a problem emptying your cart. Retry or contact an admin.",
+  "errorDestroyMedia": "There is a problem deleting the media. Retry or contact an admin.",
 
   "successDestroyEvent": "Event successfully deleted.",
   "successDestroyCart": "Cart successfully emptied.",
-  "successValidatedCart": "Thank you for your purchase !"
+  "successValidatedCart": "Thank you for your purchase !",
+  "successDestroyMedia": "Media successfully deleted."
 }

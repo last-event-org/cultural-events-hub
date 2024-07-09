@@ -485,6 +485,23 @@ export default class EventsController {
     return true
   }
 
+  async deleteEventMedia({ params, response, session, i18n }: HttpContext) {
+    console.log('\n\n\n\n\n\n', params)
+    const media = await Media.find(params['id'])
+    console.log('media: ', media);
+    try {
+      await media.delete()
+    } catch (error) {
+      console.log(error)
+      // const errorMsg = i18n.t('messages.errorDestroyEvent')
+      // session.flash('error', errorMsg)
+    }
+    response.redirect().back()
+    // const successMsg = i18n.t('messages.successDestroyEvent')
+    // session.flash('success', successMsg)
+  }
+
+
   async getTodayEvents() {
     // get 5 events that occur today
 

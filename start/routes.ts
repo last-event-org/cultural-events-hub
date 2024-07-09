@@ -10,6 +10,7 @@ const RegisterController = () => import('#controllers/auth/register_controller')
 const EventsController = () => import('#controllers/events/events_controller')
 const WishlistsController = () => import('#controllers/events/wishlists_controller')
 const FavouritesController = () => import('#controllers/vendors/favourites_controller')
+const MediaController = () => import('#controllers/events/media_controller')
 
 router.get('/', [EventsController, 'home']).as('home')
 
@@ -73,6 +74,12 @@ router
   })
   .prefix('events')
   .as('events')
+
+router.group(() => {
+  router.get('/:id/delete', [MediaController, 'destroy']).as('destroy')
+})
+.prefix('media')
+.as('media')
 
 // PANIER
 router

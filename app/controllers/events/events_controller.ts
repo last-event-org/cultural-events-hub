@@ -29,7 +29,7 @@ export default class EventsController {
    * Display events on the home page. All events within 7 days and for which there are available tickets
    * @returns events, categories, topEvents and todayEvents
    */
-  async home({ view, auth }: HttpContext) {
+  async home({ view, auth, i18n }: HttpContext) {
     // await auth.check()
     const categories = await Category.query().select('name', 'slug', 'id')
 
@@ -50,7 +50,7 @@ export default class EventsController {
       })
       .orderBy('event_start', 'asc')
 
-    const [topEvents, nextEvents] = await this.getFeaturedEvents()
+    const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
 
     return view.render('pages/events/list', {
       categories: categories,
@@ -58,13 +58,14 @@ export default class EventsController {
       topEvents: topEvents,
       todayEvents: nextEvents,
       home: true,
+      nextTitle: title,
     })
   }
 
   /**
    * Display a list of resource
    */
-  async index({ view }: HttpContext) {
+  async index({ view, i18n }: HttpContext) {
     // get all events up to now
 
     const categories = await Category.all()
@@ -80,7 +81,7 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    const [topEvents, nextEvents] = await this.getFeaturedEvents()
+    const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
 
     return view.render('pages/events/list', {
       events: events,
@@ -88,12 +89,13 @@ export default class EventsController {
       topEvents: topEvents,
       todayEvents: nextEvents,
       title: 'agenda',
+      nextTitle: title,
     })
   }
 
   // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
 
-  async tickets({ view }: HttpContext) {
+  async tickets({ view, i18n }: HttpContext) {
     const categories = await Category.all()
     // get all events with tickets up to now
     const events = await Event.query()
@@ -110,7 +112,7 @@ export default class EventsController {
       })
       .orderBy('event_start', 'asc')
 
-    const [topEvents, nextEvents] = await this.getFeaturedEvents()
+    const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
 
     return view.render('pages/events/list', {
       events: events,
@@ -118,6 +120,7 @@ export default class EventsController {
       topEvents: topEvents,
       todayEvents: nextEvents,
       title: 'tickets',
+      nextTitle: title,
     })
   }
 
@@ -154,7 +157,7 @@ export default class EventsController {
     }
   }
 
-  async search({ request, response, view }: HttpContext) {
+  async search({ request, response, view, i18n }: HttpContext) {
     const qs = request.qs()
     let payload
     let [latitude, longitude] = [50.645138, 5.57342]
@@ -248,7 +251,7 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    const [topEvents, nextEvents] = await this.getFeaturedEvents()
+    const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
 
     return view.render('pages/events/list', {
       events: events.length === 0 ? null : events,
@@ -264,6 +267,7 @@ export default class EventsController {
       longitude: longitude,
       topEvents: topEvents,
       todayEvents: nextEvents,
+      nextTitle: title,
     })
   }
 
@@ -528,13 +532,15 @@ export default class EventsController {
     return events
   }
 
-  async getFeaturedEvents() {
+  async getFeaturedEvents(i18n: HttpContext['i18n']) {
     const topEvents = await this.getTopEvents()
     let nextEvents = await this.getTodayEvents()
+    let title = i18n.t('messages.events_today')
     if (nextEvents.length === 0) {
       nextEvents = await this.getNextEvents()
+      title = i18n.t('messages.events_next_events')
     }
-    return [topEvents, nextEvents]
+    return [topEvents, nextEvents, title]
   }
 
   /**

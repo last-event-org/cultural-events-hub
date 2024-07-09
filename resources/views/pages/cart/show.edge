@@ -17,7 +17,16 @@
         {{ i18n.t('messages.cart_myCart') }}
       </h2>
       
-      @if(!order) 
+      @if(flashMessages.has('cartValidated'))
+        <div class="text-xl font-bold mb-6 text-center text-green-600">
+            {{ flashMessages.get('cartValidated') }}
+            <a class="underline" href="{{route('auth.profile.orders')}}">My purchased tickets</a>
+        </div>
+      @elseif(flashMessages.has('cartDestroyed'))
+        <div class="text-xl font-bold mb-6 text-center text-red-600">
+          {{ flashMessages.get('cartDestroyed') }}
+      </div>
+      @elseif(!order) 
       <p class="text-center text-gray-600">{{ i18n.t('messages.cart_empty') }}</p>
       @else
       <div class="overflow-x-auto">
@@ -70,7 +79,7 @@
                 </form>
               </td>
             </tr>
-            @end
+          @end
           </tbody>
           <tfoot class="bg-slate-100 ">
             <tr class="">

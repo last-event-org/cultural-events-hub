@@ -77,6 +77,8 @@
   "cart_close": "Close",
   "cart_error": "Error icon",
   "cart_itemDeleted": "Item has been deleted.",
+  "cart_validated": "Thank you for your purchase ! You can find your tickets here: ",
+  "cart_destroyed": "Cart emptied !",
 
   "dashboard_title": "Dashboard",
   "dashboard_emptyWishlist": "No events in your wishlist at the moment.",

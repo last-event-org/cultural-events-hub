@@ -155,7 +155,7 @@ export default class CartController {
   /**
    * Confirm order
    */
-  async confirmOrder({ params, response }: HttpContext) {
+  async confirmOrder({ params, response, session, i18n }: HttpContext) {
     const order = await Order.query()
       .where('id', '=', params['id'])
       .preload('orderLineId', (orderLineQuery) => {
@@ -181,6 +181,8 @@ export default class CartController {
       order.isPaid = true
       order.purchaseDate = DateTime.now()
       await order?.save()
+      const cartValidated = i18n.t('messages.cart_validated')
+      session.flash('cartValidated', cartValidated)
       response.clearCookie('orderId')
     }
 
@@ -195,9 +197,12 @@ export default class CartController {
   /**
    * Delete record
    */
-  async destroy({ params, response }: HttpContext) {
+  async destroy({ params, response, session, i18n }: HttpContext) {
     let order = await Order.find(params['id'])
     await order?.delete()
+    response.clearCookie('orderId')
+    const cartDestroyed = i18n.t('messages.cart_destroyed')
+    session.flash('cartDestroyed', cartDestroyed)
     response.clearCookie('orderId')
     return response.redirect().toRoute('cart.show')
   }

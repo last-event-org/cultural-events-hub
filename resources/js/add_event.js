@@ -14,6 +14,7 @@ function addPriceFields() {
       const nameAttr = input.getAttribute('name')
       if (nameAttr) {
         input.setAttribute('name', nameAttr.replace(/\[0\]/g, `[${newIndex}]`))
+        input.setAttribute('id', nameAttr.replace(/\[0\]/g, `[${newIndex}]`))
       }
     })
   

@@ -20,7 +20,6 @@ import { createPricesValidator } from '#validators/price'
 import { queryValidator } from '#validators/query'
 import User from '#models/user'
 import { updatePricesValidator } from '#validators/update_price'
-import { error } from 'console'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 
@@ -396,7 +395,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) {}
+    } catch (error) { }
 
     await address.save()
     await event.related('location').associate(address)
@@ -677,7 +676,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) {}
+      } catch (error) { }
 
       await event.location.save()
       return true
@@ -753,9 +752,12 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
+    // TODO << Investigate >>
+    // prices update can work successfully multiple times in a row
+    // then after a while the validation stops working and price update stops working
     try {
       const pricePayloads = await request.validateUsing(updatePricesValidator)
-
+      
       // if data validation if ok, we delete all prices associated with the event
       const prices = event.prices
       prices.forEach((price: Price) => {
@@ -773,9 +775,12 @@ export default class EventsController {
 
         await price.save()
         await price.related('event').associate(event)
-        return true
       }
+
+      return true
+
     } catch (error) {
+      console.error('Validation Error:', error.messages) 
       const errorMsg = i18n.t('messages.errorEditEventPrices') + ' ' + error
       session.flash('errorEditEventPrices', errorMsg)
       return false
@@ -849,15 +854,11 @@ export default class EventsController {
         event.youtubeLink = ''
       }
 
-      if (!(await this.updateEventAddress(request, session, i18n, event)))
-        return response.redirect().back()
-      if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
-        return response.redirect().back()
+      if (!(await this.updateEventAddress(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventCategoryTypes(request, session, i18n, event))) return response.redirect().back()
       await this.updateEventIndicators(request, event)
-      if (!(await this.updateEventPrices(request, session, i18n, event)))
-        return response.redirect().back()
-      if (!(await this.updateEventMedia(request, session, i18n, event)))
-        return response.redirect().back()
+      if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
+      // if (!(await this.updateEventMedia(request, session, i18n, event))) return response.redirect().back()
 
       await event.save()
     }
@@ -867,5 +868,5 @@ export default class EventsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params }: HttpContext) { }
 }

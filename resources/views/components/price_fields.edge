@@ -10,7 +10,7 @@
         value="{{ price && price.description ? price.description : '' }}" placeholder="Ex: Adulte, Enfant, VIPO">
         @inputError('prices.0.price_description')
           <div style="color: red;">{{ $messages.join(', ') }}</div>
-        @end       
+        @end
     </div>
     {{-- Places  --}}
     <div class=" w-1/2">

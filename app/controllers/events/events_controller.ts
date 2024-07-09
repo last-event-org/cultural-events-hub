@@ -22,6 +22,41 @@ import User from '#models/user'
 
 export default class EventsController {
   /**
+   * Display events on the home page. All events within 7 days and for which there are available tickets
+   * @returns events, categories, topEvents and todayEvents
+   */
+  async home({ view, auth }: HttpContext) {
+    await auth.check()
+    const categories = await Category.query().select('name', 'slug', 'id')
+
+    const dayBegin = DateTime.now().toSQLDate()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+
+    const events = await Event.query()
+      .andWhereBetween('event_start', [dayBegin, dayEnd])
+      .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
+      .preload('media', (mediaQuery) => {
+        mediaQuery.select('path', 'altName')
+      })
+      .orderBy('event_start', 'asc')
+
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+    return view.render('pages/home', {
+      categories: categories,
+      events: events,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
+    })
+  }
+
+  /**
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
@@ -40,7 +75,15 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/events/list', { events: events, categories: categories })
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+
+    return view.render('pages/events/list', {
+      events: events,
+      categories: categories,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
+    })
   }
 
   // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
@@ -62,7 +105,15 @@ export default class EventsController {
       })
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/events/list', { events: events, categories: categories })
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+
+    return view.render('pages/events/list', {
+      events: events,
+      categories: categories,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
+    })
   }
 
   /**
@@ -192,6 +243,9 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
+    const topEvents = await this.getTopEvents()
+    const todayEvents = await this.getTodayEvents()
+
     return view.render('pages/events/list', {
       events: events.length === 0 ? null : events,
       city: payload?.city ?? null,
@@ -204,6 +258,8 @@ export default class EventsController {
       categories: categories,
       latitude: latitude,
       longitude: longitude,
+      topEvents: topEvents,
+      todayEvents: todayEvents,
     })
   }
 
@@ -394,6 +450,39 @@ export default class EventsController {
         console.error('Media binary upload error:', error)
       }
     }
+  }
+
+  async getTodayEvents() {
+    // get 5 events that occur today
+
+    const dayBegin = DateTime.now().toSQLDate()
+    let dayEnd: string = DateTime.now().set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+
+    const events = await Event.query()
+      .select('id', 'location_id', 'title')
+      .whereBetween('event_start', [dayBegin, dayEnd])
+      .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+      .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+      .orderBy('event_start', 'asc')
+      .limit(5)
+
+    return events
+  }
+
+  async getTopEvents() {
+    // get 5 events in the next 7 days
+
+    const dayBegin = DateTime.now().toSQLDate()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+
+    const events = await Event.query()
+      .select('id', 'location_id', 'title')
+      .whereBetween('event_start', [dayBegin, dayEnd])
+      .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+      .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+      .limit(5)
+
+    return events
   }
 
   /**

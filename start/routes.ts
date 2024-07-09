@@ -5,13 +5,12 @@ const CartController = () => import('#controllers/events/cart_controller')
 const ListEvents = () => import('#controllers/api_listevents')
 const LoginController = () => import('#controllers/auth/login_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
-const HomeController = () => import('#controllers/home_controller')
 const RegisterController = () => import('#controllers/auth/register_controller')
 const EventsController = () => import('#controllers/events/events_controller')
 const WishlistsController = () => import('#controllers/events/wishlists_controller')
 const FavouritesController = () => import('#controllers/vendors/favourites_controller')
 
-router.get('/', [HomeController, 'index']).as('home')
+router.get('/', [EventsController, 'home']).as('home')
 
 router
   .group(() => {

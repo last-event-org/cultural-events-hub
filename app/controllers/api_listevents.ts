@@ -35,23 +35,6 @@ export default class ListEvents {
     return events
   }
 
-  async getAllEvents() {
-    console.log('getALLEVENTS api')
-
-    const events = await Event.query()
-      .where('event_start', '>=', new Date().toISOString())
-      .preload('location')
-      .preload('categoryTypes', (categoryTypesQuery) => {
-        categoryTypesQuery.preload('category')
-      })
-      .preload('indicators')
-      .preload('prices')
-      .preload('media')
-      .orderBy('event_start', 'asc')
-
-    return events
-  }
-
   async getEventsByDate(dateQuery: any) {
     console.log('geteventsbydate api')
     // const events = await db.from('events').select('title', 'subtitle', 'description')

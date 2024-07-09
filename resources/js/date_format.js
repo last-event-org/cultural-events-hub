@@ -1,5 +1,6 @@
 function formatDate(startString, endString) {
-
+  const date = new Date(startString)
+  const endDate = new Date(endString)
   const date = new Date(startString);
   const endDate = new Date(endString);
   
@@ -31,20 +32,18 @@ function formatDate(startString, endString) {
     
     formattedEnd = endMinutes > 0 ? ` ${endHours}h${endMinutes}` : `${endHours}h`;
     formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} à ${formattedEnd}`;
+
   }
-  
-  
-  
-  return formattedDate;
+
+  return formattedDate
 }
 
-const dateElements = document.querySelectorAll('.formated-date');
+const dateElements = document.querySelectorAll('.formated-date')
 
-dateElements.forEach(function(dateElement) {
-    const eventStart = dateElement.getAttribute('data-event-start');
-    const eventEnd = dateElement.getAttribute('data-event-end');
-    const formattedDate = formatDate(eventStart, eventEnd);
-    dateElement.textContent = formattedDate;
-  });
-console.log ('date_format')
-
+dateElements.forEach(function (dateElement) {
+  const eventStart = dateElement.getAttribute('data-event-start')
+  const eventEnd = dateElement.getAttribute('data-event-end')
+  const formattedDate = formatDate(eventStart, eventEnd)
+  dateElement.textContent = formattedDate
+})
+console.log('date_format')

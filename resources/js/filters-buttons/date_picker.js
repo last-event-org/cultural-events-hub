@@ -3,20 +3,19 @@ document.addEventListener('DOMContentLoaded', function () {
   const prevButton = document.getElementById('prev-day')
   const dateChosen = document.getElementById('date-chosen')
   const nextButton = document.getElementById('next-day')
+  const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
+  const today = new Date()
+  let selectedDate = new Date(today)
 
+  let currentDate = new Date(today)
   const urlParams = new URLSearchParams(window.location.search)
   if (urlParams.size > 0) {
     if (urlParams.get('date') !== '') {
       formatDateInput(urlParams.get('date'))
       formatDateQuery(urlParams.get('date'))
+      selectedDate = new Date(urlParams.get('date'))
     }
   }
-
-  const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
-  const today = new Date()
-
-  let currentDate = new Date(today)
-  let selectedDate = new Date(today)
 
   function updateDatePicker() {
     datePicker.innerHTML = ''

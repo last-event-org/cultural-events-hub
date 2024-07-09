@@ -50,11 +50,7 @@ export default class EventsController {
       })
       .orderBy('event_start', 'asc')
 
-    const topEvents = await this.getTopEvents()
-    let nextEvents = await this.getTodayEvents()
-    if (nextEvents.length === 0) {
-      nextEvents = await this.getNextEvents()
-    }
+    const [topEvents, nextEvents] = await this.getFeaturedEvents()
 
     return view.render('pages/events/list', {
       categories: categories,
@@ -84,11 +80,7 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    const topEvents = await this.getTopEvents()
-    let nextEvents = await this.getTodayEvents()
-    if (nextEvents.length === 0) {
-      nextEvents = await this.getNextEvents()
-    }
+    const [topEvents, nextEvents] = await this.getFeaturedEvents()
 
     return view.render('pages/events/list', {
       events: events,
@@ -118,11 +110,7 @@ export default class EventsController {
       })
       .orderBy('event_start', 'asc')
 
-    const topEvents = await this.getTopEvents()
-    let nextEvents = await this.getTodayEvents()
-    if (nextEvents.length === 0) {
-      nextEvents = await this.getNextEvents()
-    }
+    const [topEvents, nextEvents] = await this.getFeaturedEvents()
 
     return view.render('pages/events/list', {
       events: events,
@@ -260,8 +248,7 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    const topEvents = await this.getTopEvents()
-    const todayEvents = await this.getTodayEvents()
+    const [topEvents, nextEvents] = await this.getFeaturedEvents()
 
     return view.render('pages/events/list', {
       events: events.length === 0 ? null : events,
@@ -276,7 +263,7 @@ export default class EventsController {
       latitude: latitude,
       longitude: longitude,
       topEvents: topEvents,
-      todayEvents: todayEvents,
+      todayEvents: nextEvents,
     })
   }
 
@@ -539,6 +526,15 @@ export default class EventsController {
       .limit(5)
 
     return events
+  }
+
+  async getFeaturedEvents() {
+    const topEvents = await this.getTopEvents()
+    let nextEvents = await this.getTodayEvents()
+    if (nextEvents.length === 0) {
+      nextEvents = await this.getNextEvents()
+    }
+    return [topEvents, nextEvents]
   }
 
   /**

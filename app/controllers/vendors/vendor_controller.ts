@@ -23,25 +23,22 @@ import { updatePricesValidator } from '#validators/update_price'
 import { error } from 'console'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
+import Order from '#models/order'
 
 export default class VendorController {
   async orders({ view, auth }: HttpContext) {
     await auth.check()
 
     // get all events with tickets up to now
-    const orders = await Event.query()
-      .andWhere('event_start', '>=', new Date().toISOString())
-      .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
-      .preload('location')
-      .preload('categoryTypes', (categoryTypesQuery) => {
-        categoryTypesQuery.preload('category')
-      })
-      .preload('indicators')
-      .preload('prices')
-      .preload('media', (mediaQuery) => {
-        mediaQuery.select('path', 'altName')
-      })
-      .orderBy('event_start', 'asc')
+    const orders = await Order.query().preload('orderLineId', (orderLineQuery) =>
+      orderLineQuery
+        .preload('price', (priceQuery) =>
+          priceQuery.preload('event', (eventQuery) => eventQuery.where('vendor_id', auth.user.id))
+        )
+        .preload('user')
+    )
+
+    console.log(orders)
 
     return view.render('pages/dashboard/vendor/orders', {
       orders: orders.length === 0 ? null : orders,

@@ -29,13 +29,15 @@
         {{ i18n.t('messages.header_favourites') }}</a>
       <a href="{{route('auth.profile.orders')}}" class="block rounded-full duration-300  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
         {{ i18n.t('messages.header_boughtTickets') }}</a>
-
+@eval(await auth.check())
+@if(await auth.isAuthenticated)
         @if((await auth.user.isVendor() || await auth.user.isAdmin()))
         <a href="{{route('auth.vendor.events')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
           {{ i18n.t('messages.header_eventsPublished') }}</a>
         <a href="{{route('auth.vendor.orders')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
           {{ i18n.t('messages.header_soldTickets') }}</a>
-        @endif
+        @end
+
         
         {{-- if Auth as SuperAdmin --}}
 
@@ -48,6 +50,7 @@
               {{ i18n.t('messages.header_logout') }}</button>
           </div>
         </form>
+                @end
       </div> 
   
     </div>

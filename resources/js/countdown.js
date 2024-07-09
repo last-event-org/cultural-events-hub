@@ -9,7 +9,7 @@ function updateCountdown() {
     const distance = eventStart - now;
 
     if (distance < 0) {
-      element.querySelector('.countdown-timer').textContent = "Événement commencé";
+      element.querySelector('.countdown-timer').textContent = "Commencé";
       return;
     }
 

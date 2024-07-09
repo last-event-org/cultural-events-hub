@@ -7,6 +7,7 @@ import Role from '#models/role'
 import type { HasOne, HasMany, BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Address from '#models/address'
 import Event from '#models/event'
+import Order from './order.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -59,9 +60,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare shippingAddressId: number | null
 
+  @hasMany(() => Order)
+  declare order: HasMany<typeof Order>
+
   @hasOne(() => Address, {
     foreignKey: 'id',
-    localKey: 'billingAddressId'
+    localKey: 'billingAddressId',
   })
   declare billingAddress: HasOne<typeof Address>
 

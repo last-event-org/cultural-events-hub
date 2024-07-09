@@ -29,6 +29,24 @@
       <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel"></button>
     </form>
     @end
+
+    @if(vendor === true) 
+      
+      <div class="flex gap-2">
+
+        {{-- delete event --}}
+        <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" method="post" enctype="multipart/form-data">
+            {{ csrfField() }}
+          <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel"></button>
+        </form>
+
+        {{-- edit event --}}
+        <form action="{{ route('events.edit', [event.id]) }}" method="get" class=" ml-auto" enctype="multipart/form-data">
+          {{ csrfField() }}
+          <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/edit.svg" alt="cancel"></button>
+        </form>
+      </div>
+      @end
   </div>
 
  

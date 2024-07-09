@@ -79,7 +79,6 @@
   "cart_close": "Close",
   "cart_error": "Error icon",
   "cart_itemDeleted": "Item has been deleted.",
-  "cart_validated": "Thank you for your purchase ! You can find your tickets here: ",
   "cart_destroyed": "Cart emptied !",
 
   "dashboard_title": "Dashboard",
@@ -226,5 +225,11 @@
   "errorMissingCategType": "At least one category and sub-category must be selected.",
   "errorMissingAddress": "All address fields are required.",
   "errorEditEventPrices": "There is a problem with the prices. Please check.",
-  "errorEditingMedia": "There is a problem with the media uploaded."
+  "errorEditingMedia": "There is a problem with the media uploaded.",
+  "errorDestroyEvent": "There is a problem when deleting this event. Retry or contact an admin.",
+  "errorDestroyCart": "There is a problem emptying your cart. Retry or contact an admin.",
+
+  "successDestroyEvent": "Event successfully deleted.",
+  "successDestroyCart": "Cart successfully emptied.",
+  "successValidatedCart": "Thank you for your purchase !"
 }

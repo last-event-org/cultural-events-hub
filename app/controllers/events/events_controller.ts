@@ -51,12 +51,16 @@ export default class EventsController {
       .orderBy('event_start', 'asc')
 
     const topEvents = await this.getTopEvents()
-    const todayEvents = await this.getTodayEvents()
+    let nextEvents = await this.getTodayEvents()
+    if (nextEvents.length === 0) {
+      nextEvents = await this.getNextEvents()
+    }
+
     return view.render('pages/events/list', {
       categories: categories,
       events: events,
       topEvents: topEvents,
-      todayEvents: todayEvents,
+      todayEvents: nextEvents,
       home: true,
     })
   }
@@ -81,13 +85,16 @@ export default class EventsController {
       .orderBy('event_start', 'asc')
 
     const topEvents = await this.getTopEvents()
-    const todayEvents = await this.getTodayEvents()
+    let nextEvents = await this.getTodayEvents()
+    if (nextEvents.length === 0) {
+      nextEvents = await this.getNextEvents()
+    }
 
     return view.render('pages/events/list', {
       events: events,
       categories: categories,
       topEvents: topEvents,
-      todayEvents: todayEvents,
+      todayEvents: nextEvents,
       title: 'agenda',
     })
   }
@@ -112,13 +119,16 @@ export default class EventsController {
       .orderBy('event_start', 'asc')
 
     const topEvents = await this.getTopEvents()
-    const todayEvents = await this.getTodayEvents()
+    let nextEvents = await this.getTodayEvents()
+    if (nextEvents.length === 0) {
+      nextEvents = await this.getNextEvents()
+    }
 
     return view.render('pages/events/list', {
       events: events,
       categories: categories,
       topEvents: topEvents,
-      todayEvents: todayEvents,
+      todayEvents: nextEvents,
       title: 'tickets',
     })
   }
@@ -395,7 +405,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) { }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -439,11 +449,10 @@ export default class EventsController {
     const { images_link } = await request.validateUsing(createMediaValidator)
 
     for (const file of images_link) {
-
       const media = new Media()
       const uniqueFileName = `${cuid()}.${file.extname}`
       await file.move(app.publicPath('uploads/'), {
-        name: uniqueFileName
+        name: uniqueFileName,
       })
       media.path = `/uploads/${uniqueFileName}`
       media.altName = file.clientName
@@ -457,16 +466,16 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event) {
+    event: Event
+  ) {
     const { images_link } = await request.validateUsing(createMediaValidator)
 
     try {
       for (const file of images_link) {
-
         const media = new Media()
         const uniqueFileName = `${cuid()}.${file.extname}`
         await file.move(app.publicPath('uploads/'), {
-          name: uniqueFileName
+          name: uniqueFileName,
         })
         media.path = `/uploads/${uniqueFileName}`
         media.altName = file.clientName
@@ -480,7 +489,6 @@ export default class EventsController {
       session.flash('errorEditingMedia', errorMsg)
       return false
     }
-
   }
 
   async getTodayEvents() {
@@ -488,6 +496,23 @@ export default class EventsController {
 
     const dayBegin = DateTime.now().toSQLDate()
     let dayEnd: string = DateTime.now().set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+
+    const events = await Event.query()
+      .select('id', 'location_id', 'title')
+      .whereBetween('event_start', [dayBegin, dayEnd])
+      .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+      .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+      .orderBy('event_start', 'asc')
+      .limit(5)
+
+    return events
+  }
+
+  async getNextEvents() {
+    // get 5 events that occur today
+
+    const dayBegin = DateTime.now().toSQLDate()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
 
     const events = await Event.query()
       .select('id', 'location_id', 'title')
@@ -605,8 +630,7 @@ export default class EventsController {
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
     const indicators = await Indicator.all()
-    const media = await Media.query()
-      .where('event_id', '=', params.id)
+    const media = await Media.query().where('event_id', '=', params.id)
 
     const event = await Event.query()
       .where('id', '=', params.id)
@@ -651,7 +675,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) { }
+      } catch (error) {}
 
       await event.location.save()
       return true
@@ -725,8 +749,8 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event) {
-
+    event: Event
+  ) {
     try {
       const pricePayloads = await request.validateUsing(updatePricesValidator)
 
@@ -828,8 +852,10 @@ export default class EventsController {
       if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
         return response.redirect().back()
       await this.updateEventIndicators(request, event)
-      if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
-      if (!await this.updateEventMedia(request, session, i18n, event)) return response.redirect().back()
+      if (!(await this.updateEventPrices(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventMedia(request, session, i18n, event)))
+        return response.redirect().back()
 
       await event.save()
     }
@@ -839,5 +865,5 @@ export default class EventsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) { }
+  async destroy({ params }: HttpContext) {}
 }

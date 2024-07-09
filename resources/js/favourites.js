@@ -17,7 +17,6 @@ if(heartHoverTarget){
 
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
   const starTrigger = document.querySelector('.favourite-star');
   const starEmpty = starTrigger.querySelector('.star-empty');
@@ -27,17 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let initialState;
 
     function isStarFilled() {
-      return !starFull.classList.contains('hidden');
+      return starTrigger.classList.contains('star-filled');
     }
 
-    function showFullStar() {
-      starEmpty.classList.add('hidden');
-      starFull.classList.remove('hidden');
+    function fillStar() {
+      starTrigger.classList.add('star-filled');
     }
 
-    function showEmptyStar() {
-      starEmpty.classList.remove('hidden');
-      starFull.classList.add('hidden');
+    function emptyStar() {
+      starTrigger.classList.remove('star-filled');
     }
 
     function saveInitialState() {
@@ -46,43 +43,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function restoreInitialState() {
       if (initialState) {
-        showFullStar();
+        fillStar();
       } else {
-        showEmptyStar();
+        emptyStar();
       }
     }
 
-    // Sauvegarde l'état initial
     saveInitialState();
 
-    // Animation au survol
     starTrigger.addEventListener('mouseenter', () => {
       if (isStarFilled()) {
-        showEmptyStar();
+        emptyStar();
       } else {
-        showFullStar();
+        fillStar();
       }
     });
 
     starTrigger.addEventListener('mouseleave', restoreInitialState);
 
-    // Gestion du clic (si nécessaire)
     starTrigger.addEventListener('click', (e) => {
-      // Empêche le formulaire de se soumettre immédiatement
       e.preventDefault();
-      
-      // Inverse l'état
       if (isStarFilled()) {
-        showEmptyStar();
+        emptyStar();
       } else {
-        showFullStar();
+        fillStar();
       }
-      
-      // Sauvegarde le nouvel état
       saveInitialState();
-      
-      // Soumet le formulaire
-      e.target.closest('form').submit();
+      setTimeout(() => {
+        e.target.closest('form').submit();
+      }, 300);
     });
   }
 });

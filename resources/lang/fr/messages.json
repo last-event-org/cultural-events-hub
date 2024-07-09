@@ -32,6 +32,8 @@
   "login_login": "Connexion",
   "login_invalid": "Identifiants invalides",
 
+  "date_from": "du",
+
   "profile_type_title": "Type de Profil",
   "profile_type_welcome": "Bienvenue { userFirstname }! Que voulez vous faire ?",
   "profile_type_buy": "Acheter des places",
@@ -75,8 +77,14 @@
   "cart_close": "Fermer",
   "cart_error": "Error icon",
   "cart_itemDeleted": "L'article a été supprimé.",
+  "cart_validated": "Merci pour votre commande ! Vous pouvez retrouver vos tickets ici: ",
+  "cart_destroyed": "Panier vidé !",
 
   "dashboard_title": "Tableau de bord",
+  "dashboard_vendor_events": "Vos événements publiés",
+  "dashboard_vendor_no_events": "Vous n'avez pas encore publié d'événements",
+  "dashboard_vendor_orders": "Vos tickets vendus",
+  "dashboard_vendor_no_orders": "Vous n'avez pas encore vendu de tickets.",
   "dashboard_emptyWishlist": "Pas d'évènement dans votre wishlist pour le moment.",
   "dashboard_emptyFavourites": "Pas d'organisateurs favoris pour le moment.",
 
@@ -180,6 +188,7 @@
   "event_hub": "Un centre d'événements culturels",
   "event_fetch": "Récupérer les données",
   "events_title": "Agenda complet",
+  "events_title_tickets": "Tous vos événements à prix réduits",
   "events_search_title": "Vos événements",
   "events_search_city": "à",
   "events_search_vendor": "par",
@@ -211,5 +220,4 @@
   "errorMissingCategType": "Au moins une catégorie et sous-catégorie doit être sélectionnée.",
   "errorMissingAddress": "Tous les champs de l'adresse sont requis.",
   "errorEditingMedia": "Il y a un problème avec les images chargées."
-
 }

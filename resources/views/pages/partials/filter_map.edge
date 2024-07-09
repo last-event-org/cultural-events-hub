@@ -3,7 +3,7 @@
   {{ csrfField() }}
   <section id="big-search-bar-container" class=" grid grid-cols-[34%,1%,31%,1%,22%,10%] open-sans text-xs sm:text-sm md:text-base relative sm:flex bg-white border shadow rounded-full h-full my-4 lg:my-10 w-[98vw] lg:w-auto justify-between items-center max-w-[900px]">
     
-    <div id="button-date" class="relative flex flex-col button text-left bg-white hover:bg-slate-100  hover:shadow date-pl lg:px-6 xl:px-10 py-4 rounded-full duration-300 cursor-pointer">
+    <div id="button-date" class="relative flex flex-col button text-left bg-white hover:bg-slate-100  hover:shadow date-pl lg:px-6 xl:px-10 py-4 lg:py-6 rounded-full duration-300 cursor-pointer">
   
       <label class="text-slate-800 font-semibold cursor-pointer">
 
@@ -11,7 +11,7 @@
         <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off" >
         <input type="text" name="date" id="date-query" class="hidden">
         
-        <div id="calendar" class="hidden absolute w-[98vw] top-[70px] right-0 sm:top-[5.5rem] left-0 z-20 bg-white border border-gray-200 rounded-3xl shadow-lg lg:w-[560px] px-2 sm:py-8">
+        <div id="calendar" class="hidden absolute w-[98vw] top-[70px] right-0 sm:top-[5.5rem] lg:top-[6.5rem] left-0 z-20 bg-white border border-gray-200 rounded-3xl shadow-lg lg:w-[560px] px-2 sm:py-8">
           <section  class="scale-[.79] sm:scale-125 sm:px-16 ">
             @!component('components/filters/date_picker')
           </section>  
@@ -20,35 +20,35 @@
       <div class="h-8 sm:h-12 h-max-full lg:my-4 my-2 border-l border-slate-200"></div>
 
 
-      <div id="button-city" class="lg:relative flex flex-col button text-left bg-white focus:bg-white hover:bg-slate-100 hover:shadow  xl:px-10 xl:py-4 pl-2 sm:px-6 py-4 rounded-full duration-300 cursor-pointer">
+      <div id="button-city" class="lg:relative flex flex-col button text-left bg-white focus:bg-white hover:bg-slate-100 hover:shadow  xl:px-10 pl-2 sm:px-6 py-4 lg:py-6 rounded-full duration-300 cursor-pointer">
         
         <label class="text-slate-800 font-semibold cursor-pointer">
           {{ i18n.t('messages.map_where') }}</label>
         <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off">
           
           
-        <div id="city-list" class="absolute sm:w-full w-[98vw] top-16 left-0 right-0 sm:top-[5.2rem]  z-20 bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
+        <div id="city-list" class="absolute sm:w-full w-[98vw] top-16 left-0 right-0 sm:top-[5.2rem] lg:top-24 z-20 bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
           @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
-          <option name="city" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
+          <option name="city-list" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
           @end
         </div>
           
       </div>
       <div class="h-8 sm:h-12 h-max-full my-2 lg:my-6  border-l border-slate-200"></div>
 
-      <div id="button-map" class="lg:relative flex flex-col button text-left bg-white hover:bg-slate-100 hover:shadow pl-2 sm:pr-10 sm:pl-4 lg:px-6 py-4 xl:px-8 rounded-full duration-300">
+      <div id="button-map" class="lg:relative flex flex-col button text-left bg-white hover:bg-slate-100 hover:shadow pl-2 sm:pr-10 sm:pl-4 lg:pl-6 py-4 lg:py-6 xl:pl-8 lg:pr-16 rounded-full duration-300">
         
         <label class="text-slate-800 font-semibold cursor-pointer">
           {{ i18n.t('messages.map_map') }}</label>
           <input type="text" name="radius" id="chosen-radius" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent text-slate-400 " >
           
-          <div id="map-popup" class="bg-white  border rounded-3xl shadow hidden absolute z-10 right-0 lg:right-auto top-[70px] sm:top-[5.5rem] justify-center items-center p-2 pt-10 w-80">
+          <div id="map-popup" class="bg-white  border rounded-3xl shadow hidden absolute z-10 right-0 lg:right-auto top-[70px] sm:top-[5.5rem] lg:top-[6.5rem] justify-center items-center p-2 pt-10 w-80">
             @!component('components/filters/geo_radius')
           </div>
         </div>
          
         <button id="button-search" type="submit"
-          class="absolute lg:static right-0 button  flex items-center gap-4 bg-yellow-500 p-3 sm:p-4 lg:p-5 rounded-full  hover:bg-yellow-400 hover:shadow duration-300 mr-1.5 lg:mr-2.5 ">
+          class="absolute  right-1.5 lg:right-2.5 button  flex items-center gap-4 bg-yellow-500 p-3 sm:p-4 lg:p-5 rounded-full  hover:bg-yellow-400 hover:shadow duration-300  ">
           {{-- <p>Rechercher</p> --}}
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-6 lg:h-8 " fill="#000000" viewBox="0 0 512 512">
             <path d="M 363.03660886319847 205.1946050096339 Q 363.03660886319847 162.77456647398844 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 Q 320.616570327553 89.77263969171483 284.11560693641616 68.0693641618497 Q 246.6281310211946 47.35260115606936 205.1946050096339 47.35260115606936 Q 163.76107899807323 47.35260115606936 126.27360308285164 68.0693641618497 Q 89.77263969171483 89.77263969171483 68.0693641618497 126.27360308285164 Q 47.35260115606936 162.77456647398844 47.35260115606936 205.1946050096339 Q 47.35260115606936 247.6146435452794 68.0693641618497 284.11560693641616 Q 89.77263969171483 320.616570327553 126.27360308285164 342.3198458574181 Q 163.76107899807323 363.03660886319847 205.1946050096339 363.03660886319847 Q 246.6281310211946 363.03660886319847 284.11560693641616 342.3198458574181 Q 320.616570327553 320.616570327553 342.3198458574181 284.11560693641616 Q 363.03660886319847 247.6146435452794 363.03660886319847 205.1946050096339 L 363.03660886319847 205.1946050096339 Z M 332.45472061657034 365.9961464354528 Q 279.1830443159923 409.402697495183 205.1946050096339 410.3892100192678 Q 118.38150289017341 408.4161849710983 60.177263969171484 350.21194605009634 Q 1.9730250481695568 292.0077071290944 0 205.1946050096339 Q 1.9730250481695568 118.38150289017341 60.177263969171484 60.177263969171484 Q 118.38150289017341 1.9730250481695568 205.1946050096339 0 Q 292.0077071290944 1.9730250481695568 350.21194605009634 60.177263969171484 Q 408.4161849710983 118.38150289017341 410.3892100192678 205.1946050096339 Q 409.402697495183 279.1830443159923 365.9961464354528 332.45472061657034 L 498.1888246628131 464.64739884393066 L 498.1888246628131 464.64739884393066 Q 512 481.4181117533719 498.1888246628131 498.1888246628131 Q 481.4181117533719 512 464.64739884393066 498.1888246628131 L 332.45472061657034 365.9961464354528 L 332.45472061657034 365.9961464354528 Z"/>
@@ -70,7 +70,7 @@
     </div>
     
     <div class="hidden lg:block mx-4 2xl:mx-0">
-        @!component('components/events/top_events', {title: i18n.t('messages.events_today'), events: todayEvents})
+        @!component('components/events/top_events', {title: nextTitle, events: todayEvents})
       {{-- @!include('pages/partials/today_events') --}}
     </div>
 
@@ -85,5 +85,4 @@
 
 
 <script src="/resources/js/filters-buttons/date_picker.js"></script>
-<script src="/resources/js/filters-buttons/dropdown_cities.js" type="module"  defer ></script>
 <script src="/resources/js/filters-buttons/map_button.js"></script>

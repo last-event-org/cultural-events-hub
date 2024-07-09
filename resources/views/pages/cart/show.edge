@@ -12,21 +12,30 @@
   @include("pages/partials/header")
   <main class="flex justify-center items-center min-h-screen w-screen sm:w-[600px] mx-auto">
     
-    <div class="bg-white sm:p-4 lg:p-8 my-10 mb-auto rounded-md shadow w-full py-4">
+    <div class="bg-white sm:p-4 lg:p-8 mt-10 mb-20  rounded-3xl shadow w-full py-4">
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
         {{ i18n.t('messages.cart_myCart') }}
       </h2>
       
-      @if(!order) 
+      @if(flashMessages.has('cartValidated'))
+        <div class="text-xl font-bold mb-6 text-center text-green-600">
+            {{ flashMessages.get('cartValidated') }}
+            <a class="underline" href="{{route('auth.profile.orders')}}">My purchased tickets</a>
+        </div>
+      @elseif(flashMessages.has('cartDestroyed'))
+        <div class="text-xl font-bold mb-6 text-center text-red-600">
+          {{ flashMessages.get('cartDestroyed') }}
+      </div>
+      @elseif(!order) 
       <p class="text-center text-gray-600">{{ i18n.t('messages.cart_empty') }}</p>
       @else
       <div class="overflow-x-auto">
         <table class="min-w-full bg-white">
-          <thead class="bg-slate-700 text-white text-left">
+          <thead class="bg-slate-700 text-white text-right">
             <tr>
-              <th scope="col" class="p-2">{{ i18n.t('messages.cart_event') }}</th>
+              <th scope="col" class="p-2 text-left">{{ i18n.t('messages.cart_event') }}</th>
               {{-- <th scope="col" class="py-2 px-2 text-left">{{ i18n.t('messages.cart_ticket') }}</th> --}}
-              <th scope="col" class="p-2">{{ i18n.t('messages.cart_qty') }}</th>
+              <th scope="col" class="p-2 text-center">{{ i18n.t('messages.cart_qty') }}</th>
               <th scope="col" class="p-2 min-w-12 sm:min-w-20">{{ i18n.t('messages.cart_price') }}</th>
               <th scope="col" class="p-2 min-w-12 sm:min-w-20">{{ i18n.t('messages.cart_total') }}</th>
               <th scope="col" class="p-2 max-w-14"></th>
@@ -55,26 +64,27 @@
                   </form>
                 </div>
               </td>
-              <td class="p-2 box-content"><span name="discount-price-{{item.id}}">{{item.price.discountedPrice}}</span>€</td>
-              <td class="p-2"><span name="total-price-{{item.id}}" data-subtotal="{{item.qty * item.price.discountedPrice}}">{{item.qty * item.price.discountedPrice}}</span>€</td>
+              <td class="p-2 box-content text-right"><span name="discount-price-{{item.id}}">{{item.price.discountedPrice}}</span>€</td>
+              <td class="p-2 text-right"><span name="total-price-{{item.id}}" data-subtotal="{{item.qty * item.price.discountedPrice}}">{{item.qty * item.price.discountedPrice}}</span>€</td>
               <td class="p-2">
                 <form name="removeOrderLine-{{item.id}}" action="{{ route('cart.delete', [item.id], { qs: {_method: 'DELETE'}})}}" method="post" class="flex justify-center items-center">
 
                   {{ csrfField() }}
                   {{-- TODO Form submission canceled because the form is not connected --}}
                      <input type="hidden" name="_method" value="DELETE" />
-                  <button onclick="removeOrderLine({{item.id}})" class="text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
-                    x</button>
+                  <button onclick="removeOrderLine({{item.id}})" class="pl-2 hover:scale-105 duration-300" type="submit">
+                    <img src="/svg/cancel.svg" alt="delete">
+                  </button>
 
                 </form>
               </td>
             </tr>
-            @end
+          @end
           </tbody>
           <tfoot class="bg-slate-100 ">
             <tr class="">
               <th scope="row" colspan="3" class="py-2 text-right">{{ i18n.t('messages.cart_total') }} :</th>
-              <td class="px-4"><span data-total-order="{{totalOrder}}">{{totalOrder}}</span>€</td>
+              <td class="px-2 text-right"><span data-total-order="{{totalOrder}}">{{totalOrder}}</span>€</td>
               <td class="px-4"></td>
             </tr>
           </tfoot>

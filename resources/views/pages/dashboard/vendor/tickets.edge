@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ i18n.locale }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ i18n.t('messages. "dashboard_vendor_tickets') }}</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class=" bg-slate-50">
+@include("pages/partials/header")
+
+{{ i18n.t('messages. "dashboard_vendor_no_tickets') }}
+
+<main class="flex flex-col items-center min-h-screen">
+  {{-- @include("pages/partials/wishlist") --}}
+</main>
+
+@include("pages/partials/footer")  
+
+</body>
+</html>

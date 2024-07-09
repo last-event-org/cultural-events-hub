@@ -26,9 +26,46 @@ import { cuid } from '@adonisjs/core/helpers'
 
 export default class EventsController {
   /**
+   * Display events on the home page. All events within 7 days and for which there are available tickets
+   * @returns events, categories, topEvents and todayEvents
+   */
+  async home({ view, auth, i18n }: HttpContext) {
+    // await auth.check()
+    const categories = await Category.query().select('name', 'slug', 'id')
+
+    const dayBegin = DateTime.now().toSQLDate()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+
+    const events = await Event.query()
+      .andWhereBetween('event_start', [dayBegin, dayEnd])
+      .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
+      .preload('location')
+      .preload('categoryTypes', (categoryTypesQuery) => {
+        categoryTypesQuery.preload('category')
+      })
+      .preload('indicators')
+      .preload('prices')
+      .preload('media', (mediaQuery) => {
+        mediaQuery.select('path', 'altName')
+      })
+      .orderBy('event_start', 'asc')
+
+    const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
+
+    return view.render('pages/events/list', {
+      categories: categories,
+      events: events,
+      topEvents: topEvents,
+      todayEvents: nextEvents,
+      home: true,
+      nextTitle: title,
+    })
+  }
+
+  /**
    * Display a list of resource
    */
-  async index({ view }: HttpContext) {
+  async index({ view, i18n }: HttpContext) {
     // get all events up to now
 
     const categories = await Category.all()
@@ -44,20 +81,21 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    const topEvents = await this.getTopEvents()
-    const todayEvents = await this.getTodayEvents()
+    const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
 
     return view.render('pages/events/list', {
       events: events,
       categories: categories,
       topEvents: topEvents,
-      todayEvents: todayEvents,
+      todayEvents: nextEvents,
+      title: 'agenda',
+      nextTitle: title,
     })
   }
 
   // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
 
-  async tickets({ view }: HttpContext) {
+  async tickets({ view, i18n }: HttpContext) {
     const categories = await Category.all()
     // get all events with tickets up to now
     const events = await Event.query()
@@ -74,14 +112,15 @@ export default class EventsController {
       })
       .orderBy('event_start', 'asc')
 
-    const topEvents = await this.getTopEvents()
-    const todayEvents = await this.getTodayEvents()
+    const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
 
     return view.render('pages/events/list', {
       events: events,
       categories: categories,
       topEvents: topEvents,
-      todayEvents: todayEvents,
+      todayEvents: nextEvents,
+      title: 'tickets',
+      nextTitle: title,
     })
   }
 
@@ -118,7 +157,7 @@ export default class EventsController {
     }
   }
 
-  async search({ request, response, view }: HttpContext) {
+  async search({ request, response, view, i18n }: HttpContext) {
     const qs = request.qs()
     let payload
     let [latitude, longitude] = [50.645138, 5.57342]
@@ -212,8 +251,7 @@ export default class EventsController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    const topEvents = await this.getTopEvents()
-    const todayEvents = await this.getTodayEvents()
+    const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
 
     return view.render('pages/events/list', {
       events: events.length === 0 ? null : events,
@@ -228,7 +266,8 @@ export default class EventsController {
       latitude: latitude,
       longitude: longitude,
       topEvents: topEvents,
-      todayEvents: todayEvents,
+      todayEvents: nextEvents,
+      nextTitle: title,
     })
   }
 
@@ -357,7 +396,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) { }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -401,11 +440,10 @@ export default class EventsController {
     const { images_link } = await request.validateUsing(createMediaValidator)
 
     for (const file of images_link) {
-
       const media = new Media()
       const uniqueFileName = `${cuid()}.${file.extname}`
       await file.move(app.publicPath('uploads/'), {
-        name: uniqueFileName
+        name: uniqueFileName,
       })
       media.path = `/uploads/${uniqueFileName}`
       media.altName = file.clientName
@@ -419,16 +457,16 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event) {
+    event: Event
+  ) {
     const { images_link } = await request.validateUsing(createMediaValidator)
 
     try {
       for (const file of images_link) {
-
         const media = new Media()
         const uniqueFileName = `${cuid()}.${file.extname}`
         await file.move(app.publicPath('uploads/'), {
-          name: uniqueFileName
+          name: uniqueFileName,
         })
         media.path = `/uploads/${uniqueFileName}`
         media.altName = file.clientName
@@ -442,7 +480,6 @@ export default class EventsController {
       session.flash('errorEditingMedia', errorMsg)
       return false
     }
-
   }
 
   async getTodayEvents() {
@@ -450,6 +487,23 @@ export default class EventsController {
 
     const dayBegin = DateTime.now().toSQLDate()
     let dayEnd: string = DateTime.now().set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? ''
+
+    const events = await Event.query()
+      .select('id', 'location_id', 'title')
+      .whereBetween('event_start', [dayBegin, dayEnd])
+      .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+      .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+      .orderBy('event_start', 'asc')
+      .limit(5)
+
+    return events
+  }
+
+  async getNextEvents() {
+    // get 5 events that occur today
+
+    const dayBegin = DateTime.now().toSQLDate()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
 
     const events = await Event.query()
       .select('id', 'location_id', 'title')
@@ -476,6 +530,17 @@ export default class EventsController {
       .limit(5)
 
     return events
+  }
+
+  async getFeaturedEvents(i18n: HttpContext['i18n']) {
+    const topEvents = await this.getTopEvents()
+    let nextEvents = await this.getTodayEvents()
+    let title = i18n.t('messages.events_today')
+    if (nextEvents.length === 0) {
+      nextEvents = await this.getNextEvents()
+      title = i18n.t('messages.events_next_events')
+    }
+    return [topEvents, nextEvents, title]
   }
 
   /**
@@ -567,8 +632,7 @@ export default class EventsController {
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
     const indicators = await Indicator.all()
-    const media = await Media.query()
-      .where('event_id', '=', params.id)
+    const media = await Media.query().where('event_id', '=', params.id)
 
     const event = await Event.query()
       .where('id', '=', params.id)
@@ -613,7 +677,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) { }
+      } catch (error) {}
 
       await event.location.save()
       return true
@@ -687,8 +751,8 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event) {
-
+    event: Event
+  ) {
     try {
       const pricePayloads = await request.validateUsing(updatePricesValidator)
 
@@ -790,8 +854,10 @@ export default class EventsController {
       if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
         return response.redirect().back()
       await this.updateEventIndicators(request, event)
-      if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
-      if (!await this.updateEventMedia(request, session, i18n, event)) return response.redirect().back()
+      if (!(await this.updateEventPrices(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventMedia(request, session, i18n, event)))
+        return response.redirect().back()
 
       await event.save()
     }
@@ -801,5 +867,5 @@ export default class EventsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) { }
+  async destroy({ params }: HttpContext) {}
 }

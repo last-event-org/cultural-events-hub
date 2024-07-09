@@ -32,6 +32,8 @@
   "login_login": "Log in",
   "login_invalid": "Invalid credentials",
 
+  "date_from": "from",
+
   "profile_type_title": "Profile type",
   "profile_type_welcome": "Welcome { userFirstname }! What do you want to do ?",
   "profile_type_buy": "Buy tickets",
@@ -75,8 +77,14 @@
   "cart_close": "Close",
   "cart_error": "Error icon",
   "cart_itemDeleted": "Item has been deleted.",
+  "cart_validated": "Thank you for your purchase ! You can find your tickets here: ",
+  "cart_destroyed": "Cart emptied !",
 
   "dashboard_title": "Dashboard",
+  "dashboard_vendor_events": "Your events",
+  "dashboard_vendor_no_events": "You haven't published events yet.",
+  "dashboard_vendor_orders": "Your sold tickets",
+  "dashboard_vendor_no_orders": "You haven't sold tickets yet.",
   "dashboard_emptyWishlist": "No events in your wishlist at the moment.",
   "dashboard_emptyFavourites": "No favorite organizers at the moment.",
 
@@ -180,6 +188,7 @@
   "event_hub": "A cultural events hub",
   "event_fetch": "Fetch data",
   "events_title": "Full agenda",
+  "events_title_tickets": "All your discounted events",
   "events_search_title": "Your events",
   "events_search_city": "in",
   "events_search_vendor": "by",

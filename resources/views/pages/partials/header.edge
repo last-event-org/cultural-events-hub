@@ -69,17 +69,18 @@
         {{ i18n.t('messages.header_add_event') }}</a>
       </li>
     @end
- 
+    
   </ul>
-
+  
+  <div class="hidden lg:inline-block lg:ml-auto  py-2 px-6  duration-200">
+    @!component('components/header/language')
+  </div>
   @if(!auth.isAuthenticated)
 
   {{-- <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-slate-900 font-bold  rounded-md transition duration-200"
     href={{ route('auth.login.show') }}>
     Langues</a> --}}
-    <div class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6  duration-200">
-      @!component('components/language')
-    </div>
+    
   <a class="hidden lg:inline-block py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm   font-bold rounded-md transition duration-300" href={{ route('auth.login.show') }}>
     {{ i18n.t('messages.header_login') }}</a>
 

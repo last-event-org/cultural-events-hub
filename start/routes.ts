@@ -1,17 +1,17 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import VendorController from '#controllers/vendors/vendor_controller'
 
 const CartController = () => import('#controllers/events/cart_controller')
 const ListEvents = () => import('#controllers/api_listevents')
 const LoginController = () => import('#controllers/auth/login_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
-const HomeController = () => import('#controllers/home_controller')
 const RegisterController = () => import('#controllers/auth/register_controller')
 const EventsController = () => import('#controllers/events/events_controller')
 const WishlistsController = () => import('#controllers/events/wishlists_controller')
 const FavouritesController = () => import('#controllers/vendors/favourites_controller')
 
-router.get('/', [HomeController, 'index']).as('home')
+router.get('/', [EventsController, 'home']).as('home')
 
 router
   .group(() => {
@@ -42,6 +42,14 @@ router
     router
       .get('/dashboard/orders', [CartController, 'index'])
       .as('profile.orders')
+      .use(middleware.auth())
+    router
+      .get('/dashboard/vendor/orders', [VendorController, 'orders'])
+      .as('vendor.orders')
+      .use(middleware.auth())
+    router
+      .get('/dashboard/vendor/ëvents', [VendorController, 'events'])
+      .as('vendor.events')
       .use(middleware.auth())
     router
       .get('/dashboard/profile/edit', [RegisterController, 'edit'])

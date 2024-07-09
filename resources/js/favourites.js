@@ -1,22 +1,64 @@
 
-const heartHoverTarget = document.getElementById('favourite-heart')
-const heartChangeClass = document.getElementById('add-to-favourites')
+document.addEventListener('DOMContentLoaded', () => {
+  const heartTrigger = document.querySelector('.favourite-heart');
+  const heartEmpty = heartTrigger.querySelector('.heart-empty');
+  const heartFull = heartTrigger.querySelector('.heart-full');
 
-if(heartHoverTarget){
+  if (heartTrigger && heartEmpty && heartFull) {
+    let initialHeartState;
 
-  heartHoverTarget.addEventListener('mouseenter', () => {
-    heartChangeClass.classList.add('block', 'opacity-100', 'scale-100', 'translate-x-0')
-    heartChangeClass.classList.remove('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
-  })
-  
-  heartHoverTarget.addEventListener('mouseleave', () => {
-    heartChangeClass.classList.add('hidden', 'opacity-0', 'scale-50', '-translate-x-full')
-    heartChangeClass.classList.remove('block', 'opacity-100', 'scale-100', 'translate-x-0')
-  })
+    function isHeartFilled() {
+      return heartTrigger.classList.contains('heart-filled');
+    }
 
+    function fillHeart() {
+      heartTrigger.classList.add('heart-filled');
+    }
 
-}
+    function emptyHeart() {
+      heartTrigger.classList.remove('heart-filled');
+    }
 
+    function saveInitialHeartState() {
+      initialHeartState = isHeartFilled();
+    }
+
+    function restoreInitialHeartState() {
+      if (initialHeartState) {
+        fillHeart();
+      } else {
+        emptyHeart();
+      }
+    }
+
+    saveInitialHeartState();
+
+    heartTrigger.addEventListener('mouseenter', () => {
+      if (isHeartFilled()) {
+        emptyHeart();
+      } else {
+        fillHeart();
+      }
+    });
+
+    heartTrigger.addEventListener('mouseleave', restoreInitialHeartState);
+
+    heartTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isHeartFilled()) {
+        emptyHeart();
+      } else {
+        fillHeart();
+      }
+      saveInitialHeartState();
+      setTimeout(() => {
+        e.target.closest('form').submit();
+      }, 300);
+    });
+  }
+});
+
+// WISHLIST BUTTON
 document.addEventListener('DOMContentLoaded', () => {
   const starTrigger = document.querySelector('.favourite-star');
   const starEmpty = starTrigger.querySelector('.star-empty');

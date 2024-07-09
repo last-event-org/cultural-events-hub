@@ -97,6 +97,8 @@
 
   "favourites_title": "Favoris",
   "favourites_my": "Mes favoris",
+  "add_to_favourites" : "Ajouter le vendeur aux favoris",
+  "remove_from_favourites" : "Enlever le vendeur des favoris",
 
   "wishlist_title": "Wishlist",
   "wishlist_my": "Ma wishlist",
@@ -171,6 +173,7 @@
   "event_create": "Créer",
   "event_edit": "Modifier",
   "event_wish": "Ajouter à la wishlist",
+  "event_remove_wish" : "Enlever de la wishlist",
   "event_org": "Organisé par",
   "event_editEvent_title": "Éditer un événement",
   "event_editEvent": "Éditer l'événement",

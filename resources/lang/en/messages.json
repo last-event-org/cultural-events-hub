@@ -13,6 +13,8 @@
   "header_cart": "Cart",
   "header_map": "Map",
   "header_mode": "Dark/Light Mode",
+  "header_language": "Language",
+
 
   "register_title": "Next Event Sign up form",
   "register_signup": "Sign up",
@@ -102,6 +104,9 @@
 
   "favourites_title": "Favourites",
   "favourites_my": "My favourites",
+  "add_to_favourites" : "Add to favourites",
+  "remove_from_favourites" : "Remove from favourites",
+
 
   "wishlist_title": "Wishlist",
   "wishlist_my": "My wishlist",
@@ -176,6 +181,7 @@
   "event_create": "Create",
   "event_edit": "Edit",
   "event_wish": "Add to wishlist",
+  "event_remove_wish" : "Remove from wishlist",
   "event_org": "Organized by",
   "event_editEvent_title": "Edit event",
   "event_editEvent": "Edit event",

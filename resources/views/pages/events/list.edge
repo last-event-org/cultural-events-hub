@@ -22,8 +22,6 @@
 
 @if(home === true)
   @include("pages/partials/intro")
-@else
-  @include("pages/partials/title")
 @end
 
 <section class="relative flex flex-col items-center justify-center mb-10">
@@ -34,7 +32,7 @@
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>
     @else
-    <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
+    <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5"  > 
       @each(event in events)
         @!component('components/events_cards', {event})
       @end

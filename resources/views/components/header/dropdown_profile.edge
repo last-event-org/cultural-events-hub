@@ -1,6 +1,6 @@
 {{-- DropDown Profile --}}
 <div class="hidden lg:flex items-center gap-2">
-  <div class="hidden relative lg:inline-block text-left transition-opacity duration-500">
+  <div class="hidden relative lg:inline-block text-right transition-opacity duration-500">
     <div class="flex items-center">
       <button type="button" id="user_button" class="flex justify-center gap-1.5  px-3 py-2 text-sm font-semibold text-gray-600   hover:text-gray-950" id="menu-button" >
         {{ auth.user.firstname }}
@@ -15,7 +15,7 @@
           </svg>
         </div>
       </a>
-    <div id="drop_down_profile" class="hidden absolute right-0 top-12 z-10  w-56 origin-top-right border shadow rounded-3xl bg-white opacity-0 transition-opacity duration-500">
+    <div id="drop_down_profile" class="hidden absolute right-8 top-14 z-10  w-56 origin-top-right border shadow rounded-3xl bg-white opacity-0 transition-opacity duration-500">
     <div class="py-4 px-4">
       <a href="{{route('cart.show')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
         {{ i18n.t('messages.header_cart') }}</a>

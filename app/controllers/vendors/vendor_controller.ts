@@ -43,7 +43,7 @@ export default class VendorController {
       })
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/dashboard/vendors/events', {
+    return view.render('pages/dashboard/vendor/orders', {
       orders: orders.length === 0 ? null : orders,
     })
   }
@@ -62,7 +62,7 @@ export default class VendorController {
       .preload('media')
       .orderBy('event_start', 'asc')
 
-    return view.render('pages/dashboard/vendors/events', {
+    return view.render('pages/dashboard/vendor/events', {
       events: events.length === 0 ? null : events,
     })
   }

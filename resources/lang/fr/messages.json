@@ -77,7 +77,6 @@
   "cart_close": "Fermer",
   "cart_error": "Error icon",
   "cart_itemDeleted": "L'article a été supprimé.",
-  "cart_validated": "Merci pour votre commande ! Vous pouvez retrouver vos tickets ici: ",
   "cart_destroyed": "Panier vidé !",
 
   "dashboard_title": "Tableau de bord",
@@ -219,5 +218,11 @@
   "errorEventDates": "La date et l'heure de début doivent se produire avant la date et l'heure de fin.",
   "errorMissingCategType": "Au moins une catégorie et sous-catégorie doit être sélectionnée.",
   "errorMissingAddress": "Tous les champs de l'adresse sont requis.",
-  "errorEditingMedia": "Il y a un problème avec les images chargées."
+  "errorEditingMedia": "Il y a un problème avec les images chargées.",
+  "errorDestroyEvent": "Il y a un problème avec la suppression de l'événement. Réessayer ou contacter un admin.",
+  "errorDestroyCart": "Il y a un problème avec la suppression de votre panier. Réessayer ou contacter un admin.",
+
+  "successDestroyEvent": "Evénement supprimé.",
+  "successDestroyCart": "Panier supprimé.",
+  "successValidatedCart": "Merci pour votre achat !"
 }

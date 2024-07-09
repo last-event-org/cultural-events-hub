@@ -48,7 +48,7 @@ router
       .as('vendor.orders')
       .use(middleware.auth())
     router
-      .get('/dashboard/vendor/ëvents', [VendorController, 'events'])
+      .get('/dashboard/vendor/events', [VendorController, 'events'])
       .as('vendor.events')
       .use(middleware.auth())
     router
@@ -95,7 +95,7 @@ router
     router.post('/add/:id', [WishlistsController, 'addToWishlist']).as('add')
     router.post('/:id', [WishlistsController, 'destroy']).as('destroy')
   })
-  .prefix('wishlist')
+  .prefix('user/wishlist')
   .as('wishlist')
   .use(middleware.auth())
 

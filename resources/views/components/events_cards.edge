@@ -1,7 +1,7 @@
 
 
 <article class="relative hover:shadow cursor-pointer border-gray-300 sm:rounded-lg w-screen sm:w-full ">
-  <a href="/events/{{event?.id ?? ''}}" class="absolute inset-0"></a>
+  <a href="/events/{{event?.id ?? ''}}" class="absolute inset-0 z-50"></a>
 
   <div class="relative  pb-[56%]">
     <img src="{{event.media[0]?.path ?? '/images/no_picture.png'}}" alt="{{event.media[0]?.altName ?? 'No picture available'}}" class=" absolute w-full h-full sm:rounded-t-lg  object-cover border-b-4 border-yellow-500">

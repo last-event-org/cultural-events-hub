@@ -1,19 +1,38 @@
+let priceElementCount = 0;
+const maxElements = 4;
+
 function addPriceFields() {
-  let template = document.getElementById('priceFieldsTemplate')
-  let clone = document.importNode(template.content, true)
+  if (priceElementCount < maxElements) {
+    let template = document.getElementById('priceFieldsTemplate')
+    let clone = document.importNode(template.content, true)
+  
+    const newIndex = document.querySelectorAll('.price-section').length
+  
+    // Update input names to include the new index
+    const inputs = clone.querySelectorAll('input, textarea')
+    inputs.forEach((input) => {
+      const nameAttr = input.getAttribute('name')
+      if (nameAttr) {
+        input.setAttribute('name', nameAttr.replace(/\[0\]/g, `[${newIndex}]`))
+        input.setAttribute('id', nameAttr.replace(/\[0\]/g, `[${newIndex}]`))
+      }
+    })
+  
+    document.getElementById('priceFieldsContainer').appendChild(clone)
+    priceElementCount++
+  } else {
+    alert(`You have reached the limit of ${maxElements+1} elements.`);
+  }
+}
 
-  const newIndex = document.querySelectorAll('.price-section').length
-
-  // Update input names to include the new index
-  const inputs = clone.querySelectorAll('input, textarea')
-  inputs.forEach((input) => {
-    const nameAttr = input.getAttribute('name')
-    if (nameAttr) {
-      input.setAttribute('name', nameAttr.replace(/\[0\]/g, `[${newIndex}]`))
+function deleteCurrentPriceElm(button) {
+  if (priceElementCount > 0) {
+    const fieldset = button.closest('fieldset.price-section');
+    if (fieldset) {
+        fieldset.remove();
+        priceElementCount--;
     }
-  })
-
-  document.getElementById('priceFieldsContainer').appendChild(clone)
+  }
 }
 
 function addDiscountedPriceFields() {

@@ -77,8 +77,14 @@
   "cart_close": "Close",
   "cart_error": "Error icon",
   "cart_itemDeleted": "Item has been deleted.",
+  "cart_validated": "Thank you for your purchase ! You can find your tickets here: ",
+  "cart_destroyed": "Cart emptied !",
 
   "dashboard_title": "Dashboard",
+  "dashboard_vendor_events": "Your events",
+  "dashboard_vendor_no_events": "You haven't published events yet.",
+  "dashboard_vendor_orders": "Your sold tickets",
+  "dashboard_vendor_no_orders": "You haven't sold tickets yet.",
   "dashboard_emptyWishlist": "No events in your wishlist at the moment.",
   "dashboard_emptyFavourites": "No favorite organizers at the moment.",
 

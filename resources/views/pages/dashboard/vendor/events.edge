@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="{{ i18n.locale }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ i18n.t('messages. "dashboard_vendor_events') }}</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class=" bg-slate-50">
+@include("pages/partials/header")
+
+{{ i18n.t('messages. "dashboard_vendor_events') }}
+
+<main class="flex flex-col items-center min-h-screen">
+  @if(!events)
+    <p>{{i18n.t('messages.dashboard_vendor_no_events')}}</p>
+    @else
+    <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"  > 
+      @each(event in events)
+        @!component('components/events_cards', {event})
+      @end
+    </div>
+  @end
+</main>
+
+@include("pages/partials/footer")  
+
+</body>
+</html>

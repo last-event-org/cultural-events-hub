@@ -77,8 +77,14 @@
   "cart_close": "Fermer",
   "cart_error": "Error icon",
   "cart_itemDeleted": "L'article a été supprimé.",
+  "cart_validated": "Merci pour votre commande ! Vous pouvez retrouver vos tickets ici: ",
+  "cart_destroyed": "Panier vidé !",
 
   "dashboard_title": "Tableau de bord",
+  "dashboard_vendor_events": "Vos événements publiés",
+  "dashboard_vendor_no_events": "Vous n'avez pas encore publié d'événements",
+  "dashboard_vendor_orders": "Vos tickets vendus",
+  "dashboard_vendor_no_orders": "Vous n'avez pas encore vendu de tickets.",
   "dashboard_emptyWishlist": "Pas d'évènement dans votre wishlist pour le moment.",
   "dashboard_emptyFavourites": "Pas d'organisateurs favoris pour le moment.",
 
@@ -214,5 +220,4 @@
   "errorMissingCategType": "Au moins une catégorie et sous-catégorie doit être sélectionnée.",
   "errorMissingAddress": "Tous les champs de l'adresse sont requis.",
   "errorEditingMedia": "Il y a un problème avec les images chargées."
-
 }

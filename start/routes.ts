@@ -1,5 +1,6 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import VendorController from '#controllers/vendors/vendor_controller'
 
 const CartController = () => import('#controllers/events/cart_controller')
 const ListEvents = () => import('#controllers/api_listevents')
@@ -41,6 +42,14 @@ router
     router
       .get('/dashboard/orders', [CartController, 'index'])
       .as('profile.orders')
+      .use(middleware.auth())
+    router
+      .get('/dashboard/vendor/orders', [VendorController, 'orders'])
+      .as('vendor.orders')
+      .use(middleware.auth())
+    router
+      .get('/dashboard/vendor/ëvents', [VendorController, 'events'])
+      .as('vendor.events')
       .use(middleware.auth())
     router
       .get('/dashboard/profile/edit', [RegisterController, 'edit'])

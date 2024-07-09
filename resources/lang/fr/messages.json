@@ -81,6 +81,10 @@
   "cart_destroyed": "Panier vidé !",
 
   "dashboard_title": "Tableau de bord",
+  "dashboard_vendor_events": "Vos événements publiés",
+  "dashboard_vendor_no_events": "Vous n'avez pas encore publié d'événements",
+  "dashboard_vendor_orders": "Vos tickets vendus",
+  "dashboard_vendor_no_orders": "Vous n'avez pas encore vendu de tickets.",
   "dashboard_emptyWishlist": "Pas d'évènement dans votre wishlist pour le moment.",
   "dashboard_emptyFavourites": "Pas d'organisateurs favoris pour le moment.",
 

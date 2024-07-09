@@ -11,7 +11,6 @@ export default class extends BaseSchema {
       table.timestamp('created_at')
       table.timestamp('updated_at')
       table.integer('event_id').unsigned().references('events.id').onDelete('SET NULL')
-      table.binary('binary')
     })
   }
 

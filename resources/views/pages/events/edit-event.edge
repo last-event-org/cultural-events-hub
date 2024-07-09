@@ -343,15 +343,22 @@
             {{ i18n.t('messages.event_uploadImg') }}
           </label>
           <input class="mt-4 max-w-56" type="file" id="images_link" name="images_link[]"
-              onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple 
+              onchange="previewImages({{mediaLength}})" accept="image/png, image/gif, image/jpeg" multiple 
           />
-          @inputError('images_link')
-          <div style="color: yellow;">
-            {{ i18n.t('messages.event_imgMin') }}
-          </div>
-          @end
           <div id="imagePreviewContainer" class="flex flex-wrap mt-4">
           </div>
+          <div>
+            @each(image in media)
+              <img class="sm:p-4 h-auto max-h-[500px] w-full object-cover sm:rounded-3xl" src="{{image?.path ?? ''}}" alt="{{image?.altName ?? ''}}">  
+            @end
+          </div>
+          @if(flashMessages.has('errorEditingMedia'))
+          <div>
+            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+              {{ flashMessages.get('errorEditingMedia') }}
+            </h2>
+          </div>
+        @endif
         </section>
       </div>  
 {{-- Prices  --}}
@@ -397,12 +404,12 @@
 
         </section>
         @if(flashMessages.has('errorEditEventPrices'))
-            <div>
-              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
-                {{ flashMessages.get('errorEditEventPrices') }}
-              </h2>
-            </div>
-          @endif
+          <div>
+            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+              {{ flashMessages.get('errorEditEventPrices') }}
+            </h2>
+          </div>
+        @endif
 
         <div class="flex justify-center my-2">
           <button type="submit" class="uppercase bg-yellow-500 text-black font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 

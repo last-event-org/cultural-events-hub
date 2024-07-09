@@ -213,5 +213,6 @@
   "errorEventDates": "La date et l'heure de début doivent se produire avant la date et l'heure de fin.",
   "errorMissingCategType": "Au moins une catégorie et sous-catégorie doit être sélectionnée.",
   "errorMissingAddress": "Tous les champs de l'adresse sont requis.",
-  "errorEditEventPrices": "Il y a un problème avec les prix. Veuillez vérifier."
+  "errorEditingMedia": "Il y a un problème avec les images chargées."
+
 }

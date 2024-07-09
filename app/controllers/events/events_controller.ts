@@ -19,6 +19,10 @@ import { createMediaValidator } from '#validators/media'
 import { createPricesValidator } from '#validators/price'
 import { queryValidator } from '#validators/query'
 import User from '#models/user'
+import { updatePricesValidator } from '#validators/update_price'
+import { error } from 'console'
+import app from '@adonisjs/core/services/app'
+import { cuid } from '@adonisjs/core/helpers'
 
 export default class EventsController {
   /**
@@ -391,7 +395,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) {}
+    } catch (error) { }
 
     await address.save()
     await event.related('location').associate(address)
@@ -435,24 +439,48 @@ export default class EventsController {
     const { images_link } = await request.validateUsing(createMediaValidator)
 
     for (const file of images_link) {
+
       const media = new Media()
-      media.path = '' // TODO if needed, setup a path method if we'll use an external server
+      const uniqueFileName = `${cuid()}.${file.extname}`
+      await file.move(app.publicPath('uploads/'), {
+        name: uniqueFileName
+      })
+      media.path = `/uploads/${uniqueFileName}`
       media.altName = file.clientName
       media.eventId = event.id
 
-      if (!file.tmpPath) {
-        console.error('Skipping file due to missing tmpPath:', file)
-        continue // Skip this iteration if tmpPath is undefined
-      }
-
-      try {
-        const binaryData = fs.readFileSync(file.tmpPath)
-        media.binary = binaryData
-        await media.save()
-      } catch (error) {
-        console.error('Media binary upload error:', error)
-      }
+      await media.save()
     }
+  }
+
+  async updateEventMedia(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    i18n: HttpContext['i18n'],
+    event: Event) {
+    const { images_link } = await request.validateUsing(createMediaValidator)
+
+    try {
+      for (const file of images_link) {
+
+        const media = new Media()
+        const uniqueFileName = `${cuid()}.${file.extname}`
+        await file.move(app.publicPath('uploads/'), {
+          name: uniqueFileName
+        })
+        media.path = `/uploads/${uniqueFileName}`
+        media.altName = file.clientName
+        media.eventId = event.id
+
+        await media.save()
+      }
+      return true
+    } catch (error) {
+      const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error
+      session.flash('errorEditingMedia', errorMsg)
+      return false
+    }
+
   }
 
   async getTodayEvents() {
@@ -577,6 +605,8 @@ export default class EventsController {
     const categories = await Category.all()
     const categoryTypes = await CategoryType.all()
     const indicators = await Indicator.all()
+    const media = await Media.query()
+      .where('event_id', '=', params.id)
 
     const event = await Event.query()
       .where('id', '=', params.id)
@@ -586,13 +616,14 @@ export default class EventsController {
       })
       .preload('indicators')
       .preload('prices')
-      .preload('media')
 
     return view.render('pages/events/edit-event', {
       event: event[0],
       categories: categories,
       categoryTypes: categoryTypes,
       indicators: indicators,
+      media: media,
+      mediaLength: media.length,
     })
   }
 
@@ -612,7 +643,7 @@ export default class EventsController {
       event.location.country = addressPayload.country
 
       try {
-        const [latitude, longitude] = await this.getCoordinatesFromAddress(
+        const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
           event.location.city,
           event.location.street,
           event.location.zipCode,
@@ -620,12 +651,12 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) {}
+      } catch (error) { }
 
       await event.location.save()
       return true
     } catch (error) {
-      const errorMsg = i18n.t('messages.errorMissingAddress')
+      const errorMsg = i18n.t('messages.errorMissingAddress') + ' ' + error
       session.flash('errorMissingAddress', errorMsg)
       return false
     }
@@ -694,9 +725,35 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
     i18n: HttpContext['i18n'],
-    event: Event
-  ) {
-    // TODO create 5 prices per event (-> createEventPrices())
+    event: Event) {
+
+    try {
+      const pricePayloads = await request.validateUsing(updatePricesValidator)
+
+      // if data validation if ok, we delete all prices associated with the event
+      const prices = event.prices
+      prices.forEach((price: Price) => {
+        price.delete()
+      })
+
+      // then we create new prices objects and associate them with the event
+      for (const pricePayload of pricePayloads.prices) {
+        const price = new Price()
+
+        if (pricePayload.price_description) price.description = pricePayload.price_description
+        if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
+        if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
+        if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
+
+        await price.save()
+        await price.related('event').associate(event)
+        return true
+      }
+    } catch (error) {
+      const errorMsg = i18n.t('messages.errorEditEventPrices') + ' ' + error
+      session.flash('errorEditEventPrices', errorMsg)
+      return false
+    }
   }
 
   /**
@@ -704,7 +761,6 @@ export default class EventsController {
    */
   async update({ i18n, params, request, session, response }: HttpContext) {
     const payload = await request.validateUsing(createEventValidator)
-    // const event = await Event.findOrFail(params['id'])
 
     const event = await Event.query()
       .where('id', '=', params['id'])
@@ -720,8 +776,6 @@ export default class EventsController {
       event.title = payload.title
       event.subtitle = payload.subtitle
       event.description = payload.description
-
-      // TODO practical data (address)
 
       // Date
       event.eventStart = DateTime.fromISO(payload.event_start)
@@ -774,9 +828,8 @@ export default class EventsController {
       if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
         return response.redirect().back()
       await this.updateEventIndicators(request, event)
-      // if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
-
-      // TODO images
+      if (!await this.updateEventPrices(request, session, i18n, event)) return response.redirect().back()
+      if (!await this.updateEventMedia(request, session, i18n, event)) return response.redirect().back()
 
       await event.save()
     }
@@ -786,5 +839,5 @@ export default class EventsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params }: HttpContext) { }
 }

@@ -15,7 +15,6 @@
   "header_mode": "Dark/Light Mode",
   "header_language": "Language",
 
-
   "register_title": "Next Event Sign up form",
   "register_signup": "Sign up",
   "register_name": "Name",
@@ -88,6 +87,11 @@
   "dashboard_vendor_no_orders": "You haven't sold tickets yet.",
   "dashboard_emptyWishlist": "No events in your wishlist at the moment.",
   "dashboard_emptyFavourites": "No favorite organizers at the moment.",
+  "dashboard_vendor_orders_tickets_sold": "Tickets sold",
+  "dashboard_vendor_orders_tickets_available": "Tickets available",
+  "dashboard_vendor_orders_total": "Total sales",
+  "dashboard_vendor_orders_ticket_type": "Ticket type",
+  "dashboard_vendor_orders_number": "Number of orders",
 
   "editProfile_title": "Edit profile",
   "editProfile_firstname": "Firstname",
@@ -103,9 +107,8 @@
 
   "favourites_title": "Favourites",
   "favourites_my": "My favourites",
-  "add_to_favourites" : "Add to favourites",
-  "remove_from_favourites" : "Remove from favourites",
-
+  "add_to_favourites": "Add to favourites",
+  "remove_from_favourites": "Remove from favourites",
 
   "wishlist_title": "Wishlist",
   "wishlist_my": "My wishlist",
@@ -180,7 +183,7 @@
   "event_create": "Create",
   "event_edit": "Edit",
   "event_wish": "Add to wishlist",
-  "event_remove_wish" : "Remove from wishlist",
+  "event_remove_wish": "Remove from wishlist",
   "event_org": "Organized by",
   "event_editEvent_title": "Edit event",
   "event_editEvent": "Edit event",

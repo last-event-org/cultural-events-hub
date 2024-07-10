@@ -87,6 +87,11 @@
   "dashboard_vendor_no_orders": "Vous n'avez pas encore vendu de tickets.",
   "dashboard_emptyWishlist": "Pas d'évènement dans votre wishlist pour le moment.",
   "dashboard_emptyFavourites": "Pas d'organisateurs favoris pour le moment.",
+  "dashboard_vendor_orders_tickets_sold": "Tickets vendus",
+  "dashboard_vendor_orders_tickets_available": "Tickets disponibles",
+  "dashboard_vendor_orders_total": "Total ventes",
+  "dashboard_vendor_orders_ticket_type": "Type de ticket",
+  "dashboard_vendor_orders_number": "Nb. de commandes",
 
   "editProfile_title": "Modifier le profil",
   "editProfile_firstname": "Prénom",
@@ -102,8 +107,8 @@
 
   "favourites_title": "Favoris",
   "favourites_my": "Mes favoris",
-  "add_to_favourites" : "Ajouter le vendeur aux favoris",
-  "remove_from_favourites" : "Enlever le vendeur des favoris",
+  "add_to_favourites": "Ajouter le vendeur aux favoris",
+  "remove_from_favourites": "Enlever le vendeur des favoris",
 
   "wishlist_title": "Wishlist",
   "wishlist_my": "Ma wishlist",
@@ -178,7 +183,7 @@
   "event_create": "Créer",
   "event_edit": "Modifier",
   "event_wish": "Ajouter à la wishlist",
-  "event_remove_wish" : "Enlever de la wishlist",
+  "event_remove_wish": "Enlever de la wishlist",
   "event_org": "Organisé par",
   "event_editEvent_title": "Éditer un événement",
   "event_editEvent": "Éditer l'événement",

@@ -30,42 +30,37 @@ nav {
 
 @layer utilities {
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari and Opera */
+    display: none; /* Chrome, Safari and Opera */
   }
 }
 
-.date-pl{
-  padding-left:10px;
+.date-pl {
+  padding-left: 10px;
 }
 
-
-@media (min-width:500px){
-  
-  .date-pl{
-    padding-left:30px;
+@media (min-width: 500px) {
+  .date-pl {
+    padding-left: 30px;
   }
-} 
-@media (min-width:330px){
-  
-  .grid-categories{  
-    grid-template-columns: repeat(3,minmax(0,1fr));
+}
+@media (min-width: 330px) {
+  .grid-categories {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-} 
-@media (min-width:375px){
-  .date-pl{
-  padding-left:20px;
+}
+@media (min-width: 375px) {
+  .date-pl {
+    padding-left: 20px;
   }
-  
 }
 @media (min-width: 550px) {
   .date-pl {
     padding-left: 30px;
   }
-  
 }
 
 .video-container {
@@ -167,11 +162,12 @@ a:hover .bg-salons_foires {
 .favourite-star {
   position: relative;
   display: inline-block;
-  width: 30px; 
-  height: 30px; 
+  width: 30px;
+  height: 30px;
 }
 
-.star-empty, .star-full {
+.star-empty,
+.star-full {
   position: absolute;
   top: 0;
   left: 0;
@@ -188,15 +184,15 @@ a:hover .bg-salons_foires {
   opacity: 1;
 }
 
-
 .favourite-heart {
   position: relative;
   display: inline-block;
-  width: 30px; 
-  height: 30px; 
+  width: 30px;
+  height: 30px;
 }
 
-.heart-empty, .heart-full {
+.heart-empty,
+.heart-full {
   position: absolute;
   top: 0;
   left: 0;
@@ -213,3 +209,25 @@ a:hover .bg-salons_foires {
   opacity: 1;
 }
 
+summary {
+  list-style-type: none;
+  position: relative;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:before {
+    content: 'See details';
+    color: red;
+    position: absolute;
+    right: 0;
+    transition: transform ease-in-out 200ms;
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+  details[open] &:before {
+    content: 'Close details';
+    color: blue;
+  }
+}

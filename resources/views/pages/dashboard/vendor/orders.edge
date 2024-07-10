@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages. "dashboard_vendor_orders') }}</title>
+  <title>{{ i18n.t('messages.dashboard_vendor_orders') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -25,16 +25,10 @@
     <p>{{i18n.t('messages.dashboard_vendor_no_orders')}}</p>
     @else
     <div class="flex flex-col gap-4 pb-8 ">
-      @each(orderline in orders)
-      {{orderline.id}}
-      {{-- {{orderline.order.id}} --}}
-      {{-- {{orderline.price.event ?? orderline.price.event.id}} --}}
-      {{-- {{orderline.price.event.title}} --}}
-        {{-- @!component('components/dashboard/mini-event', {event}) --}}
-        <br>
+      @each((order, index) in orders)
+        @!component('components/dashboard/vendor/orders_details', {event: order.$extras, orderLines: orderLines[order.$extras.eventId]})
       @end
-    </div>
-
+      </div>
   @end
   </div>
 </main>
@@ -43,3 +37,4 @@
 
 </body>
 </html>
+<script src="/resources/js/date_format.js"></script>

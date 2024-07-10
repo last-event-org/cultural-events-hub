@@ -382,8 +382,10 @@
               price: price,
               i: i
             })
+            @if(i > 0)
             <a href="{{ route('price.destroy', [price.id], { qs: {_method: 'POST'}} ) }}" class="cursor-pointer  text-xs underline text-red-600 hover:text-red-400 duration-300">
               {{ i18n.t('messages.delete_btn')}}</a>
+            @endif
 
             @if(flashMessages.has('errorDestroyPrice'))
             <div>

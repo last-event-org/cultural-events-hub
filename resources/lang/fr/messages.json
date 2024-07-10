@@ -225,8 +225,10 @@
   "errorEditingMedia": "Il y a un problème avec les images chargées.",
   "errorDestroyEvent": "Il y a un problème avec la suppression de l'événement. Réessayer ou contacter un admin.",
   "errorDestroyCart": "Il y a un problème avec la suppression de votre panier. Réessayer ou contacter un admin.",
+  "errorDestroyMedia": "Il y a un problème avec la suppression du media. Réessayer ou contacter un admin.",
 
   "successDestroyEvent": "Evénement supprimé.",
   "successDestroyCart": "Panier supprimé.",
-  "successValidatedCart": "Merci pour votre achat !"
+  "successValidatedCart": "Merci pour votre achat !",
+  "successDestroyMedia": "Media supprimé."
 }

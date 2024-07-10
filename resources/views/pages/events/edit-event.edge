@@ -350,7 +350,15 @@
           <div>
             @each(image in media)
               <img class="sm:p-4 h-auto max-h-[500px] w-full object-cover sm:rounded-3xl" src="{{image?.path ?? ''}}" alt="{{image?.altName ?? ''}}">  
+              <a href="{{ route('media.destroy', [image.id], { qs: {_method: 'POST'}} ) }}" class="">Delete</a>
             @end
+            @if(flashMessages.has('errorDestroyMedia'))
+              <div>
+                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                  {{ flashMessages.get('errorDestroyMedia') }}
+                </h2>
+              </div>
+            @endif
           </div>
           @if(flashMessages.has('errorEditingMedia'))
           <div>

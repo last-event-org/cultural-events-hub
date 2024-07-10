@@ -458,28 +458,49 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
-    const { images_link } = await request.validateUsing(createMediaValidator)
+    const mediaUpdateDetection = request.__raw_files.images_link;
+    const mediaUpdateLength = mediaUpdateDetection ? Object.keys(mediaUpdateDetection).length : null;
 
-    try {
-      for (const file of images_link) {
-        const media = new Media()
-        const uniqueFileName = `${cuid()}.${file.extname}`
-        await file.move(app.publicPath('uploads/'), {
-          name: uniqueFileName,
-        })
-        media.path = `/uploads/${uniqueFileName}`
-        media.altName = file.clientName
-        media.eventId = event.id
-
-        await media.save()
+    if (mediaUpdateLength != null && mediaUpdateLength > 0) {
+      const { images_link } = await request.validateUsing(createMediaValidator)
+      try {
+        for (const file of images_link) {
+          const media = new Media()
+          const uniqueFileName = `${cuid()}.${file.extname}`
+          await file.move(app.publicPath('uploads/'), {
+            name: uniqueFileName,
+          })
+          media.path = `/uploads/${uniqueFileName}`
+          media.altName = file.clientName
+          media.eventId = event.id
+  
+          await media.save()
+        }
+      } catch (error) {
+        const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error
+        session.flash('errorEditingMedia', errorMsg)
+        return false
       }
-      return true
-    } catch (error) {
-      const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error
-      session.flash('errorEditingMedia', errorMsg)
-      return false
     }
+    return true
   }
+
+  async deleteEventMedia({ params, response, session, i18n }: HttpContext) {
+    console.log('\n\n\n\n\n\n', params)
+    const media = await Media.find(params['id'])
+    console.log('media: ', media);
+    try {
+      await media.delete()
+    } catch (error) {
+      console.log(error)
+      // const errorMsg = i18n.t('messages.errorDestroyEvent')
+      // session.flash('error', errorMsg)
+    }
+    response.redirect().back()
+    // const successMsg = i18n.t('messages.successDestroyEvent')
+    // session.flash('success', successMsg)
+  }
+
 
   async getTodayEvents() {
     // get 5 events that occur today
@@ -857,8 +878,8 @@ export default class EventsController {
       if (!(await this.updateEventAddress(request, session, i18n, event))) return response.redirect().back()
       if (!(await this.updateEventCategoryTypes(request, session, i18n, event))) return response.redirect().back()
       await this.updateEventIndicators(request, event)
-      if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
-      // if (!(await this.updateEventMedia(request, session, i18n, event))) return response.redirect().back()
+      // if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventMedia(request, session, i18n, event))) return response.redirect().back()
 
       await event.save()
     }

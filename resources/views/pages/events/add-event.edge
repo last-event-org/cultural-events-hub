@@ -266,7 +266,7 @@
 
 
                     <div class="text-sm p-3 bg-fuchsia-50 rounded-lg">
-                        @!component('components/first_price_fields')
+                        @!component('components/price_fields')
 
                         <template id="priceFieldsTemplate">
                             @!component('components/price_fields')
@@ -277,34 +277,20 @@
                         @inputError('prices[]')
                             <div style="color: red;">{{ $messages.join(', ') }}</div>
                         @end
+
+                        @if(flashMessages.has('errorMissingPrices'))
+                            <div>
+                                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                                {{ flashMessages.get('errorMissingPrices') }}
+                                </h2>
+                            </div>
+                        @endif
                     </div>
 
                     <button type="button" onclick="addPriceFields()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-500 
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
                     {{ i18n.t('messages.event_addPrice') }}
                     </button>
-
-                    {{-- <div>
-                        <input type="checkbox" id="displayDiscountSection" name="" value=""
-                            onchange="toggleDiscountedPriceSection(this)" />
-                        <label for="displayDiscountSection">Voulez vous ajouter des prix réduits</label>
-                    </div>
-
-                    <div class="bg-orange-200 p-5 rounded-md hidden" id="discountedPriceSection">
-                        @!component('components/discounted_price_fields')
-
-                        <template id="discountedPriceFieldsTemplate">
-                            @!component('components/discounted_price_fields')
-                        </template>
-                        <div id="discountedPriceFieldsContainer" class="flex flex-col gap-4">
-                            <!-- div to add the addionnal prices -->
-                        </div>
-
-                        <button type="button" onclick="addDiscountedPriceFields()" class=" mt-4 bg-orange-700 text-white py-2 px-4 rounded-md hover:bg-orange-900 
-                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
-                            Ajouter des tarifs réduits
-                        </button>
-                    </div> --}}
 
                     <div>
 

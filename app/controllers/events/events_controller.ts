@@ -788,9 +788,7 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
-    console.log('\n\n\n\n')
     const bodyPrices = request.body().prices
-    console.log('data: ', bodyPrices);
 
     if (bodyPrices) {
       // we delete all existing prices associated with current event

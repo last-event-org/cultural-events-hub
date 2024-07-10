@@ -1,6 +1,5 @@
 import env from '#start/env'
 import { DateTime } from 'luxon'
-import fs from 'fs'
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { errors } from '@vinejs/vine'
@@ -16,12 +15,11 @@ import Indicator from '#models/indicator'
 import { createEventValidator } from '#validators/event'
 import { createAddressValidator } from '#validators/address'
 import { createMediaValidator } from '#validators/media'
-import { createPricesValidator } from '#validators/price'
 import { queryValidator } from '#validators/query'
+import { createPriceValidator } from '#validators/create_price'
 import User from '#models/user'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
-import { createPriceValidator } from '#validators/create_price'
 
 export default class EventsController {
   /**

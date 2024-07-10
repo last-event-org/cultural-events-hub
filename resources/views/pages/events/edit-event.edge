@@ -381,7 +381,17 @@
             @!component('components/price_fields', {
               price: price,
               i: i
-            })   
+            })
+            <a href="{{ route('price.destroy', [price.id], { qs: {_method: 'POST'}} ) }}" class="cursor-pointer  text-xs underline text-red-600 hover:text-red-400 duration-300">
+              {{ i18n.t('messages.delete_btn')}}</a>
+
+            @if(flashMessages.has('errorDestroyPrice'))
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                {{ flashMessages.get('errorDestroyPrice') }}
+              </h2>
+            </div>
+            @endif
           @end
         
 

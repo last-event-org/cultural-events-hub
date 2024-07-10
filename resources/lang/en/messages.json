@@ -229,6 +229,7 @@
   "errorDestroyEvent": "There is a problem when deleting this event. Retry or contact an admin.",
   "errorDestroyCart": "There is a problem emptying your cart. Retry or contact an admin.",
   "errorDestroyMedia": "There is a problem deleting the media. Retry or contact an admin.",
+  "errorDestroyPrice": "There is a problem deleting the price. Retry or contact an admin.",
   "errorCreatePrice": "There is a problem creating the prices. Retry or contact an admin.",
   "errorMissingPrices": "The fields 'Category' and 'Price' are required.",
 

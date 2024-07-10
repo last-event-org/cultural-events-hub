@@ -226,6 +226,7 @@
   "errorDestroyEvent": "Il y a un problème avec la suppression de l'événement. Réessayer ou contacter un admin.",
   "errorDestroyCart": "Il y a un problème avec la suppression de votre panier. Réessayer ou contacter un admin.",
   "errorDestroyMedia": "Il y a un problème avec la suppression du media. Réessayer ou contacter un admin.",
+  "errorDestroyPrice": "Il y a un problème avec la suppression du prix. Réessayer ou contacter un admin.",
   "errorCreatePrice": "Il y a un problème avec la création des prix. Réessayer ou contacter un admin.",
   "errorMissingPrices": "Les champs 'Catégorie' et 'Prix' sont requis.",
 

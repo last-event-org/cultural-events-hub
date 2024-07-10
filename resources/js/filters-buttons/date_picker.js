@@ -6,11 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
   const today = new Date()
   let selectedDate = new Date(today)
-
   let currentDate = new Date(today)
+
   const urlParams = new URLSearchParams(window.location.search)
   if (urlParams.size > 0) {
-    if (urlParams.get('date') !== '') {
+    const dateQuery = urlParams.get('date')
+    if (dateQuery !== null) {
       formatDateInput(urlParams.get('date'))
       formatDateQuery(urlParams.get('date'))
       selectedDate = new Date(urlParams.get('date'))

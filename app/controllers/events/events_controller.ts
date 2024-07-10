@@ -58,6 +58,7 @@ export default class EventsController {
       todayEvents: nextEvents,
       home: true,
       nextTitle: title,
+      filter: true,
     })
   }
 
@@ -89,6 +90,7 @@ export default class EventsController {
       todayEvents: nextEvents,
       title: 'agenda',
       nextTitle: title,
+      filter: true,
     })
   }
 
@@ -120,6 +122,7 @@ export default class EventsController {
       todayEvents: nextEvents,
       title: 'tickets',
       nextTitle: title,
+      filter: true,
     })
   }
 
@@ -170,6 +173,7 @@ export default class EventsController {
     let locationName: string | undefined
     let categoryTypesId: any[] = []
     let categoryTypes: any
+    let filter = true
 
     const categories = await Category.query().select('name', 'slug', 'id')
 
@@ -193,6 +197,7 @@ export default class EventsController {
       } catch (error) {
         response.redirect().back()
       }
+      filter = true
     }
 
     if (qs.date) {
@@ -204,11 +209,13 @@ export default class EventsController {
     if (qs.location) {
       const location = await Address.query().select('name').where('id', qs.location).first()
       locationName = location?.name
+      filter = false
     }
 
     if (qs.vendor) {
       const vendor = await User.query().select('company_name').where('id', qs.vendor).first()
       vendorName = vendor?.companyName
+      filter = false
     }
 
     if (qs.categoryType) {
@@ -229,6 +236,7 @@ export default class EventsController {
       categoryTypes?.forEach((categoryType: any) => {
         categoryTypesId.push(categoryType.$attributes.id)
       })
+      filter = true
     }
     const events = await Event.query()
       .if(qs.city, (query) => query.whereIn('id', ids))
@@ -251,6 +259,8 @@ export default class EventsController {
       .orderBy('event_start', 'asc')
 
     const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
+    console.log('\n\nFILTER\n\n')
+    console.log(filter)
 
     return view.render('pages/events/list', {
       events: events.length === 0 ? null : events,
@@ -267,6 +277,7 @@ export default class EventsController {
       topEvents: topEvents,
       todayEvents: nextEvents,
       nextTitle: title,
+      filter: filter,
     })
   }
 
@@ -395,7 +406,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) { }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -458,8 +469,8 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
-    const mediaUpdateDetection = request.__raw_files.images_link;
-    const mediaUpdateLength = mediaUpdateDetection ? Object.keys(mediaUpdateDetection).length : null;
+    const mediaUpdateDetection = request.__raw_files.images_link
+    const mediaUpdateLength = mediaUpdateDetection ? Object.keys(mediaUpdateDetection).length : null
 
     if (mediaUpdateLength != null && mediaUpdateLength > 0) {
       const { images_link } = await request.validateUsing(createMediaValidator)
@@ -473,7 +484,7 @@ export default class EventsController {
           media.path = `/uploads/${uniqueFileName}`
           media.altName = file.clientName
           media.eventId = event.id
-  
+
           await media.save()
         }
       } catch (error) {
@@ -488,7 +499,7 @@ export default class EventsController {
   async deleteEventMedia({ params, response, session, i18n }: HttpContext) {
     console.log('\n\n\n\n\n\n', params)
     const media = await Media.find(params['id'])
-    console.log('media: ', media);
+    console.log('media: ', media)
     try {
       await media.delete()
     } catch (error) {
@@ -500,7 +511,6 @@ export default class EventsController {
     // const successMsg = i18n.t('messages.successDestroyEvent')
     // session.flash('success', successMsg)
   }
-
 
   async getTodayEvents() {
     // get 5 events that occur today
@@ -697,7 +707,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) { }
+      } catch (error) {}
 
       await event.location.save()
       return true
@@ -778,7 +788,7 @@ export default class EventsController {
     // then after a while the validation stops working and price update stops working
     try {
       const pricePayloads = await request.validateUsing(updatePricesValidator)
-      
+
       // if data validation if ok, we delete all prices associated with the event
       const prices = event.prices
       prices.forEach((price: Price) => {
@@ -799,9 +809,8 @@ export default class EventsController {
       }
 
       return true
-
     } catch (error) {
-      console.error('Validation Error:', error.messages) 
+      console.error('Validation Error:', error.messages)
       const errorMsg = i18n.t('messages.errorEditEventPrices') + ' ' + error
       session.flash('errorEditEventPrices', errorMsg)
       return false
@@ -875,11 +884,14 @@ export default class EventsController {
         event.youtubeLink = ''
       }
 
-      if (!(await this.updateEventAddress(request, session, i18n, event))) return response.redirect().back()
-      if (!(await this.updateEventCategoryTypes(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventAddress(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
+        return response.redirect().back()
       await this.updateEventIndicators(request, event)
       // if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
-      if (!(await this.updateEventMedia(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventMedia(request, session, i18n, event)))
+        return response.redirect().back()
 
       await event.save()
     }

@@ -26,24 +26,6 @@
            {{ i18n.t('messages.event_edit') }}</a>
         </div>
         @end
-        
-
-        {{-- nom de la société --}}
-        {{-- {{event.vendor.companyName}} --}}
-        {{-- {{event.vendor.companyName}} --}}
-         
-
-        {{-- id de la société à lier pour qu'on puisse retracer le user pour ajouter aux favoris --}}
-        {{-- {{event.vendor.id}} --}}
-
-        {{-- <br>
-        {{event.eventStart}}
-        {{event.eventEnd}} --}}
-
-        {{-- toutes les sous-catégories --}}
-        
-
-        
 
       <section class="flex flex-col sm:bg-white sm:border sm:shadow sm:rounded-3xl py-4 sm:py-6 mb-5 sm:mx-8 lg:mx-24 sm:px-4 w-screen sm:w-auto">
 
@@ -156,7 +138,7 @@
                         @end
                       @end
 
-                      <a href="/events/?vendor={{ event.vendor.id }}" class="">
+                      <a href="/events/search?vendor={{event.vendor.id}}" class="">
                           <p class="text-sm text-right text-slate-500  text-clip overflow-hidden">
                             {{ i18n.t('messages.event_org') }}: <span class="text-indigo-700 font-semibold">{{ event.vendor.companyName }}</span>
                           </p>

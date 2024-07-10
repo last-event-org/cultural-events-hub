@@ -18,24 +18,34 @@
 </head>
 
 <body class=" bg-slate-50">
-@include("pages/partials/header")
+  @include("pages/partials/header")
 
-@if(home === true)
-  @include("pages/partials/intro")
-@end
+  @if(home === true)
+    @include("pages/partials/intro")
+  @end
 
-<section class="relative flex flex-col items-center justify-center mb-10">
-  @include("pages/partials/filter_map")
-</section>
+  @if(filter === true)
+    <section class="relative flex flex-col items-center justify-center mb-10">
+      @include("pages/partials/filter_map")
+    </section>
+  @end
 
-<main class="flex justify-center "> 
+  @if(!home)
+    @include("pages/partials/title")
+  @end
+
+<main class="flex justify-center"> 
+
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>
-    @else
+  @else
+  
     <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5"  > 
+      
       @each(event in events)
         @!component('components/events_cards', {event})
       @end
+  
     </div>
   @end
 </main>

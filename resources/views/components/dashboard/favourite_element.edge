@@ -5,7 +5,7 @@ connect the profile picture
 count events since profile creation
 count events publications from today --}}
   
-<div class="flex items-center w-full ">
+<div class="flex items-center w-full hover:bg-slate-100 ">
 
   <a href="/events/search?vendor={{ vendor.id }}" class="sm:flex justify-center items-center w-24 h-24 border shadow rounded-3xl p-2 hidden hover:scale-[1.01] duration-300">
     <img class="p-1 object-cover" src="/public/svg/profile_picture_dummy.svg" alt="image name">
@@ -17,12 +17,12 @@ count events publications from today --}}
   
       <div class="flex flex-col">
         <h3 class="font-semibold tracking-tight">{{vendor.companyName}}</h3>
-        <p class="text-xs font-bold text-slate-400">4 évènements en ce moment</p>
-        <p class="text-xs tracking-tight italic">47 publications depuis 2014</p>   
+        <p class="text-xs font-bold text-slate-400">{{vendorEvents.nextEvents}} {{i18n.t('messages.favourites_next_events')}}</p>
+        <p class="text-xs tracking-tight italic">{{vendorEvents.allEvents}} {{i18n.t('messages.favourites_published')}}</p>   
       </div>
-      <svg class="hidden sm:block h-5 w-5 text-gray-400 hover:scale-[1.10] duration-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      {{-- <svg class="hidden sm:block h-5 w-5 text-gray-400 hover:scale-[1.10] duration-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-      </svg>
+      </svg> --}}
     </div>
   </a>
   

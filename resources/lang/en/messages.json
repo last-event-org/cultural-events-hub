@@ -107,6 +107,8 @@
 
   "favourites_title": "Favourites",
   "favourites_my": "My favourites",
+  "favourites_published": "events published.",
+  "favourites_next_events": " events coming soon.",
   "add_to_favourites": "Add to favourites",
   "remove_from_favourites": "Remove from favourites",
 

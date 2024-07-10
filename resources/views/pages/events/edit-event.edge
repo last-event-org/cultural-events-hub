@@ -377,9 +377,10 @@
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
         
-          @each(price in event.prices)
+          @each((price, i) in event.prices)
             @!component('components/price_fields', {
-              price: price
+              price: price,
+              i: i
             })   
           @end
         

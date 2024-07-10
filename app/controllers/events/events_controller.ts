@@ -790,45 +790,49 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
-    // TODO << Investigate >>
-    // [
-    //   {
-    //     price_description: [ 'adultes', 'enfants' ],
-    //     available_qty: [ '5', '3' ],
-    //     regular_price: [ '10', '10' ],
-    //     discounted_price: [ '5', '3' ]
-    //   }
-    // ]
-    // prices update can work successfully multiple times in a row
-    // then after a while the validation stops working and price update stops working
     console.log('\n\n\n\n')
-    const data = request.all().prices
-    console.log('data: ', data);
+    const bodyPrices = request.body().prices
+    console.log('data: ', bodyPrices);
 
-    // const pricePayloads = await request.validateUsing(createPricesValidator)
-
-    if (false) {
-      // we delete all prices associated with the event
+    if (bodyPrices) {
+      // we delete all existing prices associated with current event
       const prices = event.prices
       prices.forEach((price: Price) => {
         price.delete()
       })
 
-      // then we create new prices objects and associate them with the event
-      // for (const pricePayload of pricePayloads.prices) {
-      //   const price = new Price()
+      // we process one price element at a time
+      bodyPrices.forEach(async (priceData: any) => {
 
-      //   if (pricePayload.price_description) price.description = pricePayload.price_description
-      //   if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
-      //   if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
-      //   if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
-
-      //   await price.save()
-      //   await price.related('event').associate(event)
-      // }
+        try {
+          const payload = await createPriceValidator.validate(priceData)
+  
+          if (payload) {
+            const price = new Price
+            if (payload.price_description) price.description = payload.price_description
+            if (payload.regular_price) price.regularPrice = payload.regular_price
+            if (payload.discounted_price) price.discountedPrice = payload.discounted_price
+            if (payload.available_qty) price.availableQty = payload.available_qty
+  
+            await price.save()
+            await price.related('event').associate(event)
+          }
+        } catch (error) {
+          let errorMsg = i18n.t('messages.errorCreatePrice') + ' '
+          error.messages.forEach((msg: string) => {
+            errorMsg += msg
+          })
+          session.flash('errorCreatePrice', errorMsg)
+          return false
+        }
+      })
       return true
+    } else {
+      // TODO this error message is not displayed when no prices are entered (payload empty)
+      const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
+      session.flash('errorMissingPrices', errorMsg)
     }
-    return true
+    return false
   }
 
   /**

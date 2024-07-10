@@ -218,16 +218,19 @@ summary {
   }
 
   &:before {
-    content: 'See details';
-    color: red;
+    content: '';
     position: absolute;
     right: 0;
-    transition: transform ease-in-out 200ms;
     display: inline-block;
     margin-right: 0.5rem;
+
+    height: 16px;
+    width: 16px;
+    background-image: url('/public/svg/arrow_details.svg');
+
+    background-size: 16px 16px;
   }
   details[open] &:before {
-    content: 'Close details';
-    color: blue;
+    background-image: url('/public/svg/arrow_details_open.svg');
   }
 }

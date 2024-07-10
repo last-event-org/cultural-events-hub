@@ -16,7 +16,7 @@ export default class VendorController {
       })
       .whereHas('price', (priceQuery) => {
         priceQuery.whereHas('event', (eventQuery) => {
-          eventQuery.where('vendor_id', auth.user.id)
+          eventQuery.where('vendor_id', auth.user?.id)
         })
       })
       .preload('order', (orderQuery) => {
@@ -25,40 +25,6 @@ export default class VendorController {
       .preload('price', (priceQuery) => {
         priceQuery.preload('event')
       })
-      .limit(2)
-
-    // let ordersVendor = await OrderLine.query()
-    //   .whereHas('order', { where: { is_paid: true } }) // Assuming 'order' relation is correctly defined
-    //   .andWhereHas('price', (builder) => {
-    //     builder.preload('event', (eventBuilder) => {
-    //       eventBuilder.whereHas('vendor_id', function () {
-    //         this.whereColumn('id', '=', auth.user.id) // Adjusted to match Laravel's syntax
-    //       })
-    //     })
-    //   })
-    //   .preload('order', { preload: ['user'] }) // Preloading nested relations
-    //   .preload('price')
-    //   .limit(2)
-
-    // let ordersVendor = await OrderLine.query()
-    //   .select('id', 'order_id')
-    //   .preload('order', (query) => {
-    //     query.where('is_paid', '=', 1)
-    //   })
-
-    // let paidOrders = await Order.query().where('is_paid', '=', true).select('id')
-    // console.log(paidOrders)
-
-    // let orders = await Order.query()
-    //   .andWhere('is_paid', '=', true)
-    //   .preload('orderLineId', (orderLineQuery) =>
-    //     orderLineQuery.preload('price', (priceQuery) =>
-    //       priceQuery.preload('event', (eventQuery) => eventQuery.andWhere('vendor_id', '=', userId))
-    //     )
-    //   )
-    // .preload('user')
-
-    // let orders = await Order.query().andWhere('is_paid', '=', true)
 
     console.log('\n\n\n ORDERS \n\n\n')
     console.log(ordersVendor.length)

@@ -5,6 +5,8 @@ import type { BelongsTo, HasOne } from '@adonisjs/lucid/types/relations'
 import Price from '#models/price'
 
 export default class OrderLine extends BaseModel {
+  serializeExtras = true
+
   @column({ isPrimary: true })
   declare id: number
 

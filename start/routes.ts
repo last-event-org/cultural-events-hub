@@ -1,8 +1,8 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
-import VendorController from '#controllers/vendors/vendor_controller'
 
 const CartController = () => import('#controllers/events/cart_controller')
+const VendorController = () => import('#controllers/vendors/vendor_controller')
 const ListEvents = () => import('#controllers/api_listevents')
 const LoginController = () => import('#controllers/auth/login_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
@@ -76,17 +76,19 @@ router
   .prefix('events')
   .as('events')
 
-router.group(() => {
-  router.get('/:id/delete', [MediaController, 'destroy']).as('destroy')
-})
-.prefix('media')
-.as('media')
+router
+  .group(() => {
+    router.get('/:id/delete', [MediaController, 'destroy']).as('destroy')
+  })
+  .prefix('media')
+  .as('media')
 
-router.group(() => {
-  router.get('/:id/delete', [PriceController, 'destroy']).as('destroy')
-})
-.prefix('price')
-.as('price')
+router
+  .group(() => {
+    router.get('/:id/delete', [PriceController, 'destroy']).as('destroy')
+  })
+  .prefix('price')
+  .as('price')
 
 // PANIER
 router

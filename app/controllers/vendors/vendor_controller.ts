@@ -1,9 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Event from '#models/event'
-import Order from '#models/order'
 import OrderLine from '#models/order_line'
-import mail from '@adonisjs/mail/services/main'
-import emitter from '@adonisjs/core/services/emitter'
 
 export default class VendorController {
   async orders({ view, auth }: HttpContext) {
@@ -83,21 +80,6 @@ export default class VendorController {
       .preload('prices')
       .preload('media')
       .orderBy('event_start', 'asc')
-
-    await mail.send((message) => {
-      message
-        .to('crolweb@gmail.com')
-        .subject('Verify your email address')
-        .htmlView('emails/verify_email')
-    })
-
-    emitter.on('mail:sent', (event) => {
-      console.log(event.response)
-
-      console.log(event.mailerName)
-      console.log(event.message)
-      console.log(event.views)
-    })
 
     return view.render('pages/dashboard/vendor/events', {
       events: events.length === 0 ? null : events,

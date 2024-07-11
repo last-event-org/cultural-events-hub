@@ -1,13 +1,15 @@
 import { createRegisterValidator } from '#validators/register'
 import { createVendorDataValidator } from '#validators/vendor_data'
 import { updateUserProfileMandatoryValidator } from '#validators/user_profile'
-import { HttpContext, Route } from '@adonisjs/core/http'
+import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import Role from '#models/role'
 import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import { updateUserPasswordValidator } from '#validators/password_change'
 import { errors } from '@vinejs/vine'
+import EmailsController from './emails_controller.js'
+import string from '@adonisjs/core/helpers/string'
 
 export default class RegistersController {
   /**
@@ -70,6 +72,8 @@ export default class RegistersController {
     }
 
     await user.save()
+    const emails = new EmailsController()
+    await emails.sendNewUserMail(user)
     if (user.$isPersisted) {
       await auth.use('web').login(user)
       return view.render('pages/auth/profile-type', {
@@ -78,6 +82,13 @@ export default class RegistersController {
     } else {
       return response.redirect().back()
     }
+  }
+
+  async verifyUser({ response, request }: HttpContext) {
+    console.log('EMAIL VERIFICATION')
+    console.log(request.qs())
+
+    return response.redirect().toRoute('home')
   }
 
   async switchToVendor({ view }: HttpContext) {

@@ -1,3 +1,8 @@
 <h1>HELLO</h1>
-<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi in perferendis nostrum totam minus enim error temporibus molestiae quo ex dignissimos illo, natus id est accusamus molestias repellendus assumenda iste harum? Voluptatem veniam id fugit tempora minima. Similique, asperiores sed. Officia ab distinctio dicta iusto alias quaerat, tempore culpa quia.</p>
+<p>Thank you for your registration</p>
 <h2>Next Events</h2>
+{{account.email}}
+{{account.firstname}}
+{{account.lastname}}
+{{token}}
+<a href="{{route('auth.register.verify', [token])}}">Please validate your account</a>

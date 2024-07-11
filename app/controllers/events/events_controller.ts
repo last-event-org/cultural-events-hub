@@ -1,6 +1,5 @@
 import env from '#start/env'
 import { DateTime } from 'luxon'
-import fs from 'fs'
 import { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { errors } from '@vinejs/vine'
@@ -16,10 +15,9 @@ import Indicator from '#models/indicator'
 import { createEventValidator } from '#validators/event'
 import { createAddressValidator } from '#validators/address'
 import { createMediaValidator } from '#validators/media'
-import { createPricesValidator } from '#validators/price'
 import { queryValidator } from '#validators/query'
+import { createPriceValidator } from '#validators/create_price'
 import User from '#models/user'
-import { updatePricesValidator } from '#validators/update_price'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 
@@ -144,7 +142,7 @@ export default class EventsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, session, response, auth }: HttpContext) {
+  async store({ request, session, response, i18n , auth }: HttpContext) {
     const event = await this.createEvent(request, session, response)
     if (event) {
       const user = auth.user
@@ -152,7 +150,7 @@ export default class EventsController {
       await this.attachCategoryTypes(request, session, event)
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)
-      await this.createEventPrices(request, event)
+      if (!(await this.createEventPrices(request, session, response, i18n, event))) return response.redirect().back()
       await this.uploadEventMedia(request, event)
 
       return response.redirect().toRoute('events.show', { id: event.id })
@@ -366,25 +364,48 @@ export default class EventsController {
     }
   }
 
-  async createEventPrices(request: HttpContext['request'], event: Event) {
-    // TODO create 5 prices per event
-    // try {
-    const pricePayloads = await request.validateUsing(createPricesValidator)
+  async createEventPrices(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    response: HttpContext['response'],
+    i18n: HttpContext['i18n'],
+    event: Event
+  ) {
+    const bodyPrices = request.body().prices
 
-    for (const pricePayload of pricePayloads.prices) {
-      const price = new Price()
+    if (bodyPrices) {
+      // we process one price element at a time
+      bodyPrices.forEach(async (priceData: any) => {
 
-      if (pricePayload.price_description) price.description = pricePayload.price_description
-      if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
-      if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
-      if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
-
-      await price.save()
-      await price.related('event').associate(event)
+        try {
+          const payload = await createPriceValidator.validate(priceData)
+  
+          if (payload) {
+            const price = new Price
+            if (payload.price_description) price.description = payload.price_description
+            if (payload.regular_price) price.regularPrice = payload.regular_price
+            if (payload.discounted_price) price.discountedPrice = payload.discounted_price
+            if (payload.available_qty) price.availableQty = payload.available_qty
+  
+            await price.save()
+            await price.related('event').associate(event)
+          }
+        } catch (error) {
+          let errorMsg = i18n.t('messages.errorCreatePrice') + ' '
+          error.messages.forEach((msg: string) => {
+            errorMsg += msg
+          })
+          session.flash('errorCreatePrice', errorMsg)
+          return false
+        }
+      })
+      return true
+    } else {
+      // TODO this error message is not displayed when no prices are entered (payload empty)
+      const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
+      session.flash('errorMissingPrices', errorMsg)
     }
-    // } catch (error) {
-    // console.error('Price Validation Error at createEventPrices():', error)
-    // }
+    return false
   }
 
   async createEventAddress(request: HttpContext['request'], event: Event) {
@@ -485,6 +506,7 @@ export default class EventsController {
           media.altName = file.clientName
           media.eventId = event.id
 
+
           await media.save()
         }
       } catch (error) {
@@ -497,19 +519,17 @@ export default class EventsController {
   }
 
   async deleteEventMedia({ params, response, session, i18n }: HttpContext) {
-    console.log('\n\n\n\n\n\n', params)
     const media = await Media.find(params['id'])
-    console.log('media: ', media)
-    try {
-      await media.delete()
-    } catch (error) {
-      console.log(error)
-      // const errorMsg = i18n.t('messages.errorDestroyEvent')
-      // session.flash('error', errorMsg)
+    if (media) {
+      try {
+        await media.delete()
+      } catch (error) {
+        console.log(error)
+        const errorMsg = i18n.t('messages.errorDestroyEvent')
+        session.flash('error', errorMsg)
+      }
+      response.redirect().back()
     }
-    response.redirect().back()
-    // const successMsg = i18n.t('messages.successDestroyEvent')
-    // session.flash('success', successMsg)
   }
 
   async getTodayEvents() {
@@ -689,8 +709,8 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
-    try {
-      const addressPayload = await request.validateUsing(createAddressValidator)
+    const addressPayload = await request.validateUsing(createAddressValidator)
+    if (addressPayload) {
       event.location.name = addressPayload.name ?? ''
       event.location.street = addressPayload.street.replace('&#x27;', "'")
       event.location.number = addressPayload.number
@@ -711,11 +731,8 @@ export default class EventsController {
 
       await event.location.save()
       return true
-    } catch (error) {
-      const errorMsg = i18n.t('messages.errorMissingAddress') + ' ' + error
-      session.flash('errorMissingAddress', errorMsg)
-      return false
     }
+    return false
   }
 
   async updateEventCategoryTypes(
@@ -783,38 +800,47 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
-    // TODO << Investigate >>
-    // prices update can work successfully multiple times in a row
-    // then after a while the validation stops working and price update stops working
-    try {
-      const pricePayloads = await request.validateUsing(updatePricesValidator)
+    const bodyPrices = request.body().prices
 
-      // if data validation if ok, we delete all prices associated with the event
+    if (bodyPrices) {
+      // we delete all existing prices associated with current event
       const prices = event.prices
       prices.forEach((price: Price) => {
         price.delete()
       })
 
-      // then we create new prices objects and associate them with the event
-      for (const pricePayload of pricePayloads.prices) {
-        const price = new Price()
+      // we process one price element at a time
+      bodyPrices.forEach(async (priceData: any) => {
 
-        if (pricePayload.price_description) price.description = pricePayload.price_description
-        if (pricePayload.regular_price) price.regularPrice = pricePayload.regular_price
-        if (pricePayload.discounted_price) price.discountedPrice = pricePayload.discounted_price
-        if (pricePayload.available_qty) price.availableQty = pricePayload.available_qty
-
-        await price.save()
-        await price.related('event').associate(event)
-      }
-
+        try {
+          const payload = await createPriceValidator.validate(priceData)
+  
+          if (payload) {
+            const price = new Price
+            if (payload.price_description) price.description = payload.price_description
+            if (payload.regular_price) price.regularPrice = payload.regular_price
+            if (payload.discounted_price) price.discountedPrice = payload.discounted_price
+            if (payload.available_qty) price.availableQty = payload.available_qty
+  
+            await price.save()
+            await price.related('event').associate(event)
+          }
+        } catch (error) {
+          let errorMsg = i18n.t('messages.errorCreatePrice') + ' '
+          error.messages.forEach((msg: string) => {
+            errorMsg += msg
+          })
+          session.flash('errorCreatePrice', errorMsg)
+          return false
+        }
+      })
       return true
-    } catch (error) {
-      console.error('Validation Error:', error.messages)
-      const errorMsg = i18n.t('messages.errorEditEventPrices') + ' ' + error
-      session.flash('errorEditEventPrices', errorMsg)
-      return false
+    } else {
+      // TODO this error message is not displayed when no prices are entered (payload empty)
+      const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
+      session.flash('errorMissingPrices', errorMsg)
     }
+    return false
   }
 
   /**
@@ -884,14 +910,11 @@ export default class EventsController {
         event.youtubeLink = ''
       }
 
-      if (!(await this.updateEventAddress(request, session, i18n, event)))
-        return response.redirect().back()
-      if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
-        return response.redirect().back()
-      await this.updateEventIndicators(request, event)
-      // if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
-      if (!(await this.updateEventMedia(request, session, i18n, event)))
-        return response.redirect().back()
+      if (!(await this.updateEventAddress(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventCategoryTypes(request, session, i18n, event))) return response.redirect().back()
+      await this.updateEventIndicators(request, event)  // Indicators are optional
+      if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventMedia(request, session, i18n, event))) return response.redirect().back()
 
       await event.save()
     }

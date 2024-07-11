@@ -377,17 +377,28 @@
             <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
         </h2>
         
-          @each(price in event.prices)
+          @each((price, i) in event.prices)
             @!component('components/price_fields', {
-              price: price
-            })   
+              price: price,
+              i: i
+            })
+            @if(i > 0)
+            <a href="{{ route('price.destroy', [price.id], { qs: {_method: 'POST'}} ) }}" class="cursor-pointer  text-xs underline text-red-600 hover:text-red-400 duration-300">
+              {{ i18n.t('messages.delete_btn')}}</a>
+            @endif
+
+            @if(flashMessages.has('errorDestroyPrice'))
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                {{ flashMessages.get('errorDestroyPrice') }}
+              </h2>
+            </div>
+            @endif
           @end
         
 
           <template id="priceFieldsTemplate">
-              @!component('components/price_fields', {
-                price: price
-              })
+              @!component('components/price_fields')
           </template>
           <div id="priceFieldsContainer" class="flex flex-col items-center justify-center w-full ">
               <!-- div to add the addionnal prices -->

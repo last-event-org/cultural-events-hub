@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ i18n.t('messages.event_create_title') }}</title>
-    @vite(['resources/css/app.css', 'resources/js/hours_create_event.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/hours_create_event.js'])
 
 </head>
 
@@ -211,6 +211,14 @@
                                 </li>
 
                         @end
+
+                        @if(flashMessages.has('errorMissingCategType'))
+                            <div>
+                                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                                {{ flashMessages.get('errorMissingCategType') }}
+                                </h2>
+                            </div>
+                        @endif
                         </fieldset>
                         {{-- @flashMessage('category')
                             <div style="color: red;">{{ $message.message }}</div>

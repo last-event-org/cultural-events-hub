@@ -12,7 +12,7 @@
     @endif
   </a>
   <div class=" w-1 min-h-16  bg-yellow-500"></div>
-
+  <div class="flex items-center w-full justify-between" >
   <a href="{{ route('events.show', [event.id]) }}" class=" sm:rounded-full px-4 ">
       <div class="flex flex-col">
         <h3 class="font-semibold tracking-tight">{{event.title}}</h3>
@@ -23,6 +23,7 @@
         <p class="text-xs tracking-tight">{{event.location.city}}</p>      
     </div>
   </a>
+  <div class="flex gap-2 pr-2">
     @if(cancel === true) 
     <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class=" ml-auto" enctype="multipart/form-data">
       {{ csrfField() }}
@@ -32,7 +33,7 @@
 
     @if(vendor === true) 
       
-      <div class="flex gap-2">
+      
 
         {{-- delete event --}}
         <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" method="post" enctype="multipart/form-data">
@@ -45,8 +46,9 @@
           {{ csrfField() }}
           <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/edit.svg" alt="cancel"></button>
         </form>
+        @end
       </div>
-      @end
+      </div>
   </div>
 
  

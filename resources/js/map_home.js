@@ -86,7 +86,6 @@ async function createMap(lat = latitude, long = longitude, update = false) {
 }
 
 function createPois(eventsPoi) {
-  console.log('createPois')
   eventsPoi.forEach((event) => {
     // poi.push({
     //   id: event.id,

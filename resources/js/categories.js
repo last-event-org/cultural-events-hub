@@ -1,4 +1,3 @@
-console.log('CATEGORIES SEARCH')
 const urlParams = new URLSearchParams(window.location.search)
 const categoriesLink = document.querySelectorAll('[data-category]')
 const categoryTypesLink = document.querySelectorAll('[data-category-type]')

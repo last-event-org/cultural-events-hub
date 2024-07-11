@@ -56,6 +56,7 @@ export default class EventsController {
       todayEvents: nextEvents,
       home: true,
       nextTitle: title,
+      filter: true,
     })
   }
 
@@ -87,6 +88,7 @@ export default class EventsController {
       todayEvents: nextEvents,
       title: 'agenda',
       nextTitle: title,
+      filter: true,
     })
   }
 
@@ -118,6 +120,7 @@ export default class EventsController {
       todayEvents: nextEvents,
       title: 'tickets',
       nextTitle: title,
+      filter: true,
     })
   }
 
@@ -168,6 +171,7 @@ export default class EventsController {
     let locationName: string | undefined
     let categoryTypesId: any[] = []
     let categoryTypes: any
+    let filter = true
 
     const categories = await Category.query().select('name', 'slug', 'id')
 
@@ -191,6 +195,7 @@ export default class EventsController {
       } catch (error) {
         response.redirect().back()
       }
+      filter = true
     }
 
     if (qs.date) {
@@ -202,11 +207,13 @@ export default class EventsController {
     if (qs.location) {
       const location = await Address.query().select('name').where('id', qs.location).first()
       locationName = location?.name
+      filter = false
     }
 
     if (qs.vendor) {
       const vendor = await User.query().select('company_name').where('id', qs.vendor).first()
       vendorName = vendor?.companyName
+      filter = false
     }
 
     if (qs.categoryType) {
@@ -227,6 +234,7 @@ export default class EventsController {
       categoryTypes?.forEach((categoryType: any) => {
         categoryTypesId.push(categoryType.$attributes.id)
       })
+      filter = true
     }
     const events = await Event.query()
       .if(qs.city, (query) => query.whereIn('id', ids))
@@ -249,6 +257,8 @@ export default class EventsController {
       .orderBy('event_start', 'asc')
 
     const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
+    console.log('\n\nFILTER\n\n')
+    console.log(filter)
 
     return view.render('pages/events/list', {
       events: events.length === 0 ? null : events,
@@ -265,6 +275,7 @@ export default class EventsController {
       topEvents: topEvents,
       todayEvents: nextEvents,
       nextTitle: title,
+      filter: filter,
     })
   }
 
@@ -416,7 +427,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) { }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -479,8 +490,8 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
-    const mediaUpdateDetection = request.__raw_files.images_link;
-    const mediaUpdateLength = mediaUpdateDetection ? Object.keys(mediaUpdateDetection).length : null;
+    const mediaUpdateDetection = request.__raw_files.images_link
+    const mediaUpdateLength = mediaUpdateDetection ? Object.keys(mediaUpdateDetection).length : null
 
     if (mediaUpdateLength != null && mediaUpdateLength > 0) {
       const { images_link } = await request.validateUsing(createMediaValidator)
@@ -494,6 +505,7 @@ export default class EventsController {
           media.path = `/uploads/${uniqueFileName}`
           media.altName = file.clientName
           media.eventId = event.id
+
 
           await media.save()
         }
@@ -715,7 +727,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) { }
+      } catch (error) {}
 
       await event.location.save()
       return true

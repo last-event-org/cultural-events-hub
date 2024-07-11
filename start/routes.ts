@@ -19,9 +19,20 @@ router
   .group(() => {
     router.get('/login', [LoginController, 'show']).as('login.show')
     router.post('/login', [LoginController, 'store']).as('login.store')
+    router.get('/forgot-password', [LoginController, 'forgotPassword']).as('login.forgot-password')
+    router
+      .post('/forgot-password', [LoginController, 'requestNewPassword'])
+      .as('login.request-new-password')
+    router
+      .get('/reset-password', [LoginController, 'resetPasswordShow'])
+      .as('login.reset-password.show')
+    router
+      .post('/reset-password', [LoginController, 'resetPasswordStore'])
+      .as('login.reset-password.store')
+
     router.get('/register', [RegisterController, 'index']).as('register')
     router.post('/register', [RegisterController, 'store']).as('register.store')
-    router.get('/verify-email', [RegisterController, 'verifyUser']).as('register.verify')
+    router.get('/register/verify-email', [RegisterController, 'verifyUser']).as('register.verify')
     router
       .get('/dashboard', [RegisterController, 'dashboard'])
       .as('dashboard')

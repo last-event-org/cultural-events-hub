@@ -8,8 +8,8 @@ import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import { updateUserPasswordValidator } from '#validators/password_change'
 import { errors } from '@vinejs/vine'
-import EmailsController from './emails_controller.js'
-import string from '@adonisjs/core/helpers/string'
+import { randomTokenString, sendVerificationEmail } from '#services/account_service'
+import { DateTime } from 'luxon'
 
 export default class RegistersController {
   /**
@@ -58,13 +58,15 @@ export default class RegistersController {
       session.flash('duplicateEmail', errorMsg)
       return response.redirect().back()
     }
-
+    const token = await randomTokenString()
+    console.log(token)
     const user = new User()
 
     user.firstname = payload.first_name
     user.lastname = payload.last_name
     user.email = payload.email
     user.password = payload.password
+    user.verificationToken = token
 
     const role = await Role.findBy('role_name', 'USER')
     if (role) {
@@ -72,8 +74,8 @@ export default class RegistersController {
     }
 
     await user.save()
-    const emails = new EmailsController()
-    await emails.sendNewUserMail(user)
+    await sendVerificationEmail(user, token)
+
     if (user.$isPersisted) {
       await auth.use('web').login(user)
       return view.render('pages/auth/profile-type', {
@@ -84,11 +86,24 @@ export default class RegistersController {
     }
   }
 
-  async verifyUser({ response, request }: HttpContext) {
+  async verifyUser({ response, request, session, i18n }: HttpContext) {
     console.log('EMAIL VERIFICATION')
-    console.log(request.qs())
-
-    return response.redirect().toRoute('home')
+    console.log()
+    // Token odXVfWsLLnD117y6Ugz9fOYSxAXWolAz
+    try {
+      const user = await User.findByOrFail('verificationToken', request.qs().token)
+      user.isVerified = true
+      user.verificationToken = null
+      user.verifiedAt = DateTime.now()
+      await user.save()
+      const successMsg = i18n.t('messages.login_verified_success')
+      session.flash('success', successMsg)
+      return response.redirect().toRoute('auth.login.show')
+    } catch {
+      const errorMsg = i18n.t('messages.login_verified_error')
+      session.flash('error', errorMsg)
+      return response.redirect().toRoute('auth.login.show')
+    }
   }
 
   async switchToVendor({ view }: HttpContext) {
@@ -299,7 +314,7 @@ export default class RegistersController {
     try {
       const vendorDataPayload = await request.validateUsing(createVendorDataValidator)
 
-      if (vendorDataPayload.company_name && vendorDataPayload.company_name.trim() != '') {
+      if (vendorDataPayload.company_name && vendorDataPayload.company_name.trim() !== '') {
         user.companyName = vendorDataPayload.company_name
       } else {
         user.companyName = user.firstname + ' ' + user.lastname

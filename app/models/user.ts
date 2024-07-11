@@ -40,6 +40,21 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare vatNumber: string | null
 
   @column()
+  declare verificationToken: string | null
+
+  @column()
+  declare isVerified: boolean
+
+  @column.dateTime({ autoCreate: false })
+  declare verifiedAt: DateTime
+
+  @column()
+  declare resetToken: string | null
+
+  @column.dateTime({ autoCreate: false })
+  declare resetTokenExpires: DateTime
+
+  @column()
   declare isBlocked: boolean
 
   @column.dateTime({ autoCreate: true })

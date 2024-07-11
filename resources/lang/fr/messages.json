@@ -16,6 +16,7 @@
   "header_language": "Langue",
 
   "register_title": "Next Event Formulaire d'enregistrement",
+  "register_no_account": "Vous n'avez pas encore de compte ?",
   "register_signup": "Enregistrement",
   "register_name": "Nom",
   "register_firstname": "Prénom",
@@ -30,8 +31,14 @@
   "login_title": "Se connecter",
   "login_email": "Email",
   "login_password": "Mot de passe",
+  "login_new_password_request": "Demander un nouveau mot de passe",
+  "login_new_password_title": "Mot de passe oublié",
+  "login_new_password_request_success": "E-mail envoyé! Suivez les instructions dans l'e-mail!",
   "login_login": "Connexion",
   "login_invalid": "Identifiants invalides",
+  "login_verified_error": "Compte déjà vérifié, veuillez vous connecter.",
+  "login_verified_no": "Your account is not verified, please check your email.",
+  "login_verified_success": "Compte validé avec succès, veuillez vous connecter.",
 
   "date_from": "du",
 

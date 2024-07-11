@@ -1,8 +1,8 @@
-<h1>HELLO</h1>
-<p>Thank you for your registration</p>
-<h2>Next Events</h2>
-{{account.email}}
-{{account.firstname}}
-{{account.lastname}}
-{{token}}
+<h1>NEXT next-events</h1>
+<p>Thank you for your registration on Next Events</p>
+<h2>Account information: </h2>
+{{user.email}}
+{{user.firstname}}
+{{user.lastname}}
+<a href="next-events.be/register/verify-email/?token={{token}}">Please validate your account</a>
 <a href="{{route('auth.register.verify', [token])}}">Please validate your account</a>

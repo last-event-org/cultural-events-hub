@@ -16,6 +16,7 @@
   "header_language": "Language",
 
   "register_title": "Next Event Sign up form",
+  "register_no_account": "No account yet ?",
   "register_signup": "Sign up",
   "register_name": "Name",
   "register_firstname": "Firstname",
@@ -30,8 +31,14 @@
   "login_title": "Log in",
   "login_email": "Email",
   "login_password": "Password",
+  "login_new_password_request": "Request password",
+  "login_new_password_request_success": "E-mail sent! Follow the instructions in the e-mail!",
+  "login_new_password_title": "Password forgotten",
   "login_login": "Log in",
   "login_invalid": "Invalid credentials",
+  "login_verified_error": "Account already verified, please login.",
+  "login_verified_no": "Your account is not verified, please check your email.",
+  "login_verified_success": "Account successfully verified, please login.",
 
   "date_from": "from",
 

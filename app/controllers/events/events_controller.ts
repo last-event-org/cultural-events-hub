@@ -142,7 +142,7 @@ export default class EventsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, session, response, i18n , auth }: HttpContext) {
+  async store({ request, session, response, i18n, auth }: HttpContext) {
     const event = await this.createEvent(request, session, response)
     if (event) {
       const user = auth.user
@@ -329,7 +329,11 @@ export default class EventsController {
     if (payload.facebook_link) event.facebookLink = payload.facebook_link
     if (payload.instagram_link) event.instagramLink = payload.instagram_link
     if (payload.website_link) event.websiteLink = payload.website_link
-    if (payload.youtube_link) event.youtubeLink = payload.youtube_link
+    if (payload.youtube_link && payload.youtube_link != '') {
+      event.youtubeLink = this.generateYoutubeEmbedLink(payload.youtube_link)
+    } else {
+      event.youtubeLink = ''
+    }
 
     return await event.save()
 
@@ -382,14 +386,14 @@ export default class EventsController {
 
         try {
           const payload = await createPriceValidator.validate(priceData)
-  
+
           if (payload) {
             const price = new Price
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
             if (payload.discounted_price) price.discountedPrice = payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
-  
+
             await price.save()
             await price.related('event').associate(event)
           }
@@ -430,7 +434,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) {}
+    } catch (error) { }
 
     await address.save()
     await event.related('location').associate(address)
@@ -730,7 +734,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) {}
+      } catch (error) { }
 
       await event.location.save()
       return true
@@ -817,14 +821,14 @@ export default class EventsController {
 
         try {
           const payload = await createPriceValidator.validate(priceData)
-  
+
           if (payload) {
             const price = new Price
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
             if (payload.discounted_price) price.discountedPrice = payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
-  
+
             await price.save()
             await price.related('event').associate(event)
           }
@@ -894,21 +898,7 @@ export default class EventsController {
       }
 
       if (payload.youtube_link && payload.youtube_link != '') {
-        // TODO constructing the embed youtube url from the normal url
-        // ex of normal url: https://www.youtube.com/watch?v=Ij6We_hu4Lg&ab_channel=LotuSProject-Topic
-        // in this one there is also a 'channel' part that MUST be removed
-        // this should become: https://www.youtube.com/embed/Ij6We_hu4Lg
-
-        event.youtubeLink = payload.youtube_link
-        const watch = 'watch?v='
-        if (event.youtubeLink.includes(watch)) {
-          event.youtubeLink = event.youtubeLink.replace(watch, 'embed/')
-        }
-        const channel = '&ab_channel='
-        if (event.youtubeLink.includes(channel)) {
-          const toDeleteIndex = event.youtubeLink.indexOf(channel)
-          event.youtubeLink.substring(0, toDeleteIndex)
-        }
+        event.youtubeLink = this.generateYoutubeEmbedLink(payload.youtube_link)
       } else {
         event.youtubeLink = ''
       }
@@ -922,6 +912,19 @@ export default class EventsController {
       await event.save()
     }
     return response.redirect().toRoute('events.show', { id: params.id })
+  }
+
+  getYoutubeVideoId(youtubeLink: string): string | null {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = youtubeLink.match(regExp);
+
+    return (match && match[2].length === 11) ? match[2] : null;
+  }
+
+  generateYoutubeEmbedLink(youtubeLink: string) {
+    const videoId = this.getYoutubeVideoId(youtubeLink);
+    const embedLink = "https://www.youtube.com/embed/" + videoId
+    return embedLink
   }
 
   /**

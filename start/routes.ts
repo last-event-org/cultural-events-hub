@@ -66,6 +66,7 @@ router
     router.get('/', [EventsController, 'index']).as('index')
     router.get('/tickets', [EventsController, 'tickets']).as('tickets')
     router.get('/search', [EventsController, 'search']).as('search')
+    router.get('/search-word', [EventsController, 'getEventsByWord']).as('search-word')
     router.get('/create', [EventsController, 'create']).as('create').use(middleware.auth())
     router.get('/:id', [EventsController, 'show']).as('show')
     router.post('/', [EventsController, 'store']).as('store').use(middleware.auth())

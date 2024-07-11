@@ -147,7 +147,7 @@ export default class EventsController {
     if (event) {
       const user = auth.user
       if (user) event.vendorId = user.id
-      await this.attachCategoryTypes(request, session, event)
+      if (!await this.attachCategoryTypes(request, session, i18n, event)) return response.redirect().back()
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)
       if (!(await this.createEventPrices(request, session, response, i18n, event))) return response.redirect().back()
@@ -341,6 +341,7 @@ export default class EventsController {
   async attachCategoryTypes(
     request: HttpContext['request'],
     session: HttpContext['session'],
+    i18n: HttpContext['i18n'],
     event: Event
   ) {
     const selectedCategoryTypes = request.body().categoryTypes
@@ -350,9 +351,11 @@ export default class EventsController {
         await event.related('categoryTypes').attach([categoryTypeId])
       })
     } else {
-      console.log('NOK************')
-      // session.flash('category', 'NOK************')
+      const errorMsg = i18n.t('messages.errorMissingCategType')
+      session.flash('errorMissingCategType', errorMsg)
+      return false
     }
+    return true
   }
 
   async attachIndicators(request: HttpContext['request'], event: Event) {

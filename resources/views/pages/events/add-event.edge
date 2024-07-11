@@ -211,6 +211,14 @@
                                 </li>
 
                         @end
+
+                        @if(flashMessages.has('errorMissingCategType'))
+                            <div>
+                                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                                {{ flashMessages.get('errorMissingCategType') }}
+                                </h2>
+                            </div>
+                        @endif
                         </fieldset>
                         {{-- @flashMessage('category')
                             <div style="color: red;">{{ $message.message }}</div>

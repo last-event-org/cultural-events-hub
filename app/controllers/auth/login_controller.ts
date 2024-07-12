@@ -2,10 +2,12 @@ import User from '#models/user'
 import { randomTokenString, sendNewPasswordRequest } from '#services/account_service'
 import { loginValidator } from '#validators/auth'
 import { EmailValidator } from '#validators/email'
+import { updateUserPasswordValidator } from '#validators/password_change'
 import { resetPasswordValidator } from '#validators/reset_password'
 import { tokenValidator } from '#validators/token'
 import { type HttpContext } from '@adonisjs/core/http'
 import { errors } from '@vinejs/vine'
+import hash from '@adonisjs/core/services/hash'
 import { DateTime } from 'luxon'
 
 export default class LoginController {
@@ -93,7 +95,6 @@ export default class LoginController {
         if (DateTime.now() > user?.resetTokenExpires) {
           const errorMsg = i18n.t('messages.login_reset_password_token_expired')
           session.flash('error', errorMsg)
-          return response.redirect().toRoute('auth.login.show')
         }
         if (user.resetToken === token) {
           user.password = password
@@ -102,19 +103,43 @@ export default class LoginController {
           await user.save()
           const successMsg = i18n.t('messages.login_reset_password_success')
           session.flash('success', successMsg)
-          return response.redirect().toRoute('auth.login.show')
         } else {
           const errorMsg = i18n.t('messages.login_reset_password_token_wrong')
           session.flash('error', errorMsg)
-          return response.redirect().toRoute('auth.login.show')
         }
       }
     } catch (error) {
-      if (error instanceof errors.E_VALIDATION_ERROR) {
-        console.log(error.messages)
-      }
-      console.log('ERROR')
       return response.redirect(request.url(true))
     }
+
+    return response.redirect().toRoute('auth.login.show')
+  }
+
+  async changePasswordShow({ view }: HttpContext) {
+    return view.render('pages/auth/change-password')
+  }
+
+  async changePasswordStore({ session, request, response, auth, i18n }: HttpContext) {
+    const user = await User.findOrFail(await auth.user?.id)
+    let payload
+
+    try {
+      payload = await request.validateUsing(updateUserPasswordValidator)
+      if (await hash.verify(user?.password, payload?.old_password)) {
+        user.password = payload.password
+        await user?.save()
+        const errorMsg = i18n.t('messages.editProfile_change_password_success')
+        session.flash('success', errorMsg)
+      } else {
+        const errorMsg = i18n.t('messages.login_invalid')
+        session.flash('error', errorMsg)
+      }
+    } catch (error) {
+      const errorMsg = i18n.t('messages.error_psw')
+      session.flash('error', errorMsg)
+      // return response.redirect().back()
+    }
+
+    return response.redirect().back()
   }
 }

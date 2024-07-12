@@ -6,7 +6,6 @@ import User from '#models/user'
 import Role from '#models/role'
 import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
-import { updateUserPasswordValidator } from '#validators/password_change'
 import { errors } from '@vinejs/vine'
 import {
   randomTokenString,
@@ -188,30 +187,6 @@ export default class RegistersController {
     return true
   }
 
-  async updateUserPasswordData(
-    i18n: HttpContext['i18n'],
-    request: HttpContext['request'],
-    session: HttpContext['session'],
-    user: User
-  ) {
-    let userPasswordPayload = null
-    const isPasswordEntered = request.input('password')
-    if (isPasswordEntered) {
-      try {
-        userPasswordPayload = await request.validateUsing(updateUserPasswordValidator)
-        user.password = userPasswordPayload.password
-      } catch (error) {
-        if (error instanceof errors.E_VALIDATION_ERROR) {
-          console.log(error.messages)
-        }
-        const errorMsg = i18n.t('messages.error_psw')
-        session.flash('userPassword', errorMsg)
-        return false
-      }
-    }
-    return true
-  }
-
   async updateUserBillingAddress(
     request: HttpContext['request'],
     session: HttpContext['session'],
@@ -304,7 +279,7 @@ export default class RegistersController {
     return true
   }
 
-  async update({ i18n, request, response, session, auth }: HttpContext) {
+  async update({ request, response, session, auth }: HttpContext) {
     const user = await User.query()
       .where('id', auth.user?.$attributes.id)
       .preload('role')
@@ -312,8 +287,6 @@ export default class RegistersController {
 
     if (user) {
       if (!(await this.updateMandatoryProfileData(request, session, user)))
-        return response.redirect().back()
-      if (!(await this.updateUserPasswordData(i18n, request, session, user)))
         return response.redirect().back()
       const hasVendorData = await this.updateVendorData(request, session, response, user)
       if (!hasVendorData) return response.redirect().back()

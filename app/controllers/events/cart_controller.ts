@@ -28,8 +28,6 @@ export default class CartController {
   async store({ request, response, auth, session }: HttpContext) {
     await auth.check()
 
-    // TODO check if all the queries couldn't be added to the model
-
     // check if a non-paid order already exists for the user
     let order = await Order.query()
       .where('user_id', '=', auth.user?.$attributes.id)
@@ -72,7 +70,7 @@ export default class CartController {
     })
 
     // TODO avoid refreshing the page or go back
-    return response.send()
+    return response.send('')
   }
 
   /**

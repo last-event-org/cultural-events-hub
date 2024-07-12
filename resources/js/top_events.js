@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   scrollContainers.forEach((container) => {
     let scrollAmount = 0
-    const scrollSpeed = 0.0001
+    const scrollSpeed = 0.0003
 
     const autoScroll = () => {
       const scrollContent = container.querySelector('.scroll-content')

@@ -1,5 +1,3 @@
-console.log('GEOLOC')
-
 var options = {
   enableHighAccuracy: false,
   timeout: 5000,

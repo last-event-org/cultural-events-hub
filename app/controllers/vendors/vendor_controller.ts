@@ -1,8 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Event from '#models/event'
-import Order from '#models/order'
 import OrderLine from '#models/order_line'
-import { group } from 'console'
 
 export default class VendorController {
   async orders({ view, auth }: HttpContext) {

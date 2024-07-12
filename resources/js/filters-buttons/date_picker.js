@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const urlParams = new URLSearchParams(window.location.search)
   if (urlParams.size > 0) {
     const dateQuery = urlParams.get('date')
-    if (dateQuery !== null) {
+    if (dateQuery !== (null || '')) {
       formatDateInput(urlParams.get('date'))
       formatDateQuery(urlParams.get('date'))
       selectedDate = new Date(urlParams.get('date'))

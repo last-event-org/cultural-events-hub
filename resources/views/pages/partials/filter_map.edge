@@ -40,7 +40,7 @@
         
         <label class="text-slate-800 font-semibold cursor-pointer">
           {{ i18n.t('messages.map_map') }}</label>
-          <input type="text" name="radius" id="chosen-radius" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent text-slate-400 " >
+          <input type="text" name="radius" id="chosen-radius" placeholder="{{ i18n.t('messages.map_mapDesc') }}" class="bg-transparent text-slate-400 " autocomplete="off" >
           
           <div id="map-popup" class="bg-white  border rounded-3xl shadow hidden absolute z-10 right-0 lg:right-auto top-[70px] sm:top-[5.5rem] lg:top-[6.5rem] justify-center items-center p-2 pt-10 w-80">
             @!component('components/filters/geo_radius')

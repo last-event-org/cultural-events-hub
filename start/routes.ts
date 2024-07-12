@@ -1,8 +1,8 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
-import VendorController from '#controllers/vendors/vendor_controller'
 
 const CartController = () => import('#controllers/events/cart_controller')
+const VendorController = () => import('#controllers/vendors/vendor_controller')
 const ListEvents = () => import('#controllers/api_listevents')
 const LoginController = () => import('#controllers/auth/login_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
@@ -19,8 +19,25 @@ router
   .group(() => {
     router.get('/login', [LoginController, 'show']).as('login.show')
     router.post('/login', [LoginController, 'store']).as('login.store')
+    router.get('/forgot-password', [LoginController, 'forgotPassword']).as('login.forgot-password')
+    router
+      .post('/forgot-password', [LoginController, 'requestNewPassword'])
+      .as('login.request-new-password')
+    router
+      .get('/reset-password', [LoginController, 'resetPasswordShow'])
+      .as('login.reset-password.show')
+    router
+      .post('/reset-password', [LoginController, 'resetPasswordStore'])
+      .as('login.reset-password.store')
+
     router.get('/register', [RegisterController, 'index']).as('register')
     router.post('/register', [RegisterController, 'store']).as('register.store')
+    router
+      .get('/register/verify-email-sent', [RegisterController, 'verificationEmailSent'])
+      .as('register.verify.show')
+    router
+      .get('/register/verify-email', [RegisterController, 'verifyUser'])
+      .as('register.verify.store')
     router
       .get('/dashboard', [RegisterController, 'dashboard'])
       .as('dashboard')
@@ -32,7 +49,7 @@ router
     router
       .post('/profile-type', [RegisterController, 'updateProfileType'])
       .as('register.update-profile-type')
-      .use(middleware.auth())
+    // .use(middleware.auth())
     router
       .get('/dashboard/profile', [RegisterController, 'show'])
       .as('profile.show')
@@ -77,17 +94,19 @@ router
   .prefix('events')
   .as('events')
 
-router.group(() => {
-  router.get('/:id/delete', [MediaController, 'destroy']).as('destroy')
-})
-.prefix('media')
-.as('media')
+router
+  .group(() => {
+    router.get('/:id/delete', [MediaController, 'destroy']).as('destroy')
+  })
+  .prefix('media')
+  .as('media')
 
-router.group(() => {
-  router.get('/:id/delete', [PriceController, 'destroy']).as('destroy')
-})
-.prefix('price')
-.as('price')
+router
+  .group(() => {
+    router.get('/:id/delete', [PriceController, 'destroy']).as('destroy')
+  })
+  .prefix('price')
+  .as('price')
 
 // PANIER
 router

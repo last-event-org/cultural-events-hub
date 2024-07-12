@@ -257,5 +257,9 @@
   "successDestroyEvent": "Evénement supprimé.",
   "successDestroyCart": "Panier supprimé.",
   "successValidatedCart": "Merci pour votre achat !",
-  "successDestroyMedia": "Media supprimé."
+  "successDestroyMedia": "Media supprimé.",
+
+  "mail_reset_password_subject": "Demande de nouveau mot de passe",
+  "mail_verify_subject": "Confirm your e-mail address",
+  "mail_account_activated_subject": "Welcome"
 }

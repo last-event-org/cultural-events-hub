@@ -42,8 +42,11 @@ export default class LoginController {
   }
 
   async requestNewPassword({ response, request, session, i18n }: HttpContext) {
-    console.log('NEW PASSWORD REQUEST')
-    console.log(request.input('email'))
+    const lang = i18n.locale
+    const parsedUrl = new URL(request.completeUrl())
+    const origin = `${parsedUrl.protocol}//${parsedUrl.host}`
+    console.log('requestNewPassword')
+    console.log(origin)
 
     try {
       const { email } = await request.validateUsing(EmailValidator)
@@ -54,7 +57,10 @@ export default class LoginController {
         const expirationDate = DateTime.now().plus({ minutes: 30 })
         user.resetTokenExpires = expirationDate
         await user?.save()
-        await sendNewPasswordRequest(user, token)
+        const subject = i18n.t('messages.mail_reset_password_subject')
+        console.log(lang)
+        console.log(subject)
+        await sendNewPasswordRequest(user, token, origin, lang, subject)
         const successMsg = i18n.t('messages.login_new_password_request_success')
         session.flash('success', successMsg)
         return response.redirect().back()

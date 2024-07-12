@@ -1,0 +1,8 @@
+@layout.email({user, token, origin, subject, language})   
+    <p>Salut {{user.firstname}}, <br>Merci pour ton enregistrement sur Next Event. Plus qu'une petite étape avant de pouvoir profiter des offres de dernière minute.</p>
+    <a href="{{origin}}/register/verify-email/?token={{token}}">Valider mon compte.</a>
+    <p>Si vous avez des questions ou des préoccupations, n'hésitez pas à contacter notre équipe de support.</p>
+    <p>Cordialement,<br>L'équipe de Next Events</p>
+    <p>S'il ne s'agissait pas de vous, n'accordez pas d'importance à cet e-mail.</p>
+@end
+

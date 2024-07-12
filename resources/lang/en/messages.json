@@ -47,7 +47,7 @@
   "login_login": "Log in",
   "login_invalid": "Invalid credentials",
   "login_verified_error": "Account already verified, please login.",
-  "login_verified_no": "Your account is not verified, please check your email. <a href=\"https://www.google.com\">here</a>",
+  "login_verified_no": "Your account is not verified, please check your email.",
   "login_verified_success": "Account successfully verified, please login.",
 
   "date_from": "from",
@@ -258,5 +258,9 @@
   "successDestroyEvent": "Event successfully deleted.",
   "successDestroyCart": "Cart successfully emptied.",
   "successValidatedCart": "Thank you for your purchase !",
-  "successDestroyMedia": "Media successfully deleted."
+  "successDestroyMedia": "Media successfully deleted.",
+
+  "mail_reset_password_subject": "New password request",
+  "mail_verify_subject": "Confirm your e-mail addresse",
+  "mail_account_activated_subject": "Welcome on Next Events"
 }

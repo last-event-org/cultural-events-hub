@@ -1,4 +1,4 @@
-<div class="max-w-96 mx-auto  lg:px-4 ">
+<div class="max-w-96 mx-auto lg:px-4 ">
   <form action="{{ route('events.search-word') }}" method="GET" class="relative">
     {{ csrfField() }}
     <div class="flex items-center border border-slate-900 rounded-full overflow-hidden  focus-within:border-yellow-500">
@@ -20,25 +20,3 @@
     </div>
   </form>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const searchButton = document.getElementById('search_event_button');
-      const searchBar = document.getElementById('search_event_bar');
-  
-      searchButton.addEventListener('click', function(e) {
-          e.stopPropagation(); 
-          searchBar.classList.toggle('hidden');
-      });
-  
-      document.addEventListener('click', function(e) {
-          if (!searchBar.contains(e.target) && !searchButton.contains(e.target)) {
-              searchBar.classList.add('hidden');
-          }
-      });
-  
-      searchBar.addEventListener('click', function(e) {
-          e.stopPropagation();
-      });
-  });
-  </script>

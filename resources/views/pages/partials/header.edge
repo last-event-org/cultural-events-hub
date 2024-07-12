@@ -73,34 +73,29 @@
   </ul>
   
   
-  @if(!auth.isAuthenticated)
+  <div class="hidden lg:flex lg:items-center lg:space-x-4">
+    @if(!auth.isAuthenticated)
+      <a class="py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm font-bold rounded-md transition duration-300" href={{ route('auth.login.show') }}>
+        {{ i18n.t('messages.header_login') }}
+      </a>
+    @else
+      @!component('components/header/dropdown_profile')
+    @end
 
-  {{-- <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-slate-900 font-bold  rounded-md transition duration-200"
-    href={{ route('auth.login.show') }}>
-    Langues</a> --}}
-    
-  <a class="hidden lg:inline-block py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm   font-bold rounded-md transition duration-300" href={{ route('auth.login.show') }}>
-    {{ i18n.t('messages.header_login') }}</a>
-
-  @else
-
-    @!component('components/header/dropdown_profile')
-    
-  @end
-
-  <div class="relative">
-    <button id="search_event_button" class="p-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-    </button>
-    <div id="search_event_bar" class="z-20 hidden absolute top-14 -right-10 w-96 bg-white border shadow py-4 px-2 rounded-3xl ">
-      @!component('components/filters/search_by_word')
+    <div class="relative">
+      <button id="search_event_button" class="p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+      <div id="search_event_bar" class="z-20 hidden absolute top-14 -right-10 w-96 bg-white border shadow py-4 px-2 rounded-3xl">
+        @!component('components/filters/search_by_word')
+      </div>
     </div>
-  </div>
 
-  <div class="hidden lg:inline-block lg:ml-auto py-2 px-2  duration-200">
-    @!component('components/header/language')
+    <div class="py-2 px-2 duration-200">
+      @!component('components/header/language')
+    </div>
   </div>
 </nav>
 @!component('components/header/hamburger_nav')

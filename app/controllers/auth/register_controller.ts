@@ -1,13 +1,20 @@
 import { createRegisterValidator } from '#validators/register'
 import { createVendorDataValidator } from '#validators/vendor_data'
 import { updateUserProfileMandatoryValidator } from '#validators/user_profile'
-import { HttpContext, Route } from '@adonisjs/core/http'
+import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import Role from '#models/role'
 import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import { updateUserPasswordValidator } from '#validators/password_change'
 import { errors } from '@vinejs/vine'
+import {
+  randomTokenString,
+  sendAccountVerified,
+  sendVerificationEmail,
+} from '#services/account_service'
+import { DateTime } from 'luxon'
+import { tokenValidator } from '#validators/token'
 
 export default class RegistersController {
   /**
@@ -53,16 +60,18 @@ export default class RegistersController {
     const userEmail = await User.findBy('email', payload.email)
     if (userEmail) {
       const errorMsg = i18n.t('messages.register_duplicateEmail')
-      session.flash('duplicateEmail', errorMsg)
+      session.flash('error', errorMsg)
       return response.redirect().back()
     }
-
+    const token = await randomTokenString()
+    console.log(token)
     const user = new User()
 
     user.firstname = payload.first_name
     user.lastname = payload.last_name
     user.email = payload.email
     user.password = payload.password
+    user.verificationToken = token
 
     const role = await Role.findBy('role_name', 'USER')
     if (role) {
@@ -70,13 +79,46 @@ export default class RegistersController {
     }
 
     await user.save()
+    await sendVerificationEmail(user, token)
+
     if (user.$isPersisted) {
-      await auth.use('web').login(user)
+      // await auth.use('web').login(user)
       return view.render('pages/auth/profile-type', {
         user: user,
       })
     } else {
       return response.redirect().back()
+    }
+  }
+
+  async verificationEmailSent({ view }: HttpContext) {
+    return view.render('pages/auth/verify_email')
+  }
+
+  async verifyUser({ response, request, session, i18n }: HttpContext) {
+    console.log('EMAIL VERIFICATION')
+    console.log()
+    const data = {
+      token: request.qs().token,
+    }
+    try {
+      const { token } = await tokenValidator.validate(data)
+      const user = await User.findByOrFail('verificationToken', token)
+      user.isVerified = true
+      user.verificationToken = null
+      user.verifiedAt = DateTime.now()
+      await user.save()
+      await sendAccountVerified(user)
+      const successMsg = i18n.t('messages.login_verified_success')
+      session.flash('success', successMsg)
+      return response.redirect().toRoute('auth.login.show')
+    } catch (error) {
+      if (error instanceof errors.E_VALIDATION_ERROR) {
+        console.log(error.messages)
+      }
+      const errorMsg = i18n.t('messages.login_verified_error')
+      session.flash('error', errorMsg)
+      return response.redirect().toRoute('auth.login.show')
     }
   }
 
@@ -288,7 +330,7 @@ export default class RegistersController {
     try {
       const vendorDataPayload = await request.validateUsing(createVendorDataValidator)
 
-      if (vendorDataPayload.company_name && vendorDataPayload.company_name.trim() != '') {
+      if (vendorDataPayload.company_name && vendorDataPayload.company_name.trim() !== '') {
         user.companyName = vendorDataPayload.company_name
       } else {
         user.companyName = user.firstname + ' ' + user.lastname
@@ -322,7 +364,7 @@ export default class RegistersController {
       }
       await user.save()
 
-      return response.redirect().toRoute('home')
+      return response.redirect().toRoute('auth.register.verify.show')
     } catch (error) {
       console.error('Validation Error:', error)
     }
@@ -387,7 +429,7 @@ export default class RegistersController {
     }
 
     await auth.use('web').login(user)
-    return view.render('pages/dashboard/edit_profile', {
+    return view.render('pages/auth/edit_profile', {
       user: user,
     })
   }

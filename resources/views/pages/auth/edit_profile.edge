@@ -1,22 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ i18n.locale }}">
+@layout.auth({pageTitle: i18n.t('messages.editProfile_title') })
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages.editProfile_title') }}</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/dropdown_address.js'])
-</head>
 
-<body class="bg-slate-50">
-
-  @include("pages/partials/header")
-  <main class=" flex justify-center min-h-screen ">
-    
-    <div class="bg-white p-8 mt-10 mb-20  sm:rounded-3xl shadow w-full max-w-md ">
-      <h2 class="text-2xl font-bold mb-6 text-center text-slate-700">
-        {{ i18n.t('messages.editProfile_title') }}
-      </h2>
       <form action={{ route('auth.register.update') }} method="POST" class="space-y-4">
         {{ csrfField() }}
         <div>
@@ -184,13 +168,5 @@
       <div class="mt-4">
         @!component('components/dashboard/button_create_vendor')
       </div>
-    </div>
-  </main>
-  
 
-    @include("pages/partials/footer")
-  
-<script scr="resources/js/app.js"></script>
-<script src="/resources/js/show_password.js"></script>
-</body>
-</html>
+      @end

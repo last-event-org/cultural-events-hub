@@ -147,10 +147,12 @@ export default class EventsController {
     if (event) {
       const user = auth.user
       if (user) event.vendorId = user.id
-      if (!await this.attachCategoryTypes(request, session, i18n, event)) return response.redirect().back()
+      if (!(await this.attachCategoryTypes(request, session, i18n, event)))
+        return response.redirect().back()
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)
-      if (!(await this.createEventPrices(request, session, response, i18n, event))) return response.redirect().back()
+      if (!(await this.createEventPrices(request, session, response, i18n, event)))
+        return response.redirect().back()
       await this.uploadEventMedia(request, event)
 
       return response.redirect().toRoute('events.show', { id: event.id })
@@ -280,7 +282,6 @@ export default class EventsController {
   }
 
   async getEventsByWord({ request, view, response }: HttpContext) {
-
     let events: Event[] = []
     const input = request.qs()
 
@@ -288,34 +289,35 @@ export default class EventsController {
       const wordsArray = input.input_words.split(' ')
 
       for (const word of wordsArray) {
-
         const results = await Event.query()
-        .preload('location')
-        .preload('vendor')
-        .preload('media')
-        .preload('prices')
-        .preload('indicators')
-        .preload('categoryTypes', (categoryTypesQuery) => {
-          categoryTypesQuery.preload('category')
-        })
-        .where(event => { event
-          .whereILike('title', `%${word}%`)
-          .orWhereILike('subtitle', `%${word}%`)
-          .orWhereILike('description', `%${word}%`)
-        })
-        .orWhereHas('vendor', (vendor) => {
-          vendor.whereILike('companyName', `%${word}%`);
-        })
-        .orWhereHas('location', (vendor) => {
-          vendor.whereILike('name', `%${word}%`)
-          .orWhereILike('street', `%${word}%`)
-          .orWhereILike('city', `%${word}%`)
-        })
-        .distinct()
+          .preload('location')
+          .preload('vendor')
+          .preload('media')
+          .preload('prices')
+          .preload('indicators')
+          .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category')
+          })
+          .where((event) => {
+            event
+              .whereILike('title', `%${word}%`)
+              .orWhereILike('subtitle', `%${word}%`)
+              .orWhereILike('description', `%${word}%`)
+          })
+          .orWhereHas('vendor', (vendor) => {
+            vendor.whereILike('companyName', `%${word}%`)
+          })
+          .orWhereHas('location', (vendor) => {
+            vendor
+              .whereILike('name', `%${word}%`)
+              .orWhereILike('street', `%${word}%`)
+              .orWhereILike('city', `%${word}%`)
+          })
+          .distinct()
 
         // Merge results into events array
-        events = [...events, ...results];
-      };
+        events = [...events, ...results]
+      }
       return view.render('pages/events/list', {
         events: events.length === 0 ? null : events,
       })
@@ -350,10 +352,7 @@ export default class EventsController {
     return ids
   }
 
-  async createEvent(
-    request: HttpContext['request'],
-    session: HttpContext['session'],
-  ) {
+  async createEvent(request: HttpContext['request'], session: HttpContext['session']) {
     const payload = await request.validateUsing(createEventValidator)
 
     const event = new Event()
@@ -421,12 +420,11 @@ export default class EventsController {
     if (bodyPrices) {
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
-
         try {
           const payload = await createPriceValidator.validate(priceData)
 
           if (payload) {
-            const price = new Price
+            const price = new Price()
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
             if (payload.discounted_price) price.discountedPrice = payload.discounted_price
@@ -472,7 +470,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) { }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -550,7 +548,6 @@ export default class EventsController {
           media.path = `/uploads/${uniqueFileName}`
           media.altName = file.clientName
           media.eventId = event.id
-
 
           await media.save()
         }
@@ -772,7 +769,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) { }
+      } catch (error) {}
 
       await event.location.save()
       return true
@@ -856,12 +853,11 @@ export default class EventsController {
 
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
-
         try {
           const payload = await createPriceValidator.validate(priceData)
 
           if (payload) {
-            const price = new Price
+            const price = new Price()
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
             if (payload.discounted_price) price.discountedPrice = payload.discounted_price
@@ -941,11 +937,15 @@ export default class EventsController {
         event.youtubeLink = ''
       }
 
-      if (!(await this.updateEventAddress(request, session, i18n, event))) return response.redirect().back()
-      if (!(await this.updateEventCategoryTypes(request, session, i18n, event))) return response.redirect().back()
-      await this.updateEventIndicators(request, event)  // Indicators are optional
-      if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
-      if (!(await this.updateEventMedia(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventAddress(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
+        return response.redirect().back()
+      await this.updateEventIndicators(request, event) // Indicators are optional
+      if (!(await this.updateEventPrices(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventMedia(request, session, i18n, event)))
+        return response.redirect().back()
 
       await event.save()
     }
@@ -953,15 +953,15 @@ export default class EventsController {
   }
 
   getYoutubeVideoId(youtubeLink: string): string | null {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = youtubeLink.match(regExp);
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+    const match = youtubeLink.match(regExp)
 
-    return (match && match[2].length === 11) ? match[2] : null;
+    return match && match[2].length === 11 ? match[2] : null
   }
 
   generateYoutubeEmbedLink(youtubeLink: string) {
-    const videoId = this.getYoutubeVideoId(youtubeLink);
-    const embedLink = "https://www.youtube.com/embed/" + videoId
+    const videoId = this.getYoutubeVideoId(youtubeLink)
+    const embedLink = 'https://www.youtube.com/embed/' + videoId
     return embedLink
   }
 

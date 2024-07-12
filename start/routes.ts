@@ -29,9 +29,18 @@ router
     router
       .post('/reset-password', [LoginController, 'resetPasswordStore'])
       .as('login.reset-password.store')
+    router
+      .get('/change-password', [LoginController, 'changePasswordShow'])
+      .as('change-password.show')
+      .use(middleware.auth())
+    router
+      .post('/change-password', [LoginController, 'changePasswordStore'])
+      .as('change-password.store')
+      .use(middleware.auth())
 
     router.get('/register', [RegisterController, 'index']).as('register')
     router.post('/register', [RegisterController, 'store']).as('register.store')
+
     router
       .get('/register/verify-email-sent', [RegisterController, 'verificationEmailSent'])
       .as('register.verify.show')

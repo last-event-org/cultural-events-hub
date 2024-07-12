@@ -55,18 +55,17 @@ if (userButton) {
   })
 }
 
-
 // Language button
 
-const button = document.getElementById('language-menu-button');
-const menu = document.getElementById('language-menu');
+const button = document.getElementById('language-menu-button')
+const menu = document.getElementById('language-menu')
 
 button.addEventListener('click', () => {
-  menu.classList.toggle('hidden');
-});
+  menu.classList.toggle('hidden')
+})
 
 window.addEventListener('click', (e) => {
   if (!button.contains(e.target) && !menu.contains(e.target)) {
-    menu.classList.add('hidden');
+    menu.classList.add('hidden')
   }
-});
+})

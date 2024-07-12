@@ -32,7 +32,12 @@ router
 
     router.get('/register', [RegisterController, 'index']).as('register')
     router.post('/register', [RegisterController, 'store']).as('register.store')
-    router.get('/register/verify-email', [RegisterController, 'verifyUser']).as('register.verify')
+    router
+      .get('/register/verify-email-sent', [RegisterController, 'verificationEmailSent'])
+      .as('register.verify.show')
+    router
+      .get('/register/verify-email', [RegisterController, 'verifyUser'])
+      .as('register.verify.store')
     router
       .get('/dashboard', [RegisterController, 'dashboard'])
       .as('dashboard')
@@ -44,7 +49,7 @@ router
     router
       .post('/profile-type', [RegisterController, 'updateProfileType'])
       .as('register.update-profile-type')
-      .use(middleware.auth())
+    // .use(middleware.auth())
     router
       .get('/dashboard/profile', [RegisterController, 'show'])
       .as('profile.show')

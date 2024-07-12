@@ -8,8 +8,13 @@ import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import { updateUserPasswordValidator } from '#validators/password_change'
 import { errors } from '@vinejs/vine'
-import { randomTokenString, sendVerificationEmail } from '#services/account_service'
+import {
+  randomTokenString,
+  sendAccountVerified,
+  sendVerificationEmail,
+} from '#services/account_service'
 import { DateTime } from 'luxon'
+import { tokenValidator } from '#validators/token'
 
 export default class RegistersController {
   /**
@@ -55,7 +60,7 @@ export default class RegistersController {
     const userEmail = await User.findBy('email', payload.email)
     if (userEmail) {
       const errorMsg = i18n.t('messages.register_duplicateEmail')
-      session.flash('duplicateEmail', errorMsg)
+      session.flash('error', errorMsg)
       return response.redirect().back()
     }
     const token = await randomTokenString()
@@ -77,7 +82,7 @@ export default class RegistersController {
     await sendVerificationEmail(user, token)
 
     if (user.$isPersisted) {
-      await auth.use('web').login(user)
+      // await auth.use('web').login(user)
       return view.render('pages/auth/profile-type', {
         user: user,
       })
@@ -86,20 +91,31 @@ export default class RegistersController {
     }
   }
 
+  async verificationEmailSent({ view }: HttpContext) {
+    return view.render('pages/auth/verify_email')
+  }
+
   async verifyUser({ response, request, session, i18n }: HttpContext) {
     console.log('EMAIL VERIFICATION')
     console.log()
-    // Token odXVfWsLLnD117y6Ugz9fOYSxAXWolAz
+    const data = {
+      token: request.qs().token,
+    }
     try {
-      const user = await User.findByOrFail('verificationToken', request.qs().token)
+      const { token } = await tokenValidator.validate(data)
+      const user = await User.findByOrFail('verificationToken', token)
       user.isVerified = true
       user.verificationToken = null
       user.verifiedAt = DateTime.now()
       await user.save()
+      await sendAccountVerified(user)
       const successMsg = i18n.t('messages.login_verified_success')
       session.flash('success', successMsg)
       return response.redirect().toRoute('auth.login.show')
-    } catch {
+    } catch (error) {
+      if (error instanceof errors.E_VALIDATION_ERROR) {
+        console.log(error.messages)
+      }
       const errorMsg = i18n.t('messages.login_verified_error')
       session.flash('error', errorMsg)
       return response.redirect().toRoute('auth.login.show')
@@ -348,7 +364,7 @@ export default class RegistersController {
       }
       await user.save()
 
-      return response.redirect().toRoute('home')
+      return response.redirect().toRoute('auth.register.verify.show')
     } catch (error) {
       console.error('Validation Error:', error)
     }
@@ -413,7 +429,7 @@ export default class RegistersController {
     }
 
     await auth.use('web').login(user)
-    return view.render('pages/dashboard/edit_profile', {
+    return view.render('pages/auth/edit_profile', {
       user: user,
     })
   }

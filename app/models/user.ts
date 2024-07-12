@@ -52,7 +52,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare resetToken: string | null
 
   @column.dateTime({ autoCreate: false })
-  declare resetTokenExpires: DateTime
+  declare resetTokenExpires: DateTime | null
 
   @column()
   declare isBlocked: boolean

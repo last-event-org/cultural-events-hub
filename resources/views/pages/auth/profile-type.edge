@@ -1,24 +1,12 @@
-<!DOCTYPE html>
-<html lang="{{ i18n.locale }}">
+@layout.auth({pageTitle: i18n.t('messages.profile_type_title') })
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages.profile_type_title') }}</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
 
-<body class="bg-slate-50">
-  @include("pages/partials/header")
-  <main class="flex items-center justify-center min-h-screen ">
-
-    <div class="bg-white p-8 sm:rounded-3xl shadow-md w-full max-w-3xl">
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
             {{-- Bienvenue {{ user.firstname }}! Que voulez vous faire ? --}}
             {{ i18n.t('messages.profile_type_welcome', { userFirstname: user.firstname }) }}
         </h2>
         <div class="flex gap-4 justify-center">
-            <a href={{ route('events.index') }}>
+            <a href="{{ route('auth.register.verify.show') }}">
               <button class="p-4 bg-teal-400 rounded-md">
                 {{ i18n.t('messages.profile_type_buy') }}
               </button>
@@ -117,11 +105,5 @@
         </button>
 
       </form>
-
-    </div>
-  </main>
-  @include("pages/partials/footer")
-  <script src="/resources/js/register_vendor_data.js"></script>
-</body>
-
-</html>
+<script src="/resources/js/register_vendor_data.js"></script>
+@end

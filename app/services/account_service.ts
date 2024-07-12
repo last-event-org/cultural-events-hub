@@ -7,8 +7,6 @@ export async function randomTokenString() {
 }
 
 export async function sendVerificationEmail(user: User, token: string) {
-  console.log(user)
-  console.log(token)
   await mail.send((message) => {
     message
       .to(user.email)
@@ -18,12 +16,19 @@ export async function sendVerificationEmail(user: User, token: string) {
 }
 
 export async function sendNewPasswordRequest(user: User, token: string) {
-  console.log(user)
-  console.log(token)
   await mail.send((message) => {
     message
       .to(user.email)
       .subject('New password request')
       .htmlView('emails/password_reset', { user, token })
+  })
+}
+
+export async function sendAccountVerified(user: User) {
+  await mail.send((message) => {
+    message
+      .to(user.email)
+      .subject('Account activated')
+      .htmlView('emails/account_verified', { user })
   })
 }

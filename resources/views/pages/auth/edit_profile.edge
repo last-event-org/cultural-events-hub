@@ -105,47 +105,13 @@
           </div>
         </button>
 
-        <div>
-          <label for="company_name" class="block text-slate-600">
-            {{ i18n.t('messages.editProfile_company') }}
-          </label>
-          <input type="text" id="company_name" name="company_name" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.companyName || '' }}">
-          @inputError('company_name')
-          <div style="color: red;">{{ $messages.join(', ') }}</div>
-          @end
-        </div>
-        <div>
-          <label for="vat_number" class="block text-slate-600">
-              {{ i18n.t('messages.editProfile_vat') }}
-          </label>
-          <input type="text" id="vat_number" name="vat_number" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ user.vatNumber || '' }}">
-          @inputError('vat_number')
-          <div style="color: red;">{{ $messages.join(', ') }}</div>
-          @end
-        </div>
-
-        @if(flashMessages.has('userVendorData'))
-        <div>
-          <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
-            {{ flashMessages.get('userVendorData') }}
-          </h2>
-        </div>
-        @endif
-
-
-        @if(flashMessages.has('billingAddressError'))
-        <div>
-          <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
-            {{ flashMessages.get('billingAddressError') }}
-          </h2>
-        </div>
-        @endif
+      
 
         <div class="hidden opacity-0 scale-50 duration-500" id="billing__adress--component">
           @if(user.billingAddress)
             @!component('components/dashboard/billing_address_form', {
+              companyName: user.companyName,
+              vatNumber: user.vatNumber,
               street: user.billingAddress.street,
               number: user.billingAddress.number,
               zipCode: user.billingAddress.zipCode,

@@ -19,13 +19,13 @@
 
 <body class=" bg-slate-50">
   @include("pages/partials/header")
+  
 
   @if(home === true)
     @include("pages/partials/intro")
   @end
 
-  {{-- TODO put it somewhere in the front + style --}}
-  @!component('components/filters/search_by_word')
+  
 
   @if(filter === true)
     <section class="relative flex flex-col items-center justify-center mb-10">
@@ -33,7 +33,7 @@
     </section>
   @end
 
-  <main class="flex flex-col items-center "> 
+  <main class="flex flex-col items-center min-h-screen mb-20 "> 
   @if(!home)
     @include("pages/partials/title")
   @end

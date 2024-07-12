@@ -1,15 +1,44 @@
-<div class="p-4 open-sans text-2xl place-items-center sm:flex bg-white border shadow rounded-full h-full mx-auto my-4 lg:my-10 w-[98vw] lg:w-auto justify-between items-center max-w-[900px]">
-  <form class="flex w-full" action="{{ route('events.search-word') }}" method="GET">
+<div class="max-w-96 mx-auto px-4 ">
+  <form action="{{ route('events.search-word') }}" method="GET" class="relative">
     {{ csrfField() }}
-  
-    <input type="text" id="" name="input_words" placeholder="concert rock liège" class="w-full bg-transparent text-slate-400"
-      autocomplete="off" value="">
-    <button id="" type="submit"
-      class=" right-1.5 lg:right-2.5 button flex items-center gap-4 bg-yellow-500 p-3 sm:p-4 rounded-full  hover:bg-yellow-400 hover:shadow duration-300">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 sm:h-6 lg:h-8 " fill="#000000" viewBox="0 0 512 512">
-        <path d="M 363.03660886319847 205.1946050096339 Q 363.03660886319847 162.77456647398844 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 L 342.3198458574181 126.27360308285164 Q 320.616570327553 89.77263969171483 284.11560693641616 68.0693641618497 Q 246.6281310211946 47.35260115606936 205.1946050096339 47.35260115606936 Q 163.76107899807323 47.35260115606936 126.27360308285164 68.0693641618497 Q 89.77263969171483 89.77263969171483 68.0693641618497 126.27360308285164 Q 47.35260115606936 162.77456647398844 47.35260115606936 205.1946050096339 Q 47.35260115606936 247.6146435452794 68.0693641618497 284.11560693641616 Q 89.77263969171483 320.616570327553 126.27360308285164 342.3198458574181 Q 163.76107899807323 363.03660886319847 205.1946050096339 363.03660886319847 Q 246.6281310211946 363.03660886319847 284.11560693641616 342.3198458574181 Q 320.616570327553 320.616570327553 342.3198458574181 284.11560693641616 Q 363.03660886319847 247.6146435452794 363.03660886319847 205.1946050096339 L 363.03660886319847 205.1946050096339 Z M 332.45472061657034 365.9961464354528 Q 279.1830443159923 409.402697495183 205.1946050096339 410.3892100192678 Q 118.38150289017341 408.4161849710983 60.177263969171484 350.21194605009634 Q 1.9730250481695568 292.0077071290944 0 205.1946050096339 Q 1.9730250481695568 118.38150289017341 60.177263969171484 60.177263969171484 Q 118.38150289017341 1.9730250481695568 205.1946050096339 0 Q 292.0077071290944 1.9730250481695568 350.21194605009634 60.177263969171484 Q 408.4161849710983 118.38150289017341 410.3892100192678 205.1946050096339 Q 409.402697495183 279.1830443159923 365.9961464354528 332.45472061657034 L 498.1888246628131 464.64739884393066 L 498.1888246628131 464.64739884393066 Q 512 481.4181117533719 498.1888246628131 498.1888246628131 Q 481.4181117533719 512 464.64739884393066 498.1888246628131 L 332.45472061657034 365.9961464354528 L 332.45472061657034 365.9961464354528 Z"/>
-      </svg>
-    </button>
-  
+    <div class="flex items-center border border-slate-900 rounded-full overflow-hidden  focus-within:border-yellow-500">
+      <input 
+        type="text" 
+        name="input_words" 
+        placeholder="Rechercher un événement..."
+        class="w-full py-2 px-4 text-slate-700 focus:outline-none"
+        autocomplete="off"
+      >
+      <button 
+        type="submit"
+        class="bg-yellow-500 hover:bg-slate-200 text-slate-700 p-4 border-4 border-white rounded-full transition-colors duration-300 focus:outline-none"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+    </div>
   </form>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const searchButton = document.getElementById('search_event_button');
+      const searchBar = document.getElementById('search_event_bar');
+  
+      searchButton.addEventListener('click', function(e) {
+          e.stopPropagation(); 
+          searchBar.classList.toggle('hidden');
+      });
+  
+      document.addEventListener('click', function(e) {
+          if (!searchBar.contains(e.target) && !searchButton.contains(e.target)) {
+              searchBar.classList.add('hidden');
+          }
+      });
+  
+      searchBar.addEventListener('click', function(e) {
+          e.stopPropagation();
+      });
+  });
+  </script>

@@ -33,7 +33,6 @@
     </section>
   @end
 
-  
   <main class="flex flex-col items-center "> 
   @if(!home)
     @include("pages/partials/title")
@@ -46,7 +45,7 @@
     <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5"  > 
       
       @each(event in events)
-        @!component('components/events_cards', {event})
+        @!component('components/events_cards', {event, price: event.prices.length == 0 ? false : true })
       @end
   
     </div>

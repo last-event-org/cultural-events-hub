@@ -29,6 +29,8 @@ export async function sendNewPasswordRequest(
   subject: string
 ) {
   console.log('sendNewPasswordRequest')
+  console.log(language)
+  console.log(subject)
   await mail.send((message) => {
     message
       .to(user.email)

@@ -45,6 +45,7 @@ export default class LoginController {
     const lang = i18n.locale
     const parsedUrl = new URL(request.completeUrl())
     const origin = `${parsedUrl.protocol}//${parsedUrl.host}`
+    console.log('requestNewPassword')
     console.log(origin)
 
     try {
@@ -57,6 +58,8 @@ export default class LoginController {
         user.resetTokenExpires = expirationDate
         await user?.save()
         const subject = i18n.t('messages.mail_reset_password_subject')
+        console.log(lang)
+        console.log(subject)
         await sendNewPasswordRequest(user, token, origin, lang, subject)
         const successMsg = i18n.t('messages.login_new_password_request_success')
         session.flash('success', successMsg)

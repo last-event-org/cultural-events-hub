@@ -1,51 +1,61 @@
+import { DateTime } from 'luxon'
+const lang = document.documentElement.lang
+
 function formatDate(startString, endString) {
-  const date = new Date(startString);
-  const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-  const months = [
-    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
-  ];
-  
-  const dayName = days[date.getUTCDay()];
-  const day = date.getUTCDate();
-  const month = months[date.getUTCMonth()];
-  const year = date.getUTCFullYear();
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-  
-  const formattedTime = minutes !== '00' ? `${hours}h${minutes}` : `${hours}h`;
-  
+  const longDateFrom = {
+    en: 'From',
+    fr: 'Du',
+  }
+
+  const longDateTo = {
+    en: 'to',
+    fr: 'au',
+  }
+
+  const shortDateFrom = {
+    en: 'from',
+    fr: 'de',
+  }
+
+  const shortDateTo = {
+    en: 'to',
+    fr: 'à',
+  }
+
+  const startDate = DateTime.fromISO(startString).setLocale(lang)
+  const endDate = DateTime.fromISO(endString).setLocale(lang)
+
+  const formattedTime =
+    startDate.minute !== '00'
+      ? `${startDate.toFormat("hh'h'mm")}`
+      : `${startDate.toFormat("hh'h'")}`
+
   // Si pas de date de fin, on retourne la date de début avec l'année
   if (!endString) {
-    return `${dayName} ${day} ${month} ${year}, ${formattedTime}`;
+    return DateTime.fromISO(startString).setLocale(lang).toFormat("ccc dd LLLL yyyy', ' T")
   }
-  
-  const endDate = new Date(endString);
-  const endDayName = days[endDate.getUTCDay()];
-  const endDay = endDate.getUTCDate();
-  const endMonth = months[endDate.getUTCMonth()];
-  const endHours = endDate.getUTCHours();
-  const endMinutes = endDate.getUTCMinutes().toString().padStart(2, '0');
-  
-  let formattedDate;
-  
-  if (endDay !== day || endMonth !== month) {
-    const formattedEnd = endMinutes !== '00'
-      ? `${endDayName} ${endDay} ${endMonth}, ${endHours}h${endMinutes}`
-      : `${endDayName} ${endDay} ${endMonth}, ${endHours}h`;
-    formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} au ${formattedEnd}`;
+
+  let formattedDate
+
+  if (endDate.day !== startDate.day || endDate.month !== startDate.month) {
+    const formattedEnd =
+      endDate.minute !== '00'
+        ? `${endDate.toFormat("ccc dd LLLL yyyy', ' hh'h'mm")}`
+        : `${endDate.toFormat("ccc dd LLLL yyyy', ' hh'h'")}`
+    formattedDate = `${longDateFrom[lang]} ${startDate.toFormat('ccc dd LLLL')} ${formattedTime} ${longDateTo[lang]} ${formattedEnd}`
   } else {
-    const formattedEnd = endMinutes !== '00' ? `${endHours}h${endMinutes}` : `${endHours}h`;
-    formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} à ${formattedEnd}`;
+    const formattedEnd =
+      endDate.minute !== '00' ? `${endDate.toFormat("hh'h'mm")}` : `${endDate.toFormat("hh'h'")}`
+    formattedDate = `${startDate.toFormat('ccc dd LLLL')}, ${shortDateFrom[lang]} ${formattedTime} ${shortDateTo[lang]} ${formattedEnd}`
   }
-  
-  return formattedDate;
+
+  return formattedDate
 }
 
-const dateElements = document.querySelectorAll('.formated-date');
+const dateElements = document.querySelectorAll('.formated-date')
 dateElements.forEach(function (dateElement) {
-  const eventStart = dateElement.getAttribute('data-event-start');
-  const eventEnd = dateElement.getAttribute('data-event-end');
-  const formattedDate = formatDate(eventStart, eventEnd);
-  dateElement.textContent = formattedDate;
-});
+  const eventStart = dateElement.getAttribute('data-event-start')
+  const eventEnd = dateElement.getAttribute('data-event-end')
+  const formattedDate = formatDate(eventStart, eventEnd)
+  dateElement.textContent = formattedDate
+})

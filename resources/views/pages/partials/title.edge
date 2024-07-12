@@ -6,7 +6,9 @@
         <h1 class="text-2xl font-bold">xt Events :</h1>
       </div>
       <h2 class="text-slate-700 sm:pl-2 text-lg lg:text-xl italic font-semibold">
-        @if(title == "tickets")
+        @if(title == "home")
+        {{i18n.t('messages.events_title_home')}}
+        @elseif(title == "tickets")
           {{i18n.t('messages.events_title_tickets')}}
         @elseif((title == "agenda"))
           {{i18n.t('messages.events_title')}}

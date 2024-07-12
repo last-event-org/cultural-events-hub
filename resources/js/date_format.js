@@ -2,6 +2,11 @@ import { DateTime } from 'luxon'
 const lang = document.documentElement.lang
 
 function formatDate(startString, endString) {
+  let startDateIso = new Date(startString)
+  startDateIso = startDateIso.toISOString()
+  let endDateIso = new Date(endString)
+  endDateIso = endDateIso.toISOString()
+
   const longDateFrom = {
     en: 'From',
     fr: 'Du',
@@ -22,8 +27,8 @@ function formatDate(startString, endString) {
     fr: 'à',
   }
 
-  const startDate = DateTime.fromISO(startString).setLocale(lang)
-  const endDate = DateTime.fromISO(endString).setLocale(lang)
+  const startDate = DateTime.fromISO(startDateIso).setLocale(lang)
+  const endDate = DateTime.fromISO(endDateIso).setLocale(lang)
 
   const formattedTime =
     startDate.minute !== '00'

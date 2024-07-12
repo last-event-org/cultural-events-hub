@@ -33,11 +33,11 @@
     </section>
   @end
 
+  
+  <main class="flex flex-col items-center "> 
   @if(!home)
     @include("pages/partials/title")
   @end
-
-<main class="flex justify-center"> 
 
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>

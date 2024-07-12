@@ -17,9 +17,11 @@ import { createAddressValidator } from '#validators/address'
 import { createMediaValidator } from '#validators/media'
 import { queryValidator } from '#validators/query'
 import { createPriceValidator } from '#validators/create_price'
+import { createPricesValidator } from '#validators/price'
 import User from '#models/user'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
+import { checkPriceCategoryTypeValidator } from '#validators/price_category'
 
 export default class EventsController {
   /**
@@ -354,8 +356,11 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
   ) {
-    const payload = await request.validateUsing(createEventValidator)
+    console.log('\n\n\n\n***********');
+      console.log(request.all());
+      const payload = await request.validateUsing(createEventValidator)
 
+    console.log('\n\n\n\npayload.is_free: ', payload.is_free);
     const event = new Event()
 
     event.title = payload.title
@@ -376,6 +381,7 @@ export default class EventsController {
     } else {
       event.youtubeLink = ''
     }
+    event.isFree = payload.is_free ? payload.is_free : false
 
     return await event.save()
   }
@@ -417,13 +423,20 @@ export default class EventsController {
     event: Event
   ) {
     const bodyPrices = request.body().prices
+    console.log('\n\n\n\nbodyPrices: ', bodyPrices);
 
     if (bodyPrices) {
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
 
         try {
-          const payload = await createPriceValidator.validate(priceData)
+          let freeCateg = false
+          const priceCategoryTypePayload = await request.validateUsing(checkPriceCategoryTypeValidator)
+          if (priceCategoryTypePayload.is_free_category) {
+            freeCateg = true
+          }
+          console.log('\n\n\n\npriceCategoryTypePayload: ', priceCategoryTypePayload.is_free_category);
+          const payload = await createPriceValidator(event, freeCateg).validate(priceData)
 
           if (payload) {
             const price = new Price

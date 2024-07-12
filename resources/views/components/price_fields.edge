@@ -1,6 +1,12 @@
 <fieldset class="price-section w-screen sm:w-[90%] sm:rounded-3xl p-6  bg-white border shadow-sm my-4" name="prices[]">
+  <div class="flex gap-4 pb-2 items-end">
+    <label for="is_free_category" class="text-gray-600">Catégorie Gratuite</label>
+    <input onclick="toggleFreeCategoriyPrices(this)" class="free-category border-gray-300 rounded-md mb-0.5
+      focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+      type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][is_free_category]">
+  </div>
 
-  <div class="flex  gap-2 w-full">
+  <div class="flex gap-2 w-full">
     {{-- Categories --}}
     <div class="w-1/2 ">
       <label for="price_description" class="block text-gray-600">{{ i18n.t('messages.prices_categ') }}</label>
@@ -15,7 +21,7 @@
     {{-- Places  --}}
     <div class=" w-1/2">
       
-      <label class="block text-gray-600">{{ i18n.t('messages.prices_avlAt') }}</label>
+      <label for="available_qty" class="block text-gray-600">{{ i18n.t('messages.prices_avlAt') }}</label>
       <input class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
           focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
         type="text" name="prices[{{ i ? i : 0 }}][available_qty]" value="{{ price && price.availableQty ? price.availableQty : '' }}" placeholder="0">  
@@ -26,22 +32,31 @@
     {{-- Prix Normal --}}
     <div class="w-1/2">
       <label for="regular_price" class="flex text-gray-600">{{ i18n.t('messages.prices_tarif') }}</label>
-      <input class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
+      <input class="regular_price mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
           focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-        type="text" name="prices[{{ i ? i : 0 }}][regular_price]" id="regular_price" value="{{ price && price.regularPrice ? price.regularPrice : '' }}" placeholder="0.00">
+        type="text" name="prices[{{ i ? i : 0 }}][regular_price]" value="{{ price && price.regularPrice ? price.regularPrice : '' }}" placeholder="0.00">
         @inputError('prices.0.regular_price')
           <div style="color: red;">{{ $messages.join(', ') }}</div>
         @end
     </div>
     {{-- Prix discount   --}}
-      <div class="discounted-row w-1/2 ">
-        <label class="block text-gray-600">{{ i18n.t('messages.prices_discount') }}</label>
-        <input class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-          type="text" name="prices[{{ i ? i : 0 }}][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
+      <div class="discounted-row w-1/2 gap-8 flex">
+        <div>
+          <label for="discounted_price" class="block text-gray-600">{{ i18n.t('messages.prices_discount') }}</label>
+          <input class="discounted_price mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+            type="text" name="prices[{{ i ? i : 0 }}][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
+        </div>
+
+        <div class="flex gap-4 pb-2 items-end">
+          <label for="become_free" class="text-gray-600">Devient Gratuit</label>
+          <input class="become_free border-gray-300 rounded-md mb-0.5
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+            type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
+        </div>
       </div>  
     </div>
     <div class="w-full flex justify-center mt-4">
   </div>
-    
+  <script src="/resources/js/price_fields.js"></script>
   </fieldset>

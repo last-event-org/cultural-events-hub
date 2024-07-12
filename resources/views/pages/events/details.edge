@@ -106,6 +106,12 @@
                 <p class=" text-gray-500 mb-1 italic mx-2 lg:mx-0">
                   {{event.description}} 
                 </p>
+
+                @if(event.isFree)
+                  <p class="text-green-500 mb-1 mx-2 lg:mx-0">
+                    Événement totalment gratuit
+                  </p>
+                @end
                 <div class="flex flex-col lg:flex-row gap-4 justify-between items-center">
                   <div class="lg:hidden w-1/2 border-t-2 border-gray-400"></div>
                     <div class="flex justify-center items-center gap-2 ">

@@ -39,5 +39,8 @@ export const createEventValidator = vine.compile(
       })
       .trim()
       .nullable(),
+    is_free: vine
+      .boolean()
+      .optional()
   })
 )

@@ -55,7 +55,9 @@ export default class RegistersController {
    */
   async store({ i18n, session, request, response, auth, view }: HttpContext) {
     const payload = await request.validateUsing(createRegisterValidator)
-
+    const lang = i18n.locale
+    const parsedUrl = new URL(request.completeUrl())
+    const origin = `${parsedUrl.protocol}//${parsedUrl.host}`
     // check if user email is already in the db
     const userEmail = await User.findBy('email', payload.email)
     if (userEmail) {
@@ -79,7 +81,8 @@ export default class RegistersController {
     }
 
     await user.save()
-    await sendVerificationEmail(user, token)
+    const subject = i18n.t('messages.mail_verify_subject')
+    await sendVerificationEmail(user, token, origin, lang, subject)
 
     if (user.$isPersisted) {
       // await auth.use('web').login(user)
@@ -98,6 +101,10 @@ export default class RegistersController {
   async verifyUser({ response, request, session, i18n }: HttpContext) {
     console.log('EMAIL VERIFICATION')
     console.log()
+    const lang = i18n.locale
+    const parsedUrl = new URL(request.completeUrl())
+    const origin = `${parsedUrl.protocol}//${parsedUrl.host}`
+
     const data = {
       token: request.qs().token,
     }
@@ -108,7 +115,8 @@ export default class RegistersController {
       user.verificationToken = null
       user.verifiedAt = DateTime.now()
       await user.save()
-      await sendAccountVerified(user)
+      const subject = i18n.t('messages.mail_account_activated_subject')
+      await sendAccountVerified(user, origin, lang, subject)
       const successMsg = i18n.t('messages.login_verified_success')
       session.flash('success', successMsg)
       return response.redirect().toRoute('auth.login.show')

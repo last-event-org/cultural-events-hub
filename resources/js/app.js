@@ -68,4 +68,27 @@ window.addEventListener('click', (e) => {
   if (!button.contains(e.target) && !menu.contains(e.target)) {
     menu.classList.add('hidden')
   }
-})
+});
+
+// searchbar
+
+document.addEventListener('DOMContentLoaded', function() {
+  const searchButton = document.getElementById('search_event_button');
+  const searchBar = document.getElementById('search_event_bar');
+
+  searchButton.addEventListener('click', function(e) {
+      e.stopPropagation(); 
+      searchBar.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', function(e) {
+      if (!searchBar.contains(e.target) && !searchButton.contains(e.target)) {
+          searchBar.classList.add('hidden');
+      }
+  });
+
+  searchBar.addEventListener('click', function(e) {
+      e.stopPropagation();
+  });
+});
+

@@ -221,6 +221,7 @@
   "event_hub": "A cultural events hub",
   "event_fetch": "Fetch data",
   "events_title": "Full agenda",
+  "events_title_home": "All your discounted events in the next 7 days",
   "events_title_tickets": "All your discounted events",
   "events_search_title": "Your events",
   "events_search_city": "in",

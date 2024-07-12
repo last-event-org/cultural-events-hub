@@ -54,7 +54,7 @@ export default class EventsController {
       events: events,
       topEvents: topEvents,
       todayEvents: nextEvents,
-      home: true,
+      title: 'home',
       nextTitle: title,
       filter: true,
     })

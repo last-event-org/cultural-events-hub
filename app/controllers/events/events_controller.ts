@@ -143,7 +143,7 @@ export default class EventsController {
    * Handle form submission for the create action
    */
   async store({ request, session, response, i18n, auth }: HttpContext) {
-    const event = await this.createEvent(request, session, response)
+    const event = await this.createEvent(request, session)
     if (event) {
       const user = auth.user
       if (user) event.vendorId = user.id
@@ -279,6 +279,50 @@ export default class EventsController {
     })
   }
 
+  async getEventsByWord({ request, view, response }: HttpContext) {
+
+    let events: Event[] = []
+    const input = request.qs()
+
+    if (input.input_words) {
+      const wordsArray = input.input_words.split(' ')
+
+      for (const word of wordsArray) {
+
+        const results = await Event.query()
+        .preload('location')
+        .preload('vendor')
+        .preload('media')
+        .preload('prices')
+        .preload('indicators')
+        .preload('categoryTypes', (categoryTypesQuery) => {
+          categoryTypesQuery.preload('category')
+        })
+        .where(event => { event
+          .whereILike('title', `%${word}%`)
+          .orWhereILike('subtitle', `%${word}%`)
+          .orWhereILike('description', `%${word}%`)
+        })
+        .orWhereHas('vendor', (vendor) => {
+          vendor.whereILike('companyName', `%${word}%`);
+        })
+        .orWhereHas('location', (vendor) => {
+          vendor.whereILike('name', `%${word}%`)
+          .orWhereILike('street', `%${word}%`)
+          .orWhereILike('city', `%${word}%`)
+        })
+        .distinct()
+
+        // Merge results into events array
+        events = [...events, ...results];
+      };
+      return view.render('pages/events/list', {
+        events: events.length === 0 ? null : events,
+      })
+    }
+    return response.redirect().toRoute('home')
+  }
+
   async formatDate(dateQuery: any) {
     let isoDate = new Date(dateQuery).toISOString()
     let date = DateTime.fromISO(isoDate)
@@ -309,9 +353,7 @@ export default class EventsController {
   async createEvent(
     request: HttpContext['request'],
     session: HttpContext['session'],
-    response: HttpContext['response']
   ) {
-    // try {
     const payload = await request.validateUsing(createEventValidator)
 
     const event = new Event()
@@ -336,10 +378,6 @@ export default class EventsController {
     }
 
     return await event.save()
-
-    // } catch (error) {
-    // console.error('Event Validation Error at createEventPrices():', error);
-    // }
   }
 
   async attachCategoryTypes(

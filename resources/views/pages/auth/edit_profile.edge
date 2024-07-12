@@ -39,60 +39,12 @@
           </h2>
         </div>
         @endif
-
-        <div>
-          <label for="password" class="block text-slate-600">
-            {{ i18n.t('messages.editProfile_password') }}
-          </label>
-          <div class="relative">
-          <input type="password" id="password" name="password" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-          focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="********">
-          <span onclick="showPassword(password)" class="p-1 absolute top-1 right-2 field-icon toggle-password show ">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none ">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-              </svg>
-            </span>
-          @inputError('password')
-            @each(message in $messages)
-              <p> {{ message }} </p>
-            @end
-          @end
-          @flashMessage('password')
-            <p> {{ $message }} </p>
-          @end
-          </div>
+        <div class="flex justify-center">
+          <a href="{{route('auth.change-password.show')}}" class="bg-yellow-500 text-slate-800 font-semibold py-2 px-4 rounded-md hover:bg-yellow-400 
+          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:border-yellow-500  ">
+            {{ i18n.t('messages.editProfile_change_password') }}
+          </a>
         </div>
-
-        <div>
-          <label for="password_confirmation" class="block text-slate-600">
-            {{ i18n.t('messages.editProfile_confirmPass') }}
-          </label>
-          <div class="relative">
-          <input type="password" id="password_confirmation" name="password_confirmation" class="mt-1 block w-full px-4 py-2
-          border border-slate-300 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 0 sm:text-sm" placeholder="********">
-          <span onclick="showPassword(password_confirmation)" class="p-1 absolute top-1 right-2 field-icon toggle-password show ">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none ">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-              </svg>
-            </span>
-          @inputError('password_confirmation')
-            @each(message in $messages)
-              <p> {{ message }} </p>
-            @end
-          @end
-        </div>
-        </div>
-
-        @if(flashMessages.has('userPassword'))
-        <div>
-          <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
-            {{ flashMessages.get('userPassword') }}
-          </h2>
-        </div>
-        @endif
-
         <button type="button" id="billing__adress--button" class="flex justify-center   text-sm font-semibold text-slate-600 hover:text-slate-950 w-full">
           <div class="flex flex-col justify-between items-center w-full text-slate-800 text-xl font-semibold my-4">
             <h2>{{ i18n.t('messages.editProfile_billData') }}</h2>
@@ -104,8 +56,6 @@
             </svg>
           </div>
         </button>
-
-      
 
         <div class="hidden opacity-0 scale-50 duration-500" id="billing__adress--component">
           @if(user.billingAddress)
@@ -123,16 +73,17 @@
           @endif
         </div>
        
-        <div>
-          <button type="submit" class="mt-10 w-full bg-yellow-500 text-slate-800 font-semibold py-2 px-4 rounded-md hover:bg-yellow-400 
-          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:border-yellow-500  ">
+        <div class="flex justify-center">
+          <button type="submit" class="border shadow uppercase bg-indigo-700 text-white font-semibold py-2 px-6 rounded-md hover:bg-indigo-500
+             focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:ring-2 ">
           {{ i18n.t('messages.editProfile_save') }}
           </button>
         </div>       
       </form>
 
+{{-- 
       <div class="mt-4">
         @!component('components/dashboard/button_create_vendor')
-      </div>
+      </div> --}}
 
       @end

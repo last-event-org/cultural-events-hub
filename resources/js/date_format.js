@@ -11,11 +11,11 @@ function formatDate(startString, endString) {
   const month = months[date.getUTCMonth()];
   const year = date.getUTCFullYear();
   const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
   
-  const formattedTime = minutes > 0 ? `${hours}h${minutes}` : `${hours}h`;
+  const formattedTime = minutes !== '00' ? `${hours}h${minutes}` : `${hours}h`;
   
-  
+  // Si pas de date de fin, on retourne la date de début avec l'année
   if (!endString) {
     return `${dayName} ${day} ${month} ${year}, ${formattedTime}`;
   }
@@ -25,17 +25,17 @@ function formatDate(startString, endString) {
   const endDay = endDate.getUTCDate();
   const endMonth = months[endDate.getUTCMonth()];
   const endHours = endDate.getUTCHours();
-  const endMinutes = endDate.getUTCMinutes();
+  const endMinutes = endDate.getUTCMinutes().toString().padStart(2, '0');
   
   let formattedDate;
   
   if (endDay !== day || endMonth !== month) {
-    const formattedEnd = endMinutes > 0
+    const formattedEnd = endMinutes !== '00'
       ? `${endDayName} ${endDay} ${endMonth}, ${endHours}h${endMinutes}`
       : `${endDayName} ${endDay} ${endMonth}, ${endHours}h`;
     formattedDate = `Du ${dayName} ${day} ${month} ${formattedTime} au ${formattedEnd}`;
   } else {
-    const formattedEnd = endMinutes > 0 ? `${endHours}h${endMinutes}` : `${endHours}h`;
+    const formattedEnd = endMinutes !== '00' ? `${endHours}h${endMinutes}` : `${endHours}h`;
     formattedDate = `${dayName} ${day} ${month}, de ${formattedTime} à ${formattedEnd}`;
   }
   

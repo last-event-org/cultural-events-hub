@@ -17,16 +17,7 @@
   --spectacles-hover: #c4b5fd;
 }
 
-body {
-  /* font-family: "PT Sans", sans-serif; */
-  /* font-family: "Open Sans", sans-serif; */
-}
-nav {
-  font-family: 'Open Sans', sans-serif;
-}
-.open-sans {
-  font-family: 'Open Sans', sans-serif;
-}
+
 
 @layer utilities {
   .scrollbar-hide {

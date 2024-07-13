@@ -357,9 +357,9 @@ export default class EventsController {
 
     const event = new Event()
 
-    event.title = payload.title
-    event.subtitle = payload.subtitle
-    event.description = payload.description
+    event.title = payload.title.replaceAll('&#x27;', "'")
+    event.subtitle = payload.subtitle.replaceAll('&#x27;', "'")
+    event.description = payload.description.replaceAll('&#x27;', "'")
     event.eventStart = DateTime.fromISO(payload.event_start)
     event.eventEnd = DateTime.fromISO(payload.event_end)
     if (event.eventStart > event.eventEnd) {
@@ -456,7 +456,7 @@ export default class EventsController {
     const address = new Address()
 
     address.name = addressPayload.name ?? ''
-    address.street = addressPayload.street.replace('&#x27;', "'")
+    address.street = addressPayload.street.replaceAll('&#x27;', "'")
     address.number = addressPayload.number
     address.zipCode = addressPayload.zip_code
     address.city = addressPayload.city
@@ -901,9 +901,9 @@ export default class EventsController {
       .first()
 
     if (event) {
-      event.title = payload.title
-      event.subtitle = payload.subtitle
-      event.description = payload.description
+      event.title = payload.title.replaceAll('&#x27;', "'")
+      event.subtitle = payload.subtitle.replaceAll('&#x27;', "'")
+      event.description = payload.description.replaceAll('&#x27;', "'")
 
       // Date
       event.eventStart = DateTime.fromISO(payload.event_start)
@@ -969,8 +969,6 @@ export default class EventsController {
    * Delete record
    */
   async destroy({ params, response, session, i18n }: HttpContext) {
-    console.log('\n\n\n DESTROY EVENT \n\n\n')
-    console.log(params)
     try {
       const event = await Event.findOrFail(params.id)
       await event.delete()
@@ -978,7 +976,7 @@ export default class EventsController {
       console.log(error)
       const errorMsg = i18n.t('messages.errorDestroyEvent')
       session.flash('error', errorMsg)
-      return response.redirect().toRoute('auth.vendor.events')
+      return response.redirect().back()
     }
     const successMsg = i18n.t('messages.successDestroyEvent')
     session.flash('success', successMsg)

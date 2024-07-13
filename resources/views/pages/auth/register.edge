@@ -7,7 +7,7 @@
               {{ i18n.t('messages.register_name') }}
             </label>
             <input type="text" id="first_name" name="first_name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-              focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 sm:text-sm" placeholder="Dupont" value="{{old('first_name') || '' }}">
+              focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 sm:text-sm" placeholder="{{i18n.t("messages.form_placeholder_firstname")}}" value="{{old('first_name') || '' }}">
               
               @inputError('first_name')
                 @each(message in $messages)
@@ -20,7 +20,7 @@
               {{ i18n.t('messages.register_firstname') }}
             </label>
             <input type="text" id="last-name" name="last_name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="Jean" value="{{old('last_name') || '' }}">
+            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="{{i18n.t("messages.form_placeholder_lastname")}}" value="{{old('last_name') || '' }}">
             
             @inputError('last_name')
                 @each(message in $messages)
@@ -34,7 +34,7 @@
               {{ i18n.t('messages.register_email') }}
             </label>
             <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 sm:text-sm" placeholder="vous@exemple.com" value="{{ old('email') || '' }}">
+            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 sm:text-sm"  placeholder="{{i18n.t("messages.form_placeholder_email")}}" value="{{ old('email') || '' }}">
             
             @inputError('email')
                 @each(message in $messages)
@@ -49,7 +49,7 @@
             </label>
             <div class="relative">
                 <input type="password" id="password" name="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="********">
+                focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="{{i18n.t("messages.form_placeholder_password")}}">
                 <span onclick="showPassword(password)" class="p-1 absolute top-1 right-2 field-icon toggle-password show ">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none ">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />

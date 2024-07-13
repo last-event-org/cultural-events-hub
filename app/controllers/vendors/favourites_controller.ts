@@ -18,8 +18,6 @@ export default class FavouritesController {
       })
 
     let vendorIds = userFavourites.map((e) => e.id)
-    console.log('userIds')
-    console.log(vendorIds)
 
     let date = DateTime.now()
     let dayBegin: string = date.set({ hour: 0, minute: 0, second: 0 }).toSQLDate() ?? ''
@@ -39,9 +37,6 @@ export default class FavouritesController {
       .count('events.id as count_events')
       .whereIn('users.id', vendorIds)
       .groupBy('user_id')
-
-    console.log(nextEventsVendors)
-    console.log(allEventsVendors)
 
     let vendorEvents = {}
     vendorIds.forEach((vendor) => {
@@ -64,32 +59,42 @@ export default class FavouritesController {
     })
   }
 
-  async addToFavourites({ params, response, auth }: HttpContext) {
+  async addToFavourites({ params, response, auth, session, i18n }: HttpContext) {
     const user = auth.user
     const vendor = await User.find(params.id)
 
     if (!user) {
+      const errorMsg = i18n.t('messages.errorAddFavourite')
+      session.flash('error', errorMsg)
       return response.status(404).json({ message: 'User not found' })
     }
 
     if (!vendor) {
+      const errorMsg = i18n.t('messages.errorAddFavourite')
+      session.flash('error', errorMsg)
       return response.status(404).json({ message: 'Vendor not found' })
     }
 
+    const successMsg = i18n.t('messages.successAddFavourite')
+    session.flash('success', successMsg)
     if (user) await vendor.related('favouritesVendor').attach([user.id])
 
     return response.redirect().back()
   }
 
-  async destroy({ params, response, auth }: HttpContext) {
+  async destroy({ params, response, auth, session, i18n }: HttpContext) {
     const user = auth.user
     const vendor = await User.find(params.id)
 
     if (!user) {
+      const errorMsg = i18n.t('messages.errorDestroyFavourite')
+      session.flash('error', errorMsg)
       return response.status(404).json({ message: 'User not found' })
     }
 
     if (!vendor) {
+      const errorMsg = i18n.t('messages.errorDestroyFavourite')
+      session.flash('error', errorMsg)
       return response.status(404).json({ message: 'Vendor not found' })
     }
 
@@ -100,9 +105,13 @@ export default class FavouritesController {
       .first()
 
     if (!alreadyFavourite) {
+      const errorMsg = i18n.t('messages.errorDestroyFavourite')
+      session.flash('error', errorMsg)
       return response.status(400).json({ message: 'Vendor is not in your wishlist' })
     }
 
+    const successMsg = i18n.t('messages.successDestroyFavourite')
+    session.flash('success', successMsg)
     if (user) await vendor.related('favouritesVendor').detach([user.id])
 
     return response.redirect().back()

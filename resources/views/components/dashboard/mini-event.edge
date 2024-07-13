@@ -36,7 +36,7 @@
       
 
         {{-- delete event --}}
-        <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" data-event-name="{{event.title}}" data-event-id="{{event.id}}" method="post" enctype="multipart/form-data">
             {{ csrfField() }}
           <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel"></button>
         </form>
@@ -44,11 +44,12 @@
         {{-- edit event --}}
         <form action="{{ route('events.edit', [event.id]) }}" method="get" class=" ml-auto" enctype="multipart/form-data">
           {{ csrfField() }}
-          <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/edit.svg" alt="cancel"></button>
+          <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/edit.svg" alt="edit"></button>
         </form>
         @end
       </div>
       </div>
   </div>
+  
 
  

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="{{ i18n.locale }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Events - {{i18n.t("messages.contact_title")}}</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class="bg-slate-50">    
+  @include("pages/partials/header")
+  <main class="flex flex-col items-center min-h-screen ">
+
+    <div class=" bg-yellow-500 mb-20  text-slate-600 flex flex-col border rounded-3xl shadow mt-10 w-screen sm:w-[500px]">
+      <h1 class=" font-bold text-xl uppercase text-center rounded-t-3xl my-6  ">
+        {{i18n.t("messages.contact_title")}}
+      </h1>
+      <div class="p-8 bg-white rounded-b-3xl">
+        
+
+        @if(flashMessages.has('error'))
+            @!component('components/errors/flashmessage', { message: flashMessages.get('error') })
+        @elseif(flashMessages.has('success'))
+            @!component('components/errors/flashmessage', { message: flashMessages.get('success'), success: true })
+        @end
+
+        <form action="{{route('contact.post')}}" method="post" id="contact-form" class="flex flex-col">
+            {{csrfField()}}
+            <div>
+                <label for="name" class="block text-gray-600">{{i18n.t("messages.contact_name")}}</label>
+                <input class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" type="text" maxlength="150" name="name" id="name" placeholder="{{i18n.t("messages.form_placeholder_name")}}" value="{{old('name') || '' }}">
+
+                @inputError('name')
+                    @each(message in $messages)
+                    <p style="color: red;"> {{ message }} </p>
+                    @end
+                @end
+            </div>
+            <div>
+                <label for="email" class="block text-gray-600">{{i18n.t("messages.contact_email")}}</label>
+                <input class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" type="email" maxlength="255" placeholder="{{i18n.t("messages.form_placeholder_email")}}" name="email" id="email" value="{{ old('email') || '' }}">
+                @inputError('email')
+                    @each(message in $messages)
+                    <p style="color: red;"> {{ message }} </p>
+                    @end
+                @end
+
+            </div>
+            <div class="flex flex-col">
+                <label for="message" class="block text-gray-600">{{i18n.t("messages.contact_message")}}</label>
+                <textarea class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" name="message" id="message" maxlength="1000" placeholder="{{i18n.t("messages.form_placeholder_textarea")}}" value="{{ old('email') || '' }}"></textarea >
+                @inputError('message')
+                    @each(message in $messages)
+                    <p style="color: red;"> {{ message }} </p>
+                    @end
+                @end
+            </div>
+            <div>
+                <label for="copy">{{i18n.t("messages.contact_copy")}}</label>
+                <input type="checkbox" name="copy" id="copy" class="focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2">
+            </div>
+            <div class="flex justify-center">
+                <button type="submit"  data-callback="onSubmit" class="border shadow uppercase bg-indigo-700 text-white font-semibold py-2 px-6 mt-8 rounded-md hover:bg-indigo-500
+             focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:ring-2 ">
+             {{ i18n.t('messages.contact_send') }}
+            </button>
+          </div>
+
+
+        </form>
+
+
+    </div>
+    </div>
+  </main>
+  @include("pages/partials/footer")
+</body>
+
+</html>
+<script>
+ </script>

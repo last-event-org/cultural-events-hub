@@ -52,3 +52,42 @@ export async function sendAccountVerified(
       .htmlView(`emails/${language}/account_verified`, { user, origin, subject, language })
   })
 }
+
+export async function sendContactForm(
+  name: string,
+  email: string,
+  messageText: string,
+  language: string,
+  subject: string
+) {
+  console.log('sendContactForm')
+  await mail.send((message) => {
+    message
+      .to('nexteventsbe@gmail.com')
+      .replyTo(email)
+      .subject(subject)
+      .htmlView(`emails/${language}/contact_form`, {
+        email,
+        messageText,
+        name,
+        subject,
+      })
+  })
+}
+
+export async function sendContactFormCopy(
+  name: string,
+  email: string,
+  messageText: string,
+  language: string,
+  subject: string
+) {
+  await mail.send((message) => {
+    message.to(email).subject(subject).htmlView(`emails/${language}/contact_form_copy`, {
+      email,
+      messageText,
+      name,
+      subject,
+    })
+  })
+}

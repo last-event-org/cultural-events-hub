@@ -2,7 +2,9 @@
   <a href="{{ route('events.show', [event.id]) }} ">
     @if(event.media.length > 0)
       <div class="w-24 hidden sm:block">
-          <img class=" object-cover overflow-hidden w-full h-16" src="{{ event.media[0].path }}" alt="{{event.media[0].altName }}">
+          <img class=" object-cover overflow-hidden w-full h-16" src="{{ event.media[0].path }}" 
+          alt="{{event.media[0].altName }}"
+          onerror="this.onerror=null; this.src='/images/dummy-96X64.png';"> 
       </div>
     @else
     <div class="w-24 hidden sm:block">

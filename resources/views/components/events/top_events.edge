@@ -1,10 +1,10 @@
-<section class="relative">
+<section class="relative w-full h-full">
 
   <h3 class="absolute -top-8 left-0 font-bold   text-lg text-slate-700">
     {{title}} :
   </h3>
 
-  <div class="autoscroll scrollbar-hide bg-yellow-500 w-60 2xl:w-80 3xl:w-96 h-80 rounded-lg border shadow overflow-y-auto">
+  <div class="autoscroll scrollbar-hide bg-slate-50 w-full sm:rounded-lg border shadow h-full overflow-y-auto">
     <div class="scroll-content">
       @each(event in events)
         <a href="{{ route('events.show', [event.id]) }}" class="relative block">

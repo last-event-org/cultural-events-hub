@@ -61,7 +61,7 @@
    
   {{-- map and Ads --}}
   <section class="2xl:container flex justify-center lg:justify-between items-center w-full gap-y-12 lg:my-8 ">
-    <div class="hidden lg:block mx-4 2xl:mx-0">
+    <div class="hidden lg:block mx-4 2xl:mx-0 w-60 2xl:w-80  h-80" >
       @!component('components/events/top_events', {title: i18n.t('messages.events_top') , events: topEvents})
     </div>
     
@@ -69,7 +69,7 @@
       <div id="map" class="h-full w-full sm:rounded-3xl"></div>
     </div>
     
-    <div class="hidden lg:block mx-4 2xl:mx-0">
+    <div class="hidden lg:block mx-4 2xl:mx-0 w-60 2xl:w-80 h-80">
         @!component('components/events/top_events', {title: nextTitle, events: todayEvents})
       {{-- @!include('pages/partials/today_events') --}}
     </div>

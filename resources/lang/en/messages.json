@@ -20,7 +20,7 @@
   "register_title": "Sign up form",
   "register_no_account": "No account yet ?",
   "register_signup": "Sign up",
-  "register_name": "Name",
+  "register_lastname": "Name",
   "register_firstname": "Firstname",
   "register_email": "Email",
   "register_account_created": "Account created",

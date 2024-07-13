@@ -20,7 +20,7 @@
   "register_title": "Formulaire d'enregistrement",
   "register_no_account": "Vous n'avez pas encore de compte ?",
   "register_signup": "Enregistrement",
-  "register_name": "Nom",
+  "register_lastname": "Nom",
   "register_firstname": "Prénom",
   "register_email": "Email",
   "register_account_created": "Compte créé",

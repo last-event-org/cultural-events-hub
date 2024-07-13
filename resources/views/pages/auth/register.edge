@@ -4,7 +4,7 @@
           {{ csrfField() }}
           <div>
             <label for="first_name" class="block text-gray-600">
-              {{ i18n.t('messages.register_name') }}
+              {{ i18n.t('messages.register_firstname') }}
             </label>
             <input type="text" id="first_name" name="first_name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
               focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2 sm:text-sm" placeholder="{{i18n.t("messages.form_placeholder_firstname")}}" value="{{old('first_name') || '' }}">
@@ -17,7 +17,7 @@
           </div>
           <div>
             <label for="last_name" class="block text-gray-600">
-              {{ i18n.t('messages.register_firstname') }}
+              {{ i18n.t('messages.register_lastname') }}
             </label>
             <input type="text" id="last-name" name="last_name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
             focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" placeholder="{{i18n.t("messages.form_placeholder_lastname")}}" value="{{old('last_name') || '' }}">

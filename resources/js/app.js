@@ -3,46 +3,56 @@ document.addEventListener('DOMContentLoaded', function() {
   let lastScrollTop = 0;
   const mainNav = document.getElementById('main-nav');
   const mobileNav = document.getElementById('mobile-nav');
-  const headerSpacer = document.getElementById('header-spacer');
   let mainNavHeight = mainNav ? mainNav.offsetHeight : 0;
   let isMobileNavVisible = false;
 
-  // spacer adjustement because of the header fixed position
-  function adjustHeaderSpacer() {
-    if (mainNav && headerSpacer) {
+  // Fonction pour ajuster le padding du body
+  function adjustBodyPadding() {
+    if (mainNav) {
       mainNavHeight = mainNav.offsetHeight;
-      headerSpacer.style.height = `${mainNavHeight}px`;
+      document.body.style.paddingTop = `${mainNavHeight}px`;
     }
   }
 
-  adjustHeaderSpacer();
-  window.addEventListener('resize', adjustHeaderSpacer);
+  // Ajuster le padding au chargement
+  adjustBodyPadding();
+
+  // Ajuster le padding lors du redimensionnement de la fenêtre
+  window.addEventListener('resize', adjustBodyPadding);
+
   window.addEventListener('scroll', () => {
-    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
+    // Gestion de la nav principale (desktop)
     if (mainNav) {
       if (scrollTop > lastScrollTop && scrollTop > mainNavHeight) {
+        // Scroll vers le bas
         mainNav.style.transform = `translateY(-${mainNavHeight}px)`;
-        headerSpacer.style.height = '0px';
+        document.body.style.paddingTop = '0px';
       } else {
+        // Scroll vers le haut
         mainNav.style.transform = 'translateY(0)';
-        headerSpacer.style.height = `${mainNavHeight}px`;
+        document.body.style.paddingTop = `${mainNavHeight}px`;
       }
     }
 
+    // Gestion de la nav mobile (inchangée)
     if (mobileNav) {
       if (scrollTop > lastScrollTop) {
+        // Scroll vers le bas
         if (isMobileNavVisible) {
           mobileNav.style.transform = 'translateX(-100%)';
           isMobileNavVisible = false;
         }
       } else {
+        // Scroll vers le haut
         if (!isMobileNavVisible) {
           mobileNav.style.transform = 'translateX(0)';
           isMobileNavVisible = true;
         }
       }
-    }   
+    }
+    
     lastScrollTop = scrollTop;
   });
 });

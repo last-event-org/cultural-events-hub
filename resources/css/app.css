@@ -17,8 +17,6 @@
   --spectacles-hover: #c4b5fd;
 }
 
-
-
 @layer utilities {
   .scrollbar-hide {
     -ms-overflow-style: none; /* IE and Edge */
@@ -173,6 +171,26 @@ a:hover .bg-salons_foires {
 
 .star-filled .star-full {
   opacity: 1;
+}
+
+@media (max-width: 365px) {
+  .captcha-sm {
+    display: none;
+  }
+
+  .captcha-xs {
+    display: block;
+  }
+}
+
+@media (min-width: 366px) {
+  .captcha-sm {
+    display: block;
+  }
+
+  .captcha-xs {
+    display: none;
+  }
 }
 
 .favourite-heart {

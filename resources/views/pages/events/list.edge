@@ -21,9 +21,9 @@
   @include("pages/partials/header")
   
 
-  {{-- @if(home === true) --}}
+  @if(title === "home")
     @include("pages/partials/intro")
-  {{-- @end --}}
+  @end
 
   
 
@@ -34,9 +34,9 @@
   @end
 
   <main class="flex flex-col items-center min-h-screen mb-20 "> 
-  @if(!home)
+  {{-- @if(!home) --}}
     @include("pages/partials/title")
-  @end
+  {{-- @end --}}
 
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>

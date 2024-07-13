@@ -4,6 +4,7 @@ import { updateUserProfileMandatoryValidator } from '#validators/user_profile'
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import Role from '#models/role'
+import Event from '#models/event'
 import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
 import { errors } from '@vinejs/vine'
@@ -42,10 +43,47 @@ export default class RegistersController {
         query.select(['id', 'companyName'])
       })
 
+    let vendorIds = userFavourites.map((e) => e.id)
+
+    let date = DateTime.now()
+    let dayBegin: string = date.set({ hour: 0, minute: 0, second: 0 }).toSQLDate() ?? ''
+    let dayEnd: string = date.plus({ days: 7 }).toSQLDate() ?? ''
+
+    const nextEventsVendors = await Event.query()
+      .select('users.id as user_id')
+      .join('users', 'events.vendor_id', 'users.id')
+      .count('events.id as count_events')
+      .whereBetween('events.event_start', [dayBegin, dayEnd])
+      .whereIn('users.id', vendorIds)
+      .groupBy('user_id')
+
+    const allEventsVendors = await Event.query()
+      .select('users.id as user_id')
+      .join('users', 'events.vendor_id', 'users.id')
+      .count('events.id as count_events')
+      .whereIn('users.id', vendorIds)
+      .groupBy('user_id')
+
+    let vendorEvents = {}
+    vendorIds.forEach((vendor) => {
+      if (!vendorEvents[vendor]) {
+        vendorEvents[vendor] = { nextEvents: 0, allEvents: 0 }
+      }
+    })
+
+    nextEventsVendors.forEach((vendor) => {
+      vendorEvents[vendor.$extras.user_id].nextEvents = vendor.$extras.count_events
+    })
+
+    allEventsVendors.forEach((vendor) => {
+      vendorEvents[vendor.$extras.user_id].allEvents = vendor.$extras.count_events
+    })
+
     return view.render('pages/dashboard/dashboard', {
       user: user,
       userWishlist: userWishlist,
       userFavourites: userFavourites,
+      vendorEvents: vendorEvents,
     })
   }
 

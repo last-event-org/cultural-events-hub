@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let mainNavHeight = mainNav ? mainNav.offsetHeight : 0;
   let isMobileNavVisible = false;
 
-  // Fonction pour ajuster le padding du body
   function adjustBodyPadding() {
     if (mainNav) {
       mainNavHeight = mainNav.offsetHeight;
@@ -14,38 +13,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Ajuster le padding au chargement
   adjustBodyPadding();
 
-  // Ajuster le padding lors du redimensionnement de la fenêtre
   window.addEventListener('resize', adjustBodyPadding);
 
   window.addEventListener('scroll', () => {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
-    // Gestion de la nav principale (desktop)
     if (mainNav) {
       if (scrollTop > lastScrollTop && scrollTop > mainNavHeight) {
-        // Scroll vers le bas
         mainNav.style.transform = `translateY(-${mainNavHeight}px)`;
         document.body.style.paddingTop = '0px';
       } else {
-        // Scroll vers le haut
         mainNav.style.transform = 'translateY(0)';
         document.body.style.paddingTop = `${mainNavHeight}px`;
       }
     }
 
-    // Gestion de la nav mobile (inchangée)
     if (mobileNav) {
       if (scrollTop > lastScrollTop) {
-        // Scroll vers le bas
         if (isMobileNavVisible) {
           mobileNav.style.transform = 'translateX(-100%)';
           isMobileNavVisible = false;
         }
       } else {
-        // Scroll vers le haut
         if (!isMobileNavVisible) {
           mobileNav.style.transform = 'translateX(0)';
           isMobileNavVisible = true;

@@ -1,3 +1,40 @@
+// Navbar scroll up 
+document.addEventListener('DOMContentLoaded', function() {
+  let lastScrollTop = 0;
+  const mainNav = document.getElementById('main-nav');
+  const mobileNav = document.getElementById('mobile-nav');
+  const mainNavHeight = mainNav ? mainNav.offsetHeight : 0;
+  let isMobileNavVisible = false;
+
+  window.addEventListener('scroll', () => {
+    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+    
+    if (mainNav) {
+      if (scrollTop > lastScrollTop && scrollTop > mainNavHeight) {     
+        mainNav.style.transform = `translateY(-${mainNavHeight}px)`;
+      } else {
+        mainNav.style.transform = 'translateY(0)';
+      }
+    }
+
+    if (mobileNav) {
+      if (scrollTop > lastScrollTop) {
+        if (isMobileNavVisible) {
+          mobileNav.style.transform = 'translateX(-100%)';
+          isMobileNavVisible = false;
+        }
+      } else {
+        if (!isMobileNavVisible) {
+          mobileNav.style.transform = 'translateX(0)';
+          isMobileNavVisible = true;
+        }
+      }
+    }  
+    lastScrollTop = scrollTop;
+  });
+});
+
+
 // Burger menus
 document.addEventListener('DOMContentLoaded', function () {
   // open

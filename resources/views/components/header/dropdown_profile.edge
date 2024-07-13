@@ -2,11 +2,12 @@
 <div class="hidden lg:flex items-center gap-2">
   <div class="hidden relative lg:inline-block text-right transition-opacity duration-500">
     <div class="flex items-center">
-      <button type="button" id="user_button" class="flex justify-center gap-1.5  px-3 py-2 text-sm font-semibold text-gray-600   hover:text-gray-950" id="menu-button" >
+      <button type="button" id="user_button" class="flex justify-center gap-1.5 px-3 py-2 text-sm font-semibold text-slate-600 hover:text-slate-800 relative overflow-hidden group">
         {{ auth.user.firstname }}
         <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
         </svg>
+        <span class="absolute inset-x-0 bottom-1.5 h-0.5 bg-yellow-500 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 mx-3"></span>
       </button>
       <a href={{route('cart.show')}}>
         <div class="flex cursor-pointer items-center justify-center h-8 w-8 p-1.5 rounded-full bg-yellow-500  border hover:bg-yellow-300

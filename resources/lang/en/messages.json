@@ -114,6 +114,16 @@
 
   "admin_title": "Admin Panel",
 
+  "modale_confirmation": "Are you sure you want to ",
+  "modale_confirm": "Yes, I'm sure",
+  "modale_cancel": "No, cancel",
+  "modale_close": "Close",
+  "modale_action_delete": "delete",
+  "modale_action_block_set": "block",
+  "modale_action_block_unset": "unblock",
+  "modale_action_admin_set": "grant admin rights to",
+  "modale_action_admin_unset": "remove admin rights to",
+
   "editProfile_title": "Edit profile",
   "editProfile_firstname": "Firstname",
   "editProfile_name": "Name",
@@ -288,6 +298,10 @@
   "errorDestroyWishlist": "There is a problem removing the event from your wishlist. Retry or contact an admin.",
   "errorContactFormSent": "A problem occured when sending the contact form. Please retry.",
   "errorContactFormCaptcha": "Are you a bot ? Please check the reCAPTCHA. Please retry.",
+  "errorAdminSameUser": "You cannot perform actions on your user.",
+  "errorBlockUser": "Error occured when (un)blocking the user.",
+  "errorAdminRights": "Error occured by granting/removing admin rights to the user!",
+  "errorDeleteUser": "Error occured when deleting the user.",
 
   "successDestroyEvent": "Event successfully deleted.",
   "successDestroyCart": "Cart successfully emptied.",
@@ -298,6 +312,11 @@
   "successAddWishlist": "Event added to your wishlist.",
   "successDestroyWishlist": "Event removed from your wishlist.",
   "successContactFormSent": "E-mail sent! Thank you for reaching out. We will come back at you asap!",
+  "successBlockUser": "User blocked!",
+  "successUnblockUser": "User unblocked!",
+  "successRemoveAdmin": "Admin rights removed!",
+  "successGrantAdmin": "Admin rights granted!",
+  "successDeleteUser": "User deleted successfully.",
 
   "mail_reset_password_subject": "New password request",
   "mail_verify_subject": "Confirm your e-mail addresse",

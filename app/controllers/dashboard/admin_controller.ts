@@ -69,8 +69,7 @@ export default class AdminController {
     }
 
     if (auth.user.id == params.id) {
-      console.log('SAME USER')
-      const errorMsg = i18n.t('messages.errorDestroyEvent')
+      const errorMsg = i18n.t('messages.errorAdminSameUser')
       session.flash('error', errorMsg)
     } else {
       try {
@@ -79,17 +78,17 @@ export default class AdminController {
         console.log(user.isBlocked)
         if (user.isBlocked) {
           user.isBlocked = false
-          const successMsg = i18n.t('messages.successDestroyEvent')
+          const successMsg = i18n.t('messages.successUnblockUser')
           session.flash('success', successMsg)
         } else {
           user.isBlocked = true
-          const successMsg = i18n.t('messages.successDestroyEvent')
+          const successMsg = i18n.t('messages.successBlockUser')
           session.flash('success', successMsg)
         }
         await user.save()
       } catch (error) {
         console.log(error)
-        const errorMsg = i18n.t('messages.errorDestroyEvent')
+        const errorMsg = i18n.t('messages.errorBlockUser')
         session.flash('error', errorMsg)
       }
     }
@@ -107,23 +106,45 @@ export default class AdminController {
       return response.redirect().toRoute('home')
     }
 
-    try {
-      const user = await User.findOrFail(params.id)
-      const adminRole = await Role.query().where('role_name', 'ADMIN').select('id').first()
-      if (adminRole) {
-        user.roleId = adminRole.id
-        await user.save()
-        const successMsg = i18n.t('messages.successDestroyEvent')
-        session.flash('success', successMsg)
-      }
-    } catch (error) {
-      const errorMsg = i18n.t('messages.errorDestroyEvent')
+    if (auth.user.id == params.id) {
+      const errorMsg = i18n.t('messages.errorAdminSameUser')
       session.flash('error', errorMsg)
-    }
+    } else {
+      try {
+        const user = await User.findOrFail(params.id)
+        const adminRole = await Role.query().where('role_name', 'ADMIN').select('id').first()
+        if (adminRole) {
+          if (user.roleId === adminRole.id) {
+            if (user.billingAddressId === null) {
+              const userRole = await Role.query().where('role_name', 'USER').select('id').first()
+              user.roleId = userRole.id
+              await user.save()
+            } else {
+              const vendorRole = await Role.query()
+                .where('role_name', 'VENDOR')
+                .select('id')
+                .first()
+              user.roleId = vendorRole.id
+              await user.save()
+            }
+            const successMsg = i18n.t('messages.successRemoveAdmin')
+            session.flash('success', successMsg)
+          } else {
+            user.roleId = adminRole.id
+            await user.save()
+            const successMsg = i18n.t('messages.successGrantAdmin')
+            session.flash('success', successMsg)
+          }
+        }
+      } catch (error) {
+        const errorMsg = i18n.t('messages.errorAdminRights')
+        session.flash('error', errorMsg)
+      }
 
-    const searchParams = request.input('searchParams', {})
-    const queryString = new URLSearchParams(searchParams).toString()
-    return response.redirect().toPath(`/dashboard/admin/search?${queryString}`)
+      const searchParams = request.input('searchParams', {})
+      const queryString = new URLSearchParams(searchParams).toString()
+      return response.redirect().toPath(`/dashboard/admin/search?${queryString}`)
+    }
   }
 
   /**
@@ -135,7 +156,7 @@ export default class AdminController {
     }
 
     if (auth.user.id == params.id) {
-      const errorMsg = i18n.t('messages.errorDestroyEvent')
+      const errorMsg = i18n.t('messages.errorAdminSameUser')
       session.flash('error', errorMsg)
     } else {
       try {

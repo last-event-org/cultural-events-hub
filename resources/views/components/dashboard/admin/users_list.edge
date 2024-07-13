@@ -1,6 +1,6 @@
 <ul>
     @each(user in users)
-    <li data-form-{{user.id}} data-form-object="{{user.companyName}} {{user.firstname}} {{user.lastname}}" >
+    <li data-form-{{user.id}} data-form-object="{{user.firstname}} {{user.lastname}} {{user.email}}" >
         <div class="flex items-center hover:bg-slate-100 hover:scale-[1.01] duration-300 p-2 rounded-xl">
             <div class=" w-1 min-h-16 mr-2 {{user.isBlocked ? 'bg-red-500' : 'bg-green-500'}}"></div>
             <div class="flex items-center w-full justify-between gap-4" >
@@ -26,7 +26,11 @@
                 <div class="flex gap-2 pr-2 min-w-20">
 
                     {{-- delete user --}}
-                    <form action="{{ route('admin.destroy', [user.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" data-form-action="delete" data-form-modale data-id="{{user.id}}" method="post" enctype="multipart/form-data" class="text-red-500">
+                    <form action="{{ route('admin.destroy', [user.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" class="text-red-500"
+                    data-form-action="{{i18n.t("messages.modale_action_delete")}}" 
+                    data-id="{{user.id}}" 
+                    data-form-modale 
+                    method="post" enctype="multipart/form-data" >
                         {{ csrfField() }}
                         <input type="hidden" name="searchParams[input_words]" value="{{searchParams}}">
                         <button type="submit" class="text-red-500 hover:scale-[1.10] duration-300">
@@ -37,7 +41,11 @@
                     </form>
 
                     {{-- block user --}}
-                    <form action="{{ route('admin.block', [user.id], { qs: {_method: 'PATCH'}}) }}" method="post" class="ml-auto" data-form-action="block"  data-id="{{user.id}}" data-form-modale enctype="multipart/form-data">
+                    <form action="{{ route('admin.block', [user.id], { qs: {_method: 'PATCH'}}) }}" method="post" class="ml-auto" 
+                    data-form-action="{{user.isBlocked ? i18n.t("messages.modale_action_block_unset") : i18n.t("messages.modale_action_block_set") }}"
+                    data-id="{{user.id}}" 
+                    data-form-modale 
+                    enctype="multipart/form-data">
                     {{ csrfField() }}
                         <input type="hidden" name="searchParams[input_words]" value="{{searchParams}}">
                         <button type="submit" class="text-yellow hover:scale-[1.10] duration-300 {{user.isBlocked ? 'text-red-500' : 'text-green-500'}}">
@@ -56,10 +64,11 @@
                     </form>
                     
                     {{-- make user admin --}}
-                    <form action="{{ route('admin.admin', [user.id], { qs: {_method: 'PATCH'}}) }}" method="post" class=" ml-auto" 
-                        data-form-action="grant admin rights to" 
-                        data-form-modale data-id="{{user.id}}" 
-                        enctype="multipart/form-data">
+                    <form action="{{ route('admin.admin', [user.id], { qs: {_method: 'PATCH'}}) }}" class=" ml-auto" 
+                    data-form-action="{{await user.isAdmin() ? i18n.t("messages.modale_action_admin_unset") : i18n.t("messages.modale_action_admin_set") }}"
+                    data-form-modale 
+                    data-id="{{user.id}}" 
+                    method="post"  enctype="multipart/form-data">
 
                     {{ csrfField() }}
                         <input type="hidden" name="searchParams[input_words]" value="{{searchParams}}">
@@ -78,13 +87,5 @@
     @end
 </ul>
 
-          {{-- <p>{{user.id}}</p>
-        <p>{{user.firstname}}</p>
-<p>{{user.lastname}}</p>
-<p>{{user.email}}</p>
-<p>{{user.isVerified}}</p>
-<p>{{user.isBlocked}}</p>
-<p>{{user.role.roleName}}</p> --}}
-  
 
  

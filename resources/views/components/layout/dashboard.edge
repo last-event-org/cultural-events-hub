@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="{{ i18n.locale }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Events - Admin Panel - {{pageTitle}} </title>
+  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/date_format.js'])
+</head>
+
+<body class="bg-slate-50">
+  
+  @include("pages/partials/header")
+
+  <main class="flex flex-col items-center min-h-screen">
+
+    {{{await $slots.main()}}}
+    
+  </main>
+  
+
+    @include("pages/partials/footer")
+
+</body>
+</html>

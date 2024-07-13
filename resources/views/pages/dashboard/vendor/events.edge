@@ -4,28 +4,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages.dashboard_vendor_events') }}</title>
+  <title>Next Events - {{ i18n.t('messages.dashboard_vendor_events') }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/date_format.js'])
 </head>
 
-<body class=" bg-slate-50">
+<body class=" bg-slate-50 relative">
 @include("pages/partials/header")
 
+  @if(flashMessages.has('error'))
+      @!component('components/notifications/error', { message: flashMessages.get('error') })          
+  @elseif(flashMessages.has('success'))
+      @!component('components/notifications/success', { message: flashMessages.get('success') })
+  @end
 
-
-<main class="flex flex-col items-center min-h-screen mb-20">
+<main class="flex flex-col items-center min-h-screen mb-20 ">
   <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-3xl shadow px-4 md:px-8 mt-10">
   <div class=" flex justify-center mt-6 mb-12">
       <p class="relative font-bold text-xl self-center border bg-slate-100 rounded-full p-4 shadow">
         {{ i18n.t('messages.dashboard_vendor_events') }}
       </p>
   </div>
-  @if(flashMessages.has('error'))
-            @!component('components/notifications/error', { message: flashMessages.get('errorDestroyEvent') })
-            
-        @elseif(flashMessages.has('success'))
-            @!component('components/notifications/success', { message: flashMessages.get('successDestroyEvent') })
-      @end
+  
   @if(!events)
 
     <p>{{i18n.t('messages.dashboard_vendor_no_events')}}</p>
@@ -38,11 +37,14 @@
 
   @end
   </div>
-  <div id="notification"></div>
+  
+  @!component('components/dashboard/vendor/destroy_event')
+
 </main>
 
 @include("pages/partials/footer")  
 
 </body>
 </html>
-<script src="/resources/js/cart.js" defer></script>
+<script src="/resources/js/destroy_event.js"></script>
+{{-- <script src="/resources/js/cart.js"></script> --}}

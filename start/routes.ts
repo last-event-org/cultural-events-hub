@@ -1,5 +1,6 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import ContactController from '#controllers/contact/contact_controller'
 
 const CartController = () => import('#controllers/events/cart_controller')
 const VendorController = () => import('#controllers/vendors/vendor_controller')
@@ -116,6 +117,9 @@ router
   })
   .prefix('price')
   .as('price')
+
+router.get('/contact', [ContactController, 'show']).as('contact.show')
+router.post('/contact', [ContactController, 'post']).as('contact.post')
 
 // PANIER
 router

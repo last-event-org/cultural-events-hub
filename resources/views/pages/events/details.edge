@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{event.title}} </title>
+  <title>Next Events - {{event.title}} </title>
   @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/map_details.js','resources/js/favourites.js', 'resources/js/date_format.js'])
 </head>
 
@@ -13,6 +13,11 @@
   @include("pages/partials/header")
 
   <main class= "2xl:container mb-10 mx-auto relative ">
+    @if(flashMessages.has('error'))
+      @!component('components/notifications/error', { message: flashMessages.get('error') })          
+    @elseif(flashMessages.has('success'))
+      @!component('components/notifications/success', { message: flashMessages.get('success') })
+    @end
      
     <div class="flex justify-center  gap-10  mx-auto my-2 py-10"> 
       <article class="w-full">

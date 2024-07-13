@@ -258,6 +258,8 @@
   "form_placeholder_name": "Jane Doe",
   "form_placeholder_firstname": "Jane",
   "form_placeholder_lastname": "Doe",
+  "form_placeholder_search_user": "Search a user",
+  "form_placeholder_search_word": "Search an event...",
   "form_placeholder_email": "jane.doe@email.com",
   "form_placeholder_password": "At least 8 characters",
   "form_placeholder_price": "Ex: Adult, kid, senior,...",

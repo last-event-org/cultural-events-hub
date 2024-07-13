@@ -259,6 +259,8 @@
   "form_placeholder_firstname": "Jean",
   "form_placeholder_lastname": "Dupont",
   "form_placeholder_email": "jean.dupont@email.com",
+  "form_placeholder_search_user": "Rechercher un utilisateur",
+  "form_placeholder_search_word": "Rechercher un événement...",
   "form_placeholder_password": "Au moins 8 caractères",
   "form_placeholder_price": "Ex: Adulte, enfant, senior,...",
   "form_placeholder_textarea": "Votre message ...",

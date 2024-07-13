@@ -29,18 +29,16 @@
     @if(cancel === true) 
     <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class=" ml-auto" enctype="multipart/form-data">
       {{ csrfField() }}
-      <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel"></button>
+      <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel" ></button>
     </form>
     @end
 
     @if(vendor === true) 
-      
-      
 
         {{-- delete event --}}
-        <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" data-event-name="{{event.title}}" data-event-id="{{event.id}}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" data-event-name="{{event.title}}" data-event-id="{{event.id}}" method="post" enctype="multipart/form-data" class="text-red-500">
             {{ csrfField() }}
-          <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel"></button>
+          <button type="submit" class="text-red-500 hover:scale-[1.10] duration-300"><img src="/svg/trash.svg" alt="delete event" class="" ></button>
         </form>
 
         {{-- edit event --}}

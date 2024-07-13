@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Events - Admin Panel - {{pageTitle}} </title>
+  <title>Next Events - Dashboard - {{pageTitle}} </title>
   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/date_format.js'])
 </head>
 
@@ -13,13 +13,28 @@
   @include("pages/partials/header")
 
   <main class="flex flex-col items-center min-h-screen">
+    <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-3xl shadow p-4 md:p-8 mt-10 gap-6">
+        <div class=" flex justify-center font-bold text-xl items-center self-center shadow hover:shadow-inner duration-1000 border bg-slate-100 rounded-full p-4 gap-4">
+            <img class="h-7 w-7" src="/svg/dashboard/{{svg}}.svg" alt="{{pageTitle}} icon">
+            <h1>{{pageTitle}}</h1>
+        </div>
+         
+        @if(flashMessages.has('error'))
+              @!component('components/notifications/error', { message: flashMessages.get('error') })          
+        @elseif(flashMessages.has('success'))
+            @!component('components/notifications/success', { message: flashMessages.get('success') })
+        @end
 
-    {{{await $slots.main()}}}
-    
+        {{{await $slots.main()}}}
+
+        @!notifications.modale()
+        
+        
+    </div>
   </main>
   
-
     @include("pages/partials/footer")
+    <script src="/resources/js/modale_form.js"></script>
 
 </body>
 </html>

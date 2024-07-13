@@ -21,9 +21,9 @@
   @include("pages/partials/header")
   
 
-  @if(title === "home")
+  {{-- @if(home === true) --}}
     @include("pages/partials/intro")
-  @end
+  {{-- @end --}}
 
   
 
@@ -34,9 +34,9 @@
   @end
 
   <main class="flex flex-col items-center min-h-screen mb-20 "> 
-  {{-- @if(!home) --}}
+  @if(!home)
     @include("pages/partials/title")
-  {{-- @end --}}
+  @end
 
   @if(!events)
     <p>{{i18n.t('messages.events_no_events')}}</p>
@@ -74,6 +74,31 @@
       window.latitude = "{{ latitude }}";
       window.longitude = "{{ longitude }}";
     }     
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.fade-in');
+    
+    const appearOptions = {
+      threshold: 0.15,
+      rootMargin: "0px 0px -100px 0px"
+    };
+  
+    const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          return;
+        } else {
+          entry.target.classList.add('appear');
+          appearOnScroll.unobserve(entry.target);
+        }
+      });
+    }, appearOptions);
+  
+    cards.forEach(card => {
+      appearOnScroll.observe(card);
+    });
+  });
 </script>
 
 </body>

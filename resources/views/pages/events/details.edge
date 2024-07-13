@@ -32,7 +32,7 @@
         </div>
         @end
 
-      <section class="flex flex-col sm:bg-white sm:border sm:shadow sm:rounded-3xl py-4 sm:py-6 mb-5 sm:mx-8 lg:mx-24 sm:px-4 w-screen sm:w-auto">
+      <section class="flex flex-col sm:bg-white sm:border sm:shadow sm:rounded-3xl py-4 sm:py-6 mb-5 sm:mx-8 lg:mx-24 sm:px-4 w-screen sm:w-auto card fade-in">
 
         <div class="flex flex-col gap-2 mx-2 sm:mx-4 pb-4 sm:pb-0 ">
           
@@ -177,7 +177,7 @@
             </div>     
           </div>
         </section> 
-          <section class="flex flex-col lg:flex-row gap-8 bg-slate-100 sm:rounded-3xl sm:border sm:shadow mt-10 sm:mx-8 lg:mx-24">
+          <section class="flex flex-col lg:flex-row gap-8 bg-slate-100 sm:rounded-3xl sm:border sm:shadow mt-10 sm:mx-8 lg:mx-24 card fade-in">
             <div class="flex flex-col justify-center items-center text-center gap-4 p-4 sm:p-8 xl:px-16 lg:w-1/2  "> 
               <p id="" class="formated-date text-xs sm:text-sm text-slate-500/60 font-bold"
               data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
@@ -198,7 +198,7 @@
           </section>
 
 
-          <section class="flex flex-col lg:flex-row justify-center lg:items-center gap-8 sm:bg-white sm:rounded-3xl sm:shadow sm:border mt-5 mx-8 sm:p-8 lg:mx-24">
+          <section class="flex flex-col lg:flex-row justify-center lg:items-center gap-8 sm:bg-white sm:rounded-3xl sm:shadow sm:border mt-5 mx-8 sm:p-8 lg:mx-24 card fade-in">
             <div class="flex flex-col w-full h-full lg:w-3/5 lg:h-3/5">
               {{-- <h4 class="text-center font-bold text-lg text-slate-800">{{i18n.t('messages.events_video_events')}} :</h4> --}}
               
@@ -248,5 +248,6 @@
     window.longitude = "{{ event.location.longitude }}";
     window.name = "{{ event.title }}";
   </script>
+  <script src="/resources/js/fade_animations.js"></script>
 </body>
 </html>

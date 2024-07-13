@@ -1,42 +1,22 @@
 {{-- Categories  --}}
-
-{{-- <section class="2xl:container w-full mx-auto 2xl:mt-8 ">
-  {{-- Categories --}}
-  <ul class="">
-    <div class="grid grid-cols-2 grid-categories lg:grid-cols-6 items-center gap-y-2 gap-x-1  my-2 ">
-
-      @each((category) in categories)   
-          <li class="bg-white hover:bg-slate-50 flex items-center justify-between p-1.5 sm:p-2 border border-slate-500 text-slate-600 hover:text-slate-800 shadow rounded-full w-full max-w-[100px] sm:max-w-[140px] lg:max-w-[160px] 2xl:max-w-[180px] mx-auto duration-300">
-            <a href="{{route('events.search')}}" data-category="{{ category.id }}" class="flex items-center rounded-md w-full justify-between">
-              <p class="uppercase text-[9px] sm:text-xs lg:text-sm 2xl:text-base  text-center font-semibold sm:pl-2 lg:pl-2.5 pointer-events-none">{{ category.name }}</p>
-              <div class="rounded-full p-1.5 sm:p-2 bg-{{category.slug}} duration-300 w-7 h-7 sm:h-8 sm:w-8 lg:h-10 lg:w-10 2xl:w-12 2xl:h-12 pointer-events-none">
-              <img src=/svg/categories/{{category.slug}}.svg
-              alt="category icon" title="{{category.slug}}" class="pointer-events-none">
-              </div>
-            </a>
-          </li>
-      @end
-    </div>
-  </ul>
-</section> --}}
-<section class="2xl:container w-full mx-auto mt-4 2xl:mt-8 ">
-  {{-- Categories --}}
-  <ul class="">
-    <div class="flex justify-between items-center gap-x-2  overflow-x-auto ">
-
-      @each((category) in categories)   
+<section class="2xl:container w-full mx-auto mt-4 2xl:mt-8">
+  <div class="overflow-x-auto pb-4 px-2"> 
+    <ul>
+      <div class="flex justify-between items-center gap-x-2">
+        @each((category) in categories)  
           <li class="bg-white hover:bg-slate-50 flex items-center justify-between p-1.5 sm:p-2 border border-slate-500 text-slate-600 hover:text-slate-800 shadow rounded-full  w-[160px] 2xl:w-[180px] mx-auto duration-300">
             <a href="{{route('events.search')}}" data-category="{{ category.id }}" class="flex items-center w-[160px] 2xl:w-[180px] justify-between">
               <p class="uppercase text-[9px] text-sm 2xl:text-base  text-center font-semibold pl-2.5 pointer-events-none">{{ category.name }}</p>
               <div class="rounded-full p-2 bg-{{category.slug}} duration-300 h-10 w-10 2xl:w-12 2xl:h-12 pointer-events-none">
-              <img src=/svg/categories/{{category.slug}}.svg
-              alt="category icon" title="{{category.slug}}" class="pointer-events-none">
+                <img src=/svg/categories/{{category.slug}}.svg
+                alt="category icon" title="{{category.slug}}" class="pointer-events-none">
               </div>
             </a>
           </li>
-      @end
-    </div>
-  </ul>
+        @end
+      </div>
+    </ul>
+  </div>
 </section>
 
 

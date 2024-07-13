@@ -22,6 +22,7 @@ export default class LoginController {
       const user = await User.verifyCredentials(email, password)
       if (user.isVerified) {
         await auth.use('web').login(user)
+
         return response.redirect().toRoute('home')
       } else {
         console.log('user is not verified')

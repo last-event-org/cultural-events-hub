@@ -7,7 +7,14 @@
       </h1>  
   </a>
 
-
+  @if(userHasOrder)
+   <h1>ORDER</h1>
+   @else
+    <h1>NO ORDER</h1>
+   @end
+     {{-- <script>
+    window.userHasOrder = {{ userHasOrder }};
+  </script> --}}
  <div class="lg:hidden flex items-center gap-2 ">
     {{-- @if(request.cookie('orderId')) --}}
     {{-- @else --}}

@@ -21,9 +21,9 @@
   @include("pages/partials/header")
   
 
-  @if(home === true)
+  {{-- @if(home === true) --}}
     @include("pages/partials/intro")
-  @end
+  {{-- @end --}}
 
   
 
@@ -43,10 +43,15 @@
   @else
   
     <div class=" 2xl:container sm:mx-4 gap-x-[2%] gap-y-12 grid mb-20 grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5"  > 
-      
+      <div class="h-[400px] lg:hidden">
+        @!component('components/events/top_events', {title: i18n.t('messages.events_top') , events: topEvents})
+      </div>
       @each(event in events)
         @!component('components/events_cards', {event, price: event.prices.length == 0 ? false : true })
       @end
+      <div class="h-[400px] lg:hidden">
+        @!component('components/events/top_events', {title: nextTitle, events: todayEvents})
+      </div>
   
     </div>
   @end

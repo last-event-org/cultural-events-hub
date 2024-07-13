@@ -4,7 +4,7 @@
       <img class="absolute left-1 top-1 h-10 w-10 p-2" src="/svg/heart-full.svg" alt="coeur">
     </a>
   </div>
-  <div class="flex flex-col gap-4 pb-8 ">
+  <div class="flex flex-col gap-2 pb-8 ">
     @if(userFavourites.length > 0)
     @each(vendor in userFavourites)
       @!component('components/dashboard/favourite_element', {

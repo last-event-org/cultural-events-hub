@@ -6,6 +6,7 @@
   "header_signup": "Enregistrement",
   "header_dashboard": "Tableau de bord",
   "header_profile": "Profil",
+  "header_admin": "Admin Panel",
   "header_wishlist": "Wishlist",
   "header_favourites": "Vendeurs favoris",
   "header_boughtTickets": "Tickets achetés",
@@ -110,6 +111,8 @@
   "dashboard_vendor_orders_total": "Total ventes",
   "dashboard_vendor_orders_ticket_type": "Type de ticket",
   "dashboard_vendor_orders_number": "Nb. de commandes",
+
+  "admin_title": "Admin Panel",
 
   "editProfile_title": "Modifier le profil",
   "editProfile_firstname": "Prénom",

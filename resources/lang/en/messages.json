@@ -6,6 +6,7 @@
   "header_signup": "Sign up",
   "header_dashboard": "Dashboard",
   "header_profile": "Profile",
+  "header_admin": "Admin Panel",
   "header_wishlist": "Wishlist",
   "header_favourites": "Favourites",
   "header_boughtTickets": "Purchased tickets",
@@ -110,6 +111,8 @@
   "dashboard_vendor_orders_total": "Total sales",
   "dashboard_vendor_orders_ticket_type": "Ticket type",
   "dashboard_vendor_orders_number": "Number of orders",
+
+  "admin_title": "Admin Panel",
 
   "editProfile_title": "Edit profile",
   "editProfile_firstname": "Firstname",

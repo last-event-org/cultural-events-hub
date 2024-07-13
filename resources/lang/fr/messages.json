@@ -6,9 +6,9 @@
   "header_signup": "Enregistrement",
   "header_dashboard": "Tableau de bord",
   "header_profile": "Profil",
-  "header_wishlist": "Ma wishlist",
-  "header_favourites": "Mes vendeurs favoris",
-  "header_boughtTickets": "Mes tickets achetés",
+  "header_wishlist": "Wishlist",
+  "header_favourites": "Vendeurs favoris",
+  "header_boughtTickets": "Tickets achetés",
   "header_eventsPublished": "Événements publiés",
   "header_soldTickets": "Tickets vendus",
   "header_logout": "Déconnexion",
@@ -244,6 +244,21 @@
 
   "footer_copyright": "Tous droits réservés.",
 
+  "contact_title": "Contactez-nous",
+  "contact_send": "Envoyer",
+  "contact_name": "Nom",
+  "contact_email": "E-mail",
+  "contact_message": "Message",
+  "contact_copy": "Voulez-vous recevoir une copie de ce formulaire ?",
+
+  "form_placeholder_name": "Jean Dupont",
+  "form_placeholder_firstname": "Jean",
+  "form_placeholder_lastname": "Dupont",
+  "form_placeholder_email": "jean.dupont@email.com",
+  "form_placeholder_password": "Au moins 8 caractères",
+  "form_placeholder_price": "Ex: Adulte, enfant, senior,...",
+  "form_placeholder_textarea": "Votre message ...",
+
   "intro_banner1": "À la recherche d'une sortie originale ?",
   "intro_banner2": "Trouvez rapidement ce qu'il se passe près de chez vous.",
   "intro_banner3": "Choisissez votre emplacement, définissez votre rayon de recherche et laissez-vous surprendre !",
@@ -253,6 +268,7 @@
   "errorEventDates": "La date et l'heure de début doivent se produire avant la date et l'heure de fin.",
   "errorMissingCategType": "Au moins une catégorie et sous-catégorie doit être sélectionnée.",
   "errorMissingAddress": "Il y a un problème avec les données de l'adresse.",
+  "errorEditEventPrices": "Il y a un problème avec les prix. Merci de vérifier.",
   "errorEditingMedia": "Il y a un problème avec les images chargées.",
   "errorDestroyEvent": "Il y a un problème avec la suppression de l'événement. Réessayer ou contacter un admin.",
   "errorDestroyCart": "Il y a un problème avec la suppression de votre panier. Réessayer ou contacter un admin.",
@@ -260,13 +276,23 @@
   "errorDestroyPrice": "Il y a un problème avec la suppression du prix. Réessayer ou contacter un admin.",
   "errorCreatePrice": "Il y a un problème avec la création des prix. Réessayer ou contacter un admin.",
   "errorMissingPrices": "Les champs 'Catégorie' et 'Prix' sont requis.",
+  "errorAddFavourite": "Il y a un problème avec l'ajout de l'organisateur à vos favoris. Réessayer ou contacter un admin",
+  "errorDestroyFavourite": "Il y a un problème avec la suppression de l'organisateur de vos favoris. Réessayer ou contacter un admin",
+  "errorAddWishlist": "Il y a un problème avec l'ajout de l'événement à votre wishlist. Réessayer ou contacter un admin",
+  "errorDestroyWishlist": "Il y a un problème avec la suppression de l'événement de votre wishlist. Réessayer ou contacter un admin",
+  "errorContactFormSent": "Il y a eu une erreur lors de l'envoi du mail. Merci de réessayer.",
 
   "successDestroyEvent": "Evénement supprimé.",
   "successDestroyCart": "Panier supprimé.",
   "successValidatedCart": "Merci pour votre achat !",
   "successDestroyMedia": "Media supprimé.",
+  "successAddFavourite": "Organisateur ajouté à vos favoris.",
+  "successDestroyFavourite": "Organisateur retiré de vos favoris.",
+  "successAddWishlist": "Evénement ajouté à votre wishlist.",
+  "successDestroyWishlist": "Evénement retiré de votre wishlist.",
+  "successContactFormSent": "E-mail envoyé! Merci de nous avoir contacté. Nous allons revenir vers vous rapidement!",
 
   "mail_reset_password_subject": "Demande de nouveau mot de passe",
-  "mail_verify_subject": "Confirm your e-mail address",
-  "mail_account_activated_subject": "Welcome"
+  "mail_verify_subject": "Confirmer votre adresse mail",
+  "mail_account_activated_subject": "Bienvenue sur next Events"
 }

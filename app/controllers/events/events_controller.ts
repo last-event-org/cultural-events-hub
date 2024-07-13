@@ -630,7 +630,7 @@ export default class EventsController {
     let title = i18n.t('messages.events_today')
     if (nextEvents.length === 0) {
       nextEvents = await this.getNextEvents()
-      title = i18n.t('messages.events_next_events')
+      title = i18n.t('messages.events_next')
     }
     return [topEvents, nextEvents, title]
   }

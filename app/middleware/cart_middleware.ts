@@ -13,7 +13,6 @@ export default class CartMiddleware {
   async handle({ auth, view }: HttpContext, next: NextFn) {
     if (await auth.check()) {
       const user = await auth.user
-      console.log('User:', user)
       if (user) {
         const hasOrder = await user.related('order').query().where('is_paid', 'false')
         view.share({ userHasOrder: hasOrder.length > 0 ? true : false })

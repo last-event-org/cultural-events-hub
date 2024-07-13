@@ -232,6 +232,7 @@
   "events_linked_events": "Evénements similaires",
   "events_top": "Evénements à la une",
   "events_today": "Evénements aujourd'hui",
+  "events_next": "Evénements à venir",
   "events_video_events": "Video YouTube",
   "events_no_events": "Malheureusement, il n'y a pas d'événements pour votre sélection.",
 
@@ -281,6 +282,7 @@
   "errorAddWishlist": "Il y a un problème avec l'ajout de l'événement à votre wishlist. Réessayer ou contacter un admin",
   "errorDestroyWishlist": "Il y a un problème avec la suppression de l'événement de votre wishlist. Réessayer ou contacter un admin",
   "errorContactFormSent": "Il y a eu une erreur lors de l'envoi du mail. Merci de réessayer.",
+  "errorContactFormCaptcha": "Êtes-vous un bot ? Il faut valider le reCAPTCHA. Merci de réessayer.",
 
   "successDestroyEvent": "Evénement supprimé.",
   "successDestroyCart": "Panier supprimé.",

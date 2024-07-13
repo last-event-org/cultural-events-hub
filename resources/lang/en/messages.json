@@ -181,6 +181,9 @@
   "eventCard_from": "From",
   "eventCard_expire": "Expires in",
   "eventCard_last": "Last places available",
+  "eventCard_full": "Full",
+  "eventCard_free": "Free",
+
 
   "error_404": "404 - Page not found",
   "error_server": "Server error",

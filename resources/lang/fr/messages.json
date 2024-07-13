@@ -181,6 +181,8 @@
   "eventCard_from": "Àpd",
   "eventCard_expire": "Expire dans",
   "eventCard_last": "Dernières places",
+  "eventCard_full": "Complet",
+  "eventCard_free": "Gratuit",
 
   "error_404": "404 - Page non trouvée",
   "error_server": "Erreur Serveur",

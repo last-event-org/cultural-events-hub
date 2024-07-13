@@ -281,6 +281,7 @@
   "errorAddWishlist": "Il y a un problème avec l'ajout de l'événement à votre wishlist. Réessayer ou contacter un admin",
   "errorDestroyWishlist": "Il y a un problème avec la suppression de l'événement de votre wishlist. Réessayer ou contacter un admin",
   "errorContactFormSent": "Il y a eu une erreur lors de l'envoi du mail. Merci de réessayer.",
+  "errorContactFormCaptcha": "Êtes-vous un bot ? Il faut valider le reCAPTCHA. Merci de réessayer.",
 
   "successDestroyEvent": "Evénement supprimé.",
   "successDestroyCart": "Panier supprimé.",

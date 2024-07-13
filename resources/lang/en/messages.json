@@ -281,6 +281,7 @@
   "errorAddWishlist": "There is a problem adding the event to your wishlist. Retry or contact an admin.",
   "errorDestroyWishlist": "There is a problem removing the event from your wishlist. Retry or contact an admin.",
   "errorContactFormSent": "A problem occured when sending the contact form. Please retry.",
+  "errorContactFormCaptcha": "Are you a bot ? Please check the reCAPTCHA. Please retry.",
 
   "successDestroyEvent": "Event successfully deleted.",
   "successDestroyCart": "Cart successfully emptied.",

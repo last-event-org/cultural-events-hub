@@ -3,17 +3,30 @@ document.addEventListener('DOMContentLoaded', function() {
   let lastScrollTop = 0;
   const mainNav = document.getElementById('main-nav');
   const mobileNav = document.getElementById('mobile-nav');
-  const mainNavHeight = mainNav ? mainNav.offsetHeight : 0;
+  const headerSpacer = document.getElementById('header-spacer');
+  let mainNavHeight = mainNav ? mainNav.offsetHeight : 0;
   let isMobileNavVisible = false;
 
+  // spacer adjustement because of the header fixed position
+  function adjustHeaderSpacer() {
+    if (mainNav && headerSpacer) {
+      mainNavHeight = mainNav.offsetHeight;
+      headerSpacer.style.height = `${mainNavHeight}px`;
+    }
+  }
+
+  adjustHeaderSpacer();
+  window.addEventListener('resize', adjustHeaderSpacer);
   window.addEventListener('scroll', () => {
     let scrollTop = window.scrollY || document.documentElement.scrollTop;
     
     if (mainNav) {
-      if (scrollTop > lastScrollTop && scrollTop > mainNavHeight) {     
+      if (scrollTop > lastScrollTop && scrollTop > mainNavHeight) {
         mainNav.style.transform = `translateY(-${mainNavHeight}px)`;
+        headerSpacer.style.height = '0px';
       } else {
         mainNav.style.transform = 'translateY(0)';
+        headerSpacer.style.height = `${mainNavHeight}px`;
       }
     }
 
@@ -29,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
           isMobileNavVisible = true;
         }
       }
-    }  
+    }   
     lastScrollTop = scrollTop;
   });
 });

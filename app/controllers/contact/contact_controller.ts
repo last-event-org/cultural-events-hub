@@ -1,4 +1,4 @@
-import { sendContactForm, sendContactFormCopy, sendCopyForm } from '#services/account_service'
+import { sendContactForm, sendContactFormCopy } from '#services/account_service'
 import { contactValidator } from '#validators/contact'
 import type { HttpContext } from '@adonisjs/core/http'
 import vine, { errors } from '@vinejs/vine'
@@ -8,7 +8,7 @@ export default class ContactController {
     return view.render('pages/contact/contact')
   }
 
-  async post({ request, params, view, session, response, i18n }: HttpContext) {
+  async post({ request, session, response, i18n }: HttpContext) {
     console.log('POST CONTACT FORM')
     const language = i18n.locale
 

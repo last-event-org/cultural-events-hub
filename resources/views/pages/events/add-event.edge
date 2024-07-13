@@ -40,7 +40,7 @@
                                         {{ i18n.t('messages.event_title') }}
                                     </label>
                                     <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                       focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
+                       focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}" >
                                     @inputError('title')
                                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                                     @end
@@ -51,7 +51,7 @@
                                         {{ i18n.t('messages.event_subtitle') }}
                                     </label>
                                     <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
+                         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}" >
                                     @inputError('subtitle')
                                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                                     @end
@@ -62,7 +62,7 @@
                                         {{ i18n.t('messages.event_desc') }}
                                     </label>
                                     <textarea type="text" id="description" name="description" maxlength="1000"
-                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
+                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" >{{old('description') || '' }}</textarea>
                                     @inputError('description')
                                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                                     @end
@@ -178,7 +178,7 @@
                             {{ i18n.t('messages.event_uploadImg') }}
                         </label>
                         <input class="mt-4 max-w-56 text-white" type="file" id="images_link" name="images_link[]"
-                            onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
+                            onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple required/>
                         @inputError('images_link')
                         <div style="color: red;">{{ i18n.t('messages.event_imgMin') }}</div>
                         @end

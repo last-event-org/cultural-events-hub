@@ -1,8 +1,8 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
-import ContactController from '#controllers/contact/contact_controller'
 
 const CartController = () => import('#controllers/events/cart_controller')
+const ContactController = () => import('#controllers/contact/contact_controller')
 const VendorController = () => import('#controllers/vendors/vendor_controller')
 const ListEvents = () => import('#controllers/api_listevents')
 const LoginController = () => import('#controllers/auth/login_controller')

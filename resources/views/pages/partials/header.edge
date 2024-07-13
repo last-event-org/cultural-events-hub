@@ -7,17 +7,7 @@
       </h1>  
   </a>
 
-  @if(userHasOrder)
-   <h1>ORDER</h1>
-   @else
-    <h1>NO ORDER</h1>
-   @end
-     {{-- <script>
-    window.userHasOrder = {{ userHasOrder }};
-  </script> --}}
  <div class="lg:hidden flex items-center gap-2 ">
-    {{-- @if(request.cookie('orderId')) --}}
-    {{-- @else --}}
     <button class="navbar-burger flex items-center text-gray-700 p-3">
       
       <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -34,8 +24,6 @@
         </svg>
       </div>
     </a>
-    {{-- @end --}}
-
   </div>
 
   <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-4 ">

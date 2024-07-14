@@ -2,7 +2,7 @@
   <div class="2xl:container mx-auto px-4">
     <div class="flex flex-col w-full justify-center items-center shadow py-4 gap-2">
     
-    <div class="flex justify-between w-full mb-4">
+    <div class="flex justify-center md:justify-between w-full mb-4">
       <section class="text-yellow-500 hidden md:block w-1/4">
         <h4 class="font-semibold underline mb-1 hover:text-white transition duration-300">Next Events :</h4>
         <ul class="text-sm">
@@ -16,12 +16,17 @@
             <li>Événements à Mons</li></a>
           <a class="hover:text-white transition duration-300" href="{{route('contact.show')}}">
             <li>Événements à Charleroi</li></a>
+          <a class="hover:text-white transition duration-300" href="{{route('contact.show')}}">
+            <li>Événements à Eupen</li></a>
+          <a class="hover:text-white transition duration-300" href="{{route('contact.show')}}">
+            <li>Événements à Marche-en-Famenne</li></a>
         </ul>
       </section>
       
       <section class="flex flex-col items-center w-1/4">
         <a class="text-yellow-500 text-center font-semibold underline mb-1 hover:text-white transition duration-300" href="{{route('contact.show')}}">Contacts :</a>
-        <div class="flex justify-center mt-4">
+        
+        <div class="flex justify-center my-3">
           <div class="flex space-x-4">
             <!--Facebook Icon -->
             <svg class="w-6 h-6 fill-current text-yellow-500 hover:text-white transition duration-300" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -46,6 +51,13 @@
             </svg>
           </div>
         </div>
+        
+        <ul class="text-yellow-500 text-sm text-center">
+          <li class="hover:text-white transition duration-300">Politique de confidentialité</li>
+          <li class="hover:text-white transition duration-300">Politique des Cookies</li>
+          <li class="hover:text-white transition duration-300">Conditions générales</li>
+          <li class="hover:text-white transition duration-300">Tarifs / Publicités</li>
+        </ul> 
       </section>
   
       <section class="text-yellow-500 hidden md:block w-1/4 text-right">
@@ -55,11 +67,17 @@
           <li class="hover:text-white transition duration-300">Samuel Ciulla</li>
           <li class="hover:text-white transition duration-300">Christophe Leroy</li>
         </ul>
+        <h4 class="font-semibold underline mt-2 mb-1 hover:text-white transition duration-300">Remerciements:</h4>
+        <ul class="text-sm">
+          <li class="hover:text-white transition duration-300">Becode Liège - L Project</li>
+          <li class="hover:text-white transition duration-300">Adonis.js - TailwindCSS - Leaftlet</li>
+        </ul>  
       </section>
     </div>
-  
-    <div>
-      <span class="text-yellow-500">©2024 - SaJoCh. {{ i18n.t('messages.footer_copyright') }}</span>
+    
+    <div class="flex flex-col items-center justify-center w-full">
+      <hr class="border-t border-yellow-500 w-full mb-2">
+      <span class="text-yellow-500 text-center mx-auto">©2024 - SaJoCh. {{ i18n.t('messages.footer_copyright') }}</span>
     </div>
   </div>
   </div>

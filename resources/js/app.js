@@ -108,17 +108,24 @@ if (userButton) {
 
 // Language button
 
-const button = document.getElementById('language-menu-button')
-const menu = document.getElementById('language-menu')
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdowns = document.querySelectorAll('.language-dropdown');
 
-button.addEventListener('click', () => {
-  menu.classList.toggle('hidden')
-})
+  dropdowns.forEach(dropdown => {
+    const button = dropdown.querySelector('.language-menu-button');
+    const menu = dropdown.querySelector('.language-menu');
 
-window.addEventListener('click', (e) => {
-  if (!button.contains(e.target) && !menu.contains(e.target)) {
-    menu.classList.add('hidden')
-  }
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+  });
 });
 
 // searchbar

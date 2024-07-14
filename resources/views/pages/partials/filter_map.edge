@@ -1,7 +1,7 @@
 {{-- Big Search Bar --}}
 <form id="BSB" action="{{ route('events.search') }}" method="get">
   {{ csrfField() }}
-  <section id="big-search-bar-container" class=" grid grid-cols-[34%,1%,31%,1%,22%,10%] open-sans text-xs sm:text-sm md:text-base relative sm:flex bg-white border shadow rounded-full h-full my-4 lg:my-10 w-[98vw] lg:w-auto justify-between items-center max-w-[900px]">
+  <section id="big-search-bar-container" class=" grid grid-cols-[34%,1%,31%,1%,22%,10%] open-sans text-xs sm:text-sm md:text-base relative sm:flex bg-white border border-slate-400/70 shadow rounded-full h-full my-4 lg:my-10 w-[98vw] lg:w-auto justify-between items-center max-w-[900px]">
     
     <div id="button-date" class="relative flex flex-col button text-left bg-white hover:bg-slate-100  hover:shadow date-pl lg:px-6 xl:px-10 py-4 lg:py-5 rounded-full duration-300 cursor-pointer">
   
@@ -65,7 +65,7 @@
       @!component('components/events/top_events', {title: i18n.t('messages.events_top') , events: topEvents})
     </div>
     
-    <div class="z-0 rounded-3xl sm:border border-emerald-800 h-80 w-full sm:max-w-96 xl:max-w-[700px] my-4">
+    <div class="z-0 rounded-3xl sm:border border-emerald-800/60 h-80 w-full sm:max-w-96 xl:max-w-[700px] my-4">
       <div id="map" class="h-full w-full sm:rounded-3xl "></div>
     </div>
     

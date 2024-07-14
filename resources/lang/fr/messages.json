@@ -97,6 +97,7 @@
   "cart_icon": "Check icon",
   "cart_close": "Fermer",
   "cart_error": "Error icon",
+  "cart_itemAdded": "Ticket ajouté à votre panier.",
   "cart_itemDeleted": "L'article a été supprimé.",
   "cart_destroyed": "Panier vidé !",
 

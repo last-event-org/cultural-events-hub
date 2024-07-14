@@ -26,7 +26,7 @@
       <form action="" method="POST">
         {{ csrfField() }}
         <input type="hidden" name="price_id" value={{item.id}} />
-      <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+      <button onclick="showSuccessNotification(`{{ i18n.t('messages.cart_itemAdded') }} `)" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
         {{ i18n.t('messages.cart_add') }}</button>
         </form>
     </div>

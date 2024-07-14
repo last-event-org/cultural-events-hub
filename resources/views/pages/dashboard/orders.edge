@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html lang="{{ i18n.locale }}">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Events - {{ i18n.t('messages.orders_title') }}</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/date_format.js'])
-</head>
-
-<body class="bg-slate-50 text-xs sm:text-sm md:text-base ">
-  @include("pages/partials/header")
-  <main class="flex flex-col  min-h-screen w-full sm:w-[600px] lg:w-[800px] mx-auto">
-    <div class="bg-white sm:rounded-3xl sm:shadow w-full sm:mt-10 sm:mb-20 sm:p-4 lg:p-8">
-      <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
-        {{ i18n.t('messages.orders_title') }}
-      </h2>
+@layout.dashboard({pageTitle: i18n.t('messages.orders_title'), svg: 'orders' }) 
 
       <div class="overflow-x-auto">
         @if(orders.length === 0)
@@ -58,9 +42,4 @@
             </div>
           @end
         @end
-      </div>
-    </div>
-  </main>
-  @include("pages/partials/footer")
-</body>
-</html>
+ @end

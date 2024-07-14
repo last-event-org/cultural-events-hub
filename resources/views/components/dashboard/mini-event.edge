@@ -1,3 +1,4 @@
+<li data-form-{{event.id}} data-form-object="{{event.title}}">
 <div class="flex items-center hover:bg-slate-100 hover:scale-[1.01] duration-300 p-2 rounded-xl">
   <a href="{{ route('events.show', [event.id]) }} ">
     @if(event.media.length > 0)
@@ -27,18 +28,24 @@
     @if(cancel === true) 
     <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class=" ml-auto" enctype="multipart/form-data">
       {{ csrfField() }}
-      <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel"></button>
+      <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel" ></button>
     </form>
     @end
 
     @if(vendor === true) 
-      
-      
 
         {{-- delete event --}}
-        <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" data-event-name="{{event.title}}" data-event-id="{{event.id}}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" 
+        data-form-action="{{i18n.t("messages.modale_action_delete")}}" 
+        data-id="{{event.id}}" 
+        data-form-modale  
+        method="post" enctype="multipart/form-data" class="text-red-500">
             {{ csrfField() }}
-          <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel"></button>
+          <button type="submit" class="text-red-500 hover:scale-[1.10] duration-300">
+                            <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512">
+                            <path fill="currentColor"  d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                            </svg>
+                        </button>
         </form>
 
         {{-- edit event --}}
@@ -50,6 +57,6 @@
       </div>
       </div>
   </div>
-  
+</li>
 
  

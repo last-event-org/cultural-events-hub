@@ -51,6 +51,7 @@
   "login_verified_error": "Compte déjà vérifié, veuillez vous connecter.",
   "login_verified_no": "Votre compte n'est pas validé, veuillez consulter vos e-mails.",
   "login_verified_success": "Compte validé avec succès, veuillez vous connecter.",
+  "login_account_blocked": "Votre compte a été bloqué. Veuillez nous contacter.",
 
   "date_from": "du",
 
@@ -113,6 +114,17 @@
   "dashboard_vendor_orders_number": "Nb. de commandes",
 
   "admin_title": "Admin Panel",
+  "admin_no_users": "Aucun utilisateur trouvé!",
+
+  "modale_confirmation": "Êtes-vous sur de vouloir ",
+  "modale_confirm": "Oui, je suis sur",
+  "modale_cancel": "Non, annuler",
+  "modale_close": "Fermer",
+  "modale_action_delete": "supprimer",
+  "modale_action_block_set": "bloquer",
+  "modale_action_block_unset": "débloquer",
+  "modale_action_admin_set": "donner les droits admin à ",
+  "modale_action_admin_unset": "retirer les droits admin à ",
 
   "editProfile_title": "Modifier le profil",
   "editProfile_firstname": "Prénom",
@@ -259,6 +271,8 @@
   "form_placeholder_firstname": "Jean",
   "form_placeholder_lastname": "Dupont",
   "form_placeholder_email": "jean.dupont@email.com",
+  "form_placeholder_search_user": "Rechercher un utilisateur",
+  "form_placeholder_search_word": "Rechercher un événement...",
   "form_placeholder_password": "Au moins 8 caractères",
   "form_placeholder_price": "Ex: Adulte, enfant, senior,...",
   "form_placeholder_textarea": "Votre message ...",
@@ -286,6 +300,10 @@
   "errorDestroyWishlist": "Il y a un problème avec la suppression de l'événement de votre wishlist. Réessayer ou contacter un admin",
   "errorContactFormSent": "Il y a eu une erreur lors de l'envoi du mail. Merci de réessayer.",
   "errorContactFormCaptcha": "Êtes-vous un bot ? Il faut valider le reCAPTCHA. Merci de réessayer.",
+  "errorAdminSameUser": "Vous ne pouvez pas effectuer d'actions admin à votre propre compte.",
+  "errorBlockUser": "Erreur lors du (dé)blocage de l'utilisateur.",
+  "errorAdminRights": "Error lors du changement des droits admin à l'utilisateur!",
+  "errorDeleteUser": "Error lors de la suppression de l'utilisateur.",
 
   "successDestroyEvent": "Evénement supprimé.",
   "successDestroyCart": "Panier supprimé.",
@@ -296,6 +314,11 @@
   "successAddWishlist": "Evénement ajouté à votre wishlist.",
   "successDestroyWishlist": "Evénement retiré de votre wishlist.",
   "successContactFormSent": "E-mail envoyé! Merci de nous avoir contacté. Nous allons revenir vers vous rapidement!",
+  "successBlockUser": "Utilisateur bloqué !",
+  "successUnblockUser": "Utilisateur débloqué !",
+  "successRemoveAdmin": "Droits admin retirés !",
+  "successGrantAdmin": "Droits admin donnés !",
+  "successDeleteUser": "Utilisateur supprimé !",
 
   "mail_reset_password_subject": "Demande de nouveau mot de passe",
   "mail_verify_subject": "Confirmer votre adresse mail",

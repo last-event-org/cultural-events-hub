@@ -2,6 +2,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
 const CartController = () => import('#controllers/events/cart_controller')
+const AdminController = () => import('#controllers/dashboard/admin_controller')
 const ContactController = () => import('#controllers/contact/contact_controller')
 const VendorController = () => import('#controllers/vendors/vendor_controller')
 const ListEvents = () => import('#controllers/api_listevents')
@@ -110,6 +111,18 @@ router
   })
   .prefix('media')
   .as('media')
+
+router
+  .group(() => {
+    router.get('/', [AdminController, 'index']).as('index')
+    router.get('/search', [AdminController, 'search']).as('search')
+    router.patch('/:id/block', [AdminController, 'block']).as('block')
+    router.patch('/:id/admin', [AdminController, 'admin']).as('admin')
+    router.delete('/:id/delete', [AdminController, 'destroy']).as('destroy')
+  })
+  .prefix('dashboard/admin')
+  .as('admin')
+  .use(middleware.auth())
 
 router
   .group(() => {

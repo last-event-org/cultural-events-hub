@@ -3,13 +3,16 @@
 
     @if(request.qs().input_words) 
         @if(users)
-            @!dashboard.admin.usersList({users, searchParams})
+            <ul>
+                @each(user in users)
+                    @!dashboard.admin.usersList({user, searchParams})
+                @end
+            </ul>  
+
         @else
-            <p>No users matching your request</p>        
+            <p>{{i18n.t("messages.admin_no_users")}}</p>        
         @end
         
-    @else
-        <p>Explanation</p>
     @end
     
 @end

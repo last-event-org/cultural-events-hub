@@ -51,6 +51,7 @@
   "login_verified_error": "Compte déjà vérifié, veuillez vous connecter.",
   "login_verified_no": "Votre compte n'est pas validé, veuillez consulter vos e-mails.",
   "login_verified_success": "Compte validé avec succès, veuillez vous connecter.",
+  "login_account_blocked": "Votre compte a été bloqué. Veuillez nous contacter.",
 
   "date_from": "du",
 
@@ -113,6 +114,7 @@
   "dashboard_vendor_orders_number": "Nb. de commandes",
 
   "admin_title": "Admin Panel",
+  "admin_no_users": "Aucun utilisateur trouvé!",
 
   "modale_confirmation": "Êtes-vous sur de vouloir ",
   "modale_confirm": "Oui, je suis sur",

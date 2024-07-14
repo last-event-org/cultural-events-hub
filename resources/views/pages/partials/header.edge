@@ -47,8 +47,6 @@
     </li>
     @eval(await auth.check())
     @if(await auth.isAuthenticated)
-
-
       @if((await auth.user.isVendor() || await auth.user.isAdmin()))
       <li class="lg:flex lg:items-center">
         <a class="uppercase font-semibold text-sm text-slate-600 hover:text-slate-800 relative overflow-hidden group" href={{ route('events.create') }}>
@@ -83,21 +81,24 @@
       <span class="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-500 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
       </a>
     </li>
-        <li class="text-slate-500">
+     
+  @if(await auth.isAuthenticated)
+    @if(await auth.user.isAdmin())
+       <li class="text-slate-500">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill"
         viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
       </svg>
     </li>
-     @if(await auth.user.isAdmin())
-          <li class="lg:flex lg:items-center">
+      <li class="lg:flex lg:items-center">
         <a class="uppercase font-semibold text-sm text-slate-600 hover:text-slate-800 relative overflow-hidden group" href={{ route('admin.index') }}>
           {{ i18n.t('messages.header_admin') }}
           <span class="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-500 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
         </a>
       </li>
       @end
+  @end
   </ul>
        
 

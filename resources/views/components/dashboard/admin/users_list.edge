@@ -1,5 +1,4 @@
-<ul>
-    @each(user in users)
+
     <li data-form-{{user.id}} data-form-object="{{user.firstname}} {{user.lastname}} {{user.email}}" >
         <div class="flex items-center hover:bg-slate-100 hover:scale-[1.01] duration-300 p-2 rounded-xl">
             <div class=" w-1 min-h-16 mr-2 {{user.isBlocked ? 'bg-red-500' : 'bg-green-500'}}"></div>
@@ -84,8 +83,6 @@
         </div>
 
       </li>
-    @end
-</ul>
 
 
  

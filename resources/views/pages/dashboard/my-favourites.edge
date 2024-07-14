@@ -1,30 +1,21 @@
-<!DOCTYPE html>
-<html lang="{{ i18n.locale }}">
+@layout.dashboard({pageTitle: i18n.t('messages.favourites_title'), svg: 'favourites' }) 
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next Events - {{ i18n.t('messages.favourites_title') }}</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body class="bg-slate-50">
-@include("pages/partials/header")
-
- @if(flashMessages.has('error'))
-    @!component('components/notifications/error', { message: flashMessages.get('error') })          
-  @elseif(flashMessages.has('success'))
-    @!component('components/notifications/success', { message: flashMessages.get('success') })
-  @end
-
-<main class="flex flex-col items-center min-h-screen ">
- 
+  @if(userFavourites.length === 0)
   
-  @!include("pages/partials/favourites")  
-</main>
+    <p>{{i18n.t('messages.dashboard_emptyFavourites')}}</p>
 
+  @else
+    <div class="flex flex-col gap-2">
+      @each(vendor in userFavourites)
+        <ul>
 
-@include("pages/partials/footer")  
+      @!component('components/dashboard/favourite_element', {
+        vendor: vendor, vendorEvents: vendorEvents[vendor.id]
+      })
+    @end
+        </ul>
+      @end
+    </div>
 
-</body>
-</html>
+  @end
+@end

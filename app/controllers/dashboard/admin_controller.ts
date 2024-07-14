@@ -162,10 +162,10 @@ export default class AdminController {
       try {
         const user = await User.findOrFail(params.id)
         await user.delete()
-        const successMsg = i18n.t('messages.successDestroyEvent')
+        const successMsg = i18n.t('messages.successDeleteUser')
         session.flash('success', successMsg)
       } catch (error) {
-        const errorMsg = i18n.t('messages.errorDestroyEvent')
+        const errorMsg = i18n.t('messages.errorDeleteUser')
         session.flash('error', errorMsg)
       }
     }

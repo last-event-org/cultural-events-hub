@@ -20,6 +20,11 @@ export default class LoginController {
     try {
       const { email, password } = await request.validateUsing(loginValidator)
       const user = await User.verifyCredentials(email, password)
+      if (user.isBlocked) {
+        session.flash('error', i18n.t('messages.login_account_blocked'))
+        return response.redirect().back()
+      }
+
       if (user.isVerified) {
         await auth.use('web').login(user)
 

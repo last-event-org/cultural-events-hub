@@ -51,6 +51,7 @@
   "login_verified_error": "Account already verified, please login.",
   "login_verified_no": "Your account is not verified, please check your email.",
   "login_verified_success": "Account successfully verified, please login.",
+  "login_account_blocked": "Your account has been blocked, please contact us.",
 
   "date_from": "from",
 
@@ -113,6 +114,7 @@
   "dashboard_vendor_orders_number": "Number of orders",
 
   "admin_title": "Admin Panel",
+  "admin_no_users": "No users found!",
 
   "modale_confirmation": "Are you sure you want to ",
   "modale_confirm": "Yes, I'm sure",

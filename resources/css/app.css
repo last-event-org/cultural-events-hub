@@ -16,6 +16,11 @@
   --spectacles: #ddd6fe;
   --spectacles-hover: #c4b5fd;
 }
+/*intro*/
+
+.bg-intro{
+  background-image: url('images/Festival-crowd.png');
+}
 
 @layer utilities {
   .scrollbar-hide {

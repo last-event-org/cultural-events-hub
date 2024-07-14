@@ -209,13 +209,13 @@
             </div>
             <div class="flex flex-col gap-4">
               <h4 class="font-bold text-lg text-slate-800">{{i18n.t('messages.events_linked_events')}} :</h4>
-              <div class="justify-between flex-col flex">
+              <ul class="justify-between flex-col flex">
               @each(linkedEvent in linkedEvents)
                 @if(event.id !== linkedEvent.id) 
                   @!component('components/dashboard/mini-event', {event: linkedEvent, cancel: false})
                 @end
               @end
-              </div>
+              </ul>
               
             </div>
           </section>    

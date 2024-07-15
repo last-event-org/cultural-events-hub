@@ -4,7 +4,7 @@
     <div class="flex items-center">
       <button type="button" id="user_button" class="flex justify-center gap-1.5 px-3 py-2 text-sm font-semibold text-slate-600 hover:text-slate-800 relative overflow-hidden group">
         {{ auth.user.firstname }}
-        <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <svg class="-mr-1 h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
         </svg>
         <span class="absolute inset-x-0 bottom-1.5 h-0.5 bg-yellow-500 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 mx-3"></span>
@@ -20,28 +20,28 @@
       </a>
     <div id="drop_down_profile" class="hidden absolute right-8 top-14 z-10  w-56 origin-top-right border shadow rounded-3xl bg-white opacity-0 transition-opacity duration-500">
     <div class="py-4 px-4">
-      <a href="{{route('cart.show')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+      <a href="{{route('cart.show')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
         {{ i18n.t('messages.header_cart') }}</a>
-      <a href={{ route('auth.dashboard') }} class="block rounded-full duration-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+      <a href={{ route('auth.dashboard') }} class="block rounded-full duration-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
         {{ i18n.t('messages.header_dashboard') }}</a>
-      <a href={{ route('auth.profile.show') }} class="block rounded-full duration-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+      <a href={{ route('auth.profile.show') }} class="block rounded-full duration-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
         {{ i18n.t('messages.header_profile') }}</a>
-      <a href={{ route('wishlist.index') }} class="block rounded-full duration-300  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+      <a href={{ route('wishlist.index') }} class="block rounded-full duration-300  px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
         {{ i18n.t('messages.header_wishlist') }}</a>
-      <a href={{ route('favourite.index') }} class="block rounded-full duration-300  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+      <a href={{ route('favourite.index') }} class="block rounded-full duration-300  px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
         {{ i18n.t('messages.header_favourites') }}</a>
-      <a href="{{route('auth.profile.orders')}}" class="block rounded-full duration-300  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+      <a href="{{route('auth.profile.orders')}}" class="block rounded-full duration-300  px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
         {{ i18n.t('messages.header_boughtTickets') }}</a>
 @eval(await auth.check())
 @if(await auth.isAuthenticated)
         @if(await auth.user.isAdmin())
-          <a href="{{route('admin.index')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <a href="{{route('admin.index')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
           {{ i18n.t('messages.header_admin') }}</a>
         @end
         @if((await auth.user.isVendor() || await auth.user.isAdmin()))
-        <a href="{{route('auth.vendor.events')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <a href="{{route('auth.vendor.events')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
           {{ i18n.t('messages.header_eventsPublished') }}</a>
-        <a href="{{route('auth.vendor.orders')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <a href="{{route('auth.vendor.orders')}}" class="block rounded-full duration-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
           {{ i18n.t('messages.header_soldTickets') }}</a>
         @end
 
@@ -52,7 +52,7 @@
           {{ csrfField() }}
           <div class="flex justify-center">
             <button type="submit"
-              class="hidden lg:inline-block mt-4 py-2 px-6 bg-gray-50 hover:bg-gray-200 text-sm text-red-800 font-bold  rounded-md transition duration-200"
+              class="hidden lg:inline-block mt-4 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-red-800 font-bold  rounded-md transition duration-200"
               href={{ route('auth.login.show') }}>
               {{ i18n.t('messages.header_logout') }}</button>
           </div>

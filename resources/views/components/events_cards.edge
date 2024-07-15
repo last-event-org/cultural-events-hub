@@ -1,4 +1,4 @@
-<article class="relative hover:shadow cursor-pointer border-gray-300 sm:rounded-lg w-screen sm:w-full card fade-in">
+<article class="relative hover:shadow cursor-pointer border-slate-300 sm:rounded-lg w-screen sm:w-full card fade-in">
   <a href="/events/{{event?.id ?? ''}}" class="absolute inset-0 z-50"></a>
 
   <div class="relative pb-[56%]">
@@ -26,7 +26,7 @@
       @let(percentage = ((regPrices - discPrices) / regPrices) * 100)
       @if(percentage > 0)
       <div class="flex mb-1 absolute top-4 right-4  ">
-        <p class=" bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-gray-600 text-xs font-bold px-3 py-1 mb-1">
+        <p class=" bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-slate-600 text-xs font-bold px-3 py-1 mb-1">
           -{{ percentage.toFixed(0) }}%
         </p>
       </div>

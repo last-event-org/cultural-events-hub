@@ -3,9 +3,9 @@
         <form action="{{route('contact.post')}}" method="post" id="contact-form" class="flex flex-col gap-4">
             {{csrfField()}}
             <div>
-                <label for="name" class="block text-gray-600">{{i18n.t("messages.contact_name")}}</label>
-                <input class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" type="text" maxlength="150" name="name" id="name" placeholder="{{i18n.t("messages.form_placeholder_name")}}" value="{{old('name') || '' }}">
+                <label for="name" class="block text-slate-600">{{i18n.t("messages.contact_name")}}</label>
+                <input class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
+                focus:ring-yellow-500 focus:border-yellow-500   sm:text-sm" type="text" maxlength="150" name="name" id="name" placeholder="{{i18n.t("messages.form_placeholder_name")}}" value="{{old('name') || '' }}">
 
                 @inputError('name')
                     @each(message in $messages)
@@ -14,9 +14,9 @@
                 @end
             </div>
             <div>
-                <label for="email" class="block text-gray-600">{{i18n.t("messages.contact_email")}}</label>
-                <input class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-            focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" type="email" maxlength="255" placeholder="{{i18n.t("messages.form_placeholder_email")}}" name="email" id="email" value="{{ old('email') || '' }}">
+                <label for="email" class="block text-slate-600">{{i18n.t("messages.contact_email")}}</label>
+                <input class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
+            focus:ring-yellow-500 focus:border-yellow-500   sm:text-sm" type="email" maxlength="255" placeholder="{{i18n.t("messages.form_placeholder_email")}}" name="email" id="email" value="{{ old('email') || '' }}">
                 @inputError('email')
                     @each(message in $messages)
                     <p style="color: red;"> {{ message }} </p>
@@ -25,9 +25,9 @@
 
             </div>
                 <div class="flex flex-col">
-                    <label for="message" class="block text-gray-600">{{i18n.t("messages.contact_message")}}</label>
-                    <textarea class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-                focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2  sm:text-sm" name="message" id="message" maxlength="1000" placeholder="{{i18n.t("messages.form_placeholder_textarea")}}" value="{{ old('email') || '' }}">{{old('description') || '' }}</textarea >
+                    <label for="message" class="block text-slate-600">{{i18n.t("messages.contact_message")}}</label>
+                    <textarea class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
+                focus:ring-yellow-500 focus:border-yellow-500   sm:text-sm" name="message" id="message" maxlength="1000" placeholder="{{i18n.t("messages.form_placeholder_textarea")}}" value="{{ old('email') || '' }}">{{old('description') || '' }}</textarea >
                     @inputError('message')
                         @each(message in $messages)
                         <p style="color: red;"> {{ message }} </p>
@@ -38,12 +38,12 @@
             
             <div>
                 <label for="copy">{{i18n.t("messages.contact_copy")}}</label>
-                <input type="checkbox" name="copy" id="copy" class="focus:ring-yellow-500 focus:border-yellow-500 focus:ring-2">
+                <input type="checkbox" name="copy" id="copy" class="focus:ring-yellow-500 focus:border-yellow-500 ">
             </div>
             
             <div class="flex justify-center">
                 <button type="submit"  data-callback="onSubmit" class="border shadow uppercase bg-indigo-700 text-white font-semibold py-2 px-6 rounded-md hover:bg-indigo-500
-             focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:ring-2 ">
+             focus:outline-none focus:ring-indigo-500 focus:border-indigo-500  focus:ring-2">
              {{ i18n.t('messages.contact_send') }}
             </button>
           </div>

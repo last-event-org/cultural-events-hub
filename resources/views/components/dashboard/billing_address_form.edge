@@ -4,7 +4,7 @@
       {{ i18n.t('messages.editProfile_company') }}
     </label>
     <input type="text" id="company_name" name="company_name" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-  focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ companyName || '' }}">
+  focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ companyName || '' }}">
     @inputError('company_name')
     <div style="color: red;">{{ $messages.join(', ') }}</div>
     @end
@@ -14,7 +14,7 @@
         {{ i18n.t('messages.editProfile_vat') }}
     </label>
     <input type="text" id="vat_number" name="vat_number" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-  focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ vatNumber || '' }}">
+  focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ vatNumber || '' }}">
     @inputError('vat_number')
     <div style="color: red;">{{ $messages.join(', ') }}</div>
     @end
@@ -42,7 +42,7 @@
     {{ i18n.t('messages.billingAddress_street') }}
   </label>
   <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ street ?? ""}}">
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ street ?? ""}}">
   @inputError('street')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end
@@ -51,7 +51,7 @@ focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ street ?? ""}}
       {{ i18n.t('messages.billingAddress_nb') }}
   </label>
   <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ number ?? ""  }}">
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ number ?? ""  }}">
   @inputError('number')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end
@@ -60,7 +60,7 @@ focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ number ?? ""  
     {{ i18n.t('messages.billingAddress_zip') }}
   </label>
   <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ zipCode ?? ""  }}">
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ zipCode ?? ""  }}">
   @inputError('zip_code')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end
@@ -69,7 +69,7 @@ focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ zipCode ?? "" 
     {{ i18n.t('messages.billingAddress_city') }}
   </label>
   <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ city ?? "" }}">
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ city ?? "" }}">
   @inputError('city')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end
@@ -78,7 +78,7 @@ focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ city ?? "" }}"
     {{ i18n.t('messages.billingAddress_country') }}
   </label>
   <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
-focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{ country ?? "" }}">
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ country ?? "" }}">
   @inputError('country')
   <div style="color: red;">{{ $messages.join(', ') }}</div>
   @end

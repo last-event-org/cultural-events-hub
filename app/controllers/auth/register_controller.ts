@@ -117,7 +117,9 @@ export default class RegistersController {
       user.roleId = role.id
     }
 
-    await user.save()
+    const newUser = await user.save()
+    console.log(newUser)
+    console.log(newUser.id)
     const subject = i18n.t('messages.mail_verify_subject')
     await sendVerificationEmail(user, token, origin, lang, subject)
 
@@ -125,6 +127,7 @@ export default class RegistersController {
       // await auth.use('web').login(user)
       return view.render('pages/auth/profile-type', {
         user: user,
+        id: newUser.$attributes.id,
       })
     } else {
       return response.redirect().back()
@@ -182,6 +185,7 @@ export default class RegistersController {
 
   async updateUserRole(user: User) {
     const vendorRole = await Role.findBy('role_name', 'VENDOR')
+    const adminRole = await Role.findBy('role_name', 'ADMIN')
     const userRole = await Role.findBy('role_name', 'USER')
     const userBillingAddress = await this.getUserBillingAddress(user)
 
@@ -194,7 +198,9 @@ export default class RegistersController {
         userBillingAddress.zipCode &&
         userBillingAddress.country
       ) {
-        user.roleId = vendorRole.id
+        if (user.roleId !== adminRole?.id) {
+          user.roleId = vendorRole.id
+        }
       } else {
         user.roleId = userRole.id
       }
@@ -242,10 +248,10 @@ export default class RegistersController {
       if (!vendorAddress) {
         vendorAddress = new Address()
       }
-      vendorAddress.street = userBillingAddressPayload.street
+      vendorAddress.street = userBillingAddressPayload.street.replaceAll('&#x27;', "'")
       vendorAddress.number = userBillingAddressPayload.number
       vendorAddress.zipCode = userBillingAddressPayload.zip_code
-      vendorAddress.city = userBillingAddressPayload.city
+      vendorAddress.city = userBillingAddressPayload.city.replaceAll('&#x27;', "'")
       vendorAddress.country = userBillingAddressPayload.country
 
       await vendorAddress.save()
@@ -344,11 +350,15 @@ export default class RegistersController {
     in which we are asked whether we would like to buy or sell event tickets:
     in the case we would like to sell we will have to fill some more data (billing related) 
     */
-    const user = await User.findOrFail(auth.user?.$attributes.id)
+    console.log(request.input('id'))
+    console.log(request.qs())
+    console.log(request.body())
+    const user = await User.findOrFail(request.input('id'))
 
     try {
       const vendorDataPayload = await request.validateUsing(createVendorDataValidator)
-
+      console.log('vendorDataPayload')
+      console.log(vendorDataPayload)
       if (vendorDataPayload.company_name && vendorDataPayload.company_name.trim() !== '') {
         user.companyName = vendorDataPayload.company_name
       } else {
@@ -362,13 +372,15 @@ export default class RegistersController {
     }
 
     try {
+      console.log('addressPayload')
       const addressPayload = await request.validateUsing(createAddressValidator)
+      console.log(addressPayload)
       const address = new Address()
 
-      address.street = addressPayload.street
+      address.street = addressPayload.street.replaceAll('&#x27;', "'")
       address.number = addressPayload.number
       address.zipCode = addressPayload.zip_code
-      address.city = addressPayload.city
+      address.city = addressPayload.city.replaceAll('&#x27;', "'")
       address.country = addressPayload.country
       address.name = user.companyName ?? ''
 
@@ -377,15 +389,19 @@ export default class RegistersController {
 
       await user.related('billingAddress').save(address)
 
-      const role = await Role.findBy('role_name', 'VENDOR')
-      if (role) {
-        user.roleId = role.id
+      const vendorRole = await Role.findBy('role_name', 'VENDOR')
+      const adminRole = await Role.findBy('role_name', 'ADMIN')
+      if (user.roleId !== adminRole?.id) {
+        if (vendorRole) {
+          user.roleId = vendorRole.id
+        }
       }
       await user.save()
 
       return response.redirect().toRoute('auth.register.verify.show')
     } catch (error) {
       console.error('Validation Error:', error)
+      return response.redirect().toRoute('auth.register.update-profile-type')
     }
   }
 

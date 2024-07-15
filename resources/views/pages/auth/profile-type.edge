@@ -15,6 +15,7 @@
                 {{ i18n.t('messages.profile_type_sell') }}
             </button>
         </div>
+        {{id}}
 
       <form id="vendorDataForm" action="{{ route('auth.register.update-profile-type') }}" method="POST" class="space-y-4 hidden">
         {{ csrfField() }}
@@ -24,7 +25,7 @@
         {{ $message }}
 
         @end
-
+        <input type="hidden" name="id" id={{id}} value={{id}}>
         <div>
             <label for="company_name" class="block text-slate-600">
                 {{ i18n.t('messages.profile_type_company') }}

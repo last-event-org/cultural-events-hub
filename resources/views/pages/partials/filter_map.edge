@@ -11,7 +11,7 @@
         <input type="text"  id="date-chosen" placeholder="{{ i18n.t('messages.map_whenDesc') }}" class="button bg-transparent text-slate-400"  autocomplete="off" >
         <input type="text" name="date" id="date-query" class="hidden" value="">
         
-        <div id="calendar" class="hidden absolute w-[98vw] top-[70px] right-0 sm:top-[5.5rem] lg:top-[6.5rem] left-0 z-20 bg-white border border-gray-200 rounded-3xl shadow-lg lg:w-[560px] px-2 sm:py-8">
+        <div id="calendar" class="hidden absolute w-[98vw] top-[70px] right-0 sm:top-[5.5rem] lg:top-[6.5rem] left-0 z-20 bg-white border border-slate-200 rounded-3xl shadow-lg lg:w-[560px] px-2 sm:py-8">
           <section  class="scale-[.79] sm:scale-125 sm:px-16 ">
             @!component('components/filters/date_picker')
           </section>  
@@ -27,7 +27,7 @@
         <input type="text" name="city" id="city-chosen" placeholder="{{ i18n.t('messages.map_whereDesc') }}" class="bg-transparent text-slate-400" autocomplete="off">
           
           
-        <div id="city-list" class="absolute sm:w-full w-[98vw] top-16 left-0 right-0 sm:top-[5.2rem] lg:top-24 z-20 bg-white border border-gray-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
+        <div id="city-list" class="absolute sm:w-full w-[98vw] top-16 left-0 right-0 sm:top-[5.2rem] lg:top-24 z-20 bg-white border border-slate-200 rounded-3xl shadow-lg mt-1 hidden px-4 py-2">
           @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
           <option name="city-list" class="block text-slate-500 font-semibold px-4 py-2 rounded-full hover:bg-indigo-100 focus:bg-indigo-300 duration-300" value="{{city}}" >{{city}}</option>
           @end

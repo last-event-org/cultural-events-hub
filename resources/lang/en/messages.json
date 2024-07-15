@@ -326,14 +326,14 @@
   "successDeleteUser": "User deleted successfully.",
 
   "mail_reset_password_subject": "New password request",
-  "mail_verify_subject": "Confirm your e-mail addresse",
+  "mail_verify_subject": "Confirm your e-mail address",
   "mail_account_activated_subject": "Welcome on Next Events",
 
   "footer_developpers": "Developers",
   "footer_thanks": "Thanks to",
   "footer_privacy_policy": "Privacy Policy",
   "footer_cookie_policy": "Cookie Policy",
-  "footer_terms_and_conditions":"Terms and Conditions",
+  "footer_terms_and_conditions": "Terms and Conditions",
   "footer_pricing_advertising": "Pricing / Advertising",
-  "footer_events_in":"Events in"
+  "footer_events_in": "Events in"
 }

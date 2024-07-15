@@ -16,13 +16,13 @@ const i18nConfig = defineConfig({
      *   - "resources/lang/it"
      */
     loaders.fs({
-      location: app.languageFilesPath()
+      location: app.languageFilesPath(),
     }),
   ],
   fallbackLocales: {
-    'fr': 'fr'
+    fr: 'fr',
   },
-  supportedLocales: ['en', 'fr']
+  supportedLocales: ['en', 'fr', 'nl'],
 })
 
 export default i18nConfig

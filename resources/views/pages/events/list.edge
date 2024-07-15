@@ -20,8 +20,9 @@
 <body class=" bg-slate-50">
   @include("pages/partials/header")
   
-
+@if(title === "home")
     @include("pages/partials/intro")
+@end
 
 
   <div class="loading-spinner hidden">

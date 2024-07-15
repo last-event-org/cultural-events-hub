@@ -106,7 +106,7 @@
 
       <div class="hidden lg:flex lg:items-center lg:space-x-4">
         @if(!auth.isAuthenticated)
-          <a class="py-2 px-6 bg-yellow-500 hover:bg-yellow-400 text-sm font-bold rounded-md transition duration-300" href={{ route('auth.login.show') }}>
+          <a class="py-2 px-6 bg-yellow-500 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm font-bold rounded-md transition duration-300" href={{ route('auth.login.show') }}>
             {{ i18n.t('messages.header_login') }}
           </a>
         @else

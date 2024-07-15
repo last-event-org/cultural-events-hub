@@ -23,8 +23,6 @@
         @end
       </div>
         @if(item.availableQty >= 1)
-        {{-- TODO  --}}
-        {{-- Add something if it's free entrance --}}
         <div class="flex gap-4 justify-end w-full">
           <form action="" method="POST">
             {{ csrfField() }}
@@ -38,6 +36,14 @@
     @else
       @if(item.regularPrice > 0)
         <p class="font-light pl-2" >{{ i18n.t('messages.cart_price') }}:  <span class="">{{item.regularPrice}}€</span></p>
+        <div class="flex gap-4 justify-end w-full">
+          <form action="" method="POST">
+            {{ csrfField() }}
+            <input type="hidden" name="price_id" value={{item.id}} />
+          <button onclick="showSuccessNotification(`{{ i18n.t('messages.cart_itemAdded') }} `)" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+            {{ i18n.t('messages.cart_add') }}</button>
+            </form>
+        </div>
       @else
       <p class="font-light pl-2" >{{ i18n.t('messages.cart_free') }}</span></p>
       @end

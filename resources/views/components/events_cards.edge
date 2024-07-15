@@ -13,7 +13,8 @@
         <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">  
 
     </div>  
-    @let(minDiscountedPrice = Infinity)
+    @let(minDiscountedPrice = 0)
+    @let(minRegularPrice = 0)
     @if(price)
       @let(regPrices = 0)
       @let(discPrices = 0)
@@ -22,6 +23,7 @@
         @assign(regPrices = regPrices + item.regularPrice)
         @assign(discPrices = discPrices + item.discountedPrice)
         @assign(minDiscountedPrice = item.discountedPrice < minDiscountedPrice ? item.discountedPrice : minDiscountedPrice)
+        @assign(minRegularPrice = item.regularPrice < minRegularPrice ? item.regularPrice : minRegularPrice)
       @end
       @let(percentage = ((regPrices - discPrices) / regPrices) * 100)
       @if(percentage > 0)
@@ -70,9 +72,13 @@
               {{ i18n.t('messages.eventCard_tickets') }}</a>
           </div>
             <p class="text-xs text-slate-800 text-center">
-              {{ i18n.t('messages.eventCard_from') }} 
+              {{ i18n.t('messages.eventCard_from') }}
               <span class="font-bold">
-                {{ minDiscountedPrice }}€
+                @if(minDiscountedPrice < minRegularPrice)
+                  {{ minDiscountedPrice }}€
+                  @else
+                  {{ minRegularPrice }}€
+                @end
               </span> 
             </p>
           </div>
@@ -87,7 +93,7 @@
             
             @let(totalAvailableQty = 0)
             @each(price in event.prices)
-            @assign(totalAvailableQty += price.availableQty)
+              @assign(totalAvailableQty += price.availableQty)
             @end
             @if(totalAvailableQty <= 0)
               <p class="text-xs text-red-700 flex-end font-bold mb-2 ">{{ i18n.t('messages.eventCard_full') }} !</p>

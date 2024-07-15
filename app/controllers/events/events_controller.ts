@@ -416,7 +416,6 @@ export default class EventsController {
     event: Event
   ) {
     const bodyPrices = request.body().prices
-    console.log('\n\n\n\nbodyPrices: ', bodyPrices);
     const values = Object.values(bodyPrices[0]);
     const firstElmIsNotNull = values.some(element => element !== null);
     try {

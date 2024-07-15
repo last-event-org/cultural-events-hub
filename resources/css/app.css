@@ -261,3 +261,14 @@ summary {
   opacity: 1;
   transform: translateY(0);
 }
+
+/*loading spinner*/
+
+@layer components {
+  .loading-spinner {
+    @apply fixed inset-0 flex justify-center items-center bg-white bg-opacity-70 z-50;
+  }
+  .spinner {
+    @apply animate-spin-slow rounded-full h-32 w-32 border-t-2 border-b-2 border-yellow-500;
+  }
+}

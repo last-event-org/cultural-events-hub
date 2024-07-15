@@ -416,8 +416,11 @@ export default class EventsController {
     event: Event
   ) {
     const bodyPrices = request.body().prices
+    console.log('\n\n\n\nbodyPrices: ', bodyPrices);
+    const values = Object.values(bodyPrices[0]);
+    const firstElmIsNotNull = values.some(element => element !== null);
 
-    if (bodyPrices) {
+    if (firstElmIsNotNull) {
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
         try {
@@ -444,7 +447,6 @@ export default class EventsController {
       })
       return true
     } else {
-      // TODO this error message is not displayed when no prices are entered (payload empty)
       const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
       session.flash('errorMissingPrices', errorMsg)
     }

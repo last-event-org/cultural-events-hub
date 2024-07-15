@@ -118,8 +118,6 @@ export default class RegistersController {
     }
 
     const newUser = await user.save()
-    console.log(newUser)
-    console.log(newUser.id)
     const subject = i18n.t('messages.mail_verify_subject')
     await sendVerificationEmail(user, token, origin, lang, subject)
 
@@ -184,6 +182,7 @@ export default class RegistersController {
   }
 
   async updateUserRole(user: User) {
+    console.log('UPDATE USER ROLE')
     const vendorRole = await Role.findBy('role_name', 'VENDOR')
     const adminRole = await Role.findBy('role_name', 'ADMIN')
     const userRole = await Role.findBy('role_name', 'USER')
@@ -198,7 +197,7 @@ export default class RegistersController {
         userBillingAddress.zipCode &&
         userBillingAddress.country
       ) {
-        if (user.roleId !== adminRole?.id) {
+        if (user.roleId !== adminRole.id) {
           user.roleId = vendorRole.id
         }
       } else {
@@ -259,7 +258,7 @@ export default class RegistersController {
       // if user has USER role it means there is no billing address
       // associated with it so we must link the new billing address
       // created previously to the current user
-      if (user.role.roleName === 'USER') {
+      if (user.role.roleName === 'USER' || user.role.roleName === 'ADMIN') {
         user.billingAddressId = vendorAddress.id
         vendorAddress.userId = user.id
         await user.related('billingAddress').save(vendorAddress)

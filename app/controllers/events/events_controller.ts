@@ -433,7 +433,10 @@ export default class EventsController {
     try {
       await createPriceValidator.validate(bodyPrices[0])
     } catch (error) {
-      const errorMsg = i18n.t('messages.errorRequiredPriceFields') + ' '
+      let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. '
+      error.messages.forEach((msg: any) => {
+        errorMsg += msg.message
+      })
       session.flash('errorRequiredPriceFields', errorMsg)
       return false
     }
@@ -867,7 +870,10 @@ export default class EventsController {
       try {
         await createPriceValidator.validate(bodyPrices[0])
       } catch (error) {
-        const errorMsg = i18n.t('messages.errorRequiredPriceFields') + ' '
+        let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. '
+        error.messages.forEach((msg: any) => {
+          errorMsg += msg.message
+        })
         session.flash('errorRequiredPriceFields', errorMsg)
         return false
       }

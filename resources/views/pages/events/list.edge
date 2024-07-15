@@ -21,9 +21,9 @@
   @include("pages/partials/header")
   
 
-  {{-- @if(home === true) --}}
+  @if(title === "home")
     @include("pages/partials/intro")
-  {{-- @end --}}
+  @end
   <div class="loading-spinner hidden">
     <div class="spinner"></div>
   </div>

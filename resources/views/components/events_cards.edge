@@ -12,8 +12,10 @@
     <div class=" absolute flex bg-{{event.categoryTypes[0].category.slug}} w-6 h-6 rounded-full top-4 left-4  ">
         <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">  
 
-    </div>  
-    @let(minDiscountedPrice = Infinity)
+    </div>
+    @let(minDiscountedPrice = 0)
+    @let(minRegularPrice = 0)
+    @let(showAddToCartBtn = 0)
     @if(price)
       @let(regPrices = 0)
       @let(discPrices = 0)
@@ -22,15 +24,17 @@
         @assign(regPrices = regPrices + item.regularPrice)
         @assign(discPrices = discPrices + item.discountedPrice)
         @assign(minDiscountedPrice = item.discountedPrice < minDiscountedPrice ? item.discountedPrice : minDiscountedPrice)
+        @assign(minRegularPrice = item.regularPrice < minRegularPrice ? item.regularPrice : minRegularPrice)
+        @assign(showAddToCartBtn = item.availableQty ? +1 : +0)
       @end
       @let(percentage = ((regPrices - discPrices) / regPrices) * 100)
-      @if(percentage > 0)
+      @if(percentage > 0 && percentage != 100)
       <div class="flex mb-1 absolute top-4 right-4  ">
         <p class=" bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-slate-600 text-xs font-bold px-3 py-1 mb-1">
           -{{ percentage.toFixed(0) }}%
         </p>
       </div>
-      @elseif(regPrices === 0 || discPrices == 0)
+      @elseif(regPrices === 0)
       <div class="flex mb-1 absolute top-4 right-4  ">
         <p class=" bg-indigo-800 rounded-2xl shadow border border-indigo-700 text-white text-xs font-bold px-3 py-1 mb-1">
           {{ i18n.t('messages.eventCard_free') }}
@@ -63,55 +67,58 @@
         <p class="text-indigo-800 tracking-tight font-semibold ">
           {{event.location.city}}</p>
       </div>
+
       @if(price)
-        <div class="flex flex-col gap-0.5">
-          <div class="flex rounded shadow  mx-auto">
-            <a href="/events/{{event?.id?? ''}}" class="bg-indigo-800 hover:bg-indigo-700 rounded  text-white text-sm font-bold px-2 py-1 mt-1.5">
-              {{ i18n.t('messages.eventCard_tickets') }}</a>
+        @if(showAddToCartBtn > 0)
+          <div class="flex flex-col gap-0.5">
+            <div class="flex rounded shadow  mx-auto">
+              <a href="/events/{{event?.id?? ''}}" class="bg-indigo-800 hover:bg-indigo-700 rounded  text-white text-sm font-bold px-2 py-1 mt-1.5">
+                {{ i18n.t('messages.eventCard_tickets') }}</a>
+            </div>
+              <p class="text-xs text-slate-800 text-center">
+                {{ i18n.t('messages.eventCard_from') }}
+                <span class="font-bold">
+                  @if(minDiscountedPrice < minRegularPrice)
+                    {{ minDiscountedPrice }}€
+                  @else
+                    {{ minRegularPrice }}€
+                  @end
+                </span>
+              </p>
+            </div>
           </div>
-            <p class="text-xs text-slate-800 text-center">
-              {{ i18n.t('messages.eventCard_from') }} 
-              <span class="font-bold">
-                {{ minDiscountedPrice }}€
-              </span> 
-            </p>
-          </div>
-        </div>
-        
-        <div class="flex justify-between mt-2">
           @if(new Date(event.eventStart) > new Date())
             <p class="text-xs text-right text-red-700 font-semibold mb-2" id="countdown-{{event.id}}" data-event-start="{{event.eventStart}}">
               {{ i18n.t('messages.eventCard_expire') }}: <span class="countdown-timer"></span>
             </p>
-            @endif
-            
-            @let(totalAvailableQty = 0)
-            @each(price in event.prices)
-            @assign(totalAvailableQty += price.availableQty)
-            @end
-            @if(totalAvailableQty <= 0)
-              <p class="text-xs text-red-700 flex-end font-bold mb-2 ">{{ i18n.t('messages.eventCard_full') }} !</p>
-            @elseif(totalAvailableQty < 15)
-            <p class="text-xs text-right flex-end text-red-700 font-semibold animate-pulse mb-2">
-              {{ i18n.t('messages.eventCard_last') }}
-            </p>
-            @endif
+          @endif
+
+          <div class="flex justify-between mt-2">
+              @let(totalAvailableQty = 0)
+              @each(price in event.prices)
+                @assign(totalAvailableQty += price.availableQty)
+              @end
+              @if(showAddToCartBtn > 0)
+                @if(totalAvailableQty <= 0)
+                  <p class="text-xs text-red-700 flex-end font-bold mb-2 ">{{ i18n.t('messages.eventCard_full') }} !</p>
+                @elseif(totalAvailableQty < 15)
+                <p class="text-xs text-right flex-end text-red-700 font-semibold animate-pulse mb-2">
+                  {{ i18n.t('messages.eventCard_last') }}
+                </p>
+                @endif
+              @endif
+            </div>
           </div>
-        </div>
-      @else
-        <div class="flex flex-col gap-0.5">
-          <div class="flex rounded shadow  mx-auto">
-            <a href="/events/{{event?.id?? ''}}" class="bg-indigo-800 hover:bg-indigo-700 rounded  text-white text-sm font-bold px-2 py-1 mt-1.5">
-              See details</a>
+
+        @else
+          <div class="flex flex-col gap-0.5">
+            <div class="flex rounded shadow  mx-auto">
+              <a href="/events/{{event?.id?? ''}}" class="bg-indigo-800 hover:bg-indigo-700 rounded  text-white text-sm font-bold px-2 py-1 mt-1.5">
+                See details</a>
+            </div>
           </div>
-        </div>
+        @end
+        
       @endif
 
 </article>
-
-
-
-
-
-
-

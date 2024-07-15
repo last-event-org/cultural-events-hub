@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
   const datePicker = document.getElementById('date-picker')
   const prevButton = document.getElementById('prev-day')
+  // const dateQuery = document.getElementById('date-query')
   const dateChosen = document.getElementById('date-chosen')
+  const lang = document.documentElement.lang
   const nextButton = document.getElementById('next-day')
-  const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
   const today = new Date()
   let selectedDate = new Date(today)
   let currentDate = new Date(today)
@@ -12,9 +13,11 @@ document.addEventListener('DOMContentLoaded', function () {
   if (urlParams.size > 0) {
     const dateQuery = urlParams.get('date')
     if (dateQuery !== null) {
-      if (dateQuery !== '') formatDateInput(urlParams.get('date'))
-      formatDateQuery(urlParams.get('date'))
-      selectedDate = new Date(urlParams.get('date'))
+      if (dateQuery !== '') {
+        formatDateInput(urlParams.get('date'))
+        formatDateQuery(urlParams.get('date'))
+        selectedDate = new Date(urlParams.get('date'))
+      }
     }
   }
 
@@ -24,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const date = new Date(currentDate)
       date.setDate(currentDate.getDate() + i)
 
-      const month = date.toLocaleString('default', { month: 'short' })
-      const dayOfWeek = daysOfWeek[date.getDay()]
+      const month = date.toLocaleString(lang, { month: 'short' })
+      const dayOfWeek = date.toLocaleString(lang, { weekday: 'short' })
       const dayOfMonth = date.getDate()
 
       const isSelected =
@@ -84,6 +87,8 @@ function formatDateInput(date) {
 }
 
 function formatDateQuery(date) {
+  console.log('\n\n\nformatDateQuery\n\n\n')
+  console.log(date)
   date = new Date(date)
   const queryDate = document.getElementById('date-query')
   queryDate.value =

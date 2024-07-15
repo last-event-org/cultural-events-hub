@@ -10,21 +10,25 @@ function formatDate(startString, endString) {
   const longDateFrom = {
     en: 'From',
     fr: 'Du',
+    nl: 'Van',
   }
 
   const longDateTo = {
     en: 'to',
     fr: 'au',
+    nl: 'tot',
   }
 
   const shortDateFrom = {
     en: 'from',
     fr: 'de',
+    nl: 'van',
   }
 
   const shortDateTo = {
     en: 'to',
     fr: 'à',
+    nl: 'tot',
   }
 
   const startDate = DateTime.fromISO(startDateIso).setLocale(lang)

@@ -110,7 +110,7 @@
       <form method="POST" action="{{ route('auth.logout') }}">
         {{ csrfField() }}
         <button type="submit"
-          class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-slate-900 font-bold  rounded-xl transition duration-200"
+          class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-slate-700 font-bold  rounded-xl transition duration-200"
           href={{ route('auth.login.show') }}>
           {{ i18n.t('messages.header_logout') }}</button>
       </form>

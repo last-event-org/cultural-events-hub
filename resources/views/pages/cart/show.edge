@@ -30,7 +30,7 @@
         @!component('components/notifications/success', { message: flashMessages.get('success') })
       @end
       @if(!order) 
-        <p class="text-center text-gray-600">{{ i18n.t('messages.cart_empty') }}</p>
+        <p class="text-center text-slate-600">{{ i18n.t('messages.cart_empty') }}</p>
       @else
         <div class="overflow-x-auto">
           <div class="border border-slate-300 sm:rounded-lg overflow-hidden">
@@ -93,14 +93,14 @@
           <form action="{{ route('cart.destroy', [order.id], { qs: {_method: 'DELETE'}}) }}" method="post" enctype="multipart/form-data">
             {{ csrfField() }}
             <input type="hidden" name="_method" value="DELETE" />
-            <button class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-1 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
+            <button class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-2 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
               {{ i18n.t('messages.cart_emptyCart') }}
             </button>
           </form>
           
           <form action="{{route('cart.validate', [order.id])}}" method="POST">
             {{ csrfField() }}
-            <button class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
+            <button class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-2 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
               {{ i18n.t('messages.cart_validateCart') }}
             </button>
           </form>

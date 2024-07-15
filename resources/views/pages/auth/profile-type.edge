@@ -7,11 +7,11 @@
         </h2>
         <div class="flex gap-4 justify-center">
             <a href="{{ route('auth.register.verify.show') }}">
-              <button class="text-white font-bold px-4 py-2 bg-indigo-700 rounded-md">
+              <button class="text-white font-bold px-4 py-2 bg-indigo-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:bg-indigo-500">
                 {{ i18n.t('messages.profile_type_buy') }}
               </button>
             </a>
-            <button onclick="displayVendorDataForm()" class="text-slate-800 font-bold px-4 py-2 bg-yellow-500 rounded-md">
+            <button onclick="displayVendorDataForm()" class="text-slate-700 font-bold px-4 py-2 bg-yellow-500 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:bg-yellow-400">
                 {{ i18n.t('messages.profile_type_sell') }}
             </button>
         </div>
@@ -30,7 +30,7 @@
                 {{ i18n.t('messages.profile_type_company') }}
             </label>
             <input type="text" id="company_name" name="company_name" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-   focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('company_name') || '' }}">
+   focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" value="{{old('company_name') || '' }}">
             @inputError('company_name')
             <div style="color: red;">{{ $messages.join(', ') }}</div>
             @end
@@ -41,7 +41,7 @@
                 {{ i18n.t('messages.profile_type_vat') }}
             </label>
             <input type="text" id="vat_number" name="vat_number" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-   focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('vat_number') || '' }}">
+   focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" value="{{old('vat_number') || '' }}">
             @inputError('vat_number')
             <div style="color: red;">{{ $messages.join(', ') }}</div>
             @end
@@ -56,7 +56,9 @@
                     {{ i18n.t('messages.profile_type_street') }}
                 </label>
                 <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}" required>
+
+         focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" value="{{old('street') || '' }}" required>
+
                 @inputError('street')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
@@ -65,7 +67,9 @@
                     {{ i18n.t('messages.profile_type_nb') }}
                 </label>
                 <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}" required>
+
+         focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" value="{{old('number') || '' }}" required>
+
                 @inputError('number')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
@@ -74,7 +78,9 @@
                     {{ i18n.t('messages.profile_type_zip') }}
                 </label>
                 <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}" required>
+
+         focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" value="{{old('zip_code') || '' }}" required>
+
                 @inputError('zip_code')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
@@ -83,7 +89,8 @@
                     {{ i18n.t('messages.profile_type_city') }}
                 </label>
                 <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}" required>
+
+         focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" value="{{old('city') || '' }}" required>
                 @inputError('city')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
@@ -92,7 +99,7 @@
                     {{ i18n.t('messages.profile_type_country') }}
                 </label>
                 <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-         focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}" required>
+         focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" value="{{old('country') || '' }}" required>
                 @inputError('country')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end

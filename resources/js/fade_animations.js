@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   const appearOptions = {
     threshold: 0.15,
-    rootMargin: "0px 0px -100px 0px"
+    rootMargin: "0px 0px -5px 0px"
   };
 
   const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {

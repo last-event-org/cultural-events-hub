@@ -31,24 +31,24 @@
               </div>
               
               <div class="flex flex-col mb-3">
-                <label for="title" class="block text-gray-600">{{ i18n.t('messages.event_title') }}</label>
-                <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
+                <label for="title" class="block text-slate-600">{{ i18n.t('messages.event_title') }}</label>
+                <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
                 @inputError('title')
                   <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
               </div>
 
               <div class="flex flex-col mb-3">
-                <label for="subtitle" class="block text-gray-600">{{ i18n.t('messages.event_subtitle') }}</label>
-                <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
+                <label for="subtitle" class="block text-slate-600">{{ i18n.t('messages.event_subtitle') }}</label>
+                <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
                 @inputError('subtitle')
                   <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
               </div>
 
               <div class="flex flex-col mb-3">
-                <label for="description" class="block text-gray-600">{{ i18n.t('messages.event_desc') }}</label>
-                <textarea id="description" name="description" class="mt-1 block w-full h-[131px] px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
+                <label for="description" class="block text-slate-600">{{ i18n.t('messages.event_desc') }}</label>
+                <textarea id="description" name="description" class="mt-1 block w-full h-[131px] px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
                 @inputError('description')
                   <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
@@ -68,8 +68,8 @@
               <div class="flex flex-col text-sm">
                 <!-- Location fields -->
                 <div class="flex flex-col mb-3">
-                  <label for="name" class="block text-gray-600">{{ i18n.t('messages.event_locationName') }}</label>
-                  <input type="text" id="name" name="name" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
+                  <label for="name" class="block text-slate-600">{{ i18n.t('messages.event_locationName') }}</label>
+                  <input type="text" id="name" name="name" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
                   @inputError('name')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                   @end
@@ -78,15 +78,15 @@
                 <!-- Address fields -->
                 <div class="flex w-full mb-3 gap-2">
                   <div class="flex flex-col w-5/6">
-                    <label for="street" class="block text-gray-600">{{ i18n.t('messages.event_locationStreet') }}</label>
-                    <input type="text" id="street" name="street" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
+                    <label for="street" class="block text-slate-600">{{ i18n.t('messages.event_locationStreet') }}</label>
+                    <input type="text" id="street" name="street" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
                     @inputError('street')
                       <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
                   </div>
                   <div class="flex flex-col w-1/6">
-                    <label for="number" class="block text-gray-600">{{ i18n.t('messages.event_locationStreetNb') }}</label>
-                    <input type="text" id="number" name="number" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
+                    <label for="number" class="block text-slate-600">{{ i18n.t('messages.event_locationStreetNb') }}</label>
+                    <input type="text" id="number" name="number" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
                     @inputError('number')
                       <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
@@ -95,22 +95,22 @@
 
                 <div class="flex mb-3 gap-2">
                   <div class="flex flex-col w-1/6">
-                    <label for="zip_code" class="block text-gray-600">{{ i18n.t('messages.event_locationZip') }}</label>
-                    <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
+                    <label for="zip_code" class="block text-slate-600">{{ i18n.t('messages.event_locationZip') }}</label>
+                    <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
                     @inputError('zip_code')
                       <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
                   </div>
                   <div class="flex flex-col w-3/6">
-                    <label for="city" class="block text-gray-600">{{ i18n.t('messages.event_locationCity') }}</label>
-                    <input type="text" id="city" name="city" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
+                    <label for="city" class="block text-slate-600">{{ i18n.t('messages.event_locationCity') }}</label>
+                    <input type="text" id="city" name="city" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
                     @inputError('city')
                       <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
                   </div>
                   <div class="flex flex-col w-2/6">
-                    <label for="country" class="block text-gray-600">{{ i18n.t('messages.event_locationCountry') }}</label>
-                    <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
+                    <label for="country" class="block text-slate-600">{{ i18n.t('messages.event_locationCountry') }}</label>
+                    <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
                     @inputError('country')
                       <div style="color: red;">{{ $messages.join(', ') }}</div>
                     @end
@@ -121,12 +121,12 @@
                 <div class="flex text-sm gap-2 w-full">
                   <input type="hidden" name="timezone" id="timezone" value="">
                   <div class="flex flex-col w-1/2">
-                    <label for="event_start" class="block text-gray-600">{{ i18n.t('messages.event_start') }}</label>
-                    <input type="datetime-local" id="event_start" name="event_start" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
+                    <label for="event_start" class="block text-slate-600">{{ i18n.t('messages.event_start') }}</label>
+                    <input type="datetime-local" id="event_start" name="event_start" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
                   </div>
                   <div class="flex flex-col w-1/2">
-                    <label for="event_end" class="block text-gray-600">{{ i18n.t('messages.event_end') }}</label>
-                    <input type="datetime-local" id="event_end" name="event_end" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
+                    <label for="event_end" class="block text-slate-600">{{ i18n.t('messages.event_end') }}</label>
+                    <input type="datetime-local" id="event_end" name="event_end" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
                   </div>
                 </div>
                 @flashMessage('date')
@@ -147,20 +147,20 @@
             <div class="flex flex-col gap-3 w-screen sm:w-full text-sm px-2 sm:px-4 mb-5">
               <!-- Social media links -->
               <div>
-                <label for="facebook_link" class="block text-gray-600">{{ i18n.t('messages.event_fbLink') }}</label>
-                <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('facebook_link') || '' }}">
+                <label for="facebook_link" class="block text-slate-600">{{ i18n.t('messages.event_fbLink') }}</label>
+                <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('facebook_link') || '' }}">
               </div>
               <div>
-                <label for="instagram_link" class="block text-gray-600">{{ i18n.t('messages.event_igLink') }}</label>
-                <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('instagram_link') || '' }}">
+                <label for="instagram_link" class="block text-slate-600">{{ i18n.t('messages.event_igLink') }}</label>
+                <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('instagram_link') || '' }}">
               </div>
               <div>
-                <label for="website_link" class="block text-gray-600">{{ i18n.t('messages.event_webLink') }}</label>
-                <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
+                <label for="website_link" class="block text-slate-600">{{ i18n.t('messages.event_webLink') }}</label>
+                <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
               </div>
               <div>
-                <label for="youtube_link" class="block text-gray-600">{{ i18n.t('messages.event_ytLink') }}</label>
-                <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('youtube_link') || '' }}">
+                <label for="youtube_link" class="block text-slate-600">{{ i18n.t('messages.event_ytLink') }}</label>
+                <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('youtube_link') || '' }}">
               </div>
             </div>
           </section>
@@ -262,7 +262,7 @@
 
           <a class="flex items-center px-2 h-10 text-bold text-lg cursor-pointer text-slate-700 mb-6 mt-4" onclick="addPriceFields()">
             {{ i18n.t('messages.event_addPrice') }}
-            <svg class="mt-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <svg class="mt-1 h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
             </svg>
           </a>
@@ -285,7 +285,7 @@
         @endif
 
         <div class="flex justify-center my-2">
-          <button type="submit" class="uppercase bg-yellow-500 text-black font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
+          <button type="submit" class="uppercase bg-yellow-500 text-slate-700 font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
             {{ i18n.t('messages.event_create') }}
           </button> 
         </div>

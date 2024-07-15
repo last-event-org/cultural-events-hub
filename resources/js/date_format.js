@@ -32,8 +32,8 @@ function formatDate(startString, endString) {
 
   const formattedTime =
     startDate.minute !== '00'
-      ? `${startDate.toFormat("hh'h'mm")}`
-      : `${startDate.toFormat("hh'h'")}`
+      ? `${startDate.toFormat("HH'h'mm")}`
+      : `${startDate.toFormat("HH'h'")}`
 
   // Si pas de date de fin, on retourne la date de début avec l'année
   if (!endString) {
@@ -45,12 +45,12 @@ function formatDate(startString, endString) {
   if (endDate.day !== startDate.day || endDate.month !== startDate.month) {
     const formattedEnd =
       endDate.minute !== '00'
-        ? `${endDate.toFormat("ccc dd LLLL yyyy', ' hh'h'mm")}`
-        : `${endDate.toFormat("ccc dd LLLL yyyy', ' hh'h'")}`
+        ? `${endDate.toFormat("ccc dd LLLL yyyy', ' HH'h'mm")}`
+        : `${endDate.toFormat("ccc dd LLLL yyyy', ' HH'h'")}`
     formattedDate = `${longDateFrom[lang]} ${startDate.toFormat('ccc dd LLLL')} ${formattedTime} ${longDateTo[lang]} ${formattedEnd}`
   } else {
     const formattedEnd =
-      endDate.minute !== '00' ? `${endDate.toFormat("hh'h'mm")}` : `${endDate.toFormat("hh'h'")}`
+      endDate.minute !== '00' ? `${endDate.toFormat("HH'h'mm")}` : `${endDate.toFormat("HH'h'")}`
     formattedDate = `${startDate.toFormat('ccc dd LLLL')}, ${shortDateFrom[lang]} ${formattedTime} ${shortDateTo[lang]} ${formattedEnd}`
   }
 

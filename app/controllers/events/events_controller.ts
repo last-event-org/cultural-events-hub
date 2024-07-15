@@ -20,6 +20,7 @@ import { createPriceValidator } from '#validators/create_price'
 import User from '#models/user'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
+import { time } from 'console'
 
 export default class EventsController {
   /**
@@ -143,7 +144,7 @@ export default class EventsController {
    * Handle form submission for the create action
    */
   async store({ request, session, response, i18n, auth }: HttpContext) {
-    const event = await this.createEvent(request, session)
+    const event = await this.createEvent(request, session, i18n)
     if (event) {
       const user = auth.user
       if (user) event.vendorId = user.id
@@ -352,19 +353,30 @@ export default class EventsController {
     return ids
   }
 
-  async createEvent(request: HttpContext['request'], session: HttpContext['session']) {
+  async createEvent(
+    request: HttpContext['request'],
+    session: HttpContext['session'],
+    i18n: HttpContext['i18n']
+  ) {
+    const timezone = request.input('timezone')
     const payload = await request.validateUsing(createEventValidator)
-
+    console.log(timezone)
     const event = new Event()
 
-    event.title = payload.title.replaceAll('&#x27;', "'")
-    event.subtitle = payload.subtitle.replaceAll('&#x27;', "'")
-    event.description = payload.description.replaceAll('&#x27;', "'")
-    event.eventStart = DateTime.fromISO(payload.event_start)
-    event.eventEnd = DateTime.fromISO(payload.event_end)
+    event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    event.eventStart = DateTime.fromFormat(payload.event_start, "yyyy-MM-dd'T'HH:mm", {
+      zone: timezone,
+    }).toISO()
+    event.eventEnd = DateTime.fromFormat(payload.event_end, "yyyy-MM-dd'T'HH:mm", {
+      zone: timezone,
+    }).toISO()
+
     if (event.eventStart > event.eventEnd) {
+      const errorMsg = i18n.t('messages.errorEventDates')
       session.flash('date', {
-        message: "La début de l'événement doit être avant la fin",
+        message: errorMsg,
       })
     }
     if (payload.facebook_link) event.facebookLink = payload.facebook_link
@@ -888,6 +900,7 @@ export default class EventsController {
    * Handle form submission for the edit action
    */
   async update({ i18n, params, request, session, response }: HttpContext) {
+    const timezone = request.input('timezone')
     const payload = await request.validateUsing(createEventValidator)
 
     const event = await Event.query()
@@ -901,13 +914,18 @@ export default class EventsController {
       .first()
 
     if (event) {
-      event.title = payload.title.replaceAll('&#x27;', "'")
-      event.subtitle = payload.subtitle.replaceAll('&#x27;', "'")
-      event.description = payload.description.replaceAll('&#x27;', "'")
+      event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
 
       // Date
-      event.eventStart = DateTime.fromISO(payload.event_start)
-      event.eventEnd = DateTime.fromISO(payload.event_end)
+      event.eventStart = DateTime.fromFormat(payload.event_start, "yyyy-MM-dd'T'HH:mm", {
+        zone: timezone,
+      }).toISO()
+      event.eventEnd = DateTime.fromFormat(payload.event_end, "yyyy-MM-dd'T'HH:mm", {
+        zone: timezone,
+      }).toISO()
+
       if (event.eventStart > event.eventEnd) {
         const errorMsg = i18n.t('messages.errorEventDates')
         session.flash('errorEventDates', errorMsg)

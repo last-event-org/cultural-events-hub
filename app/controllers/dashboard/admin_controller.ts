@@ -21,37 +21,59 @@ export default class AdminController {
       return response.redirect().toRoute('home')
     }
 
-    let users: User[] = []
     const input = request.qs()
-
+    let array = input.input_words.split(' ')
+    let result = array.reduce((acc, current) => acc + current + `%`, `%`)
+    let users
     if (input.input_words) {
-      const wordsArray = input.input_words.split(' ')
+      users = await User.query()
+        .select(
+          'id',
+          'firstname',
+          'lastname',
+          'is_blocked',
+          'is_verified',
+          'email',
+          'role_id',
+          'company_name'
+        )
+        .preload('role', (roleQuery) => roleQuery.select('id', 'role_name'))
+        .where((user) => {
+          user
+            .whereILike('firstname', `%${result}%`)
+            .orWhereILike('lastname', `%${result}%`)
+            .orWhereILike('company_name', `%${result}%`)
+            .orWhereILike('email', `%${result}%`)
+        })
+        .distinct()
 
-      for (const word of wordsArray) {
-        const results = await User.query()
-          .select(
-            'id',
-            'firstname',
-            'lastname',
-            'is_blocked',
-            'is_verified',
-            'email',
-            'role_id',
-            'company_name'
-          )
-          .preload('role', (roleQuery) => roleQuery.select('id', 'role_name'))
-          .where((user) => {
-            user
-              .whereILike('firstname', `%${word}%`)
-              .orWhereILike('lastname', `%${word}%`)
-              .orWhereILike('company_name', `%${word}%`)
-              .orWhereILike('email', `%${word}%`)
-          })
-          .distinct()
+      // const wordsArray = input.input_words.split(' ')
+      // let users: User[] = []
+      // for (const word of wordsArray) {
+      //   const results = await User.query()
+      //     .select(
+      //       'id',
+      //       'firstname',
+      //       'lastname',
+      //       'is_blocked',
+      //       'is_verified',
+      //       'email',
+      //       'role_id',
+      //       'company_name'
+      //     )
+      //     .preload('role', (roleQuery) => roleQuery.select('id', 'role_name'))
+      //     .where((user) => {
+      //       user
+      //         .whereILike('firstname', `%${word}%`)
+      //         .orWhereILike('lastname', `%${word}%`)
+      //         .orWhereILike('company_name', `%${word}%`)
+      //         .orWhereILike('email', `%${word}%`)
+      //     })
+      //     .distinct()
 
-        // Merge results into events array
-        users = [...users, ...results]
-      }
+      //   // Merge results into events array
+      //   users = [...users, ...results]
+      // }
 
       return view.render('pages/dashboard/admin/admin-panel', {
         users: users.length === 0 ? null : users,

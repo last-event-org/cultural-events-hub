@@ -428,8 +428,8 @@ export default class EventsController {
     event: Event
   ) {
     const bodyPrices = request.body().prices
-    const values = Object.values(bodyPrices[0]);
-    const firstElmIsNotNull = values.some(element => element !== null);
+    const values = Object.values(bodyPrices[0])
+    const firstElmIsNotNull = values.some((element) => element !== null)
     try {
       await createPriceValidator.validate(bodyPrices[0])
     } catch (error) {
@@ -860,10 +860,9 @@ export default class EventsController {
     const bodyPrices = request.body().prices
 
     if (bodyPrices) {
-
       // we check if at least one price element (the first one) is valid
-      const priceFields = Object.values(bodyPrices[0]);
-      const firstElmIsNotNull = priceFields.some(element => element !== null);
+      const priceFields = Object.values(bodyPrices[0])
+      const firstElmIsNotNull = priceFields.some((element) => element !== null)
       try {
         await createPriceValidator.validate(bodyPrices[0])
       } catch (error) {
@@ -871,7 +870,7 @@ export default class EventsController {
         session.flash('errorRequiredPriceFields', errorMsg)
         return false
       }
-      
+
       if (firstElmIsNotNull) {
         // we delete all existing prices associated with current event
         const prices = event.prices
@@ -883,14 +882,14 @@ export default class EventsController {
         bodyPrices.forEach(async (priceData: any) => {
           try {
             const payload = await createPriceValidator.validate(priceData)
-  
+
             if (payload) {
               const price = new Price()
               if (payload.price_description) price.description = payload.price_description
               if (payload.regular_price) price.regularPrice = payload.regular_price
               if (payload.discounted_price) price.discountedPrice = payload.discounted_price
               if (payload.available_qty) price.availableQty = payload.available_qty
-  
+
               await price.save()
               await price.related('event').associate(event)
             }
@@ -904,7 +903,6 @@ export default class EventsController {
           }
         })
         return true
-
       } else {
         const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
         session.flash('errorMissingPrices', errorMsg)

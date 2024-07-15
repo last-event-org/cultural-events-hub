@@ -6,11 +6,11 @@
   </div>
   <div class="flex flex-col gap-2 pb-8 ">
     @if(userFavourites.length > 0)
-    @each(vendor in userFavourites)
-      @!component('components/dashboard/favourite_element', {
-        vendor: vendor, vendorEvents: vendorEvents[vendor.id]
-      })
-    @end
+      @each(vendor in userFavourites)
+        @!component('components/dashboard/favourite_element', {
+          vendor: vendor, vendorEvents: vendorEvents[vendor.id]
+        })
+      @end
     @else
       <p>{{i18n.t('messages.dashboard_emptyFavourites')}}</p>
     @endif

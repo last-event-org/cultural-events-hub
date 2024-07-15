@@ -1,17 +1,17 @@
 @layout.auth({pageTitle: i18n.t('messages.profile_type_title') })
 
 
-        <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">
+        <h2 class="text-2xl font-bold mb-6 text-center text-slate-700">
             {{-- Bienvenue {{ user.firstname }}! Que voulez vous faire ? --}}
             {{{ i18n.t('messages.profile_type_welcome', { userFirstname: user.firstname }) }}}
         </h2>
         <div class="flex gap-4 justify-center">
             <a href="{{ route('auth.register.verify.show') }}">
-              <button class="p-4 bg-teal-400 rounded-md">
+              <button class="text-white font-bold px-4 py-2 bg-indigo-700 rounded-md">
                 {{ i18n.t('messages.profile_type_buy') }}
               </button>
             </a>
-            <button onclick="displayVendorDataForm()" class="p-4 bg-yellow-500 rounded-md">
+            <button onclick="displayVendorDataForm()" class="text-slate-800 font-bold px-4 py-2 bg-yellow-500 rounded-md">
                 {{ i18n.t('messages.profile_type_sell') }}
             </button>
         </div>
@@ -26,10 +26,10 @@
         @end
 
         <div>
-            <label for="company_name" class="block text-gray-600">
+            <label for="company_name" class="block text-slate-600">
                 {{ i18n.t('messages.profile_type_company') }}
             </label>
-            <input type="text" id="company_name" name="company_name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+            <input type="text" id="company_name" name="company_name" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
    focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('company_name') || '' }}">
             @inputError('company_name')
             <div style="color: red;">{{ $messages.join(', ') }}</div>
@@ -37,10 +37,10 @@
         </div>
 
         <div>
-            <label for="vat_number" class="block text-gray-600">
+            <label for="vat_number" class="block text-slate-600">
                 {{ i18n.t('messages.profile_type_vat') }}
             </label>
-            <input type="text" id="vat_number" name="vat_number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+            <input type="text" id="vat_number" name="vat_number" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
    focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('vat_number') || '' }}">
             @inputError('vat_number')
             <div style="color: red;">{{ $messages.join(', ') }}</div>
@@ -48,50 +48,50 @@
         </div>
 
         <div>
-            <div class="block text-gray-800 text-xl font-semibold my-4">
+            <div class="block text-slate-800 text-xl font-semibold my-4">
                 <h2>{{ i18n.t('messages.profile_type_billingAddr') }}</h2>
             </div>
             <div class="flex flex-col gap-2 my-4">
-                <label for="street" class="block text-gray-600">
+                <label for="street" class="block text-slate-600">
                     {{ i18n.t('messages.profile_type_street') }}
                 </label>
-                <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
                 @inputError('street')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
 
-                <label for="number" class="block text-gray-600">
+                <label for="number" class="block text-slate-600">
                     {{ i18n.t('messages.profile_type_nb') }}
                 </label>
-                <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
                 @inputError('number')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
 
-                <label for="zip_code" class="block text-gray-600">
+                <label for="zip_code" class="block text-slate-600">
                     {{ i18n.t('messages.profile_type_zip') }}
                 </label>
-                <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
                 @inputError('zip_code')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
 
-                <label for="city" class="block text-gray-600">
+                <label for="city" class="block text-slate-600">
                     {{ i18n.t('messages.profile_type_city') }}
                 </label>
-                <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
                 @inputError('city')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
 
-                <label for="country" class="block text-gray-600">
+                <label for="country" class="block text-slate-600">
                     {{ i18n.t('messages.profile_type_country') }}
                 </label>
-                <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+                <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
          focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
                 @inputError('country')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
@@ -99,8 +99,8 @@
             </div>
         </div>
 
-        <button type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+        <button type="submit" class="w-full bg-yellow-500 text-slate-700 font-bold py-2 px-4 rounded-md hover:bg-yellow-400 
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
                   {{ i18n.t('messages.profile_type_createAccount') }}
         </button>
 

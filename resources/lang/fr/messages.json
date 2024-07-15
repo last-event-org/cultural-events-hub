@@ -325,5 +325,14 @@
 
   "mail_reset_password_subject": "Demande de nouveau mot de passe",
   "mail_verify_subject": "Confirmer votre adresse mail",
-  "mail_account_activated_subject": "Bienvenue sur next Events"
+  "mail_account_activated_subject": "Bienvenue sur Next Events",
+
+  "footer_developpers": "Développeurs",
+  "footer_thanks": "Remerciements",
+  "footer_privacy_policy": "Politique de confidentialité",
+  "footer_cookie_policy": "Politique des cookies",
+  "footer_terms_and_conditions":"Conditions générales",
+  "footer_pricing_advertising": "Tarifs / Publicités",
+  "footer_events_in":"Événements à"
+
 }

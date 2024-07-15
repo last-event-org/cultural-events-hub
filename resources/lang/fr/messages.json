@@ -297,6 +297,7 @@
   "errorDestroyPrice": "Il y a un problème avec la suppression du prix. Réessayer ou contacter un admin.",
   "errorCreatePrice": "Il y a un problème avec la création des prix. Réessayer ou contacter un admin.",
   "errorMissingPrices": "Au moins un prix doit être ajouté.",
+  "errorRequiredPriceFields": "Les champs 'Catégorie de prix' et 'Prix' sont requis",
   "errorAddFavourite": "Il y a un problème avec l'ajout de l'organisateur à vos favoris. Réessayer ou contacter un admin",
   "errorDestroyFavourite": "Il y a un problème avec la suppression de l'organisateur de vos favoris. Réessayer ou contacter un admin",
   "errorAddWishlist": "Il y a un problème avec l'ajout de l'événement à votre wishlist. Réessayer ou contacter un admin",

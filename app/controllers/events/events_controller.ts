@@ -496,13 +496,11 @@ export default class EventsController {
   }
 
   async getCoordinatesFromAddress(city: string, street: string, zip: number, number: string) {
-    console.log('getCoordinatesFromAddress')
     try {
       const response = await fetch(
         `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
-      console.log(datas)
       return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
     } catch (e) {
       console.log('ERROR')
@@ -694,9 +692,6 @@ export default class EventsController {
           })
           .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
           .limit(5)
-
-        console.log('\n\n LINKEDEVENTS \n\n')
-        console.log(linkedEvents)
       }
 
       if (!event) {
@@ -847,39 +842,56 @@ export default class EventsController {
     const bodyPrices = request.body().prices
 
     if (bodyPrices) {
-      // we delete all existing prices associated with current event
-      const prices = event.prices
-      prices.forEach((price: Price) => {
-        price.delete()
-      })
 
-      // we process one price element at a time
-      bodyPrices.forEach(async (priceData: any) => {
-        try {
-          const payload = await createPriceValidator.validate(priceData)
+      // we check if at least one price element (the first one) is valid
+      const priceFields = Object.values(bodyPrices[0]);
+      const firstElmIsNotNull = priceFields.some(element => element !== null);
+      try {
+        await createPriceValidator.validate(bodyPrices[0])
+      } catch (error) {
+        const errorMsg = i18n.t('messages.errorRequiredPriceFields') + ' '
+        session.flash('errorRequiredPriceFields', errorMsg)
+        return false
+      }
+      
+      if (firstElmIsNotNull) {
+        // we delete all existing prices associated with current event
+        const prices = event.prices
+        prices.forEach((price: Price) => {
+          price.delete()
+        })
 
-          if (payload) {
-            const price = new Price()
-            if (payload.price_description) price.description = payload.price_description
-            if (payload.regular_price) price.regularPrice = payload.regular_price
-            if (payload.discounted_price) price.discountedPrice = payload.discounted_price
-            if (payload.available_qty) price.availableQty = payload.available_qty
-
-            await price.save()
-            await price.related('event').associate(event)
+        // we process one price element at a time
+        bodyPrices.forEach(async (priceData: any) => {
+          try {
+            const payload = await createPriceValidator.validate(priceData)
+  
+            if (payload) {
+              const price = new Price()
+              if (payload.price_description) price.description = payload.price_description
+              if (payload.regular_price) price.regularPrice = payload.regular_price
+              if (payload.discounted_price) price.discountedPrice = payload.discounted_price
+              if (payload.available_qty) price.availableQty = payload.available_qty
+  
+              await price.save()
+              await price.related('event').associate(event)
+            }
+          } catch (error) {
+            let errorMsg = i18n.t('messages.errorEditEventPrices') + ' '
+            error.messages.forEach((msg: string) => {
+              errorMsg += msg
+            })
+            session.flash('errorEditEventPrices', errorMsg)
+            return false
           }
-        } catch (error) {
-          let errorMsg = i18n.t('messages.errorCreatePrice') + ' '
-          error.messages.forEach((msg: string) => {
-            errorMsg += msg
-          })
-          session.flash('errorCreatePrice', errorMsg)
-          return false
-        }
-      })
-      return true
+        })
+        return true
+
+      } else {
+        const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
+        session.flash('errorMissingPrices', errorMsg)
+      }
     } else {
-      // TODO this error message is not displayed when no prices are entered (payload empty)
       const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
       session.flash('errorMissingPrices', errorMsg)
     }

@@ -297,6 +297,7 @@
   "errorDestroyPrice": "There is a problem deleting the price. Retry or contact an admin.",
   "errorCreatePrice": "There is a problem creating the prices. Retry or contact an admin.",
   "errorMissingPrices": "At least one price must be added.",
+  "errorRequiredPriceFields": "The fields 'Price Category' and 'Price' are required",
   "errorAddFavourite": "There is a problem adding the organizer to your favorites. Retry or contact an admin.",
   "errorDestroyFavourite": "There is a problem removing the organizer from your favorites. Retry or contact an admin.",
   "errorAddWishlist": "There is a problem adding the event to your wishlist. Retry or contact an admin.",

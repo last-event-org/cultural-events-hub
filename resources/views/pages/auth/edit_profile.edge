@@ -69,7 +69,8 @@
               country: user.billingAddress.country,
             })
           @else
-            @!component('components/dashboard/billing_address_form')
+            @!component('components/dashboard/billing_address_form', {companyName: user.companyName,
+              vatNumber: user.vatNumber,})
           @endif
         </div>
        

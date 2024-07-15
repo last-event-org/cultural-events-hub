@@ -419,6 +419,13 @@ export default class EventsController {
     console.log('\n\n\n\nbodyPrices: ', bodyPrices);
     const values = Object.values(bodyPrices[0]);
     const firstElmIsNotNull = values.some(element => element !== null);
+    try {
+      await createPriceValidator.validate(bodyPrices[0])
+    } catch (error) {
+      const errorMsg = i18n.t('messages.errorRequiredPriceFields') + ' '
+      session.flash('errorRequiredPriceFields', errorMsg)
+      return false
+    }
 
     if (firstElmIsNotNull) {
       // we process one price element at a time

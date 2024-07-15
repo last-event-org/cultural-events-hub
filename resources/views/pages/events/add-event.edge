@@ -275,6 +275,14 @@
           </div>
         @endif
 
+        @if(flashMessages.has('errorRequiredPriceFields'))
+          <div>
+            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+              {{ flashMessages.get('errorRequiredPriceFields') }}
+            </h2>
+          </div>
+        @endif
+
         <div class="flex justify-center my-2">
           <button type="submit" class="uppercase bg-yellow-500 text-black font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
             {{ i18n.t('messages.event_create') }}

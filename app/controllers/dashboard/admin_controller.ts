@@ -58,6 +58,7 @@ export default class AdminController {
         searchParams: request.qs().input_words,
       })
     }
+    return response.redirect().toRoute('admin.index')
   }
 
   /**

@@ -1,3 +1,11 @@
+import path from 'path';
+import dotenv from 'dotenv';
+
+// Load environment variables from the .env file
+const envPath = process.env.ENV_PATH || '.';
+dotenv.config({ path: path.resolve(envPath, '.env') });
+
+
 import 'reflect-metadata';
 import { Ignitor, prettyPrintError } from '@adonisjs/core';
 const APP_ROOT = new URL('../', import.meta.url);

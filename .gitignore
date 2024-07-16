@@ -11,6 +11,8 @@ tmp
 
 # Frontend assets compiled code
 public/assets
+database/sql queries/
+etc/
 
 # Build tools specific
 npm-debug.log

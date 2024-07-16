@@ -11,7 +11,7 @@
 
 </head>
 
-<body class=" bg-gray-100">
+<body class=" bg-slate-50">
 @include("pages/partials/header")
 <div class="flex justify-center mt-12">
     <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
@@ -22,7 +22,7 @@
   
 @if(city)
 
-  <section class="flex flex-col bg-gray-50 items-center  mb-6 mx-auto ">
+  <section class="flex flex-col bg-slate-50 items-center  mb-6 mx-auto ">
     @include("pages/partials/filter_map")
   </section>
 @end
@@ -46,7 +46,7 @@
     </div>
 </ul>
  <div id="poi-list"></div>
-     <div class="flex flex-wrap justify-center bg-gray-50  border shadow gap-10 container mx-auto my-6 py-10">
+     <div class="flex flex-wrap justify-center bg-slate-50  border shadow gap-10 container mx-auto my-6 py-10">
 
     <div x-data="dataHandler()" x-init="dataHandler()">
     <button @click="fetchData">{{ i18n.t('messages.event_fetch') }}</button>

@@ -17,6 +17,8 @@ import { Ignitor, prettyPrintError } from '@adonisjs/core'
 const envPath = process.env.ENV_PATH || '.'
 dotenv.config({ path: path.resolve(envPath, '.env') })
 
+const PORT = process.env.PORT || ''
+
 /**
  * URL to the application root. AdonisJS need it to resolve
  * paths to file and directories for scaffolding commands

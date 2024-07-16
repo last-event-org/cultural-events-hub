@@ -5,7 +5,8 @@
   "type": "module",
   "license": "UNLICENSED",
   "engines": {
-    "node": "21.x"
+    "node": "22.x",
+    "npm": "10.x"
   },
   "scripts": {
     "start": "node bin/server.js",

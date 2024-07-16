@@ -1,0 +1,31 @@
+<section class="2xl:container w-full mt-5 mb-4">
+  <div class="sm:mx-4 mx-2 2xl:mx-0">
+    <div class="flex flex-col sm:flex-row sm:items-end">
+      <div class="flex items-center whitespace-nowrap mb-2 sm:mb-0">
+        <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+        <h1 class="text-2xl font-bold">xt Events :</h1>
+      </div>
+      <h2 class="text-slate-700 sm:pl-2 text-lg lg:text-xl italic font-semibold">
+        @if(title == "home")
+        {{i18n.t('messages.events_title_home')}}
+        @elseif(title == "tickets")
+          {{i18n.t('messages.events_title_tickets')}}
+        @elseif((title == "agenda"))
+          {{i18n.t('messages.events_title')}}
+        @else
+          {{i18n.t('messages.events_search_title')}}
+          {{city ? i18n.t('messages.events_search_city') + " " + city : "" }}
+          {{date ? i18n.t('messages.events_search_date') + " " + date : "" }}
+          {{category?.name ? i18n.t('messages.events_search_category') : " " }}
+          {{category?.name ?? ''}} {{categoryType ? '-' : ""}}
+          {{categoryType ?? ''}}
+          {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
+          {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
+        @end
+      </h2>
+    </div>
+    <div class="bg-slate-500 h-[0.5px] w-full mt-2 mb-10"></div>
+  </div>
+ 
+</section> 
+

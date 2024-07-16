@@ -1,6 +1,5 @@
 # Dependencies and AdonisJS build
 node_modules
-build
 tmp
 
 # Secrets
@@ -10,7 +9,6 @@ tmp
 .env.development.local
 
 # Frontend assets compiled code
-public/assets
 
 # Build tools specific
 npm-debug.log

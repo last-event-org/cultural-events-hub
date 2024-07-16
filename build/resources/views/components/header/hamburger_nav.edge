@@ -1,0 +1,125 @@
+<div class="navbar-menu relative z-50 hidden">
+  <div class="navbar-backdrop fixed inset-0 bg-slate-800/60"></div>
+    <nav id="mobile-nav" class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto transition-transform duration-300 ease-in-out transform -translate-x-full">
+      <div class="flex justify-between mb-8">
+        <div class="flex">
+          <a class="flex justify-center text-2xl font-bold" href="/">
+            <img src="/public/svg/logo-NE.svg" alt="Next Event logo">
+            <h1 class="relative">xt<span class="ml-2 relative">Event
+              <hr class="absolute -z-10 w-16 h-2 bottom-1 left-0  bg-yellow-500">
+            </span>
+          </a>
+        </div>
+        <button class="navbar-close">
+          X
+        </button>
+      </div>
+      <div>
+        <ul>
+          <li class="mt-2 mb-4">
+            @!filters.search({route: route('events.search-word'), placeholder: i18n.t("messages.form_placeholder_search_word")})
+          </li>
+          @eval(await auth.check())
+            @if(await auth.isAuthenticated)
+            @if(await auth.user.isAdmin())
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50  hover:text-slate-600 rounded-full duration-300"
+              href={{ route('admin.index') }}>{{ i18n.t('messages.header_admin') }}</a>
+          </li>
+            @end
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50  hover:text-slate-600 rounded-full duration-300"
+              href={{ route('auth.dashboard') }}>{{ i18n.t('messages.header_dashboard') }}</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50  hover:text-slate-600 rounded-full duration-300"
+              href={{ route('auth.profile.show') }}>{{ i18n.t('messages.header_profile') }}</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50  hover:text-slate-600 rounded-full duration-300"
+              href={{ route('wishlist.index') }}>{{ i18n.t('messages.header_wishlist') }}</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50  hover:text-slate-600 rounded-full duration-300"
+              href={{ route('favourite.index') }}>{{ i18n.t('messages.header_favourites') }}</a>
+          </li>
+
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50  hover:text-slate-600 rounded-full duration-300"
+              href={{ route('auth.profile.orders') }}>{{ i18n.t('messages.header_boughtTickets') }}</a>
+          </li>
+          
+              @if((await auth.user.isVendor() || await auth.user.isAdmin()))
+
+              <li class="mb-1">
+                <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50  hover:text-slate-600 rounded-full duration-300"
+                  href={{ route('auth.vendor.events') }}>{{ i18n.t('messages.header_eventsPublished') }}</a>
+              </li>
+
+              <li class="mb-1">
+                <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50  hover:text-slate-600 rounded-full duration-300"
+                  href={{ route('auth.vendor.orders') }}>{{ i18n.t('messages.header_soldTickets') }}</a>
+              </li>
+
+              @end
+            @end
+
+
+
+          
+
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400  hover:bg-slate-50 hover:text-slate-600 rounded-full duration-300"
+              href="{{route('events.tickets')}}">Tickets</a>
+          </li>
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400 hover:bg-slate-50 hover:text-slate-600 rounded-full duration-300"
+              href="{{route('events.index')}}">Agenda</a>
+          </li>
+
+          @if(!auth.isAuthenticated)
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400 hover:bg-slate-50 hover:text-slate-600 rounded-full duration-300"
+              href={{ route('auth.login.show') }}>{{ i18n.t('messages.header_add_event') }}</a>
+          </li>
+          @else
+          <li class="mb-1">
+            <a class="block p-4 text-sm font-semibold text-slate-400 hover:bg-slate-50 hover:text-slate-600 rounded-full duration-300"
+              href={{ route('events.create') }}>{{ i18n.t('messages.header_add_event') }}</a>
+          </li>
+          @end
+          
+        </ul>
+      </div>
+    <div class="mt-auto">
+
+      @if(!auth.isAuthenticated)
+
+      <div class="flex text-center mb-1 mx-5 gap-4">
+        <a class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-slate-900 font-bold  rounded-xl transition duration-200"
+          href={{ route('auth.login.show') }}>
+          {{ i18n.t('messages.header_login') }}</a>
+
+        <a class="block lg:inline-block py-2 px-6 bg-cyan-700 hover:bg-cyan-500 text-sm text-white  font-bold rounded-xl transition duration-200" href={{ route('auth.register') }}>
+
+          {{ i18n.t('messages.header_signup') }}</a>
+      </div>
+
+      @else
+
+      <form method="POST" action="{{ route('auth.logout') }}">
+        {{ csrfField() }}
+        <button type="submit"
+          class="block lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-slate-50 hover:bg-slate-200 text-sm text-slate-700 font-bold  rounded-xl transition duration-200"
+          href={{ route('auth.login.show') }}>
+          {{ i18n.t('messages.header_logout') }}</button>
+      </form>
+
+      @end
+      
+      <p class="mt-8 mb-4 text-xs text-center text-slate-700">
+        <span>Copyright © 2024 - SaJoCh</span>
+      </p>
+    </div>
+  </nav>
+</div>

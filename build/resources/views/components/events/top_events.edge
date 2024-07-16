@@ -1,0 +1,37 @@
+<section class="relative w-full h-full">
+
+  <h3 class="absolute -top-8 left-0 font-bold   text-lg text-slate-700">
+    {{title}} :
+  </h3>
+
+  <div class="autoscroll scrollbar-hide bg-slate-50 w-full sm:rounded-lg border shadow h-full overflow-y-auto">
+    <div class="scroll-content">
+      @each(event in events)
+        <a href="{{ route('events.show', [event.id]) }}" class="relative block">
+          <div class="w-full relative my-0.5">
+            <img class="w-full" 
+              src="{{event.media[0]?.path ?? '/images/dummies/No_image.png'}}" 
+              alt="{{event.media[0]?.altName ?? 'No picture available'}}"
+              onerror="this.onerror=null; this.src='/images/dummies/No_image.png';">
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <div class="flex flex-col items-center w-full px-2">
+                <h3 class="text-center uppercase text-xs font-bold text-white bg-slate-800/50 px-3 py-1 rounded max-w-[80%] w-auto">
+                  {{event.title}}
+                  <br>
+                  <span class="font-semibold capitalize text-xs text-center italic ">
+                    {{-- {{event.location.name}}
+                    <br> --}}
+                    {{event.location.city}}
+                  </span>
+                </h3>
+              </div>
+            </div>
+          </div>
+        </a>
+      @end
+    </div>
+  </div>
+
+</section>
+
+<script src="/resources/js/top_events.js"></script>

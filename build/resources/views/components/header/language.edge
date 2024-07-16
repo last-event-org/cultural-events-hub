@@ -1,0 +1,24 @@
+<div class="language-dropdown relative inline-block text-left">
+  <div>
+    <button type="button" class="language-menu-button py-2 w-full" aria-expanded="false" aria-haspopup="true">
+      <img class="h-6 w-6" src="/svg/flag_{{i18n.locale}}.svg" alt="icon">
+    </button>
+  </div>
+
+  <div class="language-menu hidden absolute -right-6 top-[3.2rem] mt-2 w-36 rounded-3xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" tabindex="-1">
+    <div class="py-4 px-2" role="none">
+      <a href="/?locale=fr" class="flex items-center justify-end gap-x-2 px-4 py-2 rounded-full text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900 duration-300" role="menuitem" tabindex="-1">
+        Français
+       <img class="h-6 w-6" src="/svg/flag_fr.svg" alt="icon">
+      </a>
+            <a href="/?locale=nl" class="flex items-center justify-end gap-x-2 px-4 py-2 rounded-full text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900 duration-300" role="menuitem" tabindex="-1">
+        Dutch
+          <img class="h-6 w-6" src="/svg/flag_nl.svg" alt="icon">
+      </a>
+      <a href="/?locale=en" class="flex items-center justify-end gap-x-2 px-4 py-2 rounded-full text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900 duration-300" role="menuitem" tabindex="-1">
+        English
+        <img class="h-6 w-6" src="/svg/flag_en.svg" alt="icon">
+      </a>
+    </div>
+  </div>
+</div>

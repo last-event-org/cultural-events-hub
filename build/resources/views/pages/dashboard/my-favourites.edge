@@ -1,0 +1,20 @@
+@layout.dashboard({pageTitle: i18n.t('messages.favourites_title'), svg: 'favourites' }) 
+
+  @if(userFavourites.length === 0)
+  
+    <p>{{i18n.t('messages.dashboard_emptyFavourites')}}</p>
+
+  @else
+    <div class="flex flex-col gap-2">
+      @each(vendor in userFavourites)
+        <ul>
+
+      @!component('components/dashboard/favourite_element', {
+        vendor: vendor, vendorEvents: vendorEvents[vendor.id]
+      })
+      @end
+        </ul>
+    </div>
+
+  @end
+@end

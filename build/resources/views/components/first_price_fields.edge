@@ -1,0 +1,47 @@
+<fieldset class="price-section w-screen sm:w-[90%] sm:rounded-3xl p-6  bg-white border shadow-sm my-4" name="prices[]">
+
+    <div class="flex  gap-2 w-full">
+      {{-- Categories --}}
+      <div class="w-1/2 ">
+        <label for="price_description" class="block text-slate-600">{{ i18n.t('messages.prices_categ') }}</label>
+        <input type="text" id="price_description" name="prices[0][price_description]"
+          class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+          value="{{ price && price.description ? price.description : '' }}" placeholder="Ex: Adulte, Enfant, VIPO">
+          @inputError('prices.0.price_description')
+            <div style="color: red;">{{ $messages.join(', ') }}</div>
+          @end       
+      </div>
+      {{-- Places  --}}
+      <div class=" w-1/2">
+        
+        <label class="block text-slate-600">{{ i18n.t('messages.prices_avlAt') }}</label>
+        <input class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+          type="text" name="prices[0][available_qty]" value="{{ price && price.availableQty ? price.availableQty : '' }}" placeholder="0">  
+      </div> 
+    </div>
+      
+    <div class="flex gap-2 w-full mt-2">
+      {{-- Prix Normal --}}
+      <div class="w-1/2">
+        <label for="regular_price" class="flex text-slate-600">{{ i18n.t('messages.prices_tarif') }}</label>
+        <input class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+          type="text" name="prices[0][regular_price]" id="regular_price" value="{{ price && price.regularPrice ? price.regularPrice : '' }}" placeholder="0.00">
+          @inputError('prices.0.regular_price')
+            <div style="color: red;">{{ $messages.join(', ') }}</div>
+          @end
+      </div>
+      {{-- Prix discount   --}}
+        <div class="discounted-row w-1/2 ">
+          <label class="block text-slate-600">{{ i18n.t('messages.prices_discount') }}</label>
+          <input class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
+            focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+            type="text" name="prices[0][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
+        </div>  
+      </div>
+      
+    </fieldset>
+  
+      

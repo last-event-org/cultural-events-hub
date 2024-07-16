@@ -1,0 +1,11 @@
+@layout.dashboard({pageTitle: i18n.t('messages.dashboard_vendor_orders'), svg: 'sales' }) 
+    @if(!orders)
+      <p>{{i18n.t('messages.dashboard_vendor_no_orders')}}</p>
+      @else
+      <div class="flex flex-col gap-4 pb-8">
+        @each((order, index) in orders)
+          @!component('components/dashboard/vendor/orders_details', {event: order.$extras, orderLines: orderLines[order.$extras.eventId]})
+        @end
+        </div>
+    @end
+@end

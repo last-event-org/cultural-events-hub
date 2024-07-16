@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="{{ i18n.locale }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Events - {{pageTitle}}</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class="bg-slate-50">    
+  @include("pages/partials/header")
+  <main class="flex flex-col items-center min-h-screen ">
+
+    <div class=" bg-yellow-500 mb-20  text-slate-600 flex flex-col border rounded-3xl shadow mt-10 w-screen sm:w-[500px]">
+      <h1 class=" font-bold text-xl uppercase text-center rounded-t-3xl my-6 bg-yellow-500  ">
+        {{pageTitle}}
+      </h1>
+      <div class="p-8 bg-white rounded-b-3xl">
+
+        @if(flashMessages.has('error'))
+            @!component('components/errors/flashmessage', { message: flashMessages.get('error') })
+        @elseif(flashMessages.has('success'))
+            @!component('components/errors/flashmessage', { message: flashMessages.get('success'), success: true })
+        @end
+
+        {{{await $slots.main()}}}
+
+    </div>
+    </div>
+  </main>
+  @include("pages/partials/footer")
+  <script src="/resources/js/show_password.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+@layout.auth({pageTitle: i18n.t('messages.editProfile_title') })
+
+
+      <form action={{ route('auth.register.update') }} method="POST" class="space-y-4">
+        {{ csrfField() }}
+        <div>
+          <label for="first_name" class="block text-slate-600">
+            {{ i18n.t('messages.editProfile_firstname') }}
+          </label>
+          <input type="text" id="first_name" name="first_name" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
+            focus:ring-yellow-500 focus:border-yellow-500  sm:text-sm" placeholder="Dupont" value="{{ user.firstname }}">
+        </div>
+        <div>
+          <label for="last_name" class="block text-slate-600">
+            {{ i18n.t('messages.editProfile_name') }}
+          </label>
+          <input type="text" id="last-name" name="last_name" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
+           focus:ring-yellow-500 focus:border-yellow-500   sm:text-sm" placeholder="Jean" value="{{ user.lastname }}">
+        </div>
+
+        <div>
+          <label for="email" class="block text-slate-600">
+            {{ i18n.t('messages.editProfile_creds') }}
+          </label>
+          <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
+           focus:ring-yellow-500 focus:border-yellow-500  sm:text-sm" placeholder="vous@exemple.com" value="{{ user.email }}">
+           
+           @inputError('email')
+              @each(message in $messages)
+                <p> {{ message }} </p>
+              @end
+            @end
+        </div>
+
+        @if(flashMessages.has('mandatoryProfileData'))
+        <div>
+          <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+            {{ flashMessages.get('mandatoryProfileData') }}
+          </h2>
+        </div>
+        @endif
+        <div class="flex justify-center">
+          <a href="{{route('auth.change-password.show')}}" class="bg-yellow-500 text-slate-800 font-semibold py-2 px-4 rounded-md hover:bg-yellow-400 
+          focus:outline-none  focus:ring-offset-2 focus:ring-yellow-500 focus:border-yellow-500  ">
+            {{ i18n.t('messages.editProfile_change_password') }}
+          </a>
+        </div>
+        <button type="button" id="billing__adress--button" class="flex justify-center   text-sm font-semibold text-slate-600 hover:text-slate-950 w-full">
+          <div class="flex flex-col justify-between items-center w-full text-slate-800 text-xl font-semibold my-4">
+            <h2>{{ i18n.t('messages.editProfile_billData') }}</h2>
+            <p class="text-sm">
+              {{ i18n.t('messages.editProfile_instruction') }}
+            </p>
+            <svg class="-mr-1 h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </button>
+
+        <div class="hidden opacity-0 scale-50 duration-500" id="billing__adress--component">
+          @if(user.billingAddress)
+            @!component('components/dashboard/billing_address_form', {
+              companyName: user.companyName,
+              vatNumber: user.vatNumber,
+              street: user.billingAddress.street,
+              number: user.billingAddress.number,
+              zipCode: user.billingAddress.zipCode,
+              city: user.billingAddress.city,
+              country: user.billingAddress.country,
+            })
+          @else
+            @!component('components/dashboard/billing_address_form', {companyName: user.companyName,
+              vatNumber: user.vatNumber,})
+          @endif
+        </div>
+       
+        <div class="flex justify-center">
+          <button type="submit" class="border shadow uppercase bg-indigo-700 text-white font-semibold py-2 px-6 rounded-md hover:bg-indigo-500
+             focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:ring-2  ">
+          {{ i18n.t('messages.editProfile_save') }}
+          </button>
+        </div>       
+      </form>
+
+{{-- 
+      <div class="mt-4">
+        @!component('components/dashboard/button_create_vendor')
+      </div> --}}
+
+      @end

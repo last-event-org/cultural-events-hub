@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="{{ i18n.locale }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Events - {{event.title}} </title>
+  @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/map_details.js','resources/js/favourites.js', 'resources/js/date_format.js'])
+</head>
+
+<body class="bg-slate-50">
+
+  @include("pages/partials/header")
+
+  <main class= "2xl:container mb-10 mx-auto relative ">
+    @if(flashMessages.has('error'))
+      @!component('components/notifications/error', { message: flashMessages.get('error') })          
+    @elseif(flashMessages.has('success'))
+      @!component('components/notifications/success', { message: flashMessages.get('success') })
+    @end
+     
+    <div class="flex justify-center  gap-10  mx-auto my-2 py-10"> 
+      <article class="w-full">
+        @if((await auth.user?.id === event.vendorId) || await auth.user?.isAdmin() )
+        {{-- Check if the logged user is the vendor that created the event. If yes, display edit button --}}
+          <div class="flex justify-center items-center mb-4">
+
+          <a href="{{route('events.edit', {id : event.id})}}"
+           class="hover:text-yellow-500 text-xs underline  font-bold rounded-xl transition duration-200" 
+           target="" rel="noopener noreferrer" type="button">
+           {{ i18n.t('messages.event_edit') }}</a>
+        </div>
+        @end
+
+      <section class="flex flex-col sm:bg-white sm:border sm:shadow sm:rounded-3xl py-4 sm:py-6 mb-5 sm:mx-8 lg:mx-24 sm:px-4 w-screen sm:w-auto card fade-in">
+
+        <div class="flex flex-col gap-2 mx-2 sm:mx-4 pb-4 sm:pb-0 ">
+          
+          <h2 class="text-xl lg:text-4xl font-bold tracking-tight text-gray-700">
+            {{event.title}}
+          </h2>
+          
+          <h3 class="lg:text-xl  font-semibold text-gray-400 ">
+            {{event.subtitle}} 
+          </h3>
+        </div> 
+        <div class="flex flex-col lg:flex-row w-full">
+
+            <div class="lg:w-1/2 relative ">
+
+              <img class="sm:p-4 h-auto max-h-[500px] w-full object-cover sm:rounded-3xl"
+                      src="{{event.media[0]?.path ?? '/images/dummies/No_image.png'}}" 
+                      alt="{{event.media[0]?.altName ?? 'No picture available'}}"
+                      onerror="this.onerror=null; this.src='/images/dummies/No_image.png';">   
+                <div class= "flex gap-2 items-center absolute top-4 sm:top-8 right-4 sm:right-10 z-10  transition duration-300">
+
+                  @if(!auth.isAuthenticated)
+                    <form action="{{ route('auth.login.show')}}" method="get" class="" enctype="multipart/form-data">
+                      {{ csrfField() }}
+                      <button type="submit" class="favourite-star {{ isInUserWishlist ? 'star-filled' : '' }}">
+                        <img src="/public/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+                        <img src="/public/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+                      </button>
+                    </form>
+                  @else
+                    @if(isInUserWishlist)
+                      <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" enctype="multipart/form-data">
+                        {{ csrfField() }}
+                        <button type="submit" class="favourite-star {{ isInUserWishlist ? 'star-filled' : '' }}">
+                          <img src="/public/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_remove_wish') }}">
+                          <img src="/public/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_remove_wish') }}">
+                        </button>
+                      </form>
+                    @else
+                      <form action="{{ route('wishlist.add', [event.id]) }}" method="post" class="" enctype="multipart/form-data">
+                        {{ csrfField() }}
+                        <button type="submit" class="favourite-star {{ isInUserWishlist ? 'star-filled' : '' }}">
+                          <img src="/public/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+                          <img src="/public/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+                        </button>
+                      </form>
+                    @end
+                  @end
+                </div>
+              </div>
+
+              <div class="flex flex-col justify-between gap-4 lg:gap-8 lg:w-1/2 lg:p-4">
+                <div class="flex flex-col gap-4"> 
+                  <div class="flex flex-col lg:flex-row lg:justify-between gap-2 items-center ">
+                    <div class="flex items-center gap-2 mt-4 lg:mt-0">
+                      <div class=" bg-{{event.categoryTypes[0].category.slug}} w-6 h-6 lg:w-8 lg:h-8 rounded-full top-5 left-4 ">
+                        <img class="p-1.5  h-full w-full" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">
+                      </div>  
+                      <h4 class="font-semibold ">
+                        <a href="/events/search?category={{event.categoryTypes[0].category.id}}">{{event.categoryTypes[0].category.name}}</a> :
+                        <span>
+                          @each(item in event.categoryTypes)
+                          <a href="/events/search?categoryType={{item.id}}">
+                              {{item.name}}</a>   
+                          @end
+                        </span></h4>
+                    </div>
+                    <div class="flex gap-2 py-2 mb-1">
+                      @each (item in event.indicators)
+                      <div class="bg-indigo-100 hover:bg-indigo-200 w-6 h-6 lg:w-8 lg:h-8 rounded-full shadow flex items-center justify-center "> 
+                        <img src="/svg/indicators/{{item.slug}}.svg" alt="spécial étudiant" class="p-1 lg:p-1.5 w-full h-full" title="{{item.name}}">
+                      </div>
+                      @end
+                    </div>
+                  </div>
+                
+                  <p class=" text-gray-500 mb-1 italic mx-2 lg:mx-0">
+                    {{event.description}} 
+                  </p>
+
+                </div>
+                
+
+                <div class="flex flex-col lg:flex-row gap-4 justify-between items-center">
+                  <div class="lg:hidden w-1/2 border-t-2 border-gray-400"></div>
+                    <div class="flex justify-center items-center gap-2 ">
+
+                      @if(!auth.isAuthenticated)
+                        <form action="{{ route('auth.login.show') }}" method="get" class="" enctype="multipart/form-data">
+                          {{ csrfField() }}
+                          <button type="submit" class="favourite-heart">
+                            <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="heart-empty" title="{{ i18n.t('messages.add_to_favourites') }}">
+                            <img src="/public/svg/heart-full.svg" alt="Remove from favourites" class="heart-full" title="{{ i18n.t('messages.remove_from_favourites') }}">
+                          </button>
+                        </form>
+                      @else
+                        @if(isUserFavourite)
+                          <form action="{{ route('favourite.destroy', [event.vendor.id]) }}" method="post" class="" enctype="multipart/form-data">
+                            {{ csrfField() }}
+                            <button type="submit" class="favourite-heart heart-filled">
+                              <img src="/public/svg/heart-empty.svg" alt="Remove from favourites" class="heart-empty" title="{{ i18n.t('messages.remove_from_favourites') }}">
+                              <img src="/public/svg/heart-full.svg" alt="Remove from favourites" class="heart-full" title="{{ i18n.t('messages.remove_from_favourites') }}">
+                            </button>
+                          </form>
+                        @else
+                          <form action="{{ route('favourite.add', [event.vendor.id]) }}" method="post" class="" enctype="multipart/form-data">
+                            {{ csrfField() }}
+                            <button type="submit" class="favourite-heart">
+                              <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="heart-empty" title="{{ i18n.t('messages.add_to_favourites') }}">
+                              <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="heart-full" title="{{ i18n.t('messages.add_to_favourites') }}">
+                            </button>
+                          </form>
+                        @end
+                      @end
+
+                      <a href="/events/search?vendor={{event.vendor.id}}" class="">
+                          <p class="text-sm text-right text-slate-500  text-clip overflow-hidden">
+                            {{ i18n.t('messages.event_org') }}: <span class="text-indigo-700 font-semibold">{{ event.vendor.companyName }}</span>
+                          </p>
+                      </a>
+                    </div>
+
+
+                  <div class="flex justify-center items-center gap-8 lg:gap-4">
+                    @if(event.facebookLink)
+                      <a href="{{event.facebookLink}}" class="hover:animate-pulse">
+                        <img src="/public/svg/facebook-color.svg" alt="facebook link">
+                      </a>
+                    @endif
+                    @if(event.instagramLink)
+                      <a href="{{event.instagramLink}}" class="hover:animate-pulse">
+                        <img src="/public/svg/instagram-color.svg" alt="instagram link">
+                      </a>
+                    @endif
+                    @if(event.websiteLink)
+                      <a href="{{event.websiteLink}}" class="hover:animate-pulse">
+                        <img src="/public/svg/web.svg" alt="website link">
+                      </a>
+                    @endif
+                  </div>  
+                </div>
+            </div>     
+          </div>
+        </section> 
+          <section class="flex flex-col lg:flex-row gap-8 bg-slate-100 sm:rounded-3xl sm:border sm:shadow mt-10 sm:mx-8 lg:mx-24 card fade-in">
+            <div class="flex flex-col justify-center items-center text-center gap-4 p-4 sm:p-8 xl:px-16 lg:w-1/2  "> 
+              <p id="" class="formated-date text-xs sm:text-sm text-slate-500/60 font-bold"
+              data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
+            </p>
+              <p class="font-bold text-xl text-slate-700">
+                <a href='/events/search?location={{event.location.id}}'>{{event.location.name}}</a>
+              </p>
+              <p class="text-sm text-slate-500">
+                {{event.location.street}} {{event.location.number}}, {{event.location.zipCode}} {{event.location.city}} - {{event.location.country}}
+              </p>  
+              <div id="map" class="h-60 w-80 lg:h-80 lg:w-full z-10 mt-8 rounded-3xl"></div>
+            </div> 
+            <div class="flex flex-col items-center w-full lg:w-1/2 px-4 sm:mb-4 lg:mr-8 lg:mb-8 lg:mt-4">          
+              @each(item in event.prices) 
+              @!events.addBasket({item})
+              @end
+            </div>
+          </section>
+
+
+          <section class="flex flex-col lg:flex-row justify-center lg:items-center gap-8 sm:bg-white sm:rounded-3xl sm:shadow sm:border mt-5 mx-8 sm:p-8 lg:mx-24 card fade-in">
+            <div class="flex flex-col w-full h-full lg:w-3/5 lg:h-3/5">
+              {{-- <h4 class="text-center font-bold text-lg text-slate-800">{{i18n.t('messages.events_video_events')}} :</h4> --}}
+              
+                <div class="video-container lg">
+                  <iframe src="{{ event.youtubeLink || '' }}" frameborder="0" allowfullscreen ></iframe>
+                </div>
+              
+            </div>
+            <div class="flex flex-col gap-4">
+              <h4 class="font-bold text-lg text-slate-800">{{i18n.t('messages.events_linked_events')}} :</h4>
+              <ul class="justify-between flex-col flex">
+              @each(linkedEvent in linkedEvents)
+                @if(event.id !== linkedEvent.id) 
+                  @!component('components/dashboard/mini-event', {event: linkedEvent, cancel: false})
+                @end
+              @end
+              </ul>
+              
+            </div>
+          </section>    
+
+            <div id="notification"></div>    
+            {{-- @!component('components/notification_added_to_basket', {message: $message.message}) --}}
+          
+      </article>     
+
+    </div>
+    
+  </main>
+
+
+  @include("pages/partials/footer")
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+
+  <script src="/resources/js/cart.js" defer>
+    
+  </script>
+  <script>
+    window.latitude = "{{ event.location.latitude }}";
+    window.longitude = "{{ event.location.longitude }}";
+    window.name = "{{ event.title }}";
+  </script>
+  <script src="/resources/js/fade_animations.js"></script>
+</body>
+</html>

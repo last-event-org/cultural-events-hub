@@ -1,0 +1,17 @@
+@layout.dashboard({pageTitle: i18n.t('messages.dashboard_vendor_events'), svg: 'vendor_events' })   
+  @if(!events)
+
+    <p>{{i18n.t('messages.dashboard_vendor_no_events')}}</p>
+
+  @else
+    <div class="flex flex-col gap-2">
+      @each(event in events)
+        <ul>
+          @!dashboard.miniEvent({event, vendor : true})
+          {{-- @!component('components/dashboard/mini-event', {event, vendor : true}) --}}
+        </ul>
+      @end
+    </div>
+
+  @end
+@end

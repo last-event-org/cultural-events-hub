@@ -1,0 +1,86 @@
+<div class="flex flex-col gap-2 my-4">
+  
+    <label for="company_name" class="block text-slate-600">
+      {{ i18n.t('messages.editProfile_company') }}
+    </label>
+    <input type="text" id="company_name" name="company_name" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
+  focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ companyName || '' }}">
+    @inputError('company_name')
+    <div style="color: red;">{{ $messages.join(', ') }}</div>
+    @end
+
+  
+    <label for="vat_number" class="block text-slate-600">
+        {{ i18n.t('messages.editProfile_vat') }}
+    </label>
+    <input type="text" id="vat_number" name="vat_number" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
+  focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ vatNumber || '' }}">
+    @inputError('vat_number')
+    <div style="color: red;">{{ $messages.join(', ') }}</div>
+    @end
+  
+
+  @if(flashMessages.has('userVendorData'))
+  <div>
+    <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+      {{ flashMessages.get('userVendorData') }}
+    </h2>
+  </div>
+  @endif
+
+
+@if(flashMessages.has('billingAddressError'))
+<div>
+  <h2 class="text-2xl font-bold mb-6 text-center text-yellow-600">
+    {{ flashMessages.get('billingAddressError') }}
+  </h2>
+</div>
+@endif
+
+
+  <label for="street" class="block text-gray-600">
+    {{ i18n.t('messages.billingAddress_street') }}
+  </label>
+  <input type="text" id="street" name="street" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ street ?? ""}}">
+  @inputError('street')
+  <div style="color: red;">{{ $messages.join(', ') }}</div>
+  @end
+
+  <label for="number" class="block text-gray-600">
+      {{ i18n.t('messages.billingAddress_nb') }}
+  </label>
+  <input type="text" id="number" name="number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ number ?? ""  }}">
+  @inputError('number')
+  <div style="color: red;">{{ $messages.join(', ') }}</div>
+  @end
+
+  <label for="zip_code" class="block text-gray-600">
+    {{ i18n.t('messages.billingAddress_zip') }}
+  </label>
+  <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ zipCode ?? ""  }}">
+  @inputError('zip_code')
+  <div style="color: red;">{{ $messages.join(', ') }}</div>
+  @end
+
+  <label for="city" class="block text-gray-600">
+    {{ i18n.t('messages.billingAddress_city') }}
+  </label>
+  <input type="text" id="city" name="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ city ?? "" }}">
+  @inputError('city')
+  <div style="color: red;">{{ $messages.join(', ') }}</div>
+  @end
+
+  <label for="country" class="block text-gray-600">
+    {{ i18n.t('messages.billingAddress_country') }}
+  </label>
+  <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm
+focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ country ?? "" }}">
+  @inputError('country')
+  <div style="color: red;">{{ $messages.join(', ') }}</div>
+  @end
+</div>
+<script src="/resources/js/dropdown_address.js"></script>

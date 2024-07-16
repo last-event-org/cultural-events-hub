@@ -1,0 +1,64 @@
+<li data-form-{{event.id}} data-form-object="{{event.title}}">
+<div class="flex items-center hover:bg-slate-100 hover:scale-[1.01] duration-300 p-2 rounded-xl">
+  <a href="{{ route('events.show', [event.id]) }} ">
+    @if(event.media.length > 0)
+      <div class="w-24 hidden sm:block">
+          <img class=" object-cover overflow-hidden w-full h-16" 
+          src="{{ event.media[0].path }}" alt="{{event.media[0].altName }}"
+          onerror="this.onerror=null; this.src='/images/dummy-96X64.png';"> 
+      </div>
+    @else
+    <div class="w-24 hidden sm:block">
+      <img class=" object-cover overflow-hidden w-full h-16" src="/images/dummy-96X64.png" alt="no image"> 
+    </div>
+
+    @endif
+  </a>
+  <div class=" w-1 min-h-16  bg-yellow-500"></div>
+  <div class="flex items-center w-full justify-between" >
+  <a href="{{ route('events.show', [event.id]) }}" class=" sm:rounded-full px-4 ">
+      <div class="flex flex-col">
+        <h3 class="font-semibold tracking-tight text-slate-800">{{event.title}}</h3>
+        <div class="formated-date text-xs tracking-tight text-slate-400 font-bold"
+            data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
+        </div>
+        <p class="text-xs tracking-tight italic text-slate-700">{{event.location.name}}</p>
+        <p class="text-xs font-semibold text-slate-700">{{event.location.city}}</p>      
+    </div>
+  </a>
+  <div class="flex gap-2 pr-2">
+    @if(cancel === true) 
+    <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" class=" ml-auto" enctype="multipart/form-data">
+      {{ csrfField() }}
+      <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/cancel.svg" alt="cancel" ></button>
+    </form>
+    @end
+
+    @if(vendor === true) 
+
+        {{-- delete event --}}
+        <form action="{{ route('events.destroy', [event.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" 
+        data-form-action="{{i18n.t("messages.modale_action_delete")}}" 
+        data-id="{{event.id}}" 
+        data-form-modale  
+        method="post" enctype="multipart/form-data" class="text-red-500">
+            {{ csrfField() }}
+          <button type="submit" class="text-red-500 hover:scale-[1.10] duration-300">
+                            <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512">
+                            <path fill="currentColor"  d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                            </svg>
+                        </button>
+        </form>
+
+        {{-- edit event --}}
+        <form action="{{ route('events.edit', [event.id]) }}" method="get" class=" ml-auto" enctype="multipart/form-data">
+          {{ csrfField() }}
+          <button type="submit" class="text-yellow hover:scale-[1.10] duration-300"><img src="/svg/edit.svg" alt="edit"></button>
+        </form>
+        @end
+      </div>
+      </div>
+  </div>
+</li>
+
+ 

@@ -1,0 +1,850 @@
+import env from '#start/env';
+import { DateTime } from 'luxon';
+import db from '@adonisjs/lucid/services/db';
+import { errors } from '@vinejs/vine';
+import Event from '#models/event';
+import Category from '#models/category';
+import CategoryType from '#models/category_type';
+import Address from '#models/address';
+import Price from '#models/price';
+import Media from '#models/media';
+import Indicator from '#models/indicator';
+import { createEventValidator } from '#validators/event';
+import { createAddressValidator } from '#validators/address';
+import { createMediaValidator } from '#validators/media';
+import { queryValidator } from '#validators/query';
+import { createPriceValidator } from '#validators/create_price';
+import User from '#models/user';
+import app from '@adonisjs/core/services/app';
+import { cuid } from '@adonisjs/core/helpers';
+export default class EventsController {
+    async home({ view, auth, i18n }) {
+        const categories = await Category.query().select('name', 'slug', 'id');
+        const dayBegin = DateTime.now().toSQLDate();
+        const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate();
+        const events = await Event.query()
+            .andWhereBetween('event_start', [dayBegin, dayEnd])
+            .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
+            .preload('location')
+            .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category');
+        })
+            .preload('indicators')
+            .preload('prices')
+            .preload('media', (mediaQuery) => {
+            mediaQuery.select('path', 'altName');
+        })
+            .orderBy('event_start', 'asc');
+        const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n);
+        return view.render('pages/events/list', {
+            categories: categories,
+            events: events,
+            topEvents: topEvents,
+            todayEvents: nextEvents,
+            title: 'home',
+            nextTitle: title,
+            filter: true,
+        });
+    }
+    async index({ view, i18n }) {
+        const categories = await Category.all();
+        const events = await Event.query()
+            .where('event_start', '>=', new Date().toISOString())
+            .preload('location')
+            .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category');
+        })
+            .preload('indicators')
+            .preload('prices')
+            .preload('media')
+            .orderBy('event_start', 'asc');
+        const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n);
+        return view.render('pages/events/list', {
+            events: events,
+            categories: categories,
+            topEvents: topEvents,
+            todayEvents: nextEvents,
+            title: 'agenda',
+            nextTitle: title,
+            filter: true,
+        });
+    }
+    async tickets({ view, i18n }) {
+        const categories = await Category.all();
+        const events = await Event.query()
+            .andWhere('event_start', '>=', new Date().toISOString())
+            .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
+            .preload('location')
+            .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category');
+        })
+            .preload('indicators')
+            .preload('prices')
+            .preload('media', (mediaQuery) => {
+            mediaQuery.select('path', 'altName');
+        })
+            .orderBy('event_start', 'asc');
+        const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n);
+        return view.render('pages/events/list', {
+            events: events,
+            categories: categories,
+            topEvents: topEvents,
+            todayEvents: nextEvents,
+            title: 'tickets',
+            nextTitle: title,
+            filter: true,
+        });
+    }
+    async create({ view }) {
+        const categories = await Category.all();
+        const categoryTypes = await CategoryType.all();
+        const indicators = await Indicator.all();
+        return view.render('pages/events/add-event', {
+            categories: categories,
+            categoryTypes: categoryTypes,
+            indicators: indicators,
+        });
+    }
+    async store({ request, session, response, i18n, auth }) {
+        const event = await this.createEvent(request, session, i18n);
+        if (event) {
+            const user = auth.user;
+            if (user)
+                event.vendorId = user.id;
+            if (!(await this.attachCategoryTypes(request, session, i18n, event)))
+                return response.redirect().back();
+            await this.attachIndicators(request, event);
+            await this.createEventAddress(request, event);
+            if (!(await this.createEventPrices(request, session, response, i18n, event)))
+                return response.redirect().back();
+            await this.uploadEventMedia(request, event);
+            return response.redirect().toRoute('events.show', { id: event.id });
+        }
+    }
+    async search({ request, response, view, i18n }) {
+        const qs = request.qs();
+        let payload;
+        let [latitude, longitude] = [50.645138, 5.57342];
+        let ids;
+        let radius = 15;
+        let [dayBegin, dayEnd] = [0, 0];
+        let dateTitle;
+        let categoryTypeName;
+        let category;
+        let vendorName;
+        let locationName;
+        let categoryTypesId = [];
+        let categoryTypes;
+        let filter = true;
+        const categories = await Category.query().select('name', 'slug', 'id');
+        try {
+            payload = await request.validateUsing(queryValidator);
+        }
+        catch (error) {
+            if (error instanceof errors.E_VALIDATION_ERROR) {
+                console.log(error.messages);
+            }
+            response.redirect().back();
+        }
+        if (qs.city) {
+            try {
+                ;
+                [latitude, longitude] = await this.getCoordinatesFromCity(payload?.city);
+                if (qs.radius) {
+                    radius = payload?.radius;
+                }
+                ids = await this.findEventsIDByLocation(latitude, longitude, radius);
+            }
+            catch (error) {
+                response.redirect().back();
+            }
+            filter = true;
+        }
+        if (qs.date) {
+            ;
+            [dayBegin, dayEnd] = await this.formatDate(payload?.date);
+            let date = new Date(dayBegin).toISOString();
+            dateTitle = DateTime.fromISO(date);
+        }
+        if (qs.location) {
+            const location = await Address.query().select('name').where('id', qs.location).first();
+            locationName = location?.name;
+            filter = false;
+        }
+        if (qs.vendor) {
+            const vendor = await User.query().select('company_name').where('id', qs.vendor).first();
+            vendorName = vendor?.companyName;
+            filter = false;
+        }
+        if (qs.categoryType) {
+            const categoryTypeId = await CategoryType.find(qs.categoryType);
+            categoryTypeName = categoryTypeId?.name;
+            category = await categoryTypeId
+                ?.related('category')
+                .query()
+                .select('name', 'id', 'slug')
+                .preload('categoryTypes')
+                .first();
+            console.log(category);
+            categoryTypes = category?.categoryTypes;
+            categoryTypesId = [qs.categoryType];
+        }
+        else if (qs.category) {
+            category = await Category.find(qs.category);
+            categoryTypes = await category?.related('categoryTypes').query();
+            categoryTypes?.forEach((categoryType) => {
+                categoryTypesId.push(categoryType.$attributes.id);
+            });
+            filter = true;
+        }
+        const events = await Event.query()
+            .if(qs.city, (query) => query.whereIn('id', ids))
+            .if(qs.vendor, (query) => query.where('vendor_id', qs.vendor))
+            .if(qs.location, (query) => query.where('location_id', qs.location))
+            .if(qs.date, (query) => query.whereBetween('event_start', [dayBegin, dayEnd]))
+            .if(categoryTypesId.length > 0, (query) => query.whereHas('categoryTypes', (categoryTypeQuery) => {
+            categoryTypeQuery.whereInPivot('category_type_id', categoryTypesId);
+        }))
+            .if(!qs.date, (query) => query.where('event_start', '>=', new Date().toISOString()))
+            .preload('location')
+            .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category');
+        })
+            .preload('indicators')
+            .preload('prices')
+            .preload('media')
+            .orderBy('event_start', 'asc');
+        const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n);
+        console.log('\n\nFILTER\n\n');
+        console.log(filter);
+        return view.render('pages/events/list', {
+            events: events.length === 0 ? null : events,
+            city: payload?.city ?? null,
+            date: dateTitle?.toLocaleString({ day: 'numeric', month: 'long' }) ?? null,
+            category: category ?? null,
+            categoryType: categoryTypeName ?? null,
+            vendor: vendorName ?? null,
+            location: locationName ?? null,
+            categoryTypes: categoryTypes ?? null,
+            categories: categories,
+            latitude: latitude,
+            longitude: longitude,
+            topEvents: topEvents,
+            todayEvents: nextEvents,
+            nextTitle: title,
+            filter: filter,
+        });
+    }
+    async getEventsByWord({ request, view, response }) {
+        let events = [];
+        const input = request.qs();
+        if (input.input_words) {
+            const wordsArray = input.input_words.split(' ');
+            for (const word of wordsArray) {
+                const results = await Event.query()
+                    .preload('location')
+                    .preload('vendor')
+                    .preload('media')
+                    .preload('prices')
+                    .preload('indicators')
+                    .preload('categoryTypes', (categoryTypesQuery) => {
+                    categoryTypesQuery.preload('category');
+                })
+                    .where((event) => {
+                    event
+                        .whereILike('title', `%${word}%`)
+                        .orWhereILike('subtitle', `%${word}%`)
+                        .orWhereILike('description', `%${word}%`);
+                })
+                    .orWhereHas('vendor', (vendor) => {
+                    vendor.whereILike('companyName', `%${word}%`);
+                })
+                    .orWhereHas('location', (vendor) => {
+                    vendor
+                        .whereILike('name', `%${word}%`)
+                        .orWhereILike('street', `%${word}%`)
+                        .orWhereILike('city', `%${word}%`);
+                })
+                    .distinct();
+                events = [...events, ...results];
+            }
+            return view.render('pages/events/list', {
+                events: events.length === 0 ? null : events,
+            });
+        }
+        return response.redirect().toRoute('home');
+    }
+    async formatDate(dateQuery) {
+        let isoDate = new Date(dateQuery).toISOString();
+        let date = DateTime.fromISO(isoDate);
+        let dayBegin = date.toSQL() ?? '';
+        let dayEnd = date.set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? '';
+        return [dayBegin, dayEnd];
+    }
+    async findEventsIDByLocation(lat, long, radius) {
+        const eventsId = await db.rawQuery(`
+    SELECT e.id
+    FROM events e
+    JOIN addresses l ON e.location_id = l.id
+    WHERE ST_Distance_Sphere(
+        POINT(l.longitude, l.latitude), 
+        POINT(${long}, ${lat})
+    ) <= ${radius ? radius * 1000 : 15 * 1000}
+  `);
+        let ids = [];
+        eventsId[0].forEach((element) => {
+            ids.push(element.id);
+        });
+        return ids;
+    }
+    async createEvent(request, session, i18n) {
+        const timezone = request.input('timezone');
+        const payload = await request.validateUsing(createEventValidator);
+        console.log(timezone);
+        const event = new Event();
+        event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/');
+        event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/');
+        event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/');
+        event.eventStart = DateTime.fromFormat(payload.event_start, "yyyy-MM-dd'T'HH:mm", {
+            zone: timezone,
+        }).toISO();
+        event.eventEnd = DateTime.fromFormat(payload.event_end, "yyyy-MM-dd'T'HH:mm", {
+            zone: timezone,
+        }).toISO();
+        if (event.eventStart > event.eventEnd) {
+            const errorMsg = i18n.t('messages.errorEventDates');
+            session.flash('date', {
+                message: errorMsg,
+            });
+        }
+        if (payload.facebook_link)
+            event.facebookLink = payload.facebook_link;
+        if (payload.instagram_link)
+            event.instagramLink = payload.instagram_link;
+        if (payload.website_link)
+            event.websiteLink = payload.website_link;
+        if (payload.youtube_link && payload.youtube_link != '') {
+            event.youtubeLink = this.generateYoutubeEmbedLink(payload.youtube_link);
+        }
+        else {
+            event.youtubeLink = '';
+        }
+        return await event.save();
+    }
+    async attachCategoryTypes(request, session, i18n, event) {
+        const selectedCategoryTypes = request.body().categoryTypes;
+        if (selectedCategoryTypes) {
+            selectedCategoryTypes.forEach(async (categoryTypeId) => {
+                await event.related('categoryTypes').attach([categoryTypeId]);
+            });
+        }
+        else {
+            const errorMsg = i18n.t('messages.errorMissingCategType');
+            session.flash('errorMissingCategType', errorMsg);
+            return false;
+        }
+        return true;
+    }
+    async attachIndicators(request, event) {
+        const selectedIndicators = request.body().indicators;
+        if (selectedIndicators) {
+            selectedIndicators.forEach(async (indicatorId) => {
+                await event.related('indicators').attach([indicatorId]);
+            });
+        }
+    }
+    async createEventPrices(request, session, response, i18n, event) {
+        const bodyPrices = request.body().prices;
+        const values = Object.values(bodyPrices[0]);
+        const firstElmIsNotNull = values.some((element) => element !== null);
+        try {
+            await createPriceValidator.validate(bodyPrices[0]);
+        }
+        catch (error) {
+            let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. ';
+            error.messages.forEach((msg) => {
+                errorMsg += msg.message;
+            });
+            session.flash('errorRequiredPriceFields', errorMsg);
+            return false;
+        }
+        if (firstElmIsNotNull) {
+            bodyPrices.forEach(async (priceData) => {
+                try {
+                    const payload = await createPriceValidator.validate(priceData);
+                    if (payload) {
+                        const price = new Price();
+                        if (payload.price_description)
+                            price.description = payload.price_description;
+                        if (payload.regular_price)
+                            price.regularPrice = payload.regular_price;
+                        if (payload.discounted_price)
+                            price.discountedPrice = payload.discounted_price;
+                        if (payload.available_qty)
+                            price.availableQty = payload.available_qty;
+                        await price.save();
+                        await price.related('event').associate(event);
+                    }
+                }
+                catch (error) {
+                    let errorMsg = i18n.t('messages.errorCreatePrice') + ' ';
+                    error.messages.forEach((msg) => {
+                        errorMsg += msg;
+                    });
+                    session.flash('errorCreatePrice', errorMsg);
+                    return false;
+                }
+            });
+            return true;
+        }
+        else {
+            const errorMsg = i18n.t('messages.errorMissingPrices') + ' ';
+            session.flash('errorMissingPrices', errorMsg);
+        }
+        return false;
+    }
+    async createEventAddress(request, event) {
+        const addressPayload = await request.validateUsing(createAddressValidator);
+        const address = new Address();
+        address.name = addressPayload.name ?? '';
+        address.street = addressPayload.street.replaceAll('&#x27;', "'");
+        address.number = addressPayload.number;
+        address.zipCode = addressPayload.zip_code;
+        address.city = addressPayload.city;
+        address.country = addressPayload.country;
+        try {
+            const [latitude, longitude] = await this.getCoordinatesFromAddress(address.city, address.street, address.zipCode, address.number);
+            address.latitude = latitude;
+            address.longitude = longitude;
+        }
+        catch (error) { }
+        await address.save();
+        await event.related('location').associate(address);
+    }
+    async getCoordinatesFromCity(city) {
+        console.log('getCoordinatesFromCity');
+        try {
+            const response = await fetch(`https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&country=belgium&locality=${city}&boundary.country=BE`);
+            const datas = await response.json();
+            console.log(datas);
+            return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]];
+        }
+        catch (e) {
+            console.log('ERROR');
+            console.log(e);
+        }
+    }
+    async getCoordinatesFromAddress(city, street, zip, number) {
+        try {
+            const response = await fetch(`https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`);
+            const datas = await response.json();
+            return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]];
+        }
+        catch (e) {
+            console.log('ERROR');
+            console.log(e);
+        }
+    }
+    async uploadEventMedia(request, event) {
+        const { images_link } = await request.validateUsing(createMediaValidator);
+        for (const file of images_link) {
+            const media = new Media();
+            const uniqueFileName = `${cuid()}.${file.extname}`;
+            await file.move(app.publicPath('uploads/'), {
+                name: uniqueFileName,
+            });
+            media.path = `/uploads/${uniqueFileName}`;
+            media.altName = file.clientName;
+            media.eventId = event.id;
+            await media.save();
+        }
+    }
+    async updateEventMedia(request, session, i18n, event) {
+        const mediaUpdateDetection = request.__raw_files.images_link;
+        const mediaUpdateLength = mediaUpdateDetection ? Object.keys(mediaUpdateDetection).length : null;
+        if (mediaUpdateLength != null && mediaUpdateLength > 0) {
+            const { images_link } = await request.validateUsing(createMediaValidator);
+            try {
+                for (const file of images_link) {
+                    const media = new Media();
+                    const uniqueFileName = `${cuid()}.${file.extname}`;
+                    await file.move(app.publicPath('uploads/'), {
+                        name: uniqueFileName,
+                    });
+                    media.path = `/uploads/${uniqueFileName}`;
+                    media.altName = file.clientName;
+                    media.eventId = event.id;
+                    await media.save();
+                }
+            }
+            catch (error) {
+                const errorMsg = i18n.t('messages.errorEditingMedia') + ' ' + error;
+                session.flash('errorEditingMedia', errorMsg);
+                return false;
+            }
+        }
+        return true;
+    }
+    async deleteEventMedia({ params, response, session, i18n }) {
+        const media = await Media.find(params['id']);
+        if (media) {
+            try {
+                await media.delete();
+            }
+            catch (error) {
+                console.log(error);
+                const errorMsg = i18n.t('messages.errorDestroyEvent');
+                session.flash('error', errorMsg);
+            }
+            response.redirect().back();
+        }
+    }
+    async getTodayEvents() {
+        const dayBegin = DateTime.now().toSQLDate();
+        let dayEnd = DateTime.now().set({ hour: 23, minute: 59, second: 59 }).toSQL() ?? '';
+        const events = await Event.query()
+            .select('id', 'location_id', 'title')
+            .whereBetween('event_start', [dayBegin, dayEnd])
+            .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+            .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+            .orderBy('event_start', 'asc')
+            .limit(5);
+        return events;
+    }
+    async getNextEvents() {
+        const dayBegin = DateTime.now().toSQLDate();
+        const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate();
+        const events = await Event.query()
+            .select('id', 'location_id', 'title')
+            .whereBetween('event_start', [dayBegin, dayEnd])
+            .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+            .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+            .orderBy('event_start', 'asc')
+            .limit(5);
+        return events;
+    }
+    async getTopEvents() {
+        const dayBegin = DateTime.now().toSQLDate();
+        const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate();
+        const events = await Event.query()
+            .select('id', 'location_id', 'title')
+            .whereBetween('event_start', [dayBegin, dayEnd])
+            .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
+            .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+            .limit(5);
+        return events;
+    }
+    async getFeaturedEvents(i18n) {
+        const topEvents = await this.getTopEvents();
+        let nextEvents = await this.getTodayEvents();
+        let title = i18n.t('messages.events_today');
+        if (nextEvents.length === 0) {
+            nextEvents = await this.getNextEvents();
+            title = i18n.t('messages.events_next');
+        }
+        return [topEvents, nextEvents, title];
+    }
+    async show({ view, params, session, response, auth }) {
+        await auth.check();
+        let isUserFavourite = false;
+        let isInUserWishlist = false;
+        let linkedEvents;
+        try {
+            const event = await Event.query()
+                .where('id', '=', params.id)
+                .preload('location')
+                .preload('categoryTypes', (categoryTypesQuery) => {
+                categoryTypesQuery.preload('category');
+            })
+                .preload('indicators')
+                .preload('prices')
+                .preload('media')
+                .preload('vendor')
+                .first();
+            if (event) {
+                const user = auth.user;
+                if (user) {
+                    const userFavourites = await user
+                        .related('favouritesUser')
+                        .query()
+                        .where('vendor_id', event.vendorId);
+                    isUserFavourite = userFavourites.length > 0;
+                    const alreadyWishlisted = await event
+                        .related('usersWhoWishlisted')
+                        .query()
+                        .where('user_id', user.id)
+                        .first();
+                    if (alreadyWishlisted)
+                        isInUserWishlist = true;
+                }
+                linkedEvents = await Event.query()
+                    .select('location_id', 'id', 'title', 'event_start', 'event_end')
+                    .preload('location', (locationQuery) => locationQuery.select('name', 'city'))
+                    .preload('categoryTypes', (categoryTypesQuery) => {
+                    categoryTypesQuery
+                        .preload('category', (categoryQuery) => {
+                        categoryQuery.where('id', event.categoryTypes[0].category.id).select('id');
+                    })
+                        .select('id', 'category_id');
+                })
+                    .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
+                    .limit(5);
+            }
+            if (!event) {
+                response.redirect().back();
+            }
+            else {
+                session.forget('item-added');
+                return view.render('pages/events/details', {
+                    event: event,
+                    linkedEvents: linkedEvents,
+                    isUserFavourite: isUserFavourite,
+                    isInUserWishlist: isInUserWishlist,
+                });
+            }
+        }
+        catch (error) {
+            if (error) {
+                console.error('Price Validation Error at createEventPrices():', error);
+                response.redirect().back();
+            }
+        }
+    }
+    async edit({ params, view, auth }) {
+        await auth.check();
+        const categories = await Category.all();
+        const categoryTypes = await CategoryType.all();
+        const indicators = await Indicator.all();
+        const media = await Media.query().where('event_id', '=', params.id);
+        const event = await Event.query()
+            .where('id', '=', params.id)
+            .preload('location')
+            .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category');
+        })
+            .preload('indicators')
+            .preload('prices');
+        return view.render('pages/events/edit-event', {
+            event: event[0],
+            categories: categories,
+            categoryTypes: categoryTypes,
+            indicators: indicators,
+            media: media,
+            mediaLength: media.length,
+        });
+    }
+    async updateEventAddress(request, session, i18n, event) {
+        const addressPayload = await request.validateUsing(createAddressValidator);
+        if (addressPayload) {
+            event.location.name = addressPayload.name ?? '';
+            event.location.street = addressPayload.street.replace('&#x27;', "'");
+            event.location.number = addressPayload.number;
+            event.location.zipCode = addressPayload.zip_code;
+            event.location.city = addressPayload.city;
+            event.location.country = addressPayload.country;
+            try {
+                const [latitude, longitude] = await this.getCoordinatesFromAddress(event.location.city, event.location.street, event.location.zipCode, event.location.number);
+                event.location.latitude = latitude;
+                event.location.longitude = longitude;
+            }
+            catch (error) { }
+            await event.location.save();
+            return true;
+        }
+        return false;
+    }
+    async updateEventCategoryTypes(request, session, i18n, event) {
+        const selectedCategoryTypes = request.body().categoryTypes;
+        if (selectedCategoryTypes) {
+            const eventCategTypes = [];
+            event.categoryTypes.forEach(async (categType) => {
+                eventCategTypes.push(categType.id);
+            });
+            selectedCategoryTypes.forEach(async (categ) => {
+                if (!eventCategTypes.includes(Number(categ))) {
+                    await event.related('categoryTypes').attach([categ]);
+                }
+            });
+            event.categoryTypes.forEach(async (categType) => {
+                if (!selectedCategoryTypes.includes(String(categType.id))) {
+                    await event.related('categoryTypes').detach([categType.id]);
+                }
+            });
+        }
+        else {
+            const errorMsg = i18n.t('messages.errorMissingCategType');
+            session.flash('errorMissingCategType', errorMsg);
+            return false;
+        }
+        return true;
+    }
+    async updateEventIndicators(request, event) {
+        const selectedIndicators = request.body().indicators;
+        if (selectedIndicators) {
+            const eventIndicators = [];
+            event.indicators.forEach(async (indicator) => {
+                eventIndicators.push(indicator.id);
+            });
+            selectedIndicators.forEach(async (indicatorId) => {
+                if (!eventIndicators.includes(Number(indicatorId))) {
+                    await event.related('indicators').attach([indicatorId]);
+                }
+            });
+        }
+        else {
+            event.indicators.forEach(async (indicator) => {
+                await event.related('indicators').detach([indicator.id]);
+            });
+        }
+    }
+    async updateEventPrices(request, session, i18n, event) {
+        const bodyPrices = request.body().prices;
+        if (bodyPrices) {
+            const priceFields = Object.values(bodyPrices[0]);
+            const firstElmIsNotNull = priceFields.some((element) => element !== null);
+            try {
+                await createPriceValidator.validate(bodyPrices[0]);
+            }
+            catch (error) {
+                let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. ';
+                error.messages.forEach((msg) => {
+                    errorMsg += msg.message;
+                });
+                session.flash('errorRequiredPriceFields', errorMsg);
+                return false;
+            }
+            if (firstElmIsNotNull) {
+                const prices = event.prices;
+                prices.forEach((price) => {
+                    price.delete();
+                });
+                bodyPrices.forEach(async (priceData) => {
+                    try {
+                        const payload = await createPriceValidator.validate(priceData);
+                        if (payload) {
+                            const price = new Price();
+                            if (payload.price_description)
+                                price.description = payload.price_description;
+                            if (payload.regular_price)
+                                price.regularPrice = payload.regular_price;
+                            if (payload.discounted_price)
+                                price.discountedPrice = payload.discounted_price;
+                            if (payload.available_qty)
+                                price.availableQty = payload.available_qty;
+                            await price.save();
+                            await price.related('event').associate(event);
+                        }
+                    }
+                    catch (error) {
+                        let errorMsg = i18n.t('messages.errorEditEventPrices') + ' ';
+                        error.messages.forEach((msg) => {
+                            errorMsg += msg;
+                        });
+                        session.flash('errorEditEventPrices', errorMsg);
+                        return false;
+                    }
+                });
+                return true;
+            }
+            else {
+                const errorMsg = i18n.t('messages.errorMissingPrices') + ' ';
+                session.flash('errorMissingPrices', errorMsg);
+            }
+        }
+        else {
+            const errorMsg = i18n.t('messages.errorMissingPrices') + ' ';
+            session.flash('errorMissingPrices', errorMsg);
+        }
+        return false;
+    }
+    async update({ i18n, params, request, session, response }) {
+        const timezone = request.input('timezone');
+        const payload = await request.validateUsing(createEventValidator);
+        const event = await Event.query()
+            .where('id', '=', params['id'])
+            .preload('location')
+            .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category');
+        })
+            .preload('indicators')
+            .preload('prices')
+            .first();
+        if (event) {
+            event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/');
+            event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/');
+            event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/');
+            event.eventStart = DateTime.fromFormat(payload.event_start, "yyyy-MM-dd'T'HH:mm", {
+                zone: timezone,
+            }).toISO();
+            event.eventEnd = DateTime.fromFormat(payload.event_end, "yyyy-MM-dd'T'HH:mm", {
+                zone: timezone,
+            }).toISO();
+            if (event.eventStart > event.eventEnd) {
+                const errorMsg = i18n.t('messages.errorEventDates');
+                session.flash('errorEventDates', errorMsg);
+                return response.redirect().back();
+            }
+            if (payload.facebook_link && payload.facebook_link !== '') {
+                event.facebookLink = payload.facebook_link;
+            }
+            else {
+                event.facebookLink = '';
+            }
+            if (payload.instagram_link && payload.instagram_link !== '') {
+                event.instagramLink = payload.instagram_link;
+            }
+            else {
+                event.instagramLink = '';
+            }
+            if (payload.website_link && payload.website_link !== '') {
+                event.websiteLink = payload.website_link;
+            }
+            else {
+                event.websiteLink = '';
+            }
+            if (payload.youtube_link && payload.youtube_link != '') {
+                event.youtubeLink = this.generateYoutubeEmbedLink(payload.youtube_link);
+            }
+            else {
+                event.youtubeLink = '';
+            }
+            if (!(await this.updateEventAddress(request, session, i18n, event)))
+                return response.redirect().back();
+            if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
+                return response.redirect().back();
+            await this.updateEventIndicators(request, event);
+            if (!(await this.updateEventPrices(request, session, i18n, event)))
+                return response.redirect().back();
+            if (!(await this.updateEventMedia(request, session, i18n, event)))
+                return response.redirect().back();
+            await event.save();
+        }
+        return response.redirect().toRoute('events.show', { id: params.id });
+    }
+    getYoutubeVideoId(youtubeLink) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = youtubeLink.match(regExp);
+        return match && match[2].length === 11 ? match[2] : null;
+    }
+    generateYoutubeEmbedLink(youtubeLink) {
+        const videoId = this.getYoutubeVideoId(youtubeLink);
+        const embedLink = 'https://www.youtube.com/embed/' + videoId;
+        return embedLink;
+    }
+    async destroy({ params, response, session, i18n }) {
+        try {
+            const event = await Event.findOrFail(params.id);
+            await event.delete();
+        }
+        catch (error) {
+            console.log(error);
+            const errorMsg = i18n.t('messages.errorDestroyEvent');
+            session.flash('error', errorMsg);
+            return response.redirect().back();
+        }
+        const successMsg = i18n.t('messages.successDestroyEvent');
+        session.flash('success', successMsg);
+        return response.redirect().toRoute('auth.vendor.events');
+    }
+}
+//# sourceMappingURL=events_controller.js.map

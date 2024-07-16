@@ -1,0 +1,23 @@
+<div class="flex w-full items-center justify-center pb-10 px-10">
+  <div class=" relative min-w-full">
+    <div class="h-2 bg-gray-200 rounded-full relative">
+      <div class="absolute h-2 rounded-full bg-yellow-500 w-0" id="progress-bar"></div>
+      <div class="absolute h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 -top-1 cursor-pointer" id="slider-thumb">
+        <div class="relative -mt-2 w-1">
+          <div class="absolute z-40 opacity-100 bottom-100 mb-2 left-0 min-w-full" id="slider-value" style="margin-left: -20.5px;">
+            <div class="relative bottom-7 left-3 text-slate-800 font-bold">
+             {{-- here is the cursor  --}}
+            </div>
+            <svg class="absolute text-black w-full h-2 left-0 top-100" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="absolute text-slate-800 -ml-1 bottom-0 left-0 -mb-6">1km</div>
+      <div class="absolute text-slate-800 -mr-1 bottom-0 right-0 -mb-6">25km</div>
+    </div>
+    <input type="range" min="1" max="25" value="11" id="slider-input" class="absolute w-full opacity-0 cursor-pointer top-0">
+  </div>
+</div>
+
+

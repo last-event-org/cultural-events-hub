@@ -1,0 +1,21 @@
+@layout.dashboard({pageTitle: i18n.t('messages.wishlist_title'), svg: 'wishlist' }) 
+
+  @if(userWishlist.length === 0)
+  
+    <p>{{i18n.t('messages.dashboard_emptyWishlist')}}</p>
+
+  @else
+    <div class="flex flex-col gap-2">
+      @each(event in userWishlist)
+        <ul>
+          @!dashboard.miniEvent({
+          event: event,
+          cancel: true,
+        })
+        </ul>
+      @end
+    </div>
+
+  @end
+@end
+

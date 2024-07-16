@@ -1,0 +1,88 @@
+
+    <li data-form-{{user.id}} data-form-object="{{user.firstname}} {{user.lastname}} {{user.email}}" >
+        <div class="flex items-center hover:bg-slate-100 hover:scale-[1.01] duration-300 p-2 rounded-xl">
+            <div class=" w-1 min-h-16 mr-2 {{user.isBlocked ? 'bg-red-500' : 'bg-green-500'}}"></div>
+            <div class="flex items-center w-full justify-between gap-4" >
+                <div class="flex items-center gap-2">
+                    <div class="flex flex-col">
+                        @if(user.companyName)
+                            <h3 class="font-semibold tracking-tight">{{user.companyName}}</h3>
+                            <p class="text-xs tracking-tight italic">{{user.firstname}} {{user.lastname}}</p>
+                            @else
+                            <h3 class="font-semibold tracking-tight">{{user.firstname}} {{user.lastname}}</h3>
+                        @end
+                            <p class="text-xs tracking-tight italic">{{user.email}}</p>
+                    </div>
+
+                @if(user.isVerified)
+                    <div class="min-w-3 min-h-3 text-green-500 self-start sm:self-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+                        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
+                        </svg>
+                    </div>   
+                @end
+                </div>
+                <div class="flex gap-2 pr-2 min-w-20">
+
+                    {{-- delete user --}}
+                    <form action="{{ route('admin.destroy', [user.id], { qs: {_method: 'DELETE'}}) }}" name="destroy" class="text-red-500"
+                    data-form-action="{{i18n.t("messages.modale_action_delete")}}" 
+                    data-id="{{user.id}}" 
+                    data-form-modale 
+                    method="post" enctype="multipart/form-data" >
+                        {{ csrfField() }}
+                        <input type="hidden" name="searchParams[input_words]" value="{{searchParams}}">
+                        <button type="submit" class="text-red-500 hover:scale-[1.10] duration-300">
+                            <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512">
+                            <path fill="currentColor"  d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                            </svg>
+                        </button>
+                    </form>
+
+                    {{-- block user --}}
+                    <form action="{{ route('admin.block', [user.id], { qs: {_method: 'PATCH'}}) }}" method="post" class="ml-auto" 
+                    data-form-action="{{user.isBlocked ? i18n.t("messages.modale_action_block_unset") : i18n.t("messages.modale_action_block_set") }}"
+                    data-id="{{user.id}}" 
+                    data-form-modale 
+                    enctype="multipart/form-data">
+                    {{ csrfField() }}
+                        <input type="hidden" name="searchParams[input_words]" value="{{searchParams}}">
+                        <button type="submit" class="text-yellow hover:scale-[1.10] duration-300 {{user.isBlocked ? 'text-red-500' : 'text-green-500'}}">
+                            @if(user.isBlocked)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 448 512" fill="currentColor">
+                                <path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/>
+                                </svg>
+                            @else
+                                <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor">
+                                <path   d="M352 144c0-44.2 35.8-80 80-80s80 35.8 80 80v48c0 17.7 14.3 32 32 32s32-14.3 32-32V144C576 64.5 511.5 0 432 0S288 64.5 288 144v48H64c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64H352V144z"/>
+                                </svg>
+                                
+                            @end
+                            
+                        </button>
+                    </form>
+                    
+                    {{-- make user admin --}}
+                    <form action="{{ route('admin.admin', [user.id], { qs: {_method: 'PATCH'}}) }}" class=" ml-auto" 
+                    data-form-action="{{await user.isAdmin() ? i18n.t("messages.modale_action_admin_unset") : i18n.t("messages.modale_action_admin_set") }}"
+                    data-form-modale 
+                    data-id="{{user.id}}" 
+                    method="post"  enctype="multipart/form-data">
+
+                    {{ csrfField() }}
+                        <input type="hidden" name="searchParams[input_words]" value="{{searchParams}}">
+                        <button type="submit" class="{{await user.isAdmin() ? 'text-yellow-500' : 'text-grey-500 opacity-50'  }} hover:scale-[1.10] duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg"width="20px" height="20px" viewBox="0 0 448 512" fill="currentColor">
+                            <path fill="currentColor" d="M448 32c-83.3 11-166.8 22-250 33-92 12.5-163.3 86.7-169 180-3.3 55.5 18 109.5 57.8 148.2L0 480c83.3-11 166.5-22 249.8-33 91.8-12.5 163.3-86.8 168.7-179.8 3.5-55.5-18-109.5-57.7-148.2L448 32zm-79.7 232.3c-4.2 79.5-74 139.2-152.8 134.5-79.5-4.7-140.7-71-136.3-151 4.5-79.2 74.3-139.3 153-134.5 79.3 4.7 140.5 71 136.1 151z"/>
+                            </svg>
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+      </li>
+
+
+ 

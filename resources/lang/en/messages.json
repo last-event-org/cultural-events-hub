@@ -202,7 +202,7 @@
   "error_404": "404 - Page not found",
   "error_server": "Server error",
 
-  "event_create_title": "Create an event",
+  "event_create_title": "Event creation : step",
   "event_event": "Event",
   "event_title": "Title",
   "event_subtitle": "Subtitle",

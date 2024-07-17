@@ -10,246 +10,254 @@
 
 <body class="bg-slate-50">
   @include("pages/partials/header")
-  <main class="flex flex-col justify-center items-center min-h-screen mx-auto mb-16 w-full container">
-    <div class="mt-10">
-      <h2 class="text-center font-semibold text-slate-600 text-xl mb-5">
-        {{ i18n.t('messages.event_create_title') }}
-      </h2>
+  <main class="flex flex-col  items-center min-h-screen mx-auto mb-20 w-full container form-container">
+    <div class="w-full lg:w-[750px] mt-10">
+      <div class="mx-4">
+        <h2 class="font-semibold text-slate-600 mb-2">
+          {{ i18n.t('messages.event_create_title') }}<span id="currentStepDisplay">1</span>/7
+        </h2>
+        <div class="progress-bar w-full h-2 bg-indigo-100 mx-auto ">
+          <div class="progress h-full bg-indigo-700"></div>
+        </div>
+      </div>
+    </div>
 
-      <form action={{ route('events.store') }} method="POST" enctype="multipart/form-data">
-        {{ csrfField() }}
+    <form action={{ route('events.store') }} method="POST" enctype="multipart/form-data" id="multi-step-form" class="w-full lg:w-[800px] mt-10">
+      {{ csrfField() }}
 
-        <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
-          <!-- Description -->
-          <section class="bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl p-4 xl:w-1/2">
-            <div class="w-screen sm:w-full text-sm px-2 sm:px-4">
-              <div class="justify-center flex">  
-                <h2 class="relative z-10 font-bold text-black text-xl my-4">
-                  {{ i18n.t('messages.event_desc') }}
-                  <hr class="absolute -z-10 w-full h-2 bottom-1 left-0 bg-yellow-500">
-                </h2>
-              </div>
-              
-              <div class="flex flex-col mb-3">
-                <label for="title" class="block text-slate-600">{{ i18n.t('messages.event_title') }}</label>
-                <input type="text" id="title" name="title" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
-                @inputError('title')
-                  <div style="color: red;">{{ $messages.join(', ') }}</div>
-                @end
-              </div>
-
-              <div class="flex flex-col mb-3">
-                <label for="subtitle" class="block text-slate-600">{{ i18n.t('messages.event_subtitle') }}</label>
-                <input type="text" id="subtitle" name="subtitle" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
-                @inputError('subtitle')
-                  <div style="color: red;">{{ $messages.join(', ') }}</div>
-                @end
-              </div>
-
-              <div class="flex flex-col mb-3">
-                <label for="description" class="block text-slate-600">{{ i18n.t('messages.event_desc') }}</label>
-                <textarea id="description" name="description" class="mt-1 block w-full h-[131px] px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
-                @inputError('description')
-                  <div style="color: red;">{{ $messages.join(', ') }}</div>
-                @end
-              </div>
+        <!-- Description -->
+        <section id="step1"class="step bg-slate-50 text-slate-600  sm:border sm:shadow sm:rounded-3xl p-4 w-full">
+          <div class=" sm:w-full text-sm sm:px-4">
+            <div class="justify-center flex">  
+              <h2 class="relative z-10 font-bold text-black text-xl my-4">
+                {{ i18n.t('messages.event_desc') }}
+                <hr class="absolute -z-10 w-full h-2 bottom-1 left-0 bg-yellow-500">
+              </h2>
             </div>
-          </section>
+            
+            <div class="flex flex-col mb-3">
+              <label for="title" class="block text-slate-600">{{ i18n.t('messages.event_title') }}</label>
+              <input type="text" id="title" name="title" class=" mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
+              @inputError('title')
+                <div style="color: red;">{{ $messages.join(', ') }}</div>
+              @end
+            </div>
 
-          <!-- Informations pratiques -->
-          <section class="bg-blue-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl p-4 xl:w-1/2 xl:h-full">
-            <div class="w-screen sm:w-full h-full px-2 sm:px-4 mb-8">
-              <div class="justify-center flex">  
-                <h2 class="relative z-10 font-bold text-black text-xl my-4">
-                  {{ i18n.t('messages.event_info') }}
-                  <hr class="absolute -z-10 w-full h-2 bottom-1 left-0 bg-yellow-500">
-                </h2>
+            <div class="flex flex-col mb-3">
+              <label for="subtitle" class="block text-slate-600">{{ i18n.t('messages.event_subtitle') }}</label>
+              <input type="text" id="subtitle" name="subtitle" class=" mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
+              @inputError('subtitle')
+                <div style="color: red;">{{ $messages.join(', ') }}</div>
+              @end
+            </div>
+
+            <div class="flex flex-col mb-3">
+              <label for="description" class="block text-slate-600">{{ i18n.t('messages.event_desc') }}</label>
+              <textarea id="description" name="description" class=" mt-1 block w-full h-[131px] px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
+              @inputError('description')
+                <div style="color: red;">{{ $messages.join(', ') }}</div>
+              @end
+            </div>
+          </div>
+        </section>
+
+        <!-- Informations pratiques -->
+        <section id="step2"class="step bg-blue-50 text-slate-600 sm:border sm:shadow sm:rounded-3xl p-4 w-full">
+          <div class="sm:w-full h-full px-2 sm:px-4 mb-8">
+            <div class="justify-center flex">  
+              <h2 class="relative z-10 font-bold text-black text-xl my-4">
+                {{ i18n.t('messages.event_info') }}
+                <hr class="absolute -z-10 w-full h-2 bottom-1 left-0 bg-yellow-500">
+              </h2>
+            </div>
+            <div class="flex flex-col text-sm">
+              <!-- Location fields -->
+              <div class="flex flex-col mb-3">
+                <label for="name" class="block text-slate-600">{{ i18n.t('messages.event_locationName') }}</label>
+                <input type="text" id="name" name="name" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
+                @inputError('name')
+                  <div style="color: red;">{{ $messages.join(', ') }}</div>
+                @end
               </div>
-              <div class="flex flex-col text-sm">
-                <!-- Location fields -->
-                <div class="flex flex-col mb-3">
-                  <label for="name" class="block text-slate-600">{{ i18n.t('messages.event_locationName') }}</label>
-                  <input type="text" id="name" name="name" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
-                  @inputError('name')
+
+              <!-- Address fields -->
+              <div class="flex w-full mb-3 gap-2">
+                <div class="flex flex-col w-5/6">
+                  <label for="street" class="block text-slate-600">{{ i18n.t('messages.event_locationStreet') }}</label>
+                  <input type="text" id="street" name="street" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
+                  @inputError('street')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                   @end
                 </div>
-
-                <!-- Address fields -->
-                <div class="flex w-full mb-3 gap-2">
-                  <div class="flex flex-col w-5/6">
-                    <label for="street" class="block text-slate-600">{{ i18n.t('messages.event_locationStreet') }}</label>
-                    <input type="text" id="street" name="street" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
-                    @inputError('street')
-                      <div style="color: red;">{{ $messages.join(', ') }}</div>
-                    @end
-                  </div>
-                  <div class="flex flex-col w-1/6">
-                    <label for="number" class="block text-slate-600">{{ i18n.t('messages.event_locationStreetNb') }}</label>
-                    <input type="text" id="number" name="number" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
-                    @inputError('number')
-                      <div style="color: red;">{{ $messages.join(', ') }}</div>
-                    @end
-                  </div>
+                <div class="flex flex-col w-1/6">
+                  <label for="number" class="block text-slate-600">{{ i18n.t('messages.event_locationStreetNb') }}</label>
+                  <input type="text" id="number" name="number" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
+                  @inputError('number')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                  @end
                 </div>
-
-                <div class="flex mb-3 gap-2">
-                  <div class="flex flex-col w-1/6">
-                    <label for="zip_code" class="block text-slate-600">{{ i18n.t('messages.event_locationZip') }}</label>
-                    <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
-                    @inputError('zip_code')
-                      <div style="color: red;">{{ $messages.join(', ') }}</div>
-                    @end
-                  </div>
-                  <div class="flex flex-col w-3/6">
-                    <label for="city" class="block text-slate-600">{{ i18n.t('messages.event_locationCity') }}</label>
-                    <input type="text" id="city" name="city" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
-                    @inputError('city')
-                      <div style="color: red;">{{ $messages.join(', ') }}</div>
-                    @end
-                  </div>
-                  <div class="flex flex-col w-2/6">
-                    <label for="country" class="block text-slate-600">{{ i18n.t('messages.event_locationCountry') }}</label>
-                    <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
-                    @inputError('country')
-                      <div style="color: red;">{{ $messages.join(', ') }}</div>
-                    @end
-                  </div>
-                </div>
-
-                <!-- Date and time fields -->
-                <div class="flex text-sm gap-2 w-full">
-                  <input type="hidden" name="timezone" id="timezone" value="">
-                  <div class="flex flex-col w-1/2">
-                    <label for="event_start" class="block text-slate-600">{{ i18n.t('messages.event_start') }}</label>
-                    <input type="datetime-local" id="event_start" name="event_start" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
-                  </div>
-                  <div class="flex flex-col w-1/2">
-                    <label for="event_end" class="block text-slate-600">{{ i18n.t('messages.event_end') }}</label>
-                    <input type="datetime-local" id="event_end" name="event_end" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
-                  </div>
-                </div>
-                @flashMessage('date')
-                  <div style="color: red;">{{ $message.message }}</div>
-                @end
               </div>
-            </div>
-          </section>
-        </div>
 
-        <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
-          <!-- Links -->
-          <section class="bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl p-4 xl:w-1/2 xl:h-full">
-            <h2 class="relative z-10 font-bold text-black text-xl my-4">
+              <div class="flex mb-3 gap-2">
+                <div class="flex flex-col w-1/6">
+                  <label for="zip_code" class="block text-slate-600">{{ i18n.t('messages.event_locationZip') }}</label>
+                  <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
+                  @inputError('zip_code')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                  @end
+                </div>
+                <div class="flex flex-col w-3/6">
+                  <label for="city" class="block text-slate-600">{{ i18n.t('messages.event_locationCity') }}</label>
+                  <input type="text" id="city" name="city" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
+                  @inputError('city')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                  @end
+                </div>
+                <div class="flex flex-col w-2/6">
+                  <label for="country" class="block text-slate-600">{{ i18n.t('messages.event_locationCountry') }}</label>
+                  <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
+                  @inputError('country')
+                    <div style="color: red;">{{ $messages.join(', ') }}</div>
+                  @end
+                </div>
+              </div>
+
+              <!-- Date and time fields -->
+              <div class="flex text-sm gap-2 w-full">
+                <input type="hidden" name="timezone" id="timezone" value="">
+                <div class="flex flex-col w-1/2">
+                  <label for="event_start" class="block text-slate-600">{{ i18n.t('messages.event_start') }}</label>
+                  <input type="datetime-local" id="event_start" name="event_start" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
+                </div>
+                <div class="flex flex-col w-1/2">
+                  <label for="event_end" class="block text-slate-600">{{ i18n.t('messages.event_end') }}</label>
+                  <input type="datetime-local" id="event_end" name="event_end" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
+                </div>
+              </div>
+              @flashMessage('date')
+                <div style="color: red;">{{ $message.message }}</div>
+              @end
+            </div>
+          </div>
+         
+        </section>
+
+        <!-- Links -->
+        <section id="step3" class="step bg-slate-50 text-slate-600 sm:border sm:shadow sm:rounded-3xl p-6 w-full">
+          <div class="flex sm:w-full ">
+            <h2 class="relative z-10 text-xl text-black font-bold pb-2 mx-auto">
               {{ i18n.t('messages.event_links') }}
-              <hr class="absolute -z-10 w-full h-2 bottom-1 left-0 bg-yellow-500">
+              <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
             </h2>
-            <div class="flex flex-col gap-3 w-screen sm:w-full text-sm px-2 sm:px-4 mb-5">
-              <!-- Social media links -->
-              <div>
-                <label for="facebook_link" class="block text-slate-600">{{ i18n.t('messages.event_fbLink') }}</label>
-                <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('facebook_link') || '' }}">
-              </div>
-              <div>
-                <label for="instagram_link" class="block text-slate-600">{{ i18n.t('messages.event_igLink') }}</label>
-                <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('instagram_link') || '' }}">
-              </div>
-              <div>
-                <label for="website_link" class="block text-slate-600">{{ i18n.t('messages.event_webLink') }}</label>
-                <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
-              </div>
-              <div>
-                <label for="youtube_link" class="block text-slate-600">{{ i18n.t('messages.event_ytLink') }}</label>
-                <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('youtube_link') || '' }}">
-              </div>
+          </div>
+          <div class="flex flex-col gap-3 sm:w-full text-sm px-2 sm:px-4 mb-5">
+            <!-- Social media links -->
+            <div>
+              <label for="facebook_link" class="block text-slate-600">{{ i18n.t('messages.event_fbLink') }}</label>
+              <input type="text" id="facebook_link" name="facebook_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('facebook_link') || '' }}">
             </div>
-          </section>
-
-          <!-- Categories -->
-          <section class="bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl p-6 xl:w-1/2 xl:h-full">
-            <div class="flex w-screen sm:w-full px-4">
-              <fieldset class="py-2 w-full">
-                <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto">
-                  {{ i18n.t('messages.event_categ') }}
-                  <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
-                </legend>
-                @each(category in categories)
-                  <ul>
-                    <li>
-                      <input type="radio" id="category_{{ category.id }}" name="categories[]" value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" required/>
-                      <label for="category_{{ category.id }}">{{ category.name }}</label>
-                      <fieldset id="categoryTypesFieldset_{{ category.id }}" name="categoryTypesFieldset" class="hidden relative left-10">
-                        @each(categoryType in categoryTypes)
-                          @if (categoryType.categoryId == category.id)
-                            <li class="category-type category-type-{{ categoryType.categoryId }}">
-                              <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]" value="{{ categoryType.id }}"/>
-                              <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
-                            </li>
-                          @endif
-                        @end
-                      </fieldset>
-                    </li>
-                  </ul>
-                @end
-              </fieldset>
+            <div>
+              <label for="instagram_link" class="block text-slate-600">{{ i18n.t('messages.event_igLink') }}</label>
+              <input type="text" id="instagram_link" name="instagram_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('instagram_link') || '' }}">
             </div>
-            @if(flashMessages.has('errorMissingCategType'))
-              <div>
-                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
-                  {{ flashMessages.get('errorMissingCategType') }}
-                </h2>
-              </div>
-            @endif
-          </section>
-        </div>
+            <div>
+              <label for="website_link" class="block text-slate-600">{{ i18n.t('messages.event_webLink') }}</label>
+              <input type="text" id="website_link" name="website_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('website_link') || '' }}">
+            </div>
+            <div>
+              <label for="youtube_link" class="block text-slate-600">{{ i18n.t('messages.event_ytLink') }}</label>
+              <input type="text" id="youtube_link" name="youtube_link" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('youtube_link') || '' }}">
+            </div>
+          </div>
+         
+        </section>
 
-        <div class="xl:flex-row flex flex-col w-full gap-y-5 xl:gap-x-5 my-5">
-          <!-- Indicators -->
-          <section class="bg-slate-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl xl:w-1/2 my-0 p-6">
-            <div class="flex w-screen sm:w-full px-4">    
-              <fieldset class="py-2 w-full">
-                <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto">
-                  {{ i18n.t('messages.event_indic') }}
-                  <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
-                </legend>
-                @each(indicator in indicators)
+        <!-- Categories -->
+        <section id="step4" class="step bg-slate-50 text-slate-600  sm:border sm:shadow sm:rounded-3xl p-6 w-full">
+          <div class="flex sm:w-full px-4">
+            <fieldset class="py-2 w-full">
+              <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto">
+                {{ i18n.t('messages.event_categ') }}
+                <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
+              </legend>
+              @each(category in categories)
                 <ul>
                   <li>
-                    <input type="checkbox" id="indicator_{{ indicator.id }}" name="indicators[]" value="{{ indicator.id }}" />
-                    <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
+                    <input type="radio" id="category_{{ category.id }}" name="categories[]" value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" required/>
+                    <label for="category_{{ category.id }}">{{ category.name }}</label>
+                    <fieldset id="categoryTypesFieldset_{{ category.id }}" name="categoryTypesFieldset" class="hidden relative left-10">
+                      @each(categoryType in categoryTypes)
+                        @if (categoryType.categoryId == category.id)
+                          <li class="category-type category-type-{{ categoryType.categoryId }}">
+                            <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]" value="{{ categoryType.id }}"/>
+                            <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+                          </li>
+                        @endif
+                      @end
+                    </fieldset>
                   </li>
                 </ul>
-                @end
-              </fieldset>
+              @end
+            </fieldset>
+          </div>
+          @if(flashMessages.has('errorMissingCategType'))
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                {{ flashMessages.get('errorMissingCategType') }}
+              </h2>
             </div>
-          </section>
-        
-          <!-- Image loading -->
-          <section class="bg-emerald-50 text-slate-600 flex flex-col xl:w-1/2 items-center sm:border sm:shadow rounded-3xl p-6"> 
-            <h2 class="relative z-10 font-bold text-black text-xl my-4">
+          @endif       
+        </section>
+
+        <!-- Indicators -->
+        <section id="step5" class="step bg-slate-50 text-slate-600 sm:border sm:shadow sm:rounded-3xl w-full p-6">
+          <div class="flex sm:w-full px-4">    
+            <fieldset class="py-2 w-full">
+              <legend class="relative z-10 text-xl text-black font-bold pb-2 mx-auto">
+                {{ i18n.t('messages.event_indic') }}
+                <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
+              </legend>
+              @each(indicator in indicators)
+              <ul>
+                <li>
+                  <input type="checkbox" id="indicator_{{ indicator.id }}" name="indicators[]" value="{{ indicator.id }}" />
+                  <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
+                </li>
+              </ul>
+              @end
+            </fieldset>
+          </div>
+         
+        </section>
+      
+        <!-- Image loading -->
+        <section id="step6" class="step bg-emerald-50 text-slate-600 w-full sm:border sm:shadow sm:rounded-3xl p-6">  
+          <div class="flex sm:w-full ">
+            <h2 class="relative z-10 text-xl text-black font-bold pb-2 mx-auto">
               {{ i18n.t('messages.event_images') }}
-              <hr class="absolute -z-10 w-full h-2 bottom-1 left-0 bg-yellow-500">
-            </h2> 
-            <label for="images_link" class="text-center">
-              {{ i18n.t('messages.event_uploadImg') }}
-            </label>
-            <input class="mt-4 max-w-56" type="file" id="images_link" name="images_link[]" onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
-            <div id="imagePreviewContainer" class="flex flex-wrap mt-4"></div>
-            @inputError('images_link')
-              <div style="color: red;">{{ i18n.t('messages.event_imgMin') }}</div>
-            @end
-          </section>
-        </div>
+              <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
+            </h2>
+          </div>
+          <label for="images_link" class="text-center">
+            {{ i18n.t('messages.event_uploadImg') }}
+          </label>
+          <input class="mt-4 max-w-56" type="file" id="images_link" name="images_link[]" onchange="previewImages()" accept="image/png, image/gif, image/jpeg" multiple />
+          <div id="imagePreviewContainer" class="flex flex-wrap mt-4"></div>
+          @inputError('images_link')
+            <div style="color: red;">{{ i18n.t('messages.event_imgMin') }}</div>
+          @end
+         
+        </section>
 
-        <!-- Prices -->
-        <section class="bg-indigo-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl lg:w-[800px] xl:w-[1100px]">
-          <h2 class="mx-auto relative z-10 font-bold text-black text-xl my-4 text-center">
+      <!-- Prices -->
+      <section id="step7" class="step bg-indigo-100 text-slate-600 flex flex-col items-center sm:border sm:shadow sm:rounded-3xl">
+        <div class="flex flex-col items-center w-screen sm:w-full mt-6 pt-6 sm:pt-0">
+          <h2 class="relative z-10 text-xl text-black font-bold pb-2 mx-auto">
             {{ i18n.t('messages.event_prix') }}
-            <hr class="absolute -z-10 w-full h-2 bottom-1 left-0 bg-yellow-500">
+            <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
           </h2>
-          
           @!component('components/price_fields')
-
+          
           <template id="priceFieldsTemplate">
             @!component('components/price_fields')
           </template>
@@ -259,42 +267,46 @@
           @inputError('prices[]')
             <div style="color: red;">{{ $messages.join(', ') }}</div>
           @end
-
+  
           <a class="flex items-center px-2 h-10 text-bold text-lg cursor-pointer text-slate-700 mb-6 mt-4" onclick="addPriceFields()">
             {{ i18n.t('messages.event_addPrice') }}
             <svg class="mt-1 h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
             </svg>
           </a>
-        </section>
-
-        @if(flashMessages.has('errorMissingPrices'))
-          <div>
-            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
-              {{ flashMessages.get('errorMissingPrices') }}
-            </h2>
+          
+          @if(flashMessages.has('errorMissingPrices'))
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                {{ flashMessages.get('errorMissingPrices') }}
+              </h2>
+            </div>
+          @endif
+    
+          @if(flashMessages.has('errorRequiredPriceFields'))
+            <div>
+              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                {{ flashMessages.get('errorRequiredPriceFields') }}
+              </h2>
+            </div>
+          @endif
+    
+          <div class="flex justify-center my-2">
+            <button type="submit" class="uppercase bg-yellow-500 text-slate-700 font-semibold py-2 px-6 my-5 rounded-md hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
+              {{ i18n.t('messages.event_create') }}
+            </button> 
           </div>
-        @endif
-
-        @if(flashMessages.has('errorRequiredPriceFields'))
-          <div>
-            <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
-              {{ flashMessages.get('errorRequiredPriceFields') }}
-            </h2>
-          </div>
-        @endif
-
-        <div class="flex justify-center my-2">
-          <button type="submit" class="uppercase bg-yellow-500 text-slate-700 font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
-            {{ i18n.t('messages.event_create') }}
-          </button> 
         </div>
 
-      </form>
-    </div>
+       
+      </section>
+      @!component('components/navigation_buttons')
+    </form>
   </main>
-
+  
   @include("pages/partials/footer")
   <script src="/resources/js/add_event.js"></script>
+  <script src="/resources/js/add_event_navigation.js"></script>
+
 </body>
 </html>

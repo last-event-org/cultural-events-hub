@@ -12,6 +12,17 @@ function toggleDisplayPrices() {
   }
 }
 
+function toggleEditDisplayPrices() {
+  const freeEventCheckbox = document.getElementById("is_free");
+  const pricesSection = document.getElementById("prices-section-edit");
+
+  if (freeEventCheckbox.checked){
+    pricesSection.style.display = "none";
+  } else {
+    pricesSection.style.display = "block";
+  }
+}
+
 let priceElementCount = 0;
 const maxElements = 4;
 

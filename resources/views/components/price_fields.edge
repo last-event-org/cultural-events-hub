@@ -1,9 +1,15 @@
 <fieldset class="price-section w-screen sm:w-[90%] sm:rounded-3xl p-6  bg-white border shadow-sm my-4" name="prices[]">
   <div class="flex gap-4 pb-2 items-end">
     <label for="is_free_category" class="text-gray-600">Catégorie Gratuite</label>
-    <input onclick="toggleFreeCategoriyPrices(this)" class="free-category border-gray-300 rounded-md mb-0.5
-      focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-      type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][is_free_category]">
+    @if(price?.type && (price?.type == 'freeNotLimited' || price?.type == 'freeLimited'))
+      <input onclick="toggleFreeCategoriyPrices(this)" class="free-category border-gray-300 rounded-md mb-0.5
+        focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        type="checkbox" checked name="prices[{{ i ? i : 0 }}][is_free_category]">
+    @else
+      <input onclick="toggleFreeCategoriyPrices(this)" class="free-category border-gray-300 rounded-md mb-0.5
+        focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][is_free_category]">
+    @end
   </div>
 
   <div class="flex gap-2 w-full">
@@ -50,9 +56,15 @@
 
         <div class="flex gap-4 pb-2 items-end">
           <label for="become_free" class="text-gray-600">Devient Gratuit</label>
-          <input onclick="toggleFreeLastMinutePrice(this)" class="become_free border-gray-300 rounded-md mb-0.5
+          @if(price?.type && (price?.type == 'lastMinuteFreeLimited' || price?.type == 'lastMinuteFreeNotLimited'))
+            <input onclick="toggleFreeLastMinutePrice(this)" class="become_free border-gray-300 rounded-md mb-0.5
+              focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+              type="checkbox" checked name="prices[{{ i ? i : 0 }}][become_free]">
+          @else
+            <input onclick="toggleFreeLastMinutePrice(this)" class="become_free border-gray-300 rounded-md mb-0.5
             focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-            type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
+            type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][become_free]">
+          @end
         </div>
       </div>  
     </div>

@@ -358,8 +358,6 @@ export default class EventsController {
     request: HttpContext['request'],
     session: HttpContext['session'],
   ) {
-    console.log('\n\n\n\n***********');
-    console.log(request.all());
     const payload = await request.validateUsing(createEventValidator)
 
     const event = new Event()
@@ -431,8 +429,8 @@ export default class EventsController {
         else if (requestPriceData.available_qty != null) return 'freeLimited'
 
       } else if (!isFreeCategory) {
-        if (requestPriceData.regular_price != null && requestPriceData.available_qty != null && requestPriceData.discounted_price == null) return 'infoPriceLimited'
-        if (requestPriceData.regular_price != null && requestPriceData.available_qty == null && requestPriceData.discounted_price == null) return 'infoPrice'
+        if (!requestPriceData.become_free && requestPriceData.regular_price != null && requestPriceData.available_qty != null && requestPriceData.discounted_price == null) return 'infoPriceLimited'
+        if (!requestPriceData.become_free && requestPriceData.regular_price != null && requestPriceData.available_qty == null && requestPriceData.discounted_price == null) return 'infoPrice'
         else if (!requestPriceData.become_free && requestPriceData.discounted_price != null && requestPriceData.available_qty == null) return 'lastMinuteNotLimited'
         else if (!requestPriceData.become_free && requestPriceData.discounted_price != null && requestPriceData.available_qty != null) return 'lastMinuteLimited'
         else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty != null) return 'lastMinuteFreeLimited'
@@ -460,13 +458,11 @@ export default class EventsController {
           if (priceData.is_free_category == 'on' || priceData.is_free_category) {
             freeCateg = true
           }
-          console.log('\n\n\n\npriceData: ', priceData);
           const payload = await createPriceValidator(freeCateg).validate(priceData)
 
           if (payload) {
             const price = new Price
             price.type = await this.setPriceType(freeCateg, priceData)
-            console.log('price.type: ', price.type);
 
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
@@ -883,6 +879,15 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
+    if (event.isFree) {
+      // the event become free so no prices needed anymore
+      const prices = event.prices
+      prices.forEach((price: Price) => {
+        price.delete()
+      })
+      return true
+    }
+
     const bodyPrices = request.body().prices
 
     if (bodyPrices) {
@@ -896,13 +901,19 @@ export default class EventsController {
       bodyPrices.forEach(async (priceData: any) => {
 
         try {
-          const payload = await createPriceValidator.validate(priceData)
+          let freeCateg = false
+          if (priceData.is_free_category == 'on' || priceData.is_free_category) {
+            freeCateg = true
+          }
+          const payload = await createPriceValidator(freeCateg).validate(priceData)
 
           if (payload) {
             const price = new Price
+            price.type = await this.setPriceType(freeCateg, priceData)
+
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
-            if (payload.discounted_price) price.discountedPrice = payload.discounted_price
+            if (payload.discounted_price) price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
 
             await price.save()
@@ -978,6 +989,8 @@ export default class EventsController {
       } else {
         event.youtubeLink = ''
       }
+
+      event.isFree = payload.is_free ? payload.is_free : false
 
       if (!(await this.updateEventAddress(request, session, i18n, event))) return response.redirect().back()
       if (!(await this.updateEventCategoryTypes(request, session, i18n, event))) return response.redirect().back()

@@ -21,6 +21,8 @@ import User from '#models/user'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 import { time } from 'console'
+import OrderLine from '#models/order_line'
+import Order from '#models/order'
 
 export default class EventsController {
   /**
@@ -665,6 +667,8 @@ export default class EventsController {
     let isUserFavourite = false
     let isInUserWishlist = false
     let linkedEvents
+    let orderLines
+    let userOrderLines: any
 
     try {
       const event = await Event.query()
@@ -688,6 +692,30 @@ export default class EventsController {
             .related('favouritesUser')
             .query()
             .where('vendor_id', event.vendorId)
+
+          orderLines = await Order.query()
+            .select('prices.id as price_id')
+            .select('order_lines.qty as order_lines_qty')
+            .select('prices.available_qty as price_available_qty')
+            .join('order_lines', 'order_lines.order_id', 'orders.id')
+            .join('prices', 'order_lines.price_id', 'prices.id')
+            .join('events', 'prices.event_id', 'events.id')
+            .where('orders.is_paid', false)
+            .where('events.id', event.id)
+            .groupBy('prices.id', 'order_lines.qty', 'prices.available_qty')
+
+          // group order lines by event
+
+          userOrderLines = orderLines.reduce((acc, orderLine) => {
+            const priceId = orderLine.$extras.price_id
+            if (!acc[priceId]) {
+              acc[priceId] = orderLine.$extras.order_lines_qty
+            }
+            // acc[priceId].order_lines.push(orderLine)
+            return acc
+          }, {})
+
+          console.log(userOrderLines)
 
           isUserFavourite = userFavourites.length > 0
 
@@ -724,6 +752,7 @@ export default class EventsController {
           linkedEvents: linkedEvents,
           isUserFavourite: isUserFavourite,
           isInUserWishlist: isInUserWishlist,
+          userOrderLines: Object.values(userOrderLines).length === 0 ? null : userOrderLines,
         })
       }
     } catch (error) {

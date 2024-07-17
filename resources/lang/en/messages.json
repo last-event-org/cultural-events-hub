@@ -197,6 +197,7 @@
   "eventCard_last": "Last places available",
   "eventCard_full": "Full",
   "eventCard_free": "Free",
+  "eventCard_see_details":"See details",
 
   "error_404": "404 - Page not found",
   "error_server": "Server error",

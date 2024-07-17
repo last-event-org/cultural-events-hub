@@ -3,7 +3,7 @@
   <summary class="flex flex-col lg:flex-row items-center duration-300">
     <div class="flex w-full lg:w-3/6">
       <div class="w-24 hidden sm:block">
-        <img class="object-cover overflow-hidden w-full h-16" src="{{event.path ?? '/images/dummies/No_image.png'}}"
+        <img class="object-cover overflow-hidden w-24 h-16 min-w-24 min-h-16" src="{{event.path ?? '/images/dummies/No_image.png'}}"
           alt="{{event.altName ?? 'No picture available'}}"
           onerror="this.onerror=null; this.src='/images/dummies/No_image.png';">
       </div>

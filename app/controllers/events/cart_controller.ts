@@ -58,7 +58,7 @@ export default class CartController {
       if (orderLineExists.length !== 0) {
         console.log('orderLineExists[0]')
         console.log(orderLineExists[0].qty)
-        // all available Qty already taken by the user
+        // all available Qty already taken by
         if (orderLineExists[0].qty === orderLineExists[0].price.availableQty) {
           console.log('NOT POSSIBLE TO ADD MORE QUANTITY')
           // TODO handle error message
@@ -89,9 +89,6 @@ export default class CartController {
         await orderLine.save()
       }
     }
-    // session.flash('success', {
-    //   message: 'Article ajouté au panier',
-    // })
 
     // TODO avoid refreshing the page or go back
     return response.send('')
@@ -128,29 +125,40 @@ export default class CartController {
    * Add one 1pc
    */
 
-  async addQuantity({ params, view, response, request }: HttpContext) {
+  async addQuantity({ params, response, i18n, session }: HttpContext) {
     console.log('ADD QUANTITY')
 
-    const orderLine = await OrderLine.find(params['id'])
-    if (orderLine) {
-      orderLine.qty += 1
-      orderLine?.save()
+    let orderLine = await OrderLine.find(params['id'])
+    let orderLinePrice = await orderLine?.related('price').query().first()
+    if (orderLine && orderLinePrice) {
+      if (orderLine.qty === orderLinePrice.availableQty) {
+        // const successMsg = i18n.t('messages.cart_itemDeleted')
+        const errorMsg = 'There is no other places available'
+        session.flash('error', errorMsg)
+      } else {
+        orderLine.qty += 1
+        orderLine?.save()
+        const successMsg = i18n.t('messages.cart_itemAdded')
+        session.flash('success', successMsg)
+      }
     }
 
-    // TODO configure the response
-    return response.send()
+    return response.redirect().toRoute('cart.show')
   }
 
   /**
    * Remove 1pc
    */
-  async removeQuantity({ params, auth, view, response }: HttpContext) {
+  async removeQuantity({ params, session, i18n, response }: HttpContext) {
     console.log('REMOVE QUANTITY')
 
     const orderLine = await OrderLine.find(params['id'])
     if (orderLine) {
       if (orderLine.qty === 1) {
         orderLine.delete()
+        const successMsg = i18n.t('messages.cart_itemDeleted')
+        session.flash('success', successMsg)
+        return response.redirect().toRoute('cart.show')
       } else {
         orderLine.qty -= 1
         orderLine?.save()
@@ -164,14 +172,16 @@ export default class CartController {
   /**
    * Remove the order line
    */
-  async deleteOrderLine({ params, auth, view, response }: HttpContext) {
+  async deleteOrderLine({ params, i18n, session, response }: HttpContext) {
     console.log('DELETE ORDER LINE')
 
     const orderLine = await OrderLine.find(params['id'])
     orderLine?.delete()
 
     // TODO configure the response
-    return response.send()
+    const successMsg = i18n.t('messages.cart_itemDeleted')
+    session.flash('success', successMsg)
+    return response.redirect().toRoute('cart.show')
   }
 
   /**

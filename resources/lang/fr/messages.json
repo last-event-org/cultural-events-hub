@@ -336,6 +336,9 @@
   "footer_cookie_policy": "Politique des cookies",
   "footer_terms_and_conditions":"Conditions générales",
   "footer_pricing_advertising": "Tarifs / Publicités",
-  "footer_events_in":"Événements à"
+  "footer_events_in":"Événements à",
+  
+  "btn_previous": "Précédent",
+  "btn_next": "Suivant"
 
 }

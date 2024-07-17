@@ -152,7 +152,9 @@ export default class EventsController {
       if (!await this.attachCategoryTypes(request, session, i18n, event)) return response.redirect().back()
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)
-      if (!(await this.createEventPrices(request, session, response, i18n, event))) return response.redirect().back()
+      if (!event.isFree) {
+        if (!(await this.createEventPrices(request, session, response, i18n, event))) return response.redirect().back()
+      }
       await this.uploadEventMedia(request, event)
 
       return response.redirect().toRoute('events.show', { id: event.id })
@@ -709,8 +711,6 @@ export default class EventsController {
           .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
           .limit(5)
 
-        console.log('\n\n LINKEDEVENTS \n\n')
-        console.log(linkedEvents)
       }
 
       if (!event) {

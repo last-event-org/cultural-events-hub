@@ -24,6 +24,9 @@ export default class Price extends BaseModel {
   @column()
   declare eventId: number
 
+  @column()
+  declare type: string
+
   @belongsTo(() => Event)
   declare event: BelongsTo<typeof Event>
 

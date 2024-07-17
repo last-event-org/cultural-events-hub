@@ -50,7 +50,7 @@
 
         <div class="flex gap-4 pb-2 items-end">
           <label for="become_free" class="text-gray-600">Devient Gratuit</label>
-          <input class="become_free border-gray-300 rounded-md mb-0.5
+          <input onclick="toggleFreeLastMinutePrice(this)" class="become_free border-gray-300 rounded-md mb-0.5
             focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
             type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
         </div>

@@ -21,8 +21,6 @@ function error(err) {
 // navigator.geolocation.getCurrentPosition(success, error, options)
 
 export async function getCoordinatesFromAddress(address) {
-  console.log('getCoordinatesFromAddress')
-  console.log(address)
   try {
     const response = await fetch(
       `https://api.openrouteservice.org/geocode/search/structured?api_key=${import.meta.env.VITE_API_KEY_ROUTERSERVICE}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`

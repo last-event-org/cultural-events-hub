@@ -1,27 +1,19 @@
 import vine from '@vinejs/vine'
-import Event from '#models/event'
 
-export const createPriceValidator = (event: Event, is_free_category: boolean) => {
+
+export const createPriceValidator = (is_free_category: boolean) => {
     return vine.compile(
         vine.object({
             price_description: vine
                 .string()
                 .escape()
-                .maxLength(255)
-                .optional()
-                .requiredWhen((_) => {
-                    if (event.isFree) {
-                      return false
-                    }
-                    console.log('\n\n\nTEST\n\n\n');
-                    return true
-                  }),
+                .maxLength(20),
             regular_price: vine
                 .number()
                 .positive()
                 .optional()
                 .requiredWhen((_) => {
-                    if (event.isFree || is_free_category) {
+                    if (is_free_category) {
                       return false
                     }
                     return true
@@ -29,7 +21,7 @@ export const createPriceValidator = (event: Event, is_free_category: boolean) =>
             discounted_price: vine
                 .number()
                 .positive()
-                .nullable(),
+                .optional(),
             available_qty: vine
                 .number()
                 .withoutDecimals()

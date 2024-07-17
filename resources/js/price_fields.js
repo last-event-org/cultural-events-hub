@@ -15,3 +15,15 @@ function toggleFreeCategoriyPrices(element) {
         becomeFreeFld.removeAttribute("disabled")
     }
 }
+
+function toggleFreeLastMinutePrice(element) {
+    const priceSection = element.closest('.price-section')
+    const becomeFreeCheckbox = priceSection.querySelector(".become_free");
+    const discPriceFld = priceSection.querySelector(".discounted_price");
+
+    if (becomeFreeCheckbox.checked) {
+        discPriceFld.setAttribute("disabled", true)
+    } else {
+        discPriceFld.removeAttribute("disabled")
+    }
+}

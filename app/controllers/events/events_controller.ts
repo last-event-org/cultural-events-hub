@@ -21,7 +21,6 @@ import { createPricesValidator } from '#validators/price'
 import User from '#models/user'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
-import { checkPriceCategoryTypeValidator } from '#validators/price_category'
 
 export default class EventsController {
   /**
@@ -294,28 +293,29 @@ export default class EventsController {
       for (const word of wordsArray) {
 
         const results = await Event.query()
-        .preload('location')
-        .preload('vendor')
-        .preload('media')
-        .preload('prices')
-        .preload('indicators')
-        .preload('categoryTypes', (categoryTypesQuery) => {
-          categoryTypesQuery.preload('category')
-        })
-        .where(event => { event
-          .whereILike('title', `%${word}%`)
-          .orWhereILike('subtitle', `%${word}%`)
-          .orWhereILike('description', `%${word}%`)
-        })
-        .orWhereHas('vendor', (vendor) => {
-          vendor.whereILike('companyName', `%${word}%`);
-        })
-        .orWhereHas('location', (vendor) => {
-          vendor.whereILike('name', `%${word}%`)
-          .orWhereILike('street', `%${word}%`)
-          .orWhereILike('city', `%${word}%`)
-        })
-        .distinct()
+          .preload('location')
+          .preload('vendor')
+          .preload('media')
+          .preload('prices')
+          .preload('indicators')
+          .preload('categoryTypes', (categoryTypesQuery) => {
+            categoryTypesQuery.preload('category')
+          })
+          .where(event => {
+            event
+              .whereILike('title', `%${word}%`)
+            .orWhereILike('subtitle', `%${word}%`)
+            .orWhereILike('description', `%${word}%`)
+          })
+          .orWhereHas('vendor', (vendor) => {
+            vendor.whereILike('companyName', `%${word}%`);
+          })
+          .orWhereHas('location', (vendor) => {
+            vendor.whereILike('name', `%${word}%`)
+              .orWhereILike('street', `%${word}%`)
+              .orWhereILike('city', `%${word}%`)
+          })
+          .distinct()
 
         // Merge results into events array
         events = [...events, ...results];
@@ -359,10 +359,9 @@ export default class EventsController {
     session: HttpContext['session'],
   ) {
     console.log('\n\n\n\n***********');
-      console.log(request.all());
-      const payload = await request.validateUsing(createEventValidator)
+    console.log(request.all());
+    const payload = await request.validateUsing(createEventValidator)
 
-    console.log('\n\n\n\npayload.is_free: ', payload.is_free);
     const event = new Event()
 
     event.title = payload.title
@@ -417,6 +416,32 @@ export default class EventsController {
     }
   }
 
+  async setPriceType(isFreeCategory: boolean, requestPriceData: any) {
+    /*
+    Price element types:
+    free category=true AND available_qty=null ==> Free and Not Limited (freeNotLimited)
+    free category=true AND available_qty=<Integer> ==> Free and Limited (freeLimited)
+    free category=false AND regular_price=<Integer> ==> ticket Normal Price (infoPrice)
+    free category=false AND discounted_price AND available_qty=<Integer> ==> ticket Last minute Limited (lastMinuteLimited)
+    */
+    if (requestPriceData) {
+
+      if (isFreeCategory) {
+        if (requestPriceData.available_qty == null) return 'freeNotLimited'
+        else if (requestPriceData.available_qty != null) return 'freeLimited'
+
+      } else if (!isFreeCategory) {
+        if (requestPriceData.regular_price != null && requestPriceData.available_qty != null && requestPriceData.discounted_price == null) return 'infoPriceLimited'
+        if (requestPriceData.regular_price != null && requestPriceData.available_qty == null && requestPriceData.discounted_price == null) return 'infoPrice'
+        else if (!requestPriceData.become_free && requestPriceData.discounted_price != null && requestPriceData.available_qty == null) return 'lastMinuteNotLimited'
+        else if (!requestPriceData.become_free && requestPriceData.discounted_price != null && requestPriceData.available_qty != null) return 'lastMinuteLimited'
+        else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty != null) return 'lastMinuteFreeLimited'
+        else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty == null) return 'lastMinuteFreeNotLimited'
+      }
+    }
+    return ''
+  }
+
   async createEventPrices(
     request: HttpContext['request'],
     session: HttpContext['session'],
@@ -425,7 +450,6 @@ export default class EventsController {
     event: Event
   ) {
     const bodyPrices = request.body().prices
-    console.log('\n\n\n\nbodyPrices: ', bodyPrices);
 
     if (bodyPrices) {
       // we process one price element at a time
@@ -433,18 +457,20 @@ export default class EventsController {
 
         try {
           let freeCateg = false
-          const priceCategoryTypePayload = await request.validateUsing(checkPriceCategoryTypeValidator)
-          if (priceCategoryTypePayload.is_free_category) {
+          if (priceData.is_free_category == 'on' || priceData.is_free_category) {
             freeCateg = true
           }
-          console.log('\n\n\n\npriceCategoryTypePayload: ', priceCategoryTypePayload.is_free_category);
-          const payload = await createPriceValidator(event, freeCateg).validate(priceData)
+          console.log('\n\n\n\npriceData: ', priceData);
+          const payload = await createPriceValidator(freeCateg).validate(priceData)
 
           if (payload) {
             const price = new Price
+            price.type = await this.setPriceType(freeCateg, priceData)
+            console.log('price.type: ', price.type);
+
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
-            if (payload.discounted_price) price.discountedPrice = payload.discounted_price
+            if (payload.discounted_price) price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
 
             await price.save()
@@ -511,7 +537,6 @@ export default class EventsController {
   }
 
   async getCoordinatesFromAddress(city: string, street: string, zip: number, number: string) {
-    console.log('getCoordinatesFromAddress')
     try {
       const response = await fetch(
         `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`

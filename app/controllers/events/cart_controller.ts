@@ -132,8 +132,7 @@ export default class CartController {
     let orderLinePrice = await orderLine?.related('price').query().first()
     if (orderLine && orderLinePrice) {
       if (orderLine.qty === orderLinePrice.availableQty) {
-        // const successMsg = i18n.t('messages.cart_itemDeleted')
-        const errorMsg = 'There is no other places available'
+        const errorMsg = i18n.t('messages.cart_noPlaces')
         session.flash('error', errorMsg)
       } else {
         orderLine.qty += 1
@@ -155,18 +154,16 @@ export default class CartController {
     const orderLine = await OrderLine.find(params['id'])
     if (orderLine) {
       if (orderLine.qty === 1) {
-        orderLine.delete()
-        const successMsg = i18n.t('messages.cart_itemDeleted')
-        session.flash('success', successMsg)
-        return response.redirect().toRoute('cart.show')
+        this.deleteOrderLine(params['id'])
       } else {
         orderLine.qty -= 1
+        const successMsg = i18n.t('messages.cart_itemDeleted')
+        session.flash('success', successMsg)
         orderLine?.save()
       }
     }
 
-    // TODO configure the response
-    return response.send()
+    return response.redirect().toRoute('cart.show')
   }
 
   /**

@@ -415,13 +415,6 @@ export default class EventsController {
   }
 
   async setPriceType(isFreeCategory: boolean, requestPriceData: any) {
-    /*
-    Price element types:
-    free category=true AND available_qty=null ==> Free and Not Limited (freeNotLimited)
-    free category=true AND available_qty=<Integer> ==> Free and Limited (freeLimited)
-    free category=false AND regular_price=<Integer> ==> ticket Normal Price (infoPrice)
-    free category=false AND discounted_price AND available_qty=<Integer> ==> ticket Last minute Limited (lastMinuteLimited)
-    */
     if (requestPriceData) {
 
       if (isFreeCategory) {

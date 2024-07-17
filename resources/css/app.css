@@ -300,3 +300,13 @@ summary {
   transition: width 0.3s ease-in-out;
 }
 
+/* Reset Textarea*/
+textarea {
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  /* border: none; */
+  resize: vertical;
+}

@@ -14,7 +14,7 @@
         {{ i18n.t('messages.editProfile_vat') }}
     </label>
     <input type="text" id="vat_number" name="vat_number" class="mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm
-  focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ vatNumber || '' }}">
+  focus:ring-slate-500 focus:border-yellow-500 sm:text-sm" value="{{ vatNumber || '' }}" placeholder="BE0123456789">
     @inputError('vat_number')
     <div style="color: red;">{{ $messages.join(', ') }}</div>
     @end

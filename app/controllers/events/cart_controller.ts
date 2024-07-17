@@ -26,6 +26,7 @@ export default class CartController {
    */
   async store({ request, response, auth, session }: HttpContext) {
     await auth.check()
+    console.log('STORE CART')
 
     // check if a non-paid order already exists for the user
     let order = await Order.query()
@@ -33,11 +34,11 @@ export default class CartController {
       .andWhere('is_paid', '=', false)
 
     let price = await Price.find(request.input('price_id'))
-
+    console.log(order)
+    // if there is no non-paid order create a new order
     if (order.length === 0) {
       let newOrder = await new Order()
       let user = await User.find(auth.user?.$attributes.id)
-
       newOrder.userId = user?.id
       await newOrder.save()
 
@@ -47,13 +48,37 @@ export default class CartController {
       price ? (orderLine.priceId = price.id) : ''
       response.cookie('orderId', newOrder.id)
       await orderLine.save()
+      // if there is a non-paid order
     } else {
       const orderLineExists = await OrderLine.query()
         .where('orderId', '=', order[0].id)
         .andWhere('priceId', '=', price.id)
+        .preload('price')
+      // if there is already an order line with the price id
       if (orderLineExists.length !== 0) {
-        orderLineExists[0].qty += 1
-        orderLineExists[0].save()
+        console.log('orderLineExists[0]')
+        console.log(orderLineExists[0].qty)
+        // all available Qty already taken by the user
+        if (orderLineExists[0].qty === orderLineExists[0].price.availableQty) {
+          console.log('NOT POSSIBLE TO ADD MORE QUANTITY')
+          // TODO handle error message
+          return response.send('')
+        } else {
+          // if the available qty > 0
+          if (orderLineExists[0].price.availableQty > 0) {
+            console.log('ADD QUANTITY')
+            orderLineExists[0].qty += 1
+            orderLineExists[0].save()
+
+            // if the available qty = 0
+          } else {
+            // TODO handle error message
+            console.log('NO AVAILABLE QTY')
+            return response.send('')
+          }
+        }
+
+        // if there is no order line with the price id
       } else {
         const orderLine = new OrderLine()
         orderLine.orderId = order[0].id
@@ -64,9 +89,9 @@ export default class CartController {
         await orderLine.save()
       }
     }
-    session.flash('item-added', {
-      message: 'Article ajouté au panier',
-    })
+    // session.flash('success', {
+    //   message: 'Article ajouté au panier',
+    // })
 
     // TODO avoid refreshing the page or go back
     return response.send('')

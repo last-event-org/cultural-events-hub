@@ -107,7 +107,17 @@
         </div>
       @end
 
-      <div id="notification"></div>
+                  <div id="success-notification" class="hidden">
+              @!notifications.success({message: i18n.t('messages.cart_itemAdded')})
+            </div>   
+
+            <div id="no-tickets-notification" class="hidden">
+              @!notifications.error({message: i18n.t('messages.cart_noPlaces')})
+            </div> 
+            
+            <div id="error-notification" class="hidden">
+              @!notifications.error({message: i18n.t('messages.cart_itemDeleted')})
+            </div>   
     </div>
   </main>
   

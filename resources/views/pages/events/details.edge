@@ -71,6 +71,7 @@
                           <img src="/public/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_remove_wish') }}">
                         </button>
                       </form>
+                      
                     @else
                       <form action="{{ route('wishlist.add', [event.id]) }}" method="post" class="" enctype="multipart/form-data">
                         {{ csrfField() }}
@@ -190,9 +191,9 @@
               </p>  
               <div id="map" class="h-60 w-80 lg:h-80 lg:w-full z-10 mt-8 rounded-3xl"></div>
             </div> 
-            <div class="flex flex-col items-center w-full lg:w-1/2 px-4 sm:mb-4 lg:mr-8 lg:mb-8 lg:mt-4">          
-              @each(item in event.prices) 
-              @!events.addBasket({item})
+            <div class="flex flex-col items-center w-full lg:w-1/2 px-4 sm:mb-4 lg:mr-8 lg:mb-8 lg:mt-4">
+              @each(item in event.prices)
+                @!events.addBasket({item, userOrderLineQty: userOrderLines ? userOrderLines[item.id] ?? 0 : 0})
               @end
             </div>
           </section>
@@ -220,8 +221,19 @@
             </div>
           </section>    
 
-            <div id="notification"></div>    
-            {{-- @!component('components/notification_added_to_basket', {message: $message.message}) --}}
+              <div id="success-notification" class="hidden">
+              @!notifications.success({message: i18n.t('messages.cart_itemAdded')})
+            </div>   
+
+            <div id="no-tickets-notification" class="hidden">
+              @!notifications.error({message: i18n.t('messages.cart_noPlaces')})
+            </div> 
+            
+            <div id="error-notification" class="hidden">
+              @!notifications.error({message: i18n.t('messages.cart_itemDeleted')})
+            </div>     
+            {{-- @!component('components/notification_added_to_basket', {message: {{i18n.t('messages.cart_itemAdded')}}}) --}}
+            
           
       </article>     
 

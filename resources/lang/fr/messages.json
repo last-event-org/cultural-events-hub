@@ -99,6 +99,7 @@
   "cart_close": "Fermer",
   "cart_error": "Error icon",
   "cart_itemAdded": "Ticket ajouté à votre panier.",
+  "cart_noPlaces": "Plus de places disponibles.",
   "cart_itemDeleted": "L'article a été supprimé.",
   "cart_destroyed": "Panier vidé !",
 
@@ -197,7 +198,7 @@
   "eventCard_last": "Dernières places",
   "eventCard_full": "Complet",
   "eventCard_free": "Gratuit",
-  "eventCard_see_details":"Voir détails",
+  "eventCard_see_details": "Voir détails",
 
   "error_404": "404 - Page non trouvée",
   "error_server": "Erreur Serveur",
@@ -334,8 +335,7 @@
   "footer_thanks": "Remerciements",
   "footer_privacy_policy": "Politique de confidentialité",
   "footer_cookie_policy": "Politique des cookies",
-  "footer_terms_and_conditions":"Conditions générales",
+  "footer_terms_and_conditions": "Conditions générales",
   "footer_pricing_advertising": "Tarifs / Publicités",
-  "footer_events_in":"Événements à"
-
+  "footer_events_in": "Événements à"
 }

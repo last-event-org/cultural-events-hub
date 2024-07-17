@@ -99,6 +99,7 @@
   "cart_close": "Close",
   "cart_error": "Error icon",
   "cart_itemAdded": "Item added to your cart.",
+  "cart_noPlaces": "No more places availables.",
   "cart_itemDeleted": "Item has been deleted.",
   "cart_destroyed": "Cart emptied !",
 
@@ -197,7 +198,7 @@
   "eventCard_last": "Last places available",
   "eventCard_full": "Full",
   "eventCard_free": "Free",
-  "eventCard_see_details":"See details",
+  "eventCard_see_details": "See details",
 
   "error_404": "404 - Page not found",
   "error_server": "Server error",

@@ -1,0 +1,16 @@
+<div class="navigation-buttons flex justify-between mx-4 mt-4 mb-2">
+  <button type="button" id="prevBtn" onclick="navigateStep(-1)" class="flex items-center px-4 py-2 text-slate-700 hover:text-yellow-500 transition duration-300">
+    <span class="mr-2 font-bold">&lt;</span>
+    <span class="group relative">
+      {{ i18n.t('messages.btn_previous') }}
+      <span class="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-500 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
+    </span>
+  </button>
+  <button type="button" id="nextBtn" onclick="navigateStep(+1)" class="flex items-center px-4 py-2 text-slate-700 hover:text-yellow-500 transition duration-300 ml-auto">
+    <span class="group relative">
+      {{ i18n.t('messages.btn_next') }}
+      <span class="absolute inset-x-0 bottom-0 h-0.5 bg-yellow-500 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
+    </span>
+    <span class="ml-2 font-bold">&gt;</span>
+  </button>
+</div>

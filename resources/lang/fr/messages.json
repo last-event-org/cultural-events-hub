@@ -203,7 +203,7 @@
   "error_404": "404 - Page non trouvée",
   "error_server": "Erreur Serveur",
 
-  "event_create_title": "Créer un événement",
+  "event_create_title": "Création d'événement : étape ",
   "event_event": "Événement",
   "event_title": "Titre",
   "event_subtitle": "Sous-titre",
@@ -337,5 +337,9 @@
   "footer_cookie_policy": "Politique des cookies",
   "footer_terms_and_conditions": "Conditions générales",
   "footer_pricing_advertising": "Tarifs / Publicités",
-  "footer_events_in": "Événements à"
+
+  "footer_events_in":"Événements à",
+  
+  "btn_previous": "Précédent",
+  "btn_next": "Suivant"
 }

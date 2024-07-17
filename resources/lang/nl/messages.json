@@ -182,7 +182,7 @@
   "eventCard_see_details": "Bekijk details",
   "error_404": "404 - Pagina niet gevonden",
   "error_server": "Serverfout",
-  "event_create_title": "Evenement aanmaken",
+  "event_create_title": "Evenement aanmaken : stap ",
   "event_event": "Evenement",
   "event_title": "Titel",
   "event_subtitle": "Ondertitel",
@@ -315,5 +315,8 @@
   "footer_cookie_policy": "Cookiebeleid",
   "footer_terms_and_conditions": "Algemene voorwaarden",
   "footer_pricing_advertising": "Prijzen / Adverteren",
-  "footer_events_in": "Evenementen in"
+  "footer_events_in": "Evenementen in",
+
+  "btn_previous": "Vorige",
+  "btn_next": "Volgende"
 }

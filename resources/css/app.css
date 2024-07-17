@@ -272,3 +272,41 @@ summary {
     @apply animate-spin-slow rounded-full h-32 w-32 border-t-2 border-b-2 border-yellow-500;
   }
 }
+
+/*create form nav*/
+.step {
+  display: none;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+.step.active {
+  display: block;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+.progress {
+  width: 0%;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Reset Textarea*/
+textarea {
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  /* border: none; */
+  resize: vertical;
+}

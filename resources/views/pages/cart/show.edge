@@ -67,7 +67,7 @@
                       </form>
                     </div>
                   </td>
-                  <td class="p-2 box-content text-right"><span name="discount-price-{{item.id}}">{{item.price.discountedPrice}}</span>€</td>
+                  <td class="p-2 box-content text-right"><span name="discount-price-{{item.id}}">{{item.price.discountedPrice ?? 0}}</span>€</td>
                   <td class="p-2 text-right"><span name="total-price-{{item.id}}" data-subtotal="{{item.qty * item.price.discountedPrice}}">{{item.qty * item.price.discountedPrice}}</span>€</td>
                   <td class="p-2">
                     <form name="removeOrderLine-{{item.id}}" action="{{ route('cart.delete', [item.id], { qs: {_method: 'DELETE'}})}}" method="post" class="flex justify-center items-center">

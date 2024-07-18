@@ -19,8 +19,6 @@ import { createAddressValidator } from '#validators/address'
 import { createMediaValidator } from '#validators/media'
 import { queryValidator } from '#validators/query'
 import { createPriceValidator } from '#validators/create_price'
-import { createPricesValidator } from '#validators/price'
-import User from '#models/user'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 
@@ -450,22 +448,11 @@ export default class EventsController {
     event: Event
   ) {
     const bodyPrices = request.body().prices
-    const values = Object.values(bodyPrices[0])
-    const firstElmIsNotNull = values.some((element) => element !== null)
-    try {
-      await createPriceValidator.validate(bodyPrices[0])
-    } catch (error) {
-      let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. '
-      error.messages.forEach((msg: any) => {
-        errorMsg += msg.message
-      })
-      session.flash('errorRequiredPriceFields', errorMsg)
-      return false
-    }
 
-    if (firstElmIsNotNull) {
+    if (bodyPrices) {
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
+
         try {
           let freeCateg = false
           if (priceData.is_free_category == 'on' || priceData.is_free_category) {
@@ -496,6 +483,7 @@ export default class EventsController {
       })
       return true
     } else {
+      // TODO this error message is not displayed when no prices are entered (payload empty)
       const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
       session.flash('errorMissingPrices', errorMsg)
     }
@@ -928,26 +916,11 @@ export default class EventsController {
     const bodyPrices = request.body().prices
 
     if (bodyPrices) {
-      // we check if at least one price element (the first one) is valid
-      const priceFields = Object.values(bodyPrices[0])
-      const firstElmIsNotNull = priceFields.some((element) => element !== null)
-      try {
-        await createPriceValidator.validate(bodyPrices[0])
-      } catch (error) {
-        let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. '
-        error.messages.forEach((msg: any) => {
-          errorMsg += msg.message
-        })
-        session.flash('errorRequiredPriceFields', errorMsg)
-        return false
-      }
-
-      if (firstElmIsNotNull) {
-        // we delete all existing prices associated with current event
-        const prices = event.prices
-        prices.forEach((price: Price) => {
-          price.delete()
-        })
+      // we delete all existing prices associated with current event
+      const prices = event.prices
+      prices.forEach((price: Price) => {
+        price.delete()
+      })
 
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
@@ -968,24 +941,21 @@ export default class EventsController {
             if (payload.discounted_price) price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
 
-              await price.save()
-              await price.related('event').associate(event)
-            }
-          } catch (error) {
-            let errorMsg = i18n.t('messages.errorEditEventPrices') + ' '
-            error.messages.forEach((msg: string) => {
-              errorMsg += msg
-            })
-            session.flash('errorEditEventPrices', errorMsg)
-            return false
+            await price.save()
+            await price.related('event').associate(event)
           }
-        })
-        return true
-      } else {
-        const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
-        session.flash('errorMissingPrices', errorMsg)
-      }
+        } catch (error) {
+          let errorMsg = i18n.t('messages.errorCreatePrice') + ' '
+          error.messages.forEach((msg: string) => {
+            errorMsg += msg
+          })
+          session.flash('errorCreatePrice', errorMsg)
+          return false
+        }
+      })
+      return true
     } else {
+      // TODO this error message is not displayed when no prices are entered (payload empty)
       const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
       session.flash('errorMissingPrices', errorMsg)
     }

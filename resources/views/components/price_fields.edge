@@ -4,7 +4,7 @@
     <label for="is_free_category" class="text-indigo-600">{{ i18n.t('messages.events_free_category') }}</label>
     <input onclick="toggleFreeCategoryPrices(this)" class="free-category border-slate-300 rounded-md mb-0.5
       focus:ring-slate-500 focus:border-slate-700 sm:text-sm mt-0.5"
-      type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][is_free_category]">
+      type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][is_free_category]" id="is_free_category">
   </div>
   
 
@@ -51,7 +51,7 @@
           <input onclick="becomeFreeCategory(this)" onchange="becomeFreeCategory(this)"
           class="become_free border-slate-300 rounded-md
             focus:ring-slate-500 focus:border-slate-700 text-sm mt-0.5"
-            type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
+            type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]" id="become_free">
         </div>
     </div>  
   </div> 

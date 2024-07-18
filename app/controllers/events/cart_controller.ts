@@ -17,14 +17,15 @@ export default class CartController {
       .preload('orderLineId', (query) =>
         query.preload('price', (priceQuery) => priceQuery.preload('event'))
       )
-    // console.log(orders)
+      .orderBy('purchaseDate', 'desc')
+
     return view.render('pages/dashboard/orders', { orders: orders })
   }
 
   /**
    * Add ticket to the cart
    */
-  async store({ request, response, auth, session }: HttpContext) {
+  async store({ request, response, auth }: HttpContext) {
     await auth.check()
     console.log('STORE CART')
 
@@ -34,13 +35,14 @@ export default class CartController {
       .andWhere('is_paid', '=', false)
 
     let price = await Price.find(request.input('price_id'))
-    console.log(order)
     // if there is no non-paid order create a new order
     if (order.length === 0) {
       let newOrder = await new Order()
       let user = await User.find(auth.user?.$attributes.id)
-      newOrder.userId = user?.id
-      await newOrder.save()
+      if (user) {
+        newOrder.userId = user?.id
+        await newOrder.save()
+      }
 
       const orderLine = new OrderLine()
       orderLine.qty = 1
@@ -60,8 +62,6 @@ export default class CartController {
         console.log(orderLineExists[0].qty)
         // all available Qty already taken by
         if (orderLineExists[0].qty === orderLineExists[0].price.availableQty) {
-          console.log('NOT POSSIBLE TO ADD MORE QUANTITY')
-          // TODO handle error message
           return response.send('')
         } else {
           // if the available qty > 0
@@ -72,8 +72,6 @@ export default class CartController {
 
             // if the available qty = 0
           } else {
-            // TODO handle error message
-            console.log('NO AVAILABLE QTY')
             return response.send('')
           }
         }
@@ -198,12 +196,8 @@ export default class CartController {
       order.orderLineId.forEach(async (orderLine) => {
         const price = await Price.find(orderLine.priceId)
         if (price) {
-          if (orderLine.qty > price.availableQty) {
-            // TODO handle if ordered qty is > than availableQty
-          } else {
-            price.availableQty -= orderLine.qty
-            price?.save()
-          }
+          price.availableQty -= orderLine.qty
+          price?.save()
         }
       })
 

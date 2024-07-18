@@ -1,0 +1,21 @@
+@layout.dashboard({pageTitle: i18n.t('messages.admin_title'), svg: 'admin' }) 
+<div class="flex self-start">
+  @!filters.search({route: route('admin.search'), placeholder: i18n.t("messages.form_placeholder_search_user")})
+
+</div>
+
+    @if(request.qs().input_words) 
+        @if(users)
+            <ul>
+                @each(user in users)
+                    @!dashboard.admin.usersList({user, searchParams})
+                @end
+            </ul>  
+
+        @else
+            <p>{{i18n.t("messages.admin_no_users")}}</p>        
+        @end
+        
+    @end
+    
+@end

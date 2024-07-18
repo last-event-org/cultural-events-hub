@@ -2,6 +2,8 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 
 const CartController = () => import('#controllers/events/cart_controller')
+const AdminController = () => import('#controllers/dashboard/admin_controller')
+const ContactController = () => import('#controllers/contact/contact_controller')
 const VendorController = () => import('#controllers/vendors/vendor_controller')
 const ListEvents = () => import('#controllers/api_listevents')
 const LoginController = () => import('#controllers/auth/login_controller')
@@ -29,9 +31,18 @@ router
     router
       .post('/reset-password', [LoginController, 'resetPasswordStore'])
       .as('login.reset-password.store')
+    router
+      .get('/change-password', [LoginController, 'changePasswordShow'])
+      .as('change-password.show')
+      .use(middleware.auth())
+    router
+      .post('/change-password', [LoginController, 'changePasswordStore'])
+      .as('change-password.store')
+      .use(middleware.auth())
 
     router.get('/register', [RegisterController, 'index']).as('register')
     router.post('/register', [RegisterController, 'store']).as('register.store')
+
     router
       .get('/register/verify-email-sent', [RegisterController, 'verificationEmailSent'])
       .as('register.verify.show')
@@ -103,10 +114,25 @@ router
 
 router
   .group(() => {
+    router.get('/', [AdminController, 'index']).as('index')
+    router.get('/search', [AdminController, 'search']).as('search')
+    router.patch('/:id/block', [AdminController, 'block']).as('block')
+    router.patch('/:id/admin', [AdminController, 'admin']).as('admin')
+    router.delete('/:id/delete', [AdminController, 'destroy']).as('destroy')
+  })
+  .prefix('dashboard/admin')
+  .as('admin')
+  .use(middleware.auth())
+
+router
+  .group(() => {
     router.get('/:id/delete', [PriceController, 'destroy']).as('destroy')
   })
   .prefix('price')
   .as('price')
+
+router.get('/contact', [ContactController, 'show']).as('contact.show')
+router.post('/contact', [ContactController, 'post']).as('contact.post')
 
 // PANIER
 router
@@ -148,6 +174,6 @@ router.post('/events/:id', [CartController, 'store']).as('store').use(middleware
 
 // API CALLS
 router.get('/api/getEvents', [ListEvents, 'getEvents'])
-router.get('/api/getAllEvents', [ListEvents, 'getAllEvents'])
+// router.get('/api/getAllEvents', [ListEvents, 'getAllEvents'])
 router.get('/api/getEventsByDate', [ListEvents, 'getEventsByDate'])
 router.get('/api/search', [ListEvents, 'getEventsSearch'])

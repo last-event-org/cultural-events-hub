@@ -1,63 +1,68 @@
-<details class="hover:bg-slate-100 ">
-    
-  <summary class="flex items-center duration-300">
+<details class="hover:bg-slate-100 hover:scale-[1.01] duration-300 p-2 rounded-xl cursor-pointer group">
+  @let(total_qty = Number(event.total_available_qty) + Number(event.total_qty))
+  <summary class="flex flex-col lg:flex-row items-center duration-300">
+    <div class="flex w-full lg:w-3/6">
       <div class="w-24 hidden sm:block">
-          <img class=" object-cover overflow-hidden w-full h-16" src="{{event.path ?? '/images/dummies/No_image.png'}}" 
-           alt="{{event.altName ?? 'No picture available'}}"
-           onerror="this.onerror=null; this.src='/images/dummies/No_image.png';">
+        <img class="object-cover overflow-hidden w-24 h-16 min-w-24 min-h-16" src="{{event.path ?? '/images/dummies/No_image.png'}}"
+          alt="{{event.altName ?? 'No picture available'}}"
+          onerror="this.onerror=null; this.src='/images/dummies/No_image.png';">
       </div>
-      <div class=" w-1 min-h-16  bg-yellow-500"></div>
-      <div class="flex px-4 tracking-tight w-full gap-4">
-        <div class="flex flex-col w-2/6">
-          <h3 class="font-semibold ">{{event.title}}</h3>
-          <div class="formated-date text-xs text-gray-500/60 font-bold"
-              data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
-          </div>
+      <div class="w-1 min-h-16 bg-yellow-500"></div>
+      <div class="flex flex-col px-4 tracking-tight w-full">
+        <h3 class="font-semibold">{{event.title}}</h3>
+        <div class="formated-date text-xs text-slate-500/60 font-bold"
+          data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">
         </div>
-        <div class="flex w-3/6 gap-4 text-center justify-between">
-          <div class="sm:block">
-            <p class="font-semibold">{{i18n.t('messages.dashboard_vendor_orders_tickets_sold')}}</p>
-            <p class="text-xs text-gray-500/60 font-bold">{{event.total_qty}}</p>
-          </div>
-          <div class="sm:block">
-              <p class="font-semibold">{{i18n.t('messages.dashboard_vendor_orders_total')}}</p>
-              <p class=" text-xs text-gray-500/60 font-bold">{{event.total_amount}}<span> €</span></p>
-          </div>
-          <div class="sm:block">
-            <p class="font-semibold">{{i18n.t('messages.dashboard_vendor_orders_tickets_available')}}</p>
-            <p class="text-xs text-gray-500/60 font-bold">{{event.total_available_qty}}</p>
-          </div>
-        </div>
-        
       </div>
+    </div>
+   
+    <div class="flex w-full lg:w-3/6 mt-4 lg:mt-0 gap-4 lg:gap-8 text-center lg:justify-center group-open:hidden">
+      <div class="w-full lg:w-1/2">
+        <p class="font-semibold">{{i18n.t('messages.dashboard_vendor_orders_tickets_sold')}}</p>
+        <p class="text-xs text-slate-500/60 font-bold">{{event.total_qty}}/{{total_qty}}</p>
+      </div>
+      <div class="w-full lg:w-1/2">
+        <p class="font-semibold">{{i18n.t('messages.dashboard_vendor_orders_total')}}</p>
+        <p class="text-xs text-slate-500/60 font-bold">{{event.total_amount}}<span> €</span></p>
+      </div>
+    </div>
   </summary>
-  <div class="grid grid-cols-5 font-semibold tracking-tight border-t-4 border-t-yellow-500 text-center">
-    <p>{{i18n.t('messages.dashboard_vendor_orders_ticket_type')}}</p>
-    <p>{{i18n.t('messages.dashboard_vendor_orders_tickets_sold')}}</p>
-    <p>{{i18n.t('messages.dashboard_vendor_orders_total')}}</p>
-    <p>{{i18n.t('messages.dashboard_vendor_orders_number')}}</p>
-    <p>{{i18n.t('messages.dashboard_vendor_orders_tickets_available')}}</p>
-  </div>
 
-  <div class="grid grid-cols-5 text-sm tracking-tight text-gray-500/60 font-bold gap-y-1 text-center">
-    @each(orderLine in orderLines.order_lines)
-      <p>
-        {{orderLine.$extras.price_description}}
-      </p>
-      <p>
-        {{orderLine.$extras.total_qty}}
-      </p>
-      <p>
-        {{orderLine.$extras.total_amount}}
-        <span> €</span>
-      </p>
-      <p>
-        {{orderLine.$extras.order_lines_count}}
-      </p>
-      <p>
-        {{orderLine.$extras.price_available_qty}}
-      </p>
-    @end
+  <div class="mt-4 overflow-hidden rounded-lg border border-slate-300">
+    <table class="min-w-full bg-white">
+      <thead class="bg-slate-700 text-white text-right">
+        <tr>
+          <th scope="col" class="p-2 text-left">{{i18n.t('messages.dashboard_vendor_orders_ticket_type')}}</th>
+          <th scope="col" class="p-2 text-center">{{i18n.t('messages.dashboard_vendor_orders_tickets_sold')}}</th>
+          <th scope="col" class="p-2">{{i18n.t('messages.dashboard_vendor_orders_total')}}</th>
+          <th scope="col" class="p-2">{{i18n.t('messages.dashboard_vendor_orders_number')}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @each(orderLine in orderLines.order_lines)
+          <tr class="border-t border-slate-200">
+            <td class="p-2">{{orderLine.$extras.price_description}}</td>
+            <td class="p-2 text-center">
+              @let(total_qty_line = Number(orderLine.$extras.total_qty) + Number(orderLine.$extras.price_available_qty))
+              {{orderLine.$extras.total_qty}}/{{total_qty_line}}
+            </td>
+            <td class="p-2 text-right">
+              {{orderLine.$extras.total_amount}}
+              <span> €</span>
+            </td>
+            <td class="p-2 text-right">{{orderLine.$extras.order_lines_count}}</td>
+          </tr>
+        @end
+      </tbody>
+      <tfoot class="bg-slate-100">
+        <tr>
+          <th scope="row" class="p-2 text-left font-semibold">Total:</th>
+          <td class="p-2 text-center font-semibold">{{event.total_qty}}/{{total_qty}}</td>
+          <td class="p-2 text-right font-semibold">{{event.total_amount}} €</td>
+          <td class="p-2 text-right font-semibold">{{orderLines.order_lines.length}}</td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 </details>
  

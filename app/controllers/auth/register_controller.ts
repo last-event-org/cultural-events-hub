@@ -4,9 +4,9 @@ import { updateUserProfileMandatoryValidator } from '#validators/user_profile'
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import Role from '#models/role'
+import Event from '#models/event'
 import { createAddressValidator } from '#validators/address'
 import Address from '#models/address'
-import { updateUserPasswordValidator } from '#validators/password_change'
 import { errors } from '@vinejs/vine'
 import {
   randomTokenString,
@@ -43,10 +43,47 @@ export default class RegistersController {
         query.select(['id', 'companyName'])
       })
 
+    let vendorIds = userFavourites.map((e) => e.id)
+
+    let date = DateTime.now()
+    let dayBegin: string = date.set({ hour: 0, minute: 0, second: 0 }).toSQLDate() ?? ''
+    let dayEnd: string = date.plus({ days: 7 }).toSQLDate() ?? ''
+
+    const nextEventsVendors = await Event.query()
+      .select('users.id as user_id')
+      .join('users', 'events.vendor_id', 'users.id')
+      .count('events.id as count_events')
+      .whereBetween('events.event_start', [dayBegin, dayEnd])
+      .whereIn('users.id', vendorIds)
+      .groupBy('user_id')
+
+    const allEventsVendors = await Event.query()
+      .select('users.id as user_id')
+      .join('users', 'events.vendor_id', 'users.id')
+      .count('events.id as count_events')
+      .whereIn('users.id', vendorIds)
+      .groupBy('user_id')
+
+    let vendorEvents = {}
+    vendorIds.forEach((vendor) => {
+      if (!vendorEvents[vendor]) {
+        vendorEvents[vendor] = { nextEvents: 0, allEvents: 0 }
+      }
+    })
+
+    nextEventsVendors.forEach((vendor) => {
+      vendorEvents[vendor.$extras.user_id].nextEvents = vendor.$extras.count_events
+    })
+
+    allEventsVendors.forEach((vendor) => {
+      vendorEvents[vendor.$extras.user_id].allEvents = vendor.$extras.count_events
+    })
+
     return view.render('pages/dashboard/dashboard', {
       user: user,
       userWishlist: userWishlist,
       userFavourites: userFavourites,
+      vendorEvents: vendorEvents,
     })
   }
 
@@ -55,7 +92,9 @@ export default class RegistersController {
    */
   async store({ i18n, session, request, response, auth, view }: HttpContext) {
     const payload = await request.validateUsing(createRegisterValidator)
-
+    const lang = i18n.locale
+    const parsedUrl = new URL(request.completeUrl())
+    const origin = `${parsedUrl.protocol}//${parsedUrl.host}`
     // check if user email is already in the db
     const userEmail = await User.findBy('email', payload.email)
     if (userEmail) {
@@ -78,13 +117,15 @@ export default class RegistersController {
       user.roleId = role.id
     }
 
-    await user.save()
-    await sendVerificationEmail(user, token)
+    const newUser = await user.save()
+    const subject = i18n.t('messages.mail_verify_subject')
+    await sendVerificationEmail(user, token, origin, lang, subject)
 
     if (user.$isPersisted) {
       // await auth.use('web').login(user)
       return view.render('pages/auth/profile-type', {
         user: user,
+        id: newUser.$attributes.id,
       })
     } else {
       return response.redirect().back()
@@ -98,6 +139,10 @@ export default class RegistersController {
   async verifyUser({ response, request, session, i18n }: HttpContext) {
     console.log('EMAIL VERIFICATION')
     console.log()
+    const lang = i18n.locale
+    const parsedUrl = new URL(request.completeUrl())
+    const origin = `${parsedUrl.protocol}//${parsedUrl.host}`
+
     const data = {
       token: request.qs().token,
     }
@@ -108,7 +153,8 @@ export default class RegistersController {
       user.verificationToken = null
       user.verifiedAt = DateTime.now()
       await user.save()
-      await sendAccountVerified(user)
+      const subject = i18n.t('messages.mail_account_activated_subject')
+      await sendAccountVerified(user, origin, lang, subject)
       const successMsg = i18n.t('messages.login_verified_success')
       session.flash('success', successMsg)
       return response.redirect().toRoute('auth.login.show')
@@ -136,7 +182,9 @@ export default class RegistersController {
   }
 
   async updateUserRole(user: User) {
+    console.log('UPDATE USER ROLE')
     const vendorRole = await Role.findBy('role_name', 'VENDOR')
+    const adminRole = await Role.findBy('role_name', 'ADMIN')
     const userRole = await Role.findBy('role_name', 'USER')
     const userBillingAddress = await this.getUserBillingAddress(user)
 
@@ -149,7 +197,9 @@ export default class RegistersController {
         userBillingAddress.zipCode &&
         userBillingAddress.country
       ) {
-        user.roleId = vendorRole.id
+        if (user.roleId !== adminRole.id) {
+          user.roleId = vendorRole.id
+        }
       } else {
         user.roleId = userRole.id
       }
@@ -180,30 +230,6 @@ export default class RegistersController {
     return true
   }
 
-  async updateUserPasswordData(
-    i18n: HttpContext['i18n'],
-    request: HttpContext['request'],
-    session: HttpContext['session'],
-    user: User
-  ) {
-    let userPasswordPayload = null
-    const isPasswordEntered = request.input('password')
-    if (isPasswordEntered) {
-      try {
-        userPasswordPayload = await request.validateUsing(updateUserPasswordValidator)
-        user.password = userPasswordPayload.password
-      } catch (error) {
-        if (error instanceof errors.E_VALIDATION_ERROR) {
-          console.log(error.messages)
-        }
-        const errorMsg = i18n.t('messages.error_psw')
-        session.flash('userPassword', errorMsg)
-        return false
-      }
-    }
-    return true
-  }
-
   async updateUserBillingAddress(
     request: HttpContext['request'],
     session: HttpContext['session'],
@@ -221,10 +247,10 @@ export default class RegistersController {
       if (!vendorAddress) {
         vendorAddress = new Address()
       }
-      vendorAddress.street = userBillingAddressPayload.street
+      vendorAddress.street = userBillingAddressPayload.street.replaceAll('&#x27;', "'")
       vendorAddress.number = userBillingAddressPayload.number
       vendorAddress.zipCode = userBillingAddressPayload.zip_code
-      vendorAddress.city = userBillingAddressPayload.city
+      vendorAddress.city = userBillingAddressPayload.city.replaceAll('&#x27;', "'")
       vendorAddress.country = userBillingAddressPayload.country
 
       await vendorAddress.save()
@@ -232,7 +258,7 @@ export default class RegistersController {
       // if user has USER role it means there is no billing address
       // associated with it so we must link the new billing address
       // created previously to the current user
-      if (user.role.roleName === 'USER') {
+      if (user.role.roleName === 'USER' || user.role.roleName === 'ADMIN') {
         user.billingAddressId = vendorAddress.id
         vendorAddress.userId = user.id
         await user.related('billingAddress').save(vendorAddress)
@@ -296,7 +322,7 @@ export default class RegistersController {
     return true
   }
 
-  async update({ i18n, request, response, session, auth }: HttpContext) {
+  async update({ request, response, session, auth }: HttpContext) {
     const user = await User.query()
       .where('id', auth.user?.$attributes.id)
       .preload('role')
@@ -304,8 +330,6 @@ export default class RegistersController {
 
     if (user) {
       if (!(await this.updateMandatoryProfileData(request, session, user)))
-        return response.redirect().back()
-      if (!(await this.updateUserPasswordData(i18n, request, session, user)))
         return response.redirect().back()
       const hasVendorData = await this.updateVendorData(request, session, response, user)
       if (!hasVendorData) return response.redirect().back()
@@ -325,11 +349,15 @@ export default class RegistersController {
     in which we are asked whether we would like to buy or sell event tickets:
     in the case we would like to sell we will have to fill some more data (billing related) 
     */
-    const user = await User.findOrFail(auth.user?.$attributes.id)
+    console.log(request.input('id'))
+    console.log(request.qs())
+    console.log(request.body())
+    const user = await User.findOrFail(request.input('id'))
 
     try {
       const vendorDataPayload = await request.validateUsing(createVendorDataValidator)
-
+      console.log('vendorDataPayload')
+      console.log(vendorDataPayload)
       if (vendorDataPayload.company_name && vendorDataPayload.company_name.trim() !== '') {
         user.companyName = vendorDataPayload.company_name
       } else {
@@ -343,13 +371,15 @@ export default class RegistersController {
     }
 
     try {
+      console.log('addressPayload')
       const addressPayload = await request.validateUsing(createAddressValidator)
+      console.log(addressPayload)
       const address = new Address()
 
-      address.street = addressPayload.street
+      address.street = addressPayload.street.replaceAll('&#x27;', "'")
       address.number = addressPayload.number
       address.zipCode = addressPayload.zip_code
-      address.city = addressPayload.city
+      address.city = addressPayload.city.replaceAll('&#x27;', "'")
       address.country = addressPayload.country
       address.name = user.companyName ?? ''
 
@@ -358,15 +388,19 @@ export default class RegistersController {
 
       await user.related('billingAddress').save(address)
 
-      const role = await Role.findBy('role_name', 'VENDOR')
-      if (role) {
-        user.roleId = role.id
+      const vendorRole = await Role.findBy('role_name', 'VENDOR')
+      const adminRole = await Role.findBy('role_name', 'ADMIN')
+      if (user.roleId !== adminRole?.id) {
+        if (vendorRole) {
+          user.roleId = vendorRole.id
+        }
       }
       await user.save()
 
       return response.redirect().toRoute('auth.register.verify.show')
     } catch (error) {
       console.error('Validation Error:', error)
+      return response.redirect().toRoute('auth.register.update-profile-type')
     }
   }
 

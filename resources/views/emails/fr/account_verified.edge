@@ -1,0 +1,7 @@
+@layout.email({user, token, origin, subject, language})        
+    <p>Salut {{user.firstname}}, <br>Ton compte est maintenant vérifié et activé. </p>
+    <a href="{{origin}}/login">Connecte-toi vite pour profiter des dernières offres.</a>
+    <p>Si vous avez des questions ou des préoccupations, n'hésitez pas à <a href="{{origin}}/contact">contacter</a> notre équipe de support.</p>
+    <p>Cordialement,<br>L'équipe de Next Events</p>
+    <p>S'il ne s'agissait pas de vous, n'accordez pas d'importance à cet e-mail.</p>
+@end

@@ -1,51 +1,45 @@
-<!DOCTYPE html>
-<html lang="{{ i18n.locale }}">
+@layout.dashboard({pageTitle: i18n.t('messages.orders_title'), svg: 'orders' }) 
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages.orders_title') }}</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body class="bg-slate-50">
-
-  @include("pages/partials/header")
-
-  <main class= "container mb-10 mx-auto relative">
-     
-    <div class="flex justify-center  gap-10  mx-auto my-6 py-10"> 
-      <article class="bg-slate-50 border-gray-300 rounded-lg w-full">
-        <h2 class="text-4xl font-semibold tracking-tight text-gray-700">
-          {{ i18n.t('messages.orders_title') }}
-        </h2>
-        <div class="flex flex-col justify-center items-center mb-4">
-            @if(orders.length === 0)
-                <p>{{ i18n.t('messages.orders_noOrders') }}</p>
-            @else
-             @each(order in orders)
-                <div class="flex flex-col lg:flex-row w-full lg:border-2 bg-slate-400 border-yellow-500 rounded-md">
-                  {{ i18n.t('messages.orders_order') }}: {{order.id}}
+      <div class="overflow-x-auto">
+        @if(orders.length === 0)
+          <p class="text-center text-slate-600">{{ i18n.t('messages.orders_noOrders') }}</p>
+        @else
+          @each(order in orders)
+            <div class="mb-6 border border-slate-700 sm:rounded-lg overflow-hidden">
+              <div class="bg-slate-700 text-white p-3 flex justify-between">
+                <span class="font-semibold">N°{{ i18n.t('messages.orders_order') }}: {{order.id}}</span>
+                <span class="formated-date" data-event-start="{{ order.purchaseDate }}">
                   {{ i18n.t('messages.orders_purchaseDate') }}: {{order.purchaseDate}}
-                    @each(orderLine in order.orderLineId)
-                    {{ i18n.t('messages.orders_qty') }}: {{orderLine.qty}}
-                    {{ i18n.t('messages.orders_event') }}: {{orderLine.price.event.title}}
-                    {{ i18n.t('messages.orders_date') }}: {{orderLine.price.event.eventStart}}
-                    {{ i18n.t('messages.orders_ticketType') }}: {{orderLine.price.description}}
-                    {{ i18n.t('messages.orders_price') }}: {{orderLine.price.discountedPrice}}
-                    @end
-                </div>
-             @end
-     
-            @end
-        </div>
-        </article>
-    </div>
-    
-  </main>
-
-
-  @include("pages/partials/footer")
-
-</body>
-</html>
+                </span>
+              </div>
+              <table class="min-w-full bg-white">
+                <thead class="bg-slate-200 text-slate-700">
+                  <tr>
+                    <th class="p-2 text-left">{{ i18n.t('messages.orders_event') }}</th>
+                    <th class="p-2 text-center">{{ i18n.t('messages.orders_qty') }}</th>
+                    <th class="p-2 text-right">{{ i18n.t('messages.orders_ticketType') }}</th>
+                    <th class="p-2 text-right">{{ i18n.t('messages.orders_price') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @each(orderLine in order.orderLineId)
+                    <tr class="border-t border-slate-100">
+                      <td class="p-2">
+                        {{orderLine.price.event.title}}
+                        <br>
+                        <span class="formated-date text-xs text-slate-500" 
+                              data-event-start="{{ orderLine.price.event.eventStart }}">
+                          {{ i18n.t('messages.orders_date') }}: {{orderLine.price.event.eventStart}}
+                        </span>
+                      </td>
+                      <td class="p-2 text-center">{{orderLine.qty}}</td>
+                      <td class="p-2 text-right">{{orderLine.price.description}}</td>
+                      <td class="p-2 text-right">{{orderLine.price.discountedPrice}}€</td>
+                    </tr>
+                  @end
+                </tbody>
+              </table>
+            </div>
+          @end
+        @end
+ @end

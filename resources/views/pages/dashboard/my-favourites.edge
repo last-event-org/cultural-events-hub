@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html lang="{{ i18n.locale }}">
+@layout.dashboard({pageTitle: i18n.t('messages.favourites_title'), svg: 'favourites' }) 
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages.favourites_title') }}</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+  @if(userFavourites.length === 0)
+  
+    <p>{{i18n.t('messages.dashboard_emptyFavourites')}}</p>
 
-<body class="bg-slate-50">
-@include("pages/partials/header")
+  @else
+    <div class="flex flex-col gap-2">
+      @each(vendor in userFavourites)
+        <ul>
 
-<main class="flex flex-col items-center min-h-screen ">
-    
-    @!include("pages/partials/favourites")  
-</main>
+      @!component('components/dashboard/favourite_element', {
+        vendor: vendor, vendorEvents: vendorEvents[vendor.id]
+      })
+      @end
+        </ul>
+    </div>
 
-
-@include("pages/partials/footer")  
-
-</body>
-</html>
+  @end
+@end

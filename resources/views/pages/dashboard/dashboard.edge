@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages.dashboard_title') }}</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <title>Next Events - {{ i18n.t('messages.dashboard_title') }}</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/date_format.js'])
 </head>
 
 <body class="bg-slate-50">
@@ -25,6 +25,5 @@
 
     @include("pages/partials/footer")
 
-<script src="/resources/js/date_format.js"></script>
 </body>
 </html>

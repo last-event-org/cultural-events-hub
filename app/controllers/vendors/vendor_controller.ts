@@ -3,7 +3,7 @@ import Event from '#models/event'
 import OrderLine from '#models/order_line'
 
 export default class VendorController {
-  async orders({ view, auth }: HttpContext) {
+  async orders({ view, auth, session }: HttpContext) {
     await auth.check()
 
     let ordersVendor = await OrderLine.query()

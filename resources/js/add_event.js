@@ -5,21 +5,14 @@ function toggleDisplayPrices() {
 
   if (freeEventCheckbox.checked){
     addPricesBtn.style.display = "none";
-    pricesSection.style.display = "none";
+    pricesSection.classList.add("hidden")
+    pricesSection.classList.remove("flex")
+    
   } else {
-    addPricesBtn.style.display = "block";
-    pricesSection.style.display = "block";
-  }
-}
-
-function toggleEditDisplayPrices() {
-  const freeEventCheckbox = document.getElementById("is_free");
-  const pricesSection = document.getElementById("prices-section-edit");
-
-  if (freeEventCheckbox.checked){
-    pricesSection.style.display = "none";
-  } else {
-    pricesSection.style.display = "block";
+    addPricesBtn.style.display = "flex";
+    pricesSection.classList.add("flex")
+    pricesSection.classList.remove("hidden")
+    
   }
 }
 
@@ -133,3 +126,4 @@ function previewImages(mediaLength=0) {
     })
   }
 }
+

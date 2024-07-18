@@ -11,6 +11,8 @@ import Address from '#models/address'
 import Price from '#models/price'
 import Media from '#models/media'
 import Indicator from '#models/indicator'
+import Order from '#models/order'
+import User from '#models/user'
 
 import { createEventValidator } from '#validators/event'
 import { createAddressValidator } from '#validators/address'
@@ -55,7 +57,7 @@ export default class EventsController {
       events: events,
       topEvents: topEvents,
       todayEvents: nextEvents,
-      home: true,
+      title: 'home',
       nextTitle: title,
       filter: true,
     })
@@ -144,11 +146,12 @@ export default class EventsController {
    * Handle form submission for the create action
    */
   async store({ request, session, response, i18n, auth }: HttpContext) {
-    const event = await this.createEvent(request, session)
+    const event = await this.createEvent(request, session, i18n)
     if (event) {
       const user = auth.user
       if (user) event.vendorId = user.id
-      if (!await this.attachCategoryTypes(request, session, i18n, event)) return response.redirect().back()
+      if (!(await this.attachCategoryTypes(request, session, i18n, event)))
+        return response.redirect().back()
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)
       if (!event.isFree) {
@@ -283,7 +286,6 @@ export default class EventsController {
   }
 
   async getEventsByWord({ request, view, response }: HttpContext) {
-
     let events: Event[] = []
     const input = request.qs()
 
@@ -291,7 +293,6 @@ export default class EventsController {
       const wordsArray = input.input_words.split(' ')
 
       for (const word of wordsArray) {
-
         const results = await Event.query()
           .preload('location')
           .preload('vendor')
@@ -318,8 +319,8 @@ export default class EventsController {
           .distinct()
 
         // Merge results into events array
-        events = [...events, ...results];
-      };
+        events = [...events, ...results]
+      }
       return view.render('pages/events/list', {
         events: events.length === 0 ? null : events,
       })
@@ -357,19 +358,27 @@ export default class EventsController {
   async createEvent(
     request: HttpContext['request'],
     session: HttpContext['session'],
+    i18n: HttpContext['i18n']
   ) {
+    const timezone = request.input('timezone')
     const payload = await request.validateUsing(createEventValidator)
-
+    console.log(timezone)
     const event = new Event()
 
-    event.title = payload.title
-    event.subtitle = payload.subtitle
-    event.description = payload.description
-    event.eventStart = DateTime.fromISO(payload.event_start)
-    event.eventEnd = DateTime.fromISO(payload.event_end)
+    event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    event.eventStart = DateTime.fromFormat(payload.event_start, "yyyy-MM-dd'T'HH:mm", {
+      zone: timezone,
+    }).toISO()
+    event.eventEnd = DateTime.fromFormat(payload.event_end, "yyyy-MM-dd'T'HH:mm", {
+      zone: timezone,
+    }).toISO()
+
     if (event.eventStart > event.eventEnd) {
+      const errorMsg = i18n.t('messages.errorEventDates')
       session.flash('date', {
-        message: "La début de l'événement doit être avant la fin",
+        message: errorMsg,
       })
     }
     if (payload.facebook_link) event.facebookLink = payload.facebook_link
@@ -441,11 +450,22 @@ export default class EventsController {
     event: Event
   ) {
     const bodyPrices = request.body().prices
+    const values = Object.values(bodyPrices[0])
+    const firstElmIsNotNull = values.some((element) => element !== null)
+    try {
+      await createPriceValidator.validate(bodyPrices[0])
+    } catch (error) {
+      let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. '
+      error.messages.forEach((msg: any) => {
+        errorMsg += msg.message
+      })
+      session.flash('errorRequiredPriceFields', errorMsg)
+      return false
+    }
 
-    if (bodyPrices) {
+    if (firstElmIsNotNull) {
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
-
         try {
           let freeCateg = false
           if (priceData.is_free_category == 'on' || priceData.is_free_category) {
@@ -476,7 +496,6 @@ export default class EventsController {
       })
       return true
     } else {
-      // TODO this error message is not displayed when no prices are entered (payload empty)
       const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
       session.flash('errorMissingPrices', errorMsg)
     }
@@ -488,7 +507,7 @@ export default class EventsController {
     const address = new Address()
 
     address.name = addressPayload.name ?? ''
-    address.street = addressPayload.street.replace('&#x27;', "'")
+    address.street = addressPayload.street.replaceAll('&#x27;', "'")
     address.number = addressPayload.number
     address.zipCode = addressPayload.zip_code
     address.city = addressPayload.city
@@ -502,7 +521,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) { }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -531,7 +550,6 @@ export default class EventsController {
         `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
-      console.log(datas)
       return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
     } catch (e) {
       console.log('ERROR')
@@ -579,7 +597,6 @@ export default class EventsController {
           media.path = `/uploads/${uniqueFileName}`
           media.altName = file.clientName
           media.eventId = event.id
-
 
           await media.save()
         }
@@ -662,7 +679,7 @@ export default class EventsController {
     let title = i18n.t('messages.events_today')
     if (nextEvents.length === 0) {
       nextEvents = await this.getNextEvents()
-      title = i18n.t('messages.events_next_events')
+      title = i18n.t('messages.events_next')
     }
     return [topEvents, nextEvents, title]
   }
@@ -676,6 +693,8 @@ export default class EventsController {
     let isUserFavourite = false
     let isInUserWishlist = false
     let linkedEvents
+    let orderLines
+    let userOrderLines: any
 
     try {
       const event = await Event.query()
@@ -699,6 +718,30 @@ export default class EventsController {
             .related('favouritesUser')
             .query()
             .where('vendor_id', event.vendorId)
+
+          orderLines = await Order.query()
+            .select('prices.id as price_id')
+            .select('order_lines.qty as order_lines_qty')
+            .select('prices.available_qty as price_available_qty')
+            .join('order_lines', 'order_lines.order_id', 'orders.id')
+            .join('prices', 'order_lines.price_id', 'prices.id')
+            .join('events', 'prices.event_id', 'events.id')
+            .where('orders.is_paid', false)
+            .where('events.id', event.id)
+            .groupBy('prices.id', 'order_lines.qty', 'prices.available_qty')
+
+          // group order lines by event
+
+          userOrderLines = orderLines.reduce((acc, orderLine) => {
+            const priceId = orderLine.$extras.price_id
+            if (!acc[priceId]) {
+              acc[priceId] = orderLine.$extras.order_lines_qty
+            }
+            // acc[priceId].order_lines.push(orderLine)
+            return acc
+          }, {})
+
+          console.log(userOrderLines)
 
           isUserFavourite = userFavourites.length > 0
 
@@ -736,6 +779,7 @@ export default class EventsController {
           linkedEvents: linkedEvents,
           isUserFavourite: isUserFavourite,
           isInUserWishlist: isInUserWishlist,
+          userOrderLines: Object.values(userOrderLines).length === 0 ? null : userOrderLines,
         })
       }
     } catch (error) {
@@ -799,7 +843,7 @@ export default class EventsController {
         )
         event.location.latitude = latitude
         event.location.longitude = longitude
-      } catch (error) { }
+      } catch (error) {}
 
       await event.location.save()
       return true
@@ -884,11 +928,26 @@ export default class EventsController {
     const bodyPrices = request.body().prices
 
     if (bodyPrices) {
-      // we delete all existing prices associated with current event
-      const prices = event.prices
-      prices.forEach((price: Price) => {
-        price.delete()
-      })
+      // we check if at least one price element (the first one) is valid
+      const priceFields = Object.values(bodyPrices[0])
+      const firstElmIsNotNull = priceFields.some((element) => element !== null)
+      try {
+        await createPriceValidator.validate(bodyPrices[0])
+      } catch (error) {
+        let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. '
+        error.messages.forEach((msg: any) => {
+          errorMsg += msg.message
+        })
+        session.flash('errorRequiredPriceFields', errorMsg)
+        return false
+      }
+
+      if (firstElmIsNotNull) {
+        // we delete all existing prices associated with current event
+        const prices = event.prices
+        prices.forEach((price: Price) => {
+          price.delete()
+        })
 
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
@@ -909,21 +968,24 @@ export default class EventsController {
             if (payload.discounted_price) price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
 
-            await price.save()
-            await price.related('event').associate(event)
+              await price.save()
+              await price.related('event').associate(event)
+            }
+          } catch (error) {
+            let errorMsg = i18n.t('messages.errorEditEventPrices') + ' '
+            error.messages.forEach((msg: string) => {
+              errorMsg += msg
+            })
+            session.flash('errorEditEventPrices', errorMsg)
+            return false
           }
-        } catch (error) {
-          let errorMsg = i18n.t('messages.errorCreatePrice') + ' '
-          error.messages.forEach((msg: string) => {
-            errorMsg += msg
-          })
-          session.flash('errorCreatePrice', errorMsg)
-          return false
-        }
-      })
-      return true
+        })
+        return true
+      } else {
+        const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
+        session.flash('errorMissingPrices', errorMsg)
+      }
     } else {
-      // TODO this error message is not displayed when no prices are entered (payload empty)
       const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
       session.flash('errorMissingPrices', errorMsg)
     }
@@ -934,6 +996,7 @@ export default class EventsController {
    * Handle form submission for the edit action
    */
   async update({ i18n, params, request, session, response }: HttpContext) {
+    const timezone = request.input('timezone')
     const payload = await request.validateUsing(createEventValidator)
 
     const event = await Event.query()
@@ -947,13 +1010,18 @@ export default class EventsController {
       .first()
 
     if (event) {
-      event.title = payload.title
-      event.subtitle = payload.subtitle
-      event.description = payload.description
+      event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
 
       // Date
-      event.eventStart = DateTime.fromISO(payload.event_start)
-      event.eventEnd = DateTime.fromISO(payload.event_end)
+      event.eventStart = DateTime.fromFormat(payload.event_start, "yyyy-MM-dd'T'HH:mm", {
+        zone: timezone,
+      }).toISO()
+      event.eventEnd = DateTime.fromFormat(payload.event_end, "yyyy-MM-dd'T'HH:mm", {
+        zone: timezone,
+      }).toISO()
+
       if (event.eventStart > event.eventEnd) {
         const errorMsg = i18n.t('messages.errorEventDates')
         session.flash('errorEventDates', errorMsg)
@@ -997,15 +1065,15 @@ export default class EventsController {
   }
 
   getYoutubeVideoId(youtubeLink: string): string | null {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = youtubeLink.match(regExp);
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+    const match = youtubeLink.match(regExp)
 
-    return (match && match[2].length === 11) ? match[2] : null;
+    return match && match[2].length === 11 ? match[2] : null
   }
 
   generateYoutubeEmbedLink(youtubeLink: string) {
-    const videoId = this.getYoutubeVideoId(youtubeLink);
-    const embedLink = "https://www.youtube.com/embed/" + videoId
+    const videoId = this.getYoutubeVideoId(youtubeLink)
+    const embedLink = 'https://www.youtube.com/embed/' + videoId
     return embedLink
   }
 
@@ -1013,8 +1081,6 @@ export default class EventsController {
    * Delete record
    */
   async destroy({ params, response, session, i18n }: HttpContext) {
-    console.log('\n\n\n DESTROY EVENT \n\n\n')
-    console.log(params)
     try {
       const event = await Event.findOrFail(params.id)
       await event.delete()
@@ -1022,7 +1088,7 @@ export default class EventsController {
       console.log(error)
       const errorMsg = i18n.t('messages.errorDestroyEvent')
       session.flash('error', errorMsg)
-      return response.redirect().toRoute('auth.vendor.events')
+      return response.redirect().back()
     }
     const successMsg = i18n.t('messages.successDestroyEvent')
     session.flash('success', successMsg)

@@ -1,24 +1,54 @@
-<!DOCTYPE html>
-<html lang="{{ i18n.locale }}">
+@layout.dashboard({pageTitle: i18n.t('messages.profile_title'), svg: 'profile' }) 
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ i18n.t('messages.profile_title') }}</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
 
-<body class="bg-slate-50 ">
-  @include("pages/partials/header")
+    <div class="w-screen sm:w-[600px] lg:w-[800px]">
+      <div class="flex flex-col lg:flex-row lg:items-center md:px-4">
+        <div class="flex self-center lg:self-start w-24 h-24 lg:w-40 lg:h-40  shadow m-4 p-4  rounded-md">
+          <img src="/svg/profile_picture_dummy.svg" alt="profile picture dummy">
+        </div>
+        <div class="flex flex-col gap-1 mb-2 lg:my-2  mx-4 text-xs md:text-sm">
+          <div class="flex gap-2">
+            <p class="font-bold">{{ i18n.t('messages.profile_firstname') }}:</p>
+            <p>{{ user.firstname }}</p>
+          </div>
+          <div class="flex gap-2">
+            <p class="font-bold">{{ i18n.t('messages.profile_lastname') }}:</p>
+            <p>{{ user.lastname }}</p>
+          </div>
+          <div class="flex gap-2">
+            <p class="font-bold">{{ i18n.t('messages.profile_email') }}:</p>
+            <p>{{ user.email }}</p>
+          </div>
+          @if (user.billingAddress)
+            <div class="flex gap-2">
+              <p class="font-bold">{{ i18n.t('messages.profile_address') }}:</p>
+              <p>{{ user.billingAddress.street || '' }} 
+                {{ user.billingAddress.number || '' }}, 
+                {{ user.billingAddress.zipCode || '' }} 
+                {{ user.billingAddress.city || '' }}
+              </p>
+            </div>
+          @endif
+          <div class="flex gap-2">
+            <p class="font-bold">{{ i18n.t('messages.profile_company') }}:</p>
+            <p>{{ user.companyName || '' }}</p>
+          </div>
+          <div class="flex gap-2">
+            <p class="font-bold">{{ i18n.t('messages.profile_vat') }}:</p>
+            <p>{{ user.vatNumber || '' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<main class="flex flex-col items-center min-h-screen gap-10 mb-16">
+    <div class="flex justify-center">
+      <div class="flex bg-indigo-700 hover:bg-indigo-500 text-white text-sm py-2 px-4 rounded-md font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <a href="{{route('auth.profile.edit')}} ">
+          {{ i18n.t('messages.profile_edit') }}
+        </a>
+      </div>
+    </div>
+  </div>
 
-  @!component('components/dashboard/profile_section', {
-    user: user,
-  })
 
-</main>
-@include("pages/partials/footer")
-
-</body>
-</html>
+@end

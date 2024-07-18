@@ -1,6 +1,14 @@
-<fieldset class="price-section w-screen sm:w-[90%] sm:rounded-3xl p-6  bg-slate-50 border shadow-sm my-4" name="prices[]">
+<fieldset class="price-section w-screen sm:w-full sm:mx-auto sm:rounded-3xl p-6 bg-slate-50 border shadow-sm my-4" name="prices[]">
+  {{-- Free Category  --}}
+  <div class="flex gap-4 pb-2 items-center mb-2">
+    <label for="is_free_category" class="text-indigo-600">{{ i18n.t('messages.events_free_category') }}</label>
+    <input onclick="toggleFreeCategoryPrices(this)" class="free-category border-slate-300 rounded-md mb-0.5
+      focus:ring-slate-500 focus:border-slate-700 sm:text-sm mt-0.5"
+      type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][is_free_category]">
+  </div>
+  
 
-  <div class="flex  gap-2 w-full">
+  <div class="flex gap-2 w-full">
     {{-- Categories --}}
     <div class="w-1/2 ">
       <label for="price_description" class="block text-slate-600">{{ i18n.t('messages.prices_categ') }}</label>
@@ -12,36 +20,39 @@
           <div style="color: red;">{{ $messages.join(', ') }}</div>
         @end
     </div>
-    {{-- Places  --}}
-    <div class=" w-1/2">
-      
-      <label class="block text-slate-600">{{ i18n.t('messages.prices_avlAt') }}</label>
+    {{-- Places --}}
+    <div class="w-1/2">
+      <label for="available_qty" class="block text-slate-600">{{ i18n.t('messages.prices_avlAt') }}</label>
       <input class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
           focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
         type="text" name="prices[{{ i ? i : 0 }}][available_qty]" value="{{ price && price.availableQty ? price.availableQty : '' }}" placeholder="0">  
-    </div> 
+    </div>
   </div>
-    
   <div class="flex gap-2 w-full mt-2">
     {{-- Prix Normal --}}
     <div class="w-1/2">
       <label for="regular_price" class="flex text-slate-600">{{ i18n.t('messages.prices_tarif') }}</label>
-      <input class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
+      <input class="regular_price mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
           focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-        type="text" name="prices[{{ i ? i : 0 }}][regular_price]" value="{{ price && price.regularPrice ? price.regularPrice : '' }}" placeholder="0.00">
+        type="text" name="prices[{{ i ? i : 0 }}][regular_price]" id="regular_price" value="{{ price && price.regularPrice ? price.regularPrice : '' }}" placeholder="0.00">
         @inputError('prices.0.regular_price')
           <div style="color: red;">{{ $messages.join(', ') }}</div>
         @end
     </div>
-    {{-- Prix discount   --}}
-      <div class="discounted-row w-1/2 ">
-        <label class="block text-slate-600">{{ i18n.t('messages.prices_discount') }}</label>
-        <input class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-          type="text" name="prices[{{ i ? i : 0 }}][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
-      </div>  
-    </div>
-    <div class="w-full flex justify-center mt-4">
-  </div>
-    
-  </fieldset>
+    {{-- Prix discount --}}
+    <div class="discounted-row w-1/2">
+      <label for="discounted_price" class="block text-slate-600">{{ i18n.t('messages.prices_discount') }}</label>
+      <input class="discounted_price mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
+        focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        type="text" name="prices[{{ i ? i : 0 }}][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
+    {{-- Become Free  --}}
+        <div class="flex gap-4 pb-2 mt-1 items-center">
+          <label for="become_free" class="text-indigo-600">{{ i18n.t('messages.events_become_free_category') }}</label>
+          <input onclick="becomeFreeCategory(this)" onchange="becomeFreeCategory(this)"
+          class="become_free border-slate-300 rounded-md
+            focus:ring-slate-500 focus:border-slate-700 text-sm mt-0.5"
+            type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
+        </div>
+    </div>  
+  </div> 
+</fieldset>

@@ -31,11 +31,11 @@ export default class EventsController {
     // await auth.check()
     const categories = await Category.query().select('name', 'slug', 'id')
 
-    const dayBegin = DateTime.now().toSQLDate()
-    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+    const dayBegin = DateTime.now().toSQL()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
 
     const events = await Event.query()
-      .andWhereBetween('event_start', [dayBegin, dayEnd])
+      .andWhereBetween('event_end', [dayBegin, dayEnd])
       .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
       .preload('location')
       .preload('categoryTypes', (categoryTypesQuery) => {
@@ -129,9 +129,9 @@ export default class EventsController {
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    const categories = await Category.all()
-    const categoryTypes = await CategoryType.all()
-    const indicators = await Indicator.all()
+    const categories = await Category.query().select('*').orderBy('id', 'asc')
+    const categoryTypes = await CategoryType.query().select('*').orderBy('id', 'asc')
+    const indicators = await Indicator.query().select('*').orderBy('id', 'asc')
 
     return view.render('pages/events/add-event', {
       categories: categories,
@@ -722,9 +722,8 @@ export default class EventsController {
         .preload('vendor')
         .first()
 
-        
-        // If the User is authenticated
-        if (event) {
+      // If the User is authenticated
+      if (event) {
         isPast = event.eventEnd && event.eventEnd.toMillis() < Date.now()
         const user = auth.user
         if (user) {

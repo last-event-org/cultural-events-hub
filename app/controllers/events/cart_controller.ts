@@ -173,6 +173,18 @@ export default class CartController {
     const orderLine = await OrderLine.find(params['id'])
     orderLine?.delete()
 
+    // console.log(orderLine?.orderId)
+    const order = await Order.find(orderLine?.orderId)
+    const orderLines = await order?.related('orderLineId').query()
+
+    if (orderLines?.length === 0) {
+      await order?.delete()
+      response.clearCookie('orderId')
+      const cartDestroyed = i18n.t('messages.successDestroyCart')
+      session.flash('success', cartDestroyed)
+      return response.redirect().toRoute('cart.show')
+    }
+
     // TODO configure the response
     const successMsg = i18n.t('messages.cart_itemDeleted')
     session.flash('success', successMsg)

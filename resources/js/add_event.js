@@ -5,10 +5,14 @@ function toggleDisplayPrices() {
 
   if (freeEventCheckbox.checked){
     addPricesBtn.style.display = "none";
-    pricesSection.style.display = "none";
+    pricesSection.classList.add("hidden")
+    pricesSection.classList.remove("flex")
+    
   } else {
     addPricesBtn.style.display = "block";
-    pricesSection.style.display = "block";
+    pricesSection.classList.add("flex")
+    pricesSection.classList.remove("hidden")
+    
   }
 }
 

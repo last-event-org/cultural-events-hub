@@ -1,10 +1,13 @@
-<fieldset class="price-section w-screen sm:w-[90%] sm:rounded-3xl p-6 bg-slate-50 border shadow-sm my-4" name="prices[]">
-  <div class="flex gap-4 pb-2 items-end">
-    <label for="is_free_category" class="text-slate-600">Catégorie Gratuite</label>
-    <input onclick="toggleFreeCategoriyPrices(this)" class="free-category border-slate-300 rounded-md mb-0.5
-      focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+<fieldset class="price-section w-screen sm:w-full sm:mx-auto sm:rounded-3xl p-6 bg-white border shadow-sm my-4" name="prices[]">
+  {{-- Free Category  --}}
+  <div class="flex gap-4 pb-2 items-center mb-2">
+    <label for="is_free_category" class="text-indigo-600">Catégorie Gratuite</label>
+    <input onclick="toggleFreeCategoryPrices(this)" class="free-category border-slate-300 rounded-md mb-0.5
+      focus:ring-slate-500 focus:border-slate-700 sm:text-sm mt-0.5"
       type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][is_free_category]">
   </div>
+  
+
   <div class="flex gap-2 w-full">
     {{-- Categories --}}
     <div class="w-1/2 ">
@@ -25,6 +28,8 @@
         type="text" name="prices[{{ i ? i : 0 }}][available_qty]" value="{{ price && price.availableQty ? price.availableQty : '' }}" placeholder="0">  
     </div>
   </div>
+
+  
    
   <div class="flex gap-2 w-full mt-2">
     {{-- Prix Normal --}}
@@ -38,20 +43,20 @@
         @end
     </div>
     {{-- Prix discount --}}
-    <div class="discounted-row w-1/2 gap-8 flex">
-      <div>
-        <label for="discounted_price" class="block text-slate-600">{{ i18n.t('messages.prices_discount') }}</label>
-        <input class="discounted_price mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-          type="text" name="prices[{{ i ? i : 0 }}][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
-      </div>
-      <div class="flex gap-4 pb-2 items-end">
-        <label for="become_free" class="text-slate-600">Devient Gratuit</label>
-        <input class="become_free border-slate-300 rounded-md mb-0.5
-          focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-          type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
-      </div>
-    </div>  
+    <div class="discounted-row w-1/2">
+      <label for="discounted_price" class="block text-slate-600">{{ i18n.t('messages.prices_discount') }}</label>
+      <input class="discounted_price mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
+        focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
+        type="text" name="prices[{{ i ? i : 0 }}][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
+    {{-- Become Free  --}}
+  <div class="flex gap-4 pb-2 mt-1 items-center">
+    <label for="become_free" class="text-indigo-600">Catégorie de prix devenue gratuite</label>
+    <input onclick="becomeFreeCategory(this)" onchange="becomeFreeCategory(this)"
+    class="become_free border-slate-300 rounded-md
+      focus:ring-slate-500 focus:border-slate-700 text-sm mt-0.5"
+      type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
+  </div>
+      </div>  
   </div>
   <div class="w-full flex justify-center mt-4">
   </div>

@@ -371,65 +371,85 @@
         </section>
       </div>
 
-      <div class="flex w-full p-5 items-center bg-orange-50 rounded-lg">
-        <div class="gap-4 flex">
-          <label for="is_free" class="flex text-gray-600">Événement Totalement Gratuit</label>
-          @if(event.isFree)
-            <input checked onclick="toggleEditDisplayPrices()" type="checkbox" id="is_free" name="is_free" class="rounded-md focus:ring-slate-500 sm:text-sm">
-          @else
-            <input unchecked onclick="toggleEditDisplayPrices()" type="checkbox" id="is_free" name="is_free" class="rounded-md focus:ring-slate-500 sm:text-sm">
-          @end
-        </div>
-      </div>
-
-{{-- Prices  --}}
-    <section id="prices-section-edit" class="prices-section bg-indigo-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl lg:w-[800px] xl:w-[1100px]">
-      
-        <h2 class="mx-auto relative z-10 font-bold text-black text-xl my-4 text-center ">
-          {{ i18n.t('messages.event_prix') }}
-            <hr class="absolute -z-10 w-full h-2 bottom-1 left-0  bg-yellow-500">
-        </h2>
-        
-          @each((price, i) in event.prices)
-            @!component('components/price_fields', {
-              price: price,
-              i: i
-            })
-            @if(i > 0)
-            <a href="{{ route('price.destroy', [price.id], { qs: {_method: 'POST'}} ) }}" class="cursor-pointer  text-xs underline text-red-600 hover:text-red-400 duration-300">
-              {{ i18n.t('messages.delete_btn')}}</a>
-            @endif
-
-            @if(flashMessages.has('errorDestroyPrice'))
-            <div>
-              <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
-                {{ flashMessages.get('errorDestroyPrice') }}
-              </h2>
+      {{-- Prices  --}}
+      <section  class="bg-indigo-100 text-slate-600 flex flex-col items-center sm:border sm:shadow sm:rounded-3xl lg:w-[800px] xl:w-[1100px]">
+        <div class="flex flex-col items-center w-screen sm:w-full my-6 pt-6 sm:pt-0">
+          <h2 class="relative z-10 text-xl text-black font-bold pb-2 mx-auto">
+            {{ i18n.t('messages.event_prix') }}
+            <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
+          </h2>
+          <div class="flex my-4 mx-6 px-6 py-2 items-center bg-orange-100 rounded-lg">
+            <div class="gap-4 flex">
+              <label for="is_free" class="flex text-slate-600 font-semibold">{{ i18n.t('messages.events_free_entrance') }}</label>
+              @if(event.isFree)
+              <input onclick="toggleDisplayPrices()" type="checkbox" id="is_free" name="is_free" checked class="rounded-md focus:ring-slate-500 sm:text-sm">  
+              @else
+              <input onclick="toggleDisplayPrices()" type="checkbox" id="is_free" name="is_free" unchecked class="rounded-md focus:ring-slate-500 sm:text-sm">
+              @end
             </div>
-            @endif
-          @end
-        
-
-          <template id="priceFieldsTemplate">
-              @!component('components/price_fields')
-          </template>
-          <div id="priceFieldsContainer" class="flex flex-col items-center justify-center w-full ">
-              <!-- div to add the addionnal prices -->
           </div>
-          @inputError('prices[]')
+          <div id="prices-section" class="flex flex-col items-center w-full px-6">
+            @each((price, i) in event.prices)
+              @!component('components/price_fields', {
+                price: price,
+                i: i
+              })
+              @if(i > 0)
+              <a href="{{ route('price.destroy', [price.id], { qs: {_method: 'POST'}} ) }}" class="cursor-pointer  text-xs underline text-red-600 hover:text-red-400 duration-300">
+                {{ i18n.t('messages.delete_btn')}}</a>
+              @endif
+
+              @if(flashMessages.has('errorDestroyPrice'))
+              <div>
+                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                  {{ flashMessages.get('errorDestroyPrice') }}
+                </h2>
+              </div>
+              @endif
+            @end
+        
+            <template id="priceFieldsTemplate">
+                @!component('components/price_fields')
+            </template>
+            <div id="priceFieldsContainer" class="flex flex-col items-center justify-center w-full">
+              <!-- div to add the additional prices -->
+            </div>
+            @inputError('prices[]')
               <div style="color: red;">{{ $messages.join(', ') }}</div>
-          @end
+            @end
+   
+            <a class="flex items-center px-2 h-10 text-bold text-lg cursor-pointer text-slate-700 mb-6 mt-4" id="add-prices-btn" onclick="addPriceFields()">
+              {{ i18n.t('messages.event_addPrice') }}
+              <svg class="mt-1 h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </a>
+           
+            @if(flashMessages.has('errorMissingPrices'))
+              <div>
+                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                  {{ flashMessages.get('errorMissingPrices') }}
+                </h2>
+              </div>
+            @endif
+     
+            @if(flashMessages.has('errorRequiredPriceFields'))
+              <div>
+                <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
+                  {{ flashMessages.get('errorRequiredPriceFields') }}
+                </h2>
+              </div>
+            @endif
+          </div>
+          <div class="flex justify-center my-2">
+            <button type="submit" class="uppercase bg-yellow-500 text-slate-700 font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
+                    {{ i18n.t('messages.event_apply') }}
+            </button> 
+          </div>
+        </div>
 
-          <a class="flex items-center px-2 h-10 text-bold text-lg cursor-pointer  text-slate-700 mb-6 mt-4"
-          onclick="addPriceFields()">
-          {{ i18n.t('messages.event_addPrice') }}
-      <svg class="mt-1 h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-      </svg>
-    </a>
-    </section>
-
-        </section>
+       
         @if(flashMessages.has('errorEditEventPrices'))
           <div>
             <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
@@ -437,7 +457,7 @@
             </h2>
           </div>
         @endif
-
+  
         @if(flashMessages.has('errorMissingPrices'))
           <div>
             <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
@@ -445,7 +465,7 @@
             </h2>
           </div>
         @endif
-
+  
         @if(flashMessages.has('errorRequiredPriceFields'))
           <div>
             <h2 class="text-2xl font-bold mb-6 text-center text-red-600">
@@ -453,19 +473,13 @@
             </h2>
           </div>
         @endif
-
-        <div class="flex justify-center my-2">
-          <button type="submit" class="uppercase bg-yellow-500 text-slate-700 font-bold py-2 px-4 my-5 rounded-md hover:bg-yellow-400 
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
-                  {{ i18n.t('messages.event_apply') }}
-          </button> 
-        </div>
-
-      </form>
+      </section>
+    </form>
     </div>
-    </main>
+  </main>
 
   @include("pages/partials/footer")
 <script src="/resources/js/add_event.js"></script>
+<script src="/resources/js/price_fields.js"></script>
 </body>
 </html>

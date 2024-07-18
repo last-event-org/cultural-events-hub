@@ -1,7 +1,8 @@
+<section class="flex flex-col my-2  w-full p-4  bg-white rounded-3xl shadow text-xs sm:text-base">
+  <p class="font-semibold text-slate-700 bg-slate-300/70 pl-2 rounded-md" >
+    {{item.description}}: <span class="font-normal" data-user-price-id="{{item.id}}" data-user-qty={{userOrderLineQty}}>{{userOrderLineQty}}</span><span class="font-normal"> places dans le panier</span>  
+  </p>
 
-<section class="flex flex-col my-2  w-full p-4    bg-white rounded-3xl shadow text-xs sm:text-base">
-  
-  <p class=" font-semibold  text-gray-700 bg-slate-300/70 pl-2 rounded-md">{{item.description}}:</p>
   @if(item.type == 'infoPrice')
   {{-- Tarif rempli et c'est tout  --}}
     <div class="flex justify-between gap-12 items-center pl-2 ">
@@ -34,19 +35,19 @@
         {{ i18n.t('messages.cart_free') }}
       </p>
       @if(!isPast)
-        <p class="text-center text-xs text-red-800  font-bold mb-2 animate-pulse">{{ i18n.t('messages.cart_avl') }} {{item.availableQty}} {{ i18n.t('messages.cart_places') }} !</p>
+      <p class="text-center text-xs text-red-800  font-bold mb-2 animate-pulse">{{ i18n.t('messages.cart_avl') }} {{item.availableQty}} {{ i18n.t('messages.cart_places') }} !</p>
       @end
     </div>
 
     @if(!isPast)
-      <div class="flex gap-4 justify-end w-full">
-        <form action="" method="POST">
-          {{ csrfField() }}
-          <input type="hidden" name="price_id" value={{item.id}} />
-          <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-          {{ i18n.t('messages.cart_add') }}</button>
-        </form>
-      </div>
+    <div class="flex gap-4 justify-end w-full">
+      <form action="" method="POST">
+        {{ csrfField() }}
+        <input type="hidden" name="price_id" value={{item.id}} />
+        <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+        {{ i18n.t('messages.cart_add') }}</button>
+      </form>
+    </div>
     @end
 
   @elseif(item.type == 'lastMinuteLimited')
@@ -62,19 +63,19 @@
         {{ i18n.t('messages.cart_new') }} <span>{{ i18n.t('messages.cart_price') }}:</span> {{item.discountedPrice}}€
       </p>
       @if(!isPast)
-        <p class="text-center text-xs text-red-800  font-bold mb-2 animate-pulse">{{ i18n.t('messages.cart_avl') }} {{item.availableQty}} {{ i18n.t('messages.cart_places') }} !</p>
+      <p class="text-center text-xs text-red-800  font-bold mb-2 animate-pulse">{{ i18n.t('messages.cart_avl') }} {{item.availableQty}} {{ i18n.t('messages.cart_places') }} !</p>
       @end
     </div>
 
     @if(!isPast)
-      <div class="flex gap-4 justify-end w-full">
-        <form action="" method="POST">
-          {{ csrfField() }}
-          <input type="hidden" name="price_id" value={{item.id}} />
-          <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-          {{ i18n.t('messages.cart_add') }}</button>
-        </form>
-      </div>
+    <div class="flex gap-4 justify-end w-full">
+      <form action="" method="POST">
+        {{ csrfField() }}
+        <input type="hidden" name="price_id" value={{item.id}} />
+        <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+        {{ i18n.t('messages.cart_add') }}</button>
+      </form>
+    </div>
     @end
 
   @elseif(item.type == 'lastMinuteNotLimited')
@@ -92,14 +93,14 @@
     </div>
 
     @if(!isPast)
-      <div class="flex gap-4 justify-end w-full">
-        <form action="" method="POST">
-          {{ csrfField() }}
-          <input type="hidden" name="price_id" value={{item.id}} />
-          <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-          {{ i18n.t('messages.cart_add') }}</button>
-        </form>
-      </div>
+    <div class="flex gap-4 justify-end w-full">
+      <form action="" method="POST">
+        {{ csrfField() }}
+        <input type="hidden" name="price_id" value={{item.id}} />
+        <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+        {{ i18n.t('messages.cart_add') }}</button>
+      </form>
+    </div>
     @end
 
   @elseif(item.type == 'lastMinuteFreeNotLimited')
@@ -119,19 +120,19 @@
         {{ i18n.t('messages.cart_new') }} <span>{{ i18n.t('messages.cart_price') }}:</span> {{ i18n.t('messages.cart_free') }} !
       </p>
       @if(!isPast)
-        <p class="text-center text-xs text-red-800  font-bold mb-2 animate-pulse">{{ i18n.t('messages.cart_avl') }} {{item.availableQty}} {{ i18n.t('messages.cart_places') }} !</p>
+      <p class="text-center text-xs text-red-800  font-bold mb-2 animate-pulse">{{ i18n.t('messages.cart_avl') }} {{item.availableQty}} {{ i18n.t('messages.cart_places') }} !</p>
       @end
     </div>
 
     @if(!isPast)
-      <div class="flex gap-4 justify-end w-full">
-        <form action="" method="POST">
-          {{ csrfField() }}
-          <input type="hidden" name="price_id" value={{item.id}} />
-          <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
-          {{ i18n.t('messages.cart_add') }}</button>
-        </form>
-      </div>
+    <div class="flex gap-4 justify-end w-full">
+      <form action="" method="POST">
+        {{ csrfField() }}
+        <input type="hidden" name="price_id" value={{item.id}} />
+        <button onclick="showSuccessNotification('Ticket ajouté au panier')" class=" mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white  font-bold rounded-md transition duration-200" type="submit" > 
+        {{ i18n.t('messages.cart_add') }}</button>
+      </form>
+    </div>
     @end
 
   @end

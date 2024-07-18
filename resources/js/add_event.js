@@ -9,7 +9,7 @@ function toggleDisplayPrices() {
     pricesSection.classList.remove("flex")
     
   } else {
-    addPricesBtn.style.display = "block";
+    addPricesBtn.style.display = "flex";
     pricesSection.classList.add("flex")
     pricesSection.classList.remove("hidden")
     

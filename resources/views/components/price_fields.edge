@@ -1,7 +1,7 @@
-<fieldset class="price-section w-screen sm:w-full sm:mx-auto sm:rounded-3xl p-6 bg-white border shadow-sm my-4" name="prices[]">
+<fieldset class="price-section w-screen sm:w-full sm:mx-auto sm:rounded-3xl p-6 bg-slate-50 border shadow-sm my-4" name="prices[]">
   {{-- Free Category  --}}
   <div class="flex gap-4 pb-2 items-center mb-2">
-    <label for="is_free_category" class="text-indigo-600">Catégorie Gratuite</label>
+    <label for="is_free_category" class="text-indigo-600">{{ i18n.t('messages.events_free_category') }}</label>
     <input onclick="toggleFreeCategoryPrices(this)" class="free-category border-slate-300 rounded-md mb-0.5
       focus:ring-slate-500 focus:border-slate-700 sm:text-sm mt-0.5"
       type="checkbox" unchecked name="prices[{{ i ? i : 0 }}][is_free_category]">
@@ -49,16 +49,13 @@
         focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
         type="text" name="prices[{{ i ? i : 0 }}][discounted_price]" value="{{ price && price.discountedPrice ? price.discountedPrice : '' }}" placeholder="0.00">
     {{-- Become Free  --}}
-  <div class="flex gap-4 pb-2 mt-1 items-center">
-    <label for="become_free" class="text-indigo-600">Catégorie de prix devenue gratuite</label>
-    <input onclick="becomeFreeCategory(this)" onchange="becomeFreeCategory(this)"
-    class="become_free border-slate-300 rounded-md
-      focus:ring-slate-500 focus:border-slate-700 text-sm mt-0.5"
-      type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
-  </div>
-      </div>  
-  </div>
-  <div class="w-full flex justify-center mt-4">
-  </div>
-  
+        <div class="flex gap-4 pb-2 mt-1 items-center">
+          <label for="become_free" class="text-indigo-600">{{ i18n.t('messages.events_become_free_category') }}</label>
+          <input onclick="becomeFreeCategory(this)" onchange="becomeFreeCategory(this)"
+          class="become_free border-slate-300 rounded-md
+            focus:ring-slate-500 focus:border-slate-700 text-sm mt-0.5"
+            type="checkbox" name="prices[{{ i ? i : 0 }}][become_free]">
+        </div>
+    </div>  
+  </div> 
 </fieldset>

@@ -256,6 +256,9 @@
   "events_next": "Upcoming events",
   "events_video_events": "YouTube video",
   "events_no_events": "Unfortunately, there are no events for your selection.",
+  "events_free_category" : "Price category Free",
+  "events_become_free_category" : "Price category became free",
+  "events_free_entrance" : "Free entrance",
 
   "map_when": "When ?",
   "map_whenDesc": "Select date",

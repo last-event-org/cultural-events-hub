@@ -12,6 +12,8 @@
   @include("pages/partials/header")
   <main class="flex flex-col items-center min-h-screen">
     <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-3xl shadow p-4 md:p-8 mt-10 gap-6">
+      
+
       <div class=" flex justify-center font-bold text-xl items-center self-center shadow hover:shadow-inner duration-1000 border bg-slate-100 rounded-full p-3 gap-4">
         <div class="flex justify-center items-center bg-yellow-500 rounded-full p-2">
           <svg xmlns="http://www.w3.org/2000/svg" height="20px" width="20px" fill="currentColor" viewBox="0 0 512 512">
@@ -24,6 +26,7 @@
       
       @if(flashMessages.has('cartValidated'))
         @!component('components/notifications/success', { message: flashMessages.get('cartValidated') })
+        @!component('components/errors/flashmessage', { message: flashMessages.get('cartValidated'), success: true })
       @elseif(flashMessages.has('error'))
         @!component('components/notifications/error', { message: flashMessages.get('error') })
       @elseif((flashMessages.has('success')))
@@ -70,8 +73,9 @@
                     <form name="removeOrderLine-{{item.id}}" action="{{ route('cart.delete', [item.id], { qs: {_method: 'DELETE'}})}}" method="post" class="flex justify-center items-center">
                       {{ csrfField() }}
                       <input type="hidden" name="_method" value="DELETE" />
-                      <button onclick="removeOrderLine({{item.id}})" class="pl-2 hover:scale-105 duration-300" type="submit">
+                      <button  class="pl-2 hover:scale-105 duration-300" type="submit">
                         <img src="/svg/cancel.svg" alt="delete">
+                        
                       </button>
                     </form>
                   </td>
@@ -90,7 +94,7 @@
         </div>
 
         <div class="mt-6 flex items-center gap-4 justify-end">
-          <form action="{{ route('cart.destroy', [order.id], { qs: {_method: 'DELETE'}}) }}" method="post" enctype="multipart/form-data">
+          <form action="{{ route('cart.destroy', [order.id], { qs: {_method: 'DELETE'}}) }}" method="post">
             {{ csrfField() }}
             <input type="hidden" name="_method" value="DELETE" />
             <button class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-red-700 hover:bg-red-500 focus:ring-2 text-sm text-white font-bold rounded-md transition duration-200" type="submit">

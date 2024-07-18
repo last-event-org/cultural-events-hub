@@ -11,18 +11,17 @@ import Address from '#models/address'
 import Price from '#models/price'
 import Media from '#models/media'
 import Indicator from '#models/indicator'
+import Order from '#models/order'
+import User from '#models/user'
 
 import { createEventValidator } from '#validators/event'
 import { createAddressValidator } from '#validators/address'
 import { createMediaValidator } from '#validators/media'
 import { queryValidator } from '#validators/query'
 import { createPriceValidator } from '#validators/create_price'
-import User from '#models/user'
+
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
-import { time } from 'console'
-import OrderLine from '#models/order_line'
-import Order from '#models/order'
 
 export default class EventsController {
   /**

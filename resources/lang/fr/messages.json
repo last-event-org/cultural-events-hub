@@ -256,6 +256,9 @@
   "events_next": "Evénements à venir",
   "events_video_events": "Video YouTube",
   "events_no_events": "Malheureusement, il n'y a pas d'événements pour votre sélection.",
+  "events_free_category" : "Catégorie Gratuite",
+  "events_become_free_category" : "Catégorie de prix devenue gratuite",
+  "events_free_entrance" : "Événement avec entrée libre et gratuite",
 
   "map_when": "Quand sortir?",
   "map_whenDesc": "Choisir une date",

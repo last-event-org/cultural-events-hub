@@ -1,3 +1,32 @@
+function toggleDisplayPrices() {
+  const freeEventCheckbox = document.getElementById("is_free");
+  const addPricesBtn = document.getElementById("add-prices-btn");
+  const pricesSection = document.getElementById("prices-section");
+
+  if (freeEventCheckbox.checked){
+    addPricesBtn.style.display = "none";
+    pricesSection.classList.add("hidden")
+    pricesSection.classList.remove("flex")
+
+  } else {
+    addPricesBtn.style.display = "flex";
+    pricesSection.classList.add("flex")
+    pricesSection.classList.remove("hidden")
+
+  }
+}
+
+function toggleEditDisplayPrices() {
+  const freeEventCheckbox = document.getElementById("is_free");
+  const pricesSection = document.getElementById("prices-section-edit");
+
+  if (freeEventCheckbox.checked){
+    pricesSection.style.display = "none";
+  } else {
+    pricesSection.style.display = "flex";
+  }
+}
+
 let priceElementCount = 0;
 const maxElements = 4;
 

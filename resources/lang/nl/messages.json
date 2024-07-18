@@ -235,10 +235,6 @@
   "events_next": "Aankomende evenementen",
   "events_video_events": "YouTube-video",
   "events_no_events": "Helaas zijn er geen evenementen voor uw selectie.",
-  "events_free_category" : "Gratis prijscategorie",
-  "events_become_free_category" : "Prijscategorie werd gratis",
-  "events_free_entrance" : "Gratis toegang",
-  
   "map_when": "Wanneer?",
   "map_whenDesc": "Selecteer datum",
   "map_where": "Waar?",

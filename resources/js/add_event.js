@@ -1,21 +1,3 @@
-function toggleDisplayPrices() {
-  const freeEventCheckbox = document.getElementById("is_free");
-  const addPricesBtn = document.getElementById("add-prices-btn");
-  const pricesSection = document.getElementById("prices-section");
-
-  if (freeEventCheckbox.checked){
-    addPricesBtn.style.display = "none";
-    pricesSection.classList.add("hidden")
-    pricesSection.classList.remove("flex")
-    
-  } else {
-    addPricesBtn.style.display = "flex";
-    pricesSection.classList.add("flex")
-    pricesSection.classList.remove("hidden")
-    
-  }
-}
-
 let priceElementCount = 0;
 const maxElements = 4;
 
@@ -57,6 +39,23 @@ function addDiscountedPriceFields() {
   let template = document.getElementById('discountedPriceFieldsTemplate')
   let clone = document.importNode(template.content, true)
   document.getElementById('discountedPriceFieldsContainer').appendChild(clone)
+}
+
+function toggleRowDiscountedPrice(element) {
+  const priceSection = element.closest('.price-section')
+  const rowDiscountedPrice = priceSection.querySelector('.discounted-row')
+  const priceCategInput = priceSection.querySelector('#price_description')
+  const regPriceInput = priceSection.querySelector('#regular_price')
+
+  if (rowDiscountedPrice.classList.contains('hidden')) {
+    rowDiscountedPrice.classList.remove('hidden')
+    // priceCategInput.setAttribute('disabled', true);
+    // regPriceInput.setAttribute('disabled', true);
+  } else {
+    rowDiscountedPrice.classList.add('hidden')
+    // priceCategInput.removeAttribute('disabled');
+    // regPriceInput.removeAttribute('disabled');
+  }
 }
 
 function toggleDiscountedPriceSection() {
@@ -126,4 +125,3 @@ function previewImages(mediaLength=0) {
     })
   }
 }
-

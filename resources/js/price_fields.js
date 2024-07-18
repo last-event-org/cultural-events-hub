@@ -23,8 +23,7 @@ function toggleFreeCategoryPrices(element) {
       becomeFreeFld.removeAttribute("disabled")
       becomeFreeFld.classList.remove("border-slate-100")
   }
-
-  
+ 
 }
 
 function becomeFreeCategory(element){

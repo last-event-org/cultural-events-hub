@@ -36,14 +36,17 @@ function showErrorNoTicketsNotification() {
 function addItemToCart(id) {
   console.log('addItemToCart')
   console.log(id)
-  const spanPrice = document.querySelector(`[data-price-id="${id}"]`)
-  console.log(spanPrice)
-  const availableQty = Number(spanPrice.getAttribute('data-available-qty'))
   const userOrderInfo = document.querySelector(`[data-user-price-id="${id}"]`)
   const userQty = Number(userOrderInfo.getAttribute('data-user-qty'))
 
-  console.log(userQty)
+  const spanPrice = document.querySelector(`[data-price-id="${id}"]`)
+  const availableQty = Number(spanPrice.getAttribute('data-available-qty'))
+  const spanQty = document.querySelector(`[data-show-cart-qty="${id}"]`)
+
   if (availableQty > 0) {
+    if (spanQty.classList.contains('hidden')) {
+      spanQty.classList.remove('hidden')
+    }
     userOrderInfo.setAttribute('data-user-qty', userQty + 1)
     userOrderInfo.textContent = userQty + 1
     spanPrice.setAttribute('data-available-qty', availableQty - 1)

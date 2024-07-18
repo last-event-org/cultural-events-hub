@@ -71,6 +71,7 @@
   "switch_account_vat": "- BTW-nummer",
   "switch_account_billingAddr": "- Factuuradres",
   "switch_account_createAccount": "Maak uw verkopersaccount aan",
+
   "cart_title": "Winkelwagen",
   "cart_myCart": "Mijn winkelwagen",
   "cart_empty": "Uw winkelwagen is leeg",
@@ -95,6 +96,9 @@
   "cart_noPlaces": "Geen tickets.",
   "cart_itemDeleted": "Item is verwijderd.",
   "cart_destroyed": "Winkelwagen geleegd!",
+  "cart_itemsInCart": "tickets in your cart",
+  "cart_pastEvent": "Te laat!",
+
   "dashboard_title": "Dashboard",
   "dashboard_vendor_events": "Uw evenementen",
   "dashboard_vendor_no_events": "U heeft nog geen evenementen gepubliceerd.",
@@ -235,10 +239,10 @@
   "events_next": "Aankomende evenementen",
   "events_video_events": "YouTube-video",
   "events_no_events": "Helaas zijn er geen evenementen voor uw selectie.",
-  "events_free_category" : "Gratis prijscategorie",
-  "events_become_free_category" : "Prijscategorie werd gratis",
-  "events_free_entrance" : "Gratis toegang",
-  
+  "events_free_category": "Gratis prijscategorie",
+  "events_become_free_category": "Prijscategorie werd gratis",
+  "events_free_entrance": "Gratis toegang",
+
   "map_when": "Wanneer?",
   "map_whenDesc": "Selecteer datum",
   "map_where": "Waar?",

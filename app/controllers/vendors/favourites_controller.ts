@@ -38,7 +38,7 @@ export default class FavouritesController {
       .whereIn('users.id', vendorIds)
       .groupBy('user_id')
 
-    let vendorEvents = {}
+    let vendorEvents: any = {}
     vendorIds.forEach((vendor) => {
       if (!vendorEvents[vendor]) {
         vendorEvents[vendor] = { nextEvents: 0, allEvents: 0 }

@@ -307,6 +307,5 @@ textarea {
   -webkit-appearance: none;
   -moz-appearance: none;
   outline: none;
-  /* border: none; */
   resize: vertical;
 }

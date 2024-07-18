@@ -83,11 +83,12 @@ function removeQuantity(id) {
 }
 
 async function removeOrderLine(id) {
+  console.log('removeOrderLine')
+  const removeOrderLineForm = document.getElementsByName('removeOrderLine-' + id)[0]
+  removeOrderLineForm.submit()
   const orderLineRowQty = document.getElementsByName('orderLineQtyRow-' + id)
   // TODO error in log when deleting an order line, code looks for a submit form [look previous code]
-  const removeOrderLineForm = document.getElementsByName('removeOrderLine-' + id)[0]
   removeOrderLineForm.style.display = 'none'
-  removeOrderLineForm.submit()
   if (orderLineRowQty[0]) {
     orderLineRowQty[0].remove()
     updateTotalOrder()

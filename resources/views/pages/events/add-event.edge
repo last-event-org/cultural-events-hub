@@ -256,6 +256,16 @@
             {{ i18n.t('messages.event_prix') }}
             <hr class="absolute -z-10 w-full h-2 bottom-3 left-0 bg-yellow-500">
           </h2>
+
+
+          <div class="flex w-full p-5 items-center bg-orange-50 rounded-lg">
+            <div class="gap-4 flex">
+              <label for="is_free" class="flex text-slate-600">Événement Totalement Gratuit</label>
+              <input onclick="toggleDisplayPrices()" type="checkbox" id="is_free" name="is_free" unchecked class="rounded-md focus:ring-slate-500 sm:text-sm">
+            </div>
+          </div>
+
+
           @!component('components/price_fields')
           
           <template id="priceFieldsTemplate">
@@ -305,6 +315,7 @@
   </main>
   
   @include("pages/partials/footer")
+  <script src="/resources/js/price_fields.js"></script>
   <script src="/resources/js/add_event.js"></script>
   <script src="/resources/js/add_event_navigation.js"></script>
 

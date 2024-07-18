@@ -199,7 +199,7 @@
   "eventCard_last": "Dernières places",
   "eventCard_full": "Complet",
   "eventCard_free": "Gratuit",
-  "eventCard_see_details": "Voir détails",
+  "eventCard_seeDetails": "Voir détails",
 
   "error_404": "404 - Page non trouvée",
   "error_server": "Erreur Serveur",

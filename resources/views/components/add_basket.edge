@@ -4,6 +4,7 @@
   <p class=" font-semibold  text-gray-700 bg-slate-300/70 pl-2 rounded-md">{{item.description}}:</p>
 
   @if(item.type == 'infoPrice')
+  {{-- Tarif rempli et c'est tout  --}}
     <div class="flex justify-between gap-12 items-center pl-2 ">
       <p class=" font-semibold  text-gray-700 mb-1">
         {{ i18n.t('messages.cart_price') }}:</span> {{item.regularPrice}}€
@@ -11,6 +12,7 @@
     </div>
 
   @elseif(item.type == 'infoPriceLimited')
+  {{-- Tarif et y'a des places  --}}
     <div class="flex justify-between gap-12 items-center pl-2 ">
       <p class=" font-semibold  text-gray-700 mb-1">
         {{ i18n.t('messages.cart_price') }}:</span> {{item.regularPrice}}€
@@ -19,6 +21,7 @@
     </div>
 
   @elseif(item.type == 'freeNotLimited')
+  {{-- Categorie gratuite et y'a pas de places  --}}
     <div class="flex justify-between gap-12 items-center pl-2 ">
       <p class=" font-semibold  text-gray-700 mb-1">
         {{ i18n.t('messages.cart_free') }}
@@ -26,6 +29,7 @@
     </div>
 
   @elseif(item.type == 'freeLimited')
+  {{-- Categorie gratuite avec des places  --}}
     <div class="flex justify-between gap-12 items-center pl-2 ">
       <p class=" font-semibold  text-gray-700 mb-1">
         {{ i18n.t('messages.cart_free') }}
@@ -42,6 +46,7 @@
     </div>
 
   @elseif(item.type == 'lastMinuteLimited')
+  {{-- Prix discount avec des places  --}}
     <p class="font-light pl-2" >{{ i18n.t('messages.cart_oldPrice') }}  <span class="line-through">{{item.regularPrice}}€</span></p>  
     @let (percentage=(((item.regularPrice - item.discountedPrice) / item.regularPrice) * 100))
     @if(percentage > 0)
@@ -65,6 +70,7 @@
     </div>
 
   @elseif(item.type == 'lastMinuteNotLimited')
+  {{-- Prix discount est rempli et y'a pas de places  --}}
     <p class="font-light pl-2" >{{ i18n.t('messages.cart_oldPrice') }}  <span class="line-through">{{item.regularPrice}}€</span></p>  
     @let (percentage=(((item.regularPrice - item.discountedPrice) / item.regularPrice) * 100))
     @if(percentage > 0)
@@ -87,6 +93,7 @@
     </div>
 
   @elseif(item.type == 'lastMinuteFreeNotLimited')
+  {{-- Devient gratuit et pas de places  --}}
     <p class="font-light pl-2" >{{ i18n.t('messages.cart_oldPrice') }}  <span class="line-through">{{item.regularPrice}}€</span></p>  
     <div class="flex justify-between gap-12 items-center pl-2 ">
       <p class=" font-semibold  text-gray-700 mb-1">
@@ -95,6 +102,7 @@
     </div>
 
   @elseif(item.type == 'lastMinuteFreeLimited')
+  {{-- Devient gratuit avec des places  --}}
     <p class="font-light pl-2" >{{ i18n.t('messages.cart_oldPrice') }}  <span class="line-through">{{item.regularPrice}}€</span></p>  
     <div class="flex justify-between gap-12 items-center pl-2 ">
       <p class=" font-semibold  text-gray-700 mb-1">

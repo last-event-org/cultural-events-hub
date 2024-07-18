@@ -194,7 +194,9 @@
             </div> 
             <div class="flex flex-col items-center w-full lg:w-1/2 px-4 sm:mb-4 lg:mr-8 lg:mb-8 lg:mt-4">          
               @each(item in event.prices) 
-                @!events.addBasket({item, userOrderLineQty: userOrderLines ? userOrderLines[item.id] ?? 0 : 0})
+
+                @!events.addBasket({item, isPast, userOrderLineQty: userOrderLines ? userOrderLines[item.id] ?? 0 : 0})
+
               @end
             </div>
           </section>

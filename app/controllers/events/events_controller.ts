@@ -704,6 +704,7 @@ export default class EventsController {
 
     let isUserFavourite = false
     let isInUserWishlist = false
+    let isPast = false
     let linkedEvents
     let orderLines
     let userOrderLines: any = {}
@@ -721,8 +722,10 @@ export default class EventsController {
         .preload('vendor')
         .first()
 
-      // If the User is authenticated
-      if (event) {
+        
+        // If the User is authenticated
+        if (event) {
+        isPast = event.eventEnd && event.eventEnd.toMillis() < Date.now()
         const user = auth.user
         if (user) {
           // we check if the Vendor is already on user favourites
@@ -791,6 +794,7 @@ export default class EventsController {
           isUserFavourite: isUserFavourite,
           isInUserWishlist: isInUserWishlist,
           userOrderLines: Object.values(userOrderLines).length === 0 ? null : userOrderLines,
+          isPast: isPast,
         })
       }
     } catch (error) {

@@ -37,7 +37,7 @@
            
             <div class="flex flex-col mb-3">
               <label for="title" class="block text-slate-600">{{ i18n.t('messages.event_title') }}</label>
-              <input type="text" id="title" name="title" class=" mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
+              <input required type="text" id="title" name="title" class=" mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('title') || '' }}">
               @inputError('title')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
               @end
@@ -45,7 +45,7 @@
 
             <div class="flex flex-col mb-3">
               <label for="subtitle" class="block text-slate-600">{{ i18n.t('messages.event_subtitle') }}</label>
-              <input type="text" id="subtitle" name="subtitle" class=" mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
+              <input required type="text" id="subtitle" name="subtitle" class=" mt-1 block w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('subtitle') || '' }}">
               @inputError('subtitle')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
               @end
@@ -53,7 +53,7 @@
 
             <div class="flex flex-col mb-3">
               <label for="description" class="block text-slate-600">{{ i18n.t('messages.event_desc') }}</label>
-              <textarea id="description" name="description" class=" mt-1 block w-full h-[131px] px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
+              <textarea required id="description" name="description" class=" mt-1 block w-full h-[131px] px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm">{{old('description') || '' }}</textarea>
               @inputError('description')
                 <div style="color: red;">{{ $messages.join(', ') }}</div>
               @end
@@ -74,7 +74,7 @@
               <!-- Location fields -->
               <div class="flex flex-col mb-3">
                 <label for="name" class="block text-slate-600">{{ i18n.t('messages.event_locationName') }}</label>
-                <input type="text" id="name" name="name" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
+                <input required type="text" id="name" name="name" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('name') || '' }}">
                 @inputError('name')
                   <div style="color: red;">{{ $messages.join(', ') }}</div>
                 @end
@@ -84,14 +84,14 @@
               <div class="flex w-full mb-3 gap-2">
                 <div class="flex flex-col w-5/6">
                   <label for="street" class="block text-slate-600">{{ i18n.t('messages.event_locationStreet') }}</label>
-                  <input type="text" id="street" name="street" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
+                  <input required type="text" id="street" name="street" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('street') || '' }}">
                   @inputError('street')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                   @end
                 </div>
                 <div class="flex flex-col w-1/6">
                   <label for="number" class="block text-slate-600">{{ i18n.t('messages.event_locationStreetNb') }}</label>
-                  <input type="text" id="number" name="number" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
+                  <input required type="text" id="number" name="number" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('number') || '' }}">
                   @inputError('number')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                   @end
@@ -101,21 +101,21 @@
               <div class="flex mb-3 gap-2">
                 <div class="flex flex-col w-1/6">
                   <label for="zip_code" class="block text-slate-600">{{ i18n.t('messages.event_locationZip') }}</label>
-                  <input type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
+                  <input required type="text" id="zip_code" name="zip_code" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('zip_code') || '' }}">
                   @inputError('zip_code')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                   @end
                 </div>
                 <div class="flex flex-col w-3/6">
                   <label for="city" class="block text-slate-600">{{ i18n.t('messages.event_locationCity') }}</label>
-                  <input type="text" id="city" name="city" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
+                  <input required type="text" id="city" name="city" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('city') || '' }}">
                   @inputError('city')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                   @end
                 </div>
                 <div class="flex flex-col w-2/6">
                   <label for="country" class="block text-slate-600">{{ i18n.t('messages.event_locationCountry') }}</label>
-                  <input type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
+                  <input required type="text" id="country" name="country" value="Belgique" class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 sm:text-sm" value="{{old('country') || '' }}">
                   @inputError('country')
                     <div style="color: red;">{{ $messages.join(', ') }}</div>
                   @end
@@ -127,11 +127,11 @@
                 <input type="hidden" name="timezone" id="timezone" value="">
                 <div class="flex flex-col w-1/2">
                   <label for="event_start" class="block text-slate-600">{{ i18n.t('messages.event_start') }}</label>
-                  <input type="datetime-local" id="event_start" name="event_start" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
+                  <input required type="datetime-local" id="event_start" name="event_start" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
                 </div>
                 <div class="flex flex-col w-1/2">
                   <label for="event_end" class="block text-slate-600">{{ i18n.t('messages.event_end') }}</label>
-                  <input type="datetime-local" id="event_end" name="event_end" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
+                  <input required type="datetime-local" id="event_end" name="event_end" class="mt-1 block w-full px-0 sm:px-2 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-700 text-xs sm:text-sm" value="">
                 </div>
               </div>
               @flashMessage('date')
@@ -206,7 +206,7 @@
                 {{ flashMessages.get('errorMissingCategType') }}
               </h2>
             </div>
-          @endif      
+          @endif
         </section>
 
         <!-- Indicators -->

@@ -35,6 +35,9 @@ export default class Event extends BaseModel {
   @column()
   declare youtubeLink: string
 
+  @column()
+  declare isFree: boolean
+
   @column.dateTime()
   declare eventStart: DateTime
 

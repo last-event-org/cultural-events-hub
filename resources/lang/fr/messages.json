@@ -86,6 +86,7 @@
   "cart_qty": "Quantité",
   "cart_price": "Prix",
   "cart_total": "Total",
+  "cart_free": "Gratuit",
   "cart_emptyCart": "Vider mon panier",
   "cart_validateCart": "Valider mon panier",
   "cart_oldPrice": "Ancien prix",

@@ -86,6 +86,7 @@
   "cart_qty": "Quantity",
   "cart_price": "Price",
   "cart_total": "Total",
+  "cart_free": "Free",
   "cart_emptyCart": "Empty my cart",
   "cart_validateCart": "Validate my cart",
   "cart_oldPrice": "Old price",

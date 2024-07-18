@@ -149,7 +149,6 @@ export default class ListEvents {
         `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&country=belgium&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
-      console.log(datas)
       return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
     } catch (e) {
       console.log('ERROR')

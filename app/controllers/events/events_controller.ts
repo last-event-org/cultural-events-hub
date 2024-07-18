@@ -19,7 +19,6 @@ import { createAddressValidator } from '#validators/address'
 import { createMediaValidator } from '#validators/media'
 import { queryValidator } from '#validators/query'
 import { createPriceValidator } from '#validators/create_price'
-
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 
@@ -153,8 +152,9 @@ export default class EventsController {
         return response.redirect().back()
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)
-      if (!(await this.createEventPrices(request, session, response, i18n, event)))
-        return response.redirect().back()
+      if (!event.isFree) {
+        if (!(await this.createEventPrices(request, session, response, i18n, event))) return response.redirect().back()
+      }
       await this.uploadEventMedia(request, event)
 
       return response.redirect().toRoute('events.show', { id: event.id })
@@ -300,18 +300,17 @@ export default class EventsController {
           .preload('categoryTypes', (categoryTypesQuery) => {
             categoryTypesQuery.preload('category')
           })
-          .where((event) => {
+          .where(event => {
             event
               .whereILike('title', `%${word}%`)
-              .orWhereILike('subtitle', `%${word}%`)
-              .orWhereILike('description', `%${word}%`)
+            .orWhereILike('subtitle', `%${word}%`)
+            .orWhereILike('description', `%${word}%`)
           })
           .orWhereHas('vendor', (vendor) => {
-            vendor.whereILike('companyName', `%${word}%`)
+            vendor.whereILike('companyName', `%${word}%`);
           })
           .orWhereHas('location', (vendor) => {
-            vendor
-              .whereILike('name', `%${word}%`)
+            vendor.whereILike('name', `%${word}%`)
               .orWhereILike('street', `%${word}%`)
               .orWhereILike('city', `%${word}%`)
           })
@@ -388,6 +387,7 @@ export default class EventsController {
     } else {
       event.youtubeLink = ''
     }
+    event.isFree = payload.is_free ? payload.is_free : false
 
     return await event.save()
   }
@@ -421,6 +421,25 @@ export default class EventsController {
     }
   }
 
+  async setPriceType(isFreeCategory: boolean, requestPriceData: any) {
+    if (requestPriceData) {
+
+      if (isFreeCategory) {
+        if (requestPriceData.available_qty == null) return 'freeNotLimited'
+        else if (requestPriceData.available_qty != null) return 'freeLimited'
+
+      } else if (!isFreeCategory) {
+        if (!requestPriceData.become_free && requestPriceData.regular_price != null && requestPriceData.available_qty != null && requestPriceData.discounted_price == null) return 'infoPriceLimited'
+        if (!requestPriceData.become_free && requestPriceData.regular_price != null && requestPriceData.available_qty == null && requestPriceData.discounted_price == null) return 'infoPrice'
+        else if (!requestPriceData.become_free && requestPriceData.discounted_price != null && requestPriceData.available_qty == null) return 'lastMinuteNotLimited'
+        else if (!requestPriceData.become_free && requestPriceData.discounted_price != null && requestPriceData.available_qty != null) return 'lastMinuteLimited'
+        else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty != null) return 'lastMinuteFreeLimited'
+        else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty == null) return 'lastMinuteFreeNotLimited'
+      }
+    }
+    return ''
+  }
+
   async createEventPrices(
     request: HttpContext['request'],
     session: HttpContext['session'],
@@ -429,30 +448,25 @@ export default class EventsController {
     event: Event
   ) {
     const bodyPrices = request.body().prices
-    const values = Object.values(bodyPrices[0])
-    const firstElmIsNotNull = values.some((element) => element !== null)
-    try {
-      await createPriceValidator.validate(bodyPrices[0])
-    } catch (error) {
-      let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. '
-      error.messages.forEach((msg: any) => {
-        errorMsg += msg.message
-      })
-      session.flash('errorRequiredPriceFields', errorMsg)
-      return false
-    }
 
-    if (firstElmIsNotNull) {
+    if (bodyPrices) {
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
+
         try {
-          const payload = await createPriceValidator.validate(priceData)
+          let freeCateg = false
+          if (priceData.is_free_category == 'on' || priceData.is_free_category) {
+            freeCateg = true
+          }
+          const payload = await createPriceValidator(freeCateg).validate(priceData)
 
           if (payload) {
-            const price = new Price()
+            const price = new Price
+            price.type = await this.setPriceType(freeCateg, priceData)
+
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
-            if (payload.discounted_price) price.discountedPrice = payload.discounted_price
+            if (payload.discounted_price) price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
 
             await price.save()
@@ -469,6 +483,7 @@ export default class EventsController {
       })
       return true
     } else {
+      // TODO this error message is not displayed when no prices are entered (payload empty)
       const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
       session.flash('errorMissingPrices', errorMsg)
     }
@@ -740,6 +755,7 @@ export default class EventsController {
           })
           .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
           .limit(5)
+
       }
 
       if (!event) {
@@ -888,60 +904,58 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
+    if (event.isFree) {
+      // the event become free so no prices needed anymore
+      const prices = event.prices
+      prices.forEach((price: Price) => {
+        price.delete()
+      })
+      return true
+    }
+
     const bodyPrices = request.body().prices
 
     if (bodyPrices) {
-      // we check if at least one price element (the first one) is valid
-      const priceFields = Object.values(bodyPrices[0])
-      const firstElmIsNotNull = priceFields.some((element) => element !== null)
-      try {
-        await createPriceValidator.validate(bodyPrices[0])
-      } catch (error) {
-        let errorMsg = i18n.t('messages.errorRequiredPriceFields') + '. '
-        error.messages.forEach((msg: any) => {
-          errorMsg += msg.message
-        })
-        session.flash('errorRequiredPriceFields', errorMsg)
-        return false
-      }
+      // we delete all existing prices associated with current event
+      const prices = event.prices
+      prices.forEach((price: Price) => {
+        price.delete()
+      })
 
-      if (firstElmIsNotNull) {
-        // we delete all existing prices associated with current event
-        const prices = event.prices
-        prices.forEach((price: Price) => {
-          price.delete()
-        })
+      // we process one price element at a time
+      bodyPrices.forEach(async (priceData: any) => {
 
-        // we process one price element at a time
-        bodyPrices.forEach(async (priceData: any) => {
-          try {
-            const payload = await createPriceValidator.validate(priceData)
-
-            if (payload) {
-              const price = new Price()
-              if (payload.price_description) price.description = payload.price_description
-              if (payload.regular_price) price.regularPrice = payload.regular_price
-              if (payload.discounted_price) price.discountedPrice = payload.discounted_price
-              if (payload.available_qty) price.availableQty = payload.available_qty
-
-              await price.save()
-              await price.related('event').associate(event)
-            }
-          } catch (error) {
-            let errorMsg = i18n.t('messages.errorEditEventPrices') + ' '
-            error.messages.forEach((msg: string) => {
-              errorMsg += msg
-            })
-            session.flash('errorEditEventPrices', errorMsg)
-            return false
+        try {
+          let freeCateg = false
+          if (priceData.is_free_category == 'on' || priceData.is_free_category) {
+            freeCateg = true
           }
-        })
-        return true
-      } else {
-        const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
-        session.flash('errorMissingPrices', errorMsg)
-      }
+          const payload = await createPriceValidator(freeCateg).validate(priceData)
+
+          if (payload) {
+            const price = new Price
+            price.type = await this.setPriceType(freeCateg, priceData)
+
+            if (payload.price_description) price.description = payload.price_description
+            if (payload.regular_price) price.regularPrice = payload.regular_price
+            if (payload.discounted_price) price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
+            if (payload.available_qty) price.availableQty = payload.available_qty
+
+            await price.save()
+            await price.related('event').associate(event)
+          }
+        } catch (error) {
+          let errorMsg = i18n.t('messages.errorCreatePrice') + ' '
+          error.messages.forEach((msg: string) => {
+            errorMsg += msg
+          })
+          session.flash('errorCreatePrice', errorMsg)
+          return false
+        }
+      })
+      return true
     } else {
+      // TODO this error message is not displayed when no prices are entered (payload empty)
       const errorMsg = i18n.t('messages.errorMissingPrices') + ' '
       session.flash('errorMissingPrices', errorMsg)
     }
@@ -1007,15 +1021,13 @@ export default class EventsController {
         event.youtubeLink = ''
       }
 
-      if (!(await this.updateEventAddress(request, session, i18n, event)))
-        return response.redirect().back()
-      if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
-        return response.redirect().back()
-      await this.updateEventIndicators(request, event) // Indicators are optional
-      if (!(await this.updateEventPrices(request, session, i18n, event)))
-        return response.redirect().back()
-      if (!(await this.updateEventMedia(request, session, i18n, event)))
-        return response.redirect().back()
+      event.isFree = payload.is_free ? payload.is_free : false
+
+      if (!(await this.updateEventAddress(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventCategoryTypes(request, session, i18n, event))) return response.redirect().back()
+      await this.updateEventIndicators(request, event)  // Indicators are optional
+      if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventMedia(request, session, i18n, event))) return response.redirect().back()
 
       await event.save()
     }

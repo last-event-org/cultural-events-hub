@@ -10,7 +10,16 @@ export default class extends BaseSchema {
       table.float('regular_price')
       table.float('discounted_price')
       table.integer('available_qty')
-      // table.integer('event_id').unsigned().references('events.id').onDelete('CASCADE')
+      table.enum('role_name', [
+        'freeNotLimited', 
+        'freeLimited', 
+        'infoPrice',
+        'infoPriceLimited',
+        'lastMinuteNotLimited',
+        'lastMinuteLimited',
+        'lastMinuteFreeLimited',
+        'lastMinuteFreeNotLimited',
+      ])
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

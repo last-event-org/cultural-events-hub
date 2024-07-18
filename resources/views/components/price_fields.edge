@@ -28,7 +28,7 @@
       <label for="regular_price" class="flex text-slate-600">{{ i18n.t('messages.prices_tarif') }}</label>
       <input class="mt-1 block w-full px-2 py-2 border border-slate-300 rounded-md shadow-sm
           focus:ring-slate-500 focus:border-slate-700 sm:text-sm"
-        type="text" name="prices[{{ i ? i : 0 }}][regular_price]" id="regular_price" value="{{ price && price.regularPrice ? price.regularPrice : '' }}" placeholder="0.00">
+        type="text" name="prices[{{ i ? i : 0 }}][regular_price]" value="{{ price && price.regularPrice ? price.regularPrice : '' }}" placeholder="0.00">
         @inputError('prices.0.regular_price')
           <div style="color: red;">{{ $messages.join(', ') }}</div>
         @end

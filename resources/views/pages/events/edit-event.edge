@@ -369,9 +369,21 @@
           </div>
         @endif
         </section>
-      </div>  
+      </div>
+
+      <div class="flex w-full p-5 items-center bg-orange-50 rounded-lg">
+        <div class="gap-4 flex">
+          <label for="is_free" class="flex text-gray-600">Événement Totalement Gratuit</label>
+          @if(event.isFree)
+            <input checked onclick="toggleEditDisplayPrices()" type="checkbox" id="is_free" name="is_free" class="rounded-md focus:ring-slate-500 sm:text-sm">
+          @else
+            <input unchecked onclick="toggleEditDisplayPrices()" type="checkbox" id="is_free" name="is_free" class="rounded-md focus:ring-slate-500 sm:text-sm">
+          @end
+        </div>
+      </div>
+
 {{-- Prices  --}}
-    <section class="bg-indigo-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl lg:w-[800px] xl:w-[1100px]">
+    <section id="prices-section-edit" class="prices-section bg-indigo-50 text-slate-600 flex flex-col items-center sm:border sm:shadow rounded-3xl lg:w-[800px] xl:w-[1100px]">
       
         <h2 class="mx-auto relative z-10 font-bold text-black text-xl my-4 text-center ">
           {{ i18n.t('messages.event_prix') }}

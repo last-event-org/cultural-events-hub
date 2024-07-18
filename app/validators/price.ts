@@ -1,6 +1,5 @@
 import vine from '@vinejs/vine'
 
-
 export const createPricesValidator = vine.compile(
   vine.object({
     prices: vine.array(
@@ -20,7 +19,7 @@ export const createPricesValidator = vine.compile(
           .number()
           .withoutDecimals()
           .positive()
-          .nullable(),
+          .nullable()
       })
     )
   })

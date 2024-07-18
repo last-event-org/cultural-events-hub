@@ -153,7 +153,8 @@ export default class EventsController {
       await this.attachIndicators(request, event)
       await this.createEventAddress(request, event)
       if (!event.isFree) {
-        if (!(await this.createEventPrices(request, session, response, i18n, event))) return response.redirect().back()
+        if (!(await this.createEventPrices(request, session, response, i18n, event)))
+          return response.redirect().back()
       }
       await this.uploadEventMedia(request, event)
 
@@ -300,17 +301,18 @@ export default class EventsController {
           .preload('categoryTypes', (categoryTypesQuery) => {
             categoryTypesQuery.preload('category')
           })
-          .where(event => {
+          .where((event) => {
             event
               .whereILike('title', `%${word}%`)
-            .orWhereILike('subtitle', `%${word}%`)
-            .orWhereILike('description', `%${word}%`)
+              .orWhereILike('subtitle', `%${word}%`)
+              .orWhereILike('description', `%${word}%`)
           })
           .orWhereHas('vendor', (vendor) => {
-            vendor.whereILike('companyName', `%${word}%`);
+            vendor.whereILike('companyName', `%${word}%`)
           })
           .orWhereHas('location', (vendor) => {
-            vendor.whereILike('name', `%${word}%`)
+            vendor
+              .whereILike('name', `%${word}%`)
               .orWhereILike('street', `%${word}%`)
               .orWhereILike('city', `%${word}%`)
           })
@@ -423,18 +425,40 @@ export default class EventsController {
 
   async setPriceType(isFreeCategory: boolean, requestPriceData: any) {
     if (requestPriceData) {
-
       if (isFreeCategory) {
         if (requestPriceData.available_qty == null) return 'freeNotLimited'
         else if (requestPriceData.available_qty != null) return 'freeLimited'
-
       } else if (!isFreeCategory) {
-        if (!requestPriceData.become_free && requestPriceData.regular_price != null && requestPriceData.available_qty != null && requestPriceData.discounted_price == null) return 'infoPriceLimited'
-        if (!requestPriceData.become_free && requestPriceData.regular_price != null && requestPriceData.available_qty == null && requestPriceData.discounted_price == null) return 'infoPrice'
-        else if (!requestPriceData.become_free && requestPriceData.discounted_price != null && requestPriceData.available_qty == null) return 'lastMinuteNotLimited'
-        else if (!requestPriceData.become_free && requestPriceData.discounted_price != null && requestPriceData.available_qty != null) return 'lastMinuteLimited'
-        else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty != null) return 'lastMinuteFreeLimited'
-        else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty == null) return 'lastMinuteFreeNotLimited'
+        if (
+          !requestPriceData.become_free &&
+          requestPriceData.regular_price != null &&
+          requestPriceData.available_qty != null &&
+          requestPriceData.discounted_price == null
+        )
+          return 'infoPriceLimited'
+        if (
+          !requestPriceData.become_free &&
+          requestPriceData.regular_price != null &&
+          requestPriceData.available_qty == null &&
+          requestPriceData.discounted_price == null
+        )
+          return 'infoPrice'
+        else if (
+          !requestPriceData.become_free &&
+          requestPriceData.discounted_price != null &&
+          requestPriceData.available_qty == null
+        )
+          return 'lastMinuteNotLimited'
+        else if (
+          !requestPriceData.become_free &&
+          requestPriceData.discounted_price != null &&
+          requestPriceData.available_qty != null
+        )
+          return 'lastMinuteLimited'
+        else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty != null)
+          return 'lastMinuteFreeLimited'
+        else if (requestPriceData.become_free == 'on' && requestPriceData.available_qty == null)
+          return 'lastMinuteFreeNotLimited'
       }
     }
     return ''
@@ -452,7 +476,6 @@ export default class EventsController {
     if (bodyPrices) {
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
-
         try {
           let freeCateg = false
           if (priceData.is_free_category == 'on' || priceData.is_free_category) {
@@ -461,12 +484,13 @@ export default class EventsController {
           const payload = await createPriceValidator(freeCateg).validate(priceData)
 
           if (payload) {
-            const price = new Price
+            const price = new Price()
             price.type = await this.setPriceType(freeCateg, priceData)
 
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
-            if (payload.discounted_price) price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
+            if (payload.discounted_price)
+              price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
 
             await price.save()
@@ -683,7 +707,7 @@ export default class EventsController {
     let isPast = false
     let linkedEvents
     let orderLines
-    let userOrderLines: any
+    let userOrderLines: any = {}
 
     try {
       const event = await Event.query()
@@ -758,7 +782,6 @@ export default class EventsController {
           })
           .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
           .limit(5)
-
       }
 
       if (!event) {
@@ -928,7 +951,6 @@ export default class EventsController {
 
       // we process one price element at a time
       bodyPrices.forEach(async (priceData: any) => {
-
         try {
           let freeCateg = false
           if (priceData.is_free_category == 'on' || priceData.is_free_category) {
@@ -937,12 +959,13 @@ export default class EventsController {
           const payload = await createPriceValidator(freeCateg).validate(priceData)
 
           if (payload) {
-            const price = new Price
+            const price = new Price()
             price.type = await this.setPriceType(freeCateg, priceData)
 
             if (payload.price_description) price.description = payload.price_description
             if (payload.regular_price) price.regularPrice = payload.regular_price
-            if (payload.discounted_price) price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
+            if (payload.discounted_price)
+              price.discountedPrice = priceData.become_free == 'on' ? 0 : payload.discounted_price
             if (payload.available_qty) price.availableQty = payload.available_qty
 
             await price.save()
@@ -1027,11 +1050,15 @@ export default class EventsController {
 
       event.isFree = payload.is_free ? payload.is_free : false
 
-      if (!(await this.updateEventAddress(request, session, i18n, event))) return response.redirect().back()
-      if (!(await this.updateEventCategoryTypes(request, session, i18n, event))) return response.redirect().back()
-      await this.updateEventIndicators(request, event)  // Indicators are optional
-      if (!(await this.updateEventPrices(request, session, i18n, event))) return response.redirect().back()
-      if (!(await this.updateEventMedia(request, session, i18n, event))) return response.redirect().back()
+      if (!(await this.updateEventAddress(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventCategoryTypes(request, session, i18n, event)))
+        return response.redirect().back()
+      await this.updateEventIndicators(request, event) // Indicators are optional
+      if (!(await this.updateEventPrices(request, session, i18n, event)))
+        return response.redirect().back()
+      if (!(await this.updateEventMedia(request, session, i18n, event)))
+        return response.redirect().back()
 
       await event.save()
     }

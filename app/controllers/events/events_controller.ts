@@ -29,7 +29,7 @@ export default class EventsController {
    */
   async home({ view, auth, i18n }: HttpContext) {
     // await auth.check()
-    const categories = await Category.query().select('name', 'slug', 'id')
+    const categories = await Category.query().select('name', 'slug', 'id').orderBy('id', 'asc')
 
     const dayBegin = DateTime.now().toSQL()
     const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
@@ -67,7 +67,7 @@ export default class EventsController {
   async index({ view, i18n }: HttpContext) {
     // get all events up to now
 
-    const categories = await Category.all()
+    const categories = await Category.query().select('name', 'slug', 'id').orderBy('id', 'asc')
 
     const events = await Event.query()
       .where('event_start', '>=', new Date().toISOString())
@@ -96,7 +96,7 @@ export default class EventsController {
   // http://localhost:3333/events/?location=liege&category=5&sub-category=25&begin=25-12-2024&end=31-12-2024&indicators=5
 
   async tickets({ view, i18n }: HttpContext) {
-    const categories = await Category.all()
+    const categories = await Category.query().select('name', 'slug', 'id').orderBy('id', 'asc')
     // get all events with tickets up to now
     const events = await Event.query()
       .andWhere('event_start', '>=', new Date().toISOString())

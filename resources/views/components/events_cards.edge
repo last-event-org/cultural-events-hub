@@ -20,6 +20,10 @@
     @let(showTickets = false)
     @let(maxPercentage = 0)
 
+    @if(event.prices.length === 0)
+      @assign(showGratis = false)
+    @endif
+
     @each(item in event.prices)
       @if(item.type === 'infoPriceLimited' || item.type === 'freeLimited' || item.type === 'lastMinuteLimited' || item.type === 'lastMinuteFreeLimited')
 

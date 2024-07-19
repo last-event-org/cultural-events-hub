@@ -46,18 +46,18 @@
           <div class="flex flex-col lg:flex-row w-full">
             <div class="lg:w-1/2 relative " id="carousel">
 
-              <img id="carouselImage" class="sm:p-4 h-auto max-h-[800px] w-full object-cover sm:rounded-3xl"
-                    src="{{event.media[0]?.path ?? '/images/dummies/No_image.png'}}" 
-                    alt="{{event.media[0]?.altName ?? 'No picture available'}}"
-                    onerror="this.onerror=null; this.src='/images/dummies/No_image.png';"
-                    data-event-media="{{event.media.map(m => `${m.path}::${m.altName}`).join('||')}}"> 
+              <img id="carouselImage" class="sm:p-4 h-auto max-h-[800px] lg:max-h-[600px] w-full object-cover sm:rounded-3xl cursor-pointer"
+                src="{{event.media[0]?.path ?? '/images/dummies/No_image.png'}}" 
+                alt="{{event.media[0]?.altName ?? 'No picture available'}}"
+                onerror="this.onerror=null; this.src='/images/dummies/No_image.png';"
+                data-event-media="{{event.media.map(m => `${m.path}::${m.altName}`).join('||')}}"> 
 
-              <button id="prevButton" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white font-bold py-1 px-2.5 rounded-full z-10">
-                &lt;
+              <button id="prevButton" class="absolute left-2 top-1/2 transform -translate-y-1/2 h-16 w-16 p-3 z-10">
+                <img src="/svg/previous_btn.svg" alt="<">
               </button>
               
-              <button id="nextButton" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white font-bold py-1 px-2.5 rounded-full z-10">
-                &gt;
+              <button id="nextButton" class="absolute right-2 top-1/2 transform -translate-y-1/2 h-16 w-16 p-3 z-10">
+                <img src="/svg/next_btn.svg" alt=">">
               </button>      
                     
                     
@@ -242,12 +242,21 @@
         
         <div id="error-notification" class="hidden">
           @!notifications.error({message: i18n.t('messages.cart_itemDeleted')})
-        </div>     
-        {{-- @!component('components/notification_added_to_basket', {message: {{i18n.t('messages.cart_itemAdded')}}}) --}}
-                  
+        </div>                      
       </article>     
     </div> 
   </main>
+
+  <div id="imageModal" class="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50 hidden overflow-hidden transition-opacity duration-300 ease-in-out">
+    <div class="w-full h-full p-4 flex items-center justify-center">
+      <img id="modalImage" src="" alt="Full screen image" class="max-w-full max-h-[calc(100vh-2rem)] w-auto object-contain">
+      <button id="closeModal" class="absolute top-4 right-4 text-white text-4xl">&times;</button>
+    </div>
+  </div>
+
+  <div class="loading-spinner hidden">
+    <div class="spinner"></div>
+  </div>
 
 
   @include("pages/partials/footer")
@@ -266,44 +275,6 @@
     window.name = "{{ event.title }}";
   </script>
   <script src="/resources/js/fade_animations.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const image = document.getElementById('carouselImage');
-      const prevButton = document.getElementById('prevButton');
-      const nextButton = document.getElementById('nextButton');
-      const mediaString = image.getAttribute('data-event-media');
-      const media = mediaString ? mediaString.split('||').map(item => {
-        const [path, altName] = item.split('::');
-        return { path, altName };
-      }) : [];
-      let currentIndex = 0;
-    
-      function updateImage() {
-        if (media[currentIndex]) {
-          image.src = media[currentIndex].path || '/images/dummies/No_image.png';
-          image.alt = media[currentIndex].altName || 'Event image';
-        } else {
-          image.src = '/images/dummies/No_image.png';
-          image.alt = 'No picture available';
-        }
-      }
-    
-      nextButton.onclick = function() {
-        currentIndex = (currentIndex + 1) % media.length;
-        updateImage();
-      };
-    
-      prevButton.onclick = function() {
-        currentIndex = (currentIndex - 1 + media.length) % media.length;
-        updateImage();
-      };
-    
-      if (media.length <= 1) {
-        prevButton.style.display = 'none';
-        nextButton.style.display = 'none';
-      }
-    });
-    </script>
+  <script src="/resources/js/carousel.js" defer></script>
 </body>
 </html>

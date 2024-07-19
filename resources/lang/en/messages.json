@@ -1,6 +1,15 @@
 {
   "website_name": "Next Event",
 
+  "categories": {
+    "concerts": "Concerts",
+    "theatre_spectacles": "Spectacles",
+    "soirees": "Parties",
+    "expos": "Exhibitions",
+    "salons_foires": "Fairs",
+    "sports": "Sports"
+  },
+
   "header_add_event": "Add an event",
   "header_login": "Log in",
   "header_signup": "Sign up",

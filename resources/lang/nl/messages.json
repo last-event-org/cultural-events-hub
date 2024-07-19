@@ -341,7 +341,7 @@
   "form_placeholder_email": "jane.doe@email.com",
   "form_placeholder_password": "Minimaal 8 tekens",
   "form_placeholder_price": "Bijv: Volwassene, kind, senior,...",
-  "form_placeholder_textarea": "Uw bericht ...",
+  "form_placeholder_textarea": "Uw bericht ... (min. 50 tekens)",
 
   "intro_banner1": "Op zoek naar een origineel uitje?",
   "intro_banner2": "Ontdek snel wat er bij u in de buurt gebeurt.",

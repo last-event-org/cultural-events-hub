@@ -343,7 +343,7 @@
   "form_placeholder_email": "jane.doe@email.com",
   "form_placeholder_password": "At least 8 characters",
   "form_placeholder_price": "Ex: Adult, kid, senior,...",
-  "form_placeholder_textarea": "Your message ...",
+  "form_placeholder_textarea": "Your message ... (min. 50 chars.)",
 
   "intro_banner1": "Looking for an original outing ?",
   "intro_banner2": "Quickly find out what's happening near you.",

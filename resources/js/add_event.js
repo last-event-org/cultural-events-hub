@@ -32,7 +32,7 @@ const maxElements = 5;
 
 function addPriceFields(eventPrices) {
   const totalPrices = eventPrices + priceElementCount
-  console.log('total: ', totalPrices);
+  
   if (totalPrices < maxElements) {
     let template = document.getElementById('priceFieldsTemplate')
     let clone = document.importNode(template.content, true)

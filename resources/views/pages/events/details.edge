@@ -224,16 +224,16 @@
 
         <div id="success-notification" class="hidden">
         @!notifications.success({message: i18n.t('messages.cart_itemAdded')})
-      </div>   
+        </div>   
 
-      <div id="no-tickets-notification" class="hidden">
-        @!notifications.error({message: i18n.t('messages.cart_noPlaces')})
-      </div> 
-      
-      <div id="error-notification" class="hidden">
-        @!notifications.error({message: i18n.t('messages.cart_itemDeleted')})
-      </div>     
-      {{-- @!component('components/notification_added_to_basket', {message: {{i18n.t('messages.cart_itemAdded')}}}) --}}
+        <div id="no-tickets-notification" class="hidden">
+          @!notifications.error({message: i18n.t('messages.cart_noPlaces')})
+        </div> 
+        
+        <div id="error-notification" class="hidden">
+          @!notifications.error({message: i18n.t('messages.cart_itemDeleted')})
+        </div>     
+        {{-- @!component('components/notification_added_to_basket', {message: {{i18n.t('messages.cart_itemAdded')}}}) --}}
                   
       </article>     
     </div> 

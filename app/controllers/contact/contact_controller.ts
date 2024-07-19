@@ -41,7 +41,10 @@ export default class ContactController {
           if (error instanceof errors.E_VALIDATION_ERROR) {
             console.log(error.messages)
           }
-          const errorMsg = i18n.t('messages.errorContactFormSent')
+          let errorMsg = i18n.t('messages.errorContactFormSent') + ' '
+          error.messages.forEach((msg: string) => {
+            errorMsg += msg.message
+          })
           session.flash('error', errorMsg)
           return response.redirect().back()
         }

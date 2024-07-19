@@ -1,5 +1,17 @@
 {
-  "website_name": "Volgend Evenement",
+  "website_name": "Next Event",
+
+  "categories": {
+    "concerts": "Concerten",
+    "theatre_spectacles": "Shows",
+    "soirees": "Parties",
+    "expos": "Tentoonstellingen",
+    "salons_foires": "Beurzen",
+    "sports": "Sports"
+  },
+
+  "categoryType": {},
+
   "header_add_event": "Evenement toevoegen",
   "header_login": "Inloggen",
   "header_signup": "Registreren",
@@ -16,6 +28,7 @@
   "header_map": "Kaart",
   "header_mode": "Donkere/Lichte Modus",
   "header_language": "Taal",
+
   "register_title": "Registratieformulier",
   "register_no_account": "Nog geen account?",
   "register_signup": "Registreren",
@@ -31,6 +44,7 @@
   "register_duplicateEmail": "Dit e-mailadres is al in gebruik",
   "register_mandatoryProfileData": "Alle velden zijn verplicht",
   "register_alreadyregistered": "Als u al een account heeft",
+
   "login_connect": "log hier in",
   "login_title": "Inloggen",
   "login_email": "E-mail",
@@ -49,7 +63,9 @@
   "login_verified_no": "Uw account is niet geverifieerd, controleer alstublieft uw e-mail.",
   "login_verified_success": "Account succesvol geverifieerd, log alstublieft in.",
   "login_account_blocked": "Uw account is geblokkeerd, neem contact met ons op.",
+
   "date_from": "van",
+
   "profile_type_title": "Profieltype",
   "profile_type_welcome": "<p>Welkom { userFirstname }!</p><p>Wat wilt u doen?</p>",
   "profile_type_buy": "Tickets kopen",
@@ -96,7 +112,7 @@
   "cart_noPlaces": "Geen tickets.",
   "cart_itemDeleted": "Item is verwijderd.",
   "cart_destroyed": "Winkelwagen geleegd!",
-  "cart_itemsInCart": "tickets in your cart",
+  "cart_itemsInCart": "tickets in uw winkelwagen",
   "cart_pastEvent": "Te laat!",
 
   "dashboard_title": "Dashboard",
@@ -111,8 +127,10 @@
   "dashboard_vendor_orders_total": "Totale verkoop",
   "dashboard_vendor_orders_ticket_type": "Tickettype",
   "dashboard_vendor_orders_number": "Aantal bestellingen",
+
   "admin_title": "Beheerderspaneel",
   "admin_no_users": "Geen gebruikers gevonden!",
+
   "modale_confirmation": "Weet u zeker dat u wilt ",
   "modale_confirm": "Ja, ik weet het zeker",
   "modale_cancel": "Nee, annuleren",
@@ -122,6 +140,7 @@
   "modale_action_block_unset": "deblokkeren",
   "modale_action_admin_set": "beheerdersrechten toekennen aan",
   "modale_action_admin_unset": "beheerdersrechten intrekken van",
+
   "editProfile_title": "Profiel bewerken",
   "editProfile_firstname": "Voornaam",
   "editProfile_name": "Naam",
@@ -138,15 +157,18 @@
   "editProfile_new_password": "Nieuw wachtwoord",
   "editProfile_confirm_new_pass": "Bevestig nieuw wachtwoord",
   "editProfile_change_password_success": "Wachtwoord succesvol gewijzigd!",
+
   "favourites_title": "Favorieten",
   "favourites_my": "Mijn favorieten",
   "favourites_published": "evenementen gepubliceerd.",
   "favourites_next_events": " evenementen binnenkort.",
   "add_to_favourites": "Toevoegen aan favorieten",
   "remove_from_favourites": "Verwijderen uit favorieten",
+
   "wishlist_title": "Verlanglijst",
   "wishlist_my": "Mijn verlanglijst",
   "wishlist_noMedia": "Geen media beschikbaar",
+
   "orders_title": "Mijn bestellingen",
   "orders_noOrders": "U heeft nog geen bestellingen geplaatst.",
   "orders_order": "bestelling",
@@ -156,6 +178,7 @@
   "orders_date": "Datum",
   "orders_ticketType": "Tickettype",
   "orders_price": "Prijs",
+
   "profile_title": "Profiel",
   "profile_firstname": "Voornaam",
   "profile_lastname": "Achternaam",
@@ -164,18 +187,22 @@
   "profile_company": "Bedrijfsnaam",
   "profile_vat": "BTW-nummer",
   "profile_edit": "Profiel bewerken",
+
   "billingAddress_street": "Straat",
   "billingAddress_nb": "Huisnummer",
   "billingAddress_zip": "Postcode",
   "billingAddress_city": "Stad",
   "billingAddress_country": "Land",
+
   "delete_btn": "Verwijderen",
+
   "prices_categ": "Prijscategorie",
   "prices_tarif": "Prijs (€)",
   "prices_avl": "Beschikbare plaatsen",
   "prices_avlAt": "Plaatsen beschikbaar op",
   "prices_discount": "Kortingsprijs (€)",
   "prices_discount_pl": "Kortingsprijzen",
+
   "eventCard_more": "MEER ZIEN",
   "eventCard_tickets": "Tickets",
   "eventCard_from": "Vanaf",
@@ -184,6 +211,7 @@
   "eventCard_full": "Vol",
   "eventCard_free": "Gratis",
   "eventCard_seeDetails": "Bekijk details",
+
   "error_404": "404 - Pagina niet gevonden",
   "error_server": "Serverfout",
   "event_create_title": "Evenement aanmaken : stap ",

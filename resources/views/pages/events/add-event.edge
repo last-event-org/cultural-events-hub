@@ -184,13 +184,13 @@
                 <ul>
                   <li>
                     <input type="radio" id="category_{{ category.id }}" name="categories[]" value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" required/>
-                    <label for="category_{{ category.id }}">{{ category.name }}</label>
+                    <label for="category_{{ category.id }}">{{ i18n.t(`messages.categories.${category.slug}`) }}</label>
                     <fieldset id="categoryTypesFieldset_{{ category.id }}" name="categoryTypesFieldset" class="hidden relative left-10">
                       @each(categoryType in categoryTypes)
                         @if (categoryType.categoryId == category.id)
                           <li class="category-type category-type-{{ categoryType.categoryId }}">
                             <input type="checkbox" id="categoryType_{{ categoryType.id }}" name="categoryTypes[]" value="{{ categoryType.id }}"/>
-                            <label for="categoryType_{{ categoryType.id }}">{{ categoryType.name }}</label>
+                            <label for="categoryType_{{ categoryType.id }}">{{ i18n.t(`messages.categoryType.${categoryType.slug}`) }}</label>
                           </li>
                         @endif
                       @end
@@ -221,7 +221,7 @@
               <ul>
                 <li>
                   <input type="checkbox" id="indicator_{{ indicator.id }}" name="indicators[]" value="{{ indicator.id }}" />
-                  <label for="indicator_{{ indicator.id }}">{{ indicator.name }}</label>
+                  <label for="indicator_{{ indicator.id }}">{{ i18n.t(`messages.indicators.${indicator.slug}`) }}</label>
                 </li>
               </ul>
               @end

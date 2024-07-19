@@ -6,9 +6,10 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      
+
       table.string('name')
       table.integer('parent_category_id').unsigned().references('categories.id').onDelete('CASCADE')
+      table.string('slug')
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

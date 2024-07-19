@@ -25,9 +25,9 @@
 
     {{-- Category Types --}}
     <ul class="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 mx-auto mt-5">
-      @each(type in categoryTypes)
+      @each(categoryType in categoryTypes)
         <li class="flex items-center bg-{{category.slug}} text-slate-600 pill rounded-full border border-slate-500 px-4 pb-2 pt-1 sm:text-base text-xs hover:text-slate-800 duration-300">
-            <a class="  font-semibold" href="{{route('events.search')}}" data-category-type="{{ type.id }}">{{type.name}}</a>
+            <a class="  font-semibold" href="{{route('events.search')}}" data-category-type="{{ categoryType.id }}">{{ i18n.t(`messages.categoryType.${categoryType.slug}`) }}</a>
         </li>
       @end
   </ul>

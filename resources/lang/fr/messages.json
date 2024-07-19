@@ -317,6 +317,7 @@
   "events_free_category": "Catégorie Gratuite",
   "events_become_free_category": "Catégorie de prix devenue gratuite",
   "events_free_entrance": "Événement avec entrée libre et gratuite",
+  "events_free": "Entrée libre",
 
   "map_when": "Quand sortir?",
   "map_whenDesc": "Choisir une date",

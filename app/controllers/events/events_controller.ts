@@ -823,6 +823,11 @@ export default class EventsController {
       .preload('indicators')
       .preload('prices')
 
+    const pricesCount = await Price.query()
+      .where('event_id', '=', params.id)
+      .count('*', 'total')
+    const eventPricesCount = pricesCount[0].$extras.total
+
     return view.render('pages/events/edit-event', {
       event: event[0],
       categories: categories,
@@ -830,6 +835,7 @@ export default class EventsController {
       indicators: indicators,
       media: media,
       mediaLength: media.length,
+      eventPricesCount: eventPricesCount,
     })
   }
 

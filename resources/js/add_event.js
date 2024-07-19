@@ -28,10 +28,12 @@ function toggleEditDisplayPrices() {
 }
 
 let priceElementCount = 0;
-const maxElements = 4;
+const maxElements = 5;
 
-function addPriceFields() {
-  if (priceElementCount < maxElements) {
+function addPriceFields(eventPrices) {
+  const totalPrices = eventPrices + priceElementCount
+  console.log('total: ', totalPrices);
+  if (totalPrices < maxElements) {
     let template = document.getElementById('priceFieldsTemplate')
     let clone = document.importNode(template.content, true)
   
@@ -50,7 +52,7 @@ function addPriceFields() {
     document.getElementById('priceFieldsContainer').appendChild(clone)
     priceElementCount++
   } else {
-    alert(`You have reached the limit of ${maxElements+1} elements.`);
+    alert(`You have reached the limit of ${maxElements} elements.`);
   }
 }
 

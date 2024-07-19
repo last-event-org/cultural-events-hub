@@ -18,7 +18,7 @@
 }
 /*intro*/
 
-.bg-intro{
+.bg-intro {
   background-image: url('images/Festival-crowd.png');
 }
 
@@ -84,6 +84,7 @@ input:focus {
 }
 
 .bg-sports:hover,
+.bg-sports-selected,
 a:hover .bg-sports {
   background-color: var(--sports-hover);
 }
@@ -94,6 +95,7 @@ a:hover .bg-sports {
 }
 
 .bg-concerts:hover,
+.bg-concerts-selected,
 a:hover .bg-concerts {
   background-color: var(--concerts-hover);
 }
@@ -104,6 +106,7 @@ a:hover .bg-concerts {
 }
 
 .bg-soirees:hover,
+.bg-soirees-selected,
 a:hover .bg-soirees {
   background-color: var(--soirees-hover);
 }
@@ -114,6 +117,7 @@ a:hover .bg-soirees {
 }
 
 .bg-expos:hover,
+.bg-expos-selected,
 a:hover .bg-expos {
   background-color: var(--expos-hover);
 }
@@ -124,6 +128,7 @@ a:hover .bg-expos {
 }
 
 .bg-theatre_spectacles:hover,
+.bg-theatre_spectacles-selected,
 a:hover .bg-theatre_spectacles {
   background-color: var(--spectacles-hover);
 }
@@ -134,6 +139,7 @@ a:hover .bg-theatre_spectacles {
 }
 
 .bg-salons_foires:hover,
+.bg-salons_foires-selected,
 a:hover .bg-salons_foires {
   background-color: var(--salons-hover);
 }
@@ -254,7 +260,9 @@ summary {
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
 }
 
 .fade-in.appear {
@@ -294,7 +302,6 @@ summary {
   }
 }
 
-
 .progress {
   width: 0%;
   transition: width 0.3s ease-in-out;
@@ -302,7 +309,6 @@ summary {
 
 /* Reset Textarea*/
 textarea {
-
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;

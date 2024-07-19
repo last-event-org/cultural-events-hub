@@ -82,7 +82,7 @@ function removeQuantity(id) {
     }
   }
 
-  showErrorNotification('Ticket retiré')
+  // showErrorNotification('Ticket retiré')
 }
 
 async function removeOrderLine(id) {

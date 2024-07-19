@@ -183,7 +183,7 @@ export default class EventsController {
     let radius: any = 15
     let [dayBegin, dayEnd]: any = [0, 0]
     let dateTitle
-    let categoryTypeName: string | undefined
+    let categoryTypeName: CategoryType | null
     let category: any
     let vendorName: string | undefined | null
     let locationName: string | undefined
@@ -191,7 +191,7 @@ export default class EventsController {
     let categoryTypes: any
     let filter = true
 
-    const categories = await Category.query().select('name', 'slug', 'id')
+    const categories = await Category.query().select('name', 'slug', 'id').orderBy('id', 'asc')
 
     try {
       payload = await request.validateUsing(queryValidator)
@@ -236,14 +236,13 @@ export default class EventsController {
 
     if (qs.categoryType) {
       const categoryTypeId = await CategoryType.find(qs.categoryType)
-      categoryTypeName = categoryTypeId?.name
+      categoryTypeName = categoryTypeId
       category = await categoryTypeId
         ?.related('category')
         .query()
         .select('name', 'id', 'slug')
         .preload('categoryTypes')
         .first()
-      console.log(category)
       categoryTypes = category?.categoryTypes
       categoryTypesId = [qs.categoryType]
     } else if (qs.category) {
@@ -275,8 +274,6 @@ export default class EventsController {
       .orderBy('event_start', 'asc')
 
     const [topEvents, nextEvents, title] = await this.getFeaturedEvents(i18n)
-    console.log('\n\nFILTER\n\n')
-    console.log(filter)
 
     return view.render('pages/events/list', {
       events: events.length === 0 ? null : events,
@@ -681,12 +678,12 @@ export default class EventsController {
   async getNextEvents() {
     // get 5 events that occur today
 
-    const dayBegin = DateTime.now().toSQLDate()
-    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+    const dayBegin = DateTime.now().toSQL()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
 
     const events = await Event.query()
       .select('id', 'location_id', 'title')
-      .whereBetween('event_start', [dayBegin, dayEnd])
+      .whereBetween('event_end', [dayBegin, dayEnd])
       .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
       .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
       .orderBy('event_start', 'asc')
@@ -698,12 +695,12 @@ export default class EventsController {
   async getTopEvents() {
     // get 5 events in the next 7 days
 
-    const dayBegin = DateTime.now().toSQLDate()
-    const dayEnd = DateTime.now().plus({ days: 7 }).toSQLDate()
+    const dayBegin = DateTime.now().toSQL()
+    const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
 
     const events = await Event.query()
       .select('id', 'location_id', 'title')
-      .whereBetween('event_start', [dayBegin, dayEnd])
+      .whereBetween('event_end', [dayBegin, dayEnd])
       .preload('location', (locationQuery) => locationQuery.select('id', 'name', 'city'))
       .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
       .limit(5)
@@ -795,8 +792,12 @@ export default class EventsController {
           if (alreadyWishlisted) isInUserWishlist = true
         }
 
+        const dayBegin = DateTime.now().toSQL()
+        const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
+
         linkedEvents = await Event.query()
           .select('location_id', 'id', 'title', 'event_start', 'event_end')
+          .whereBetween('event_end', [dayBegin, dayEnd])
           .preload('location', (locationQuery) => locationQuery.select('name', 'city'))
           .preload('categoryTypes', (categoryTypesQuery) => {
             categoryTypesQuery
@@ -806,7 +807,7 @@ export default class EventsController {
               .select('id', 'category_id')
           })
           .preload('media', (mediaQuery) => mediaQuery.select('id', 'path', 'alt_name'))
-          .limit(5)
+          .limit(4)
       }
 
       if (!event) {
@@ -849,9 +850,7 @@ export default class EventsController {
       .preload('indicators')
       .preload('prices')
 
-    const pricesCount = await Price.query()
-      .where('event_id', '=', params.id)
-      .count('*', 'total')
+    const pricesCount = await Price.query().where('event_id', '=', params.id).count('*', 'total')
     const eventPricesCount = pricesCount[0].$extras.total
 
     return view.render('pages/events/edit-event', {

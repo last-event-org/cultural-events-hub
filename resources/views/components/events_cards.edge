@@ -8,7 +8,7 @@
      onerror="this.onerror=null; this.src='/images/dummies/No_image.png';"> 
     
     <div class="absolute flex bg-{{event.categoryTypes[0].category.slug}} w-6 h-6 rounded-full top-4 left-4">
-      <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">  
+      <img class="p-1" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{ i18n.t(`messages.categories.${event.categoryTypes[0].category.slug}`) }}" title="{{ i18n.t(`messages.categories.${event.categoryTypes[0].category.slug}`) }}">  
     </div>
 
     @let(minPrice = null)

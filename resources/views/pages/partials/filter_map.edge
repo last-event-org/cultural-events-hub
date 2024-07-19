@@ -1,4 +1,5 @@
 {{-- Big Search Bar --}}
+
 <form id="BSB" action="{{ route('events.search') }}" method="get">
   {{ csrfField() }}
   <section id="big-search-bar-container" class=" grid grid-cols-[34%,1%,31%,1%,22%,10%] open-sans text-xs sm:text-sm md:text-base relative sm:flex bg-white border border-slate-400/70 shadow rounded-full h-full my-4 lg:my-10 w-[98vw] lg:w-auto justify-between items-center max-w-[900px]">
@@ -75,9 +76,8 @@
     </div>
 
   </section>
-
 {{-- Categories & Category Types --}}
-  @!component('components/categories', {categories, categoryTypes, category})
+  @!component('components/categories', {categories, categoryTypes, category, categorySlugSearch: category?.slug ?? "", categoryTypeSlugSearch: categoryType?.slug ?? ''})
 
 <script src="/resources/js/filters-buttons/date_picker.js"></script>
 <script src="/resources/js/filters-buttons/map_button.js"></script>

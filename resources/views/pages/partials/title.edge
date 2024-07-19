@@ -17,8 +17,8 @@
           {{city ? i18n.t('messages.events_search_city') + " " + city : "" }}
           {{date ? i18n.t('messages.events_search_date') + " " + date : "" }}
           {{category?.name ? i18n.t('messages.events_search_category') : " " }}
-          {{category?.name ?? ''}} {{categoryType ? '-' : ""}}
-          {{categoryType ?? ''}}
+          {{category?.name ? i18n.t(`messages.categories.${category.slug}`) : ''}} {{categoryType ? '-' : ""}}
+          {{categoryType?.name ? i18n.t(`messages.categoryType.${categoryType.slug}`) : ''}}
           {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
           {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
         @end

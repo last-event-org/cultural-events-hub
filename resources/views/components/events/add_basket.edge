@@ -1,23 +1,22 @@
 <!--
-Types de prix et leurs caractéristiques :
+Price types and their characteristics:
+1.  infoPrice: Price filled but no available seats
+2.  infoPriceLimited: Price and available seats
+3.  freeNotLimited: Free category and no seats limit
+4.  freeLimited: Free category with limited seats
+5.  lastMinuteLimited: Discounted price with available seats
+6.  lastMinuteNotLimited: Discounted price is set but no available seats
+7.  lastMinuteFreeNotLimited: Becomes free with no seats limit
+8.  lastMinuteFreeLimited: Becomes free with limited seats
 
-1.  infoPrice: Tarif rempli mais pas de places
-2.  infoPriceLimited: Tarif et il y a des places 
-3.  freeNotLimited: Catégorie gratuite et pas de places 
-4.  freeLimited: Catégorie gratuite avec des places 
-5.  lastMinuteLimited: Prix discount avec des places 
-6.  lastMinuteNotLimited: Prix discount est rempli et pas de places 
-7.  lastMinuteFreeNotLimited: Devient gratuit et pas de places 
-8.  lastMinuteFreeLimited: Devient gratuit avec des places 
-
-Variables utilisées :
-- item.description: Description du tarif
-- item.id: Identifiant du tarif
-- item.regularPrice: Prix régulier
-- item.discountedPrice: Prix réduit (si applicable)
-- item.availableQty: Nombre de places disponibles
-- userOrderLineQty: Quantité dans le panier de l'utilisateur
-- isPast: Indique si l'événement est passé
+Variables used:
+- item.description: Price description
+- item.id: Price identifier
+- item.regularPrice: Regular price
+- item.discountedPrice: Discounted price (if applicable)
+- item.availableQty: Number of available seats
+- userOrderLineQty: Quantity in user's cart
+- isPast: Indicates if the event is in the past
 -->
 
 <section class="flex flex-col my-2 w-full p-4 bg-white rounded-3xl shadow text-xs sm:text-base">
@@ -28,7 +27,6 @@ Variables utilisées :
       : <span class="font-normal" data-user-price-id="{{item.id}}" data-user-qty={{userOrderLineQty}}>{{userOrderLineQty}}</span><span class="font-normal"> {{ i18n.t('messages.cart_itemsInCart') }}</span>
     </span>
     {{-- @end --}}
-    {{item.type}}
   </p>
 
   @if(item.type === 'lastMinuteLimited' || item.type === 'lastMinuteNotLimited' || item.type === 'lastMinuteFreeNotLimited' || item.type === 'lastMinuteFreeLimited')
@@ -78,5 +76,6 @@ Variables utilisées :
     @end
   @end
 </section>
+
 
 

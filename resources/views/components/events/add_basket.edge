@@ -23,9 +23,11 @@ Variables utilisées :
 <section class="flex flex-col my-2 w-full p-4 bg-white rounded-3xl shadow text-xs sm:text-base">
   <p class="font-semibold text-slate-700 bg-slate-300/70 pl-2 rounded-md mb-2">
     {{item.description}}
-    @if(userOrderLineQty > 0)
-      : <span class="font-normal" data-user-price-id="{{item.id}}" data-user-qty={{userOrderLineQty}}>{{userOrderLineQty}}</span><span class="font-normal"> places dans le panier</span>
-    @end
+    {{-- @if(userOrderLineQty > 0) --}}
+    <span data-show-cart-qty="{{item.id}}" class="{{userOrderLineQty > 0 ? '' : 'hidden'}}">
+      : <span class="font-normal" data-user-price-id="{{item.id}}" data-user-qty={{userOrderLineQty}}>{{userOrderLineQty}}</span><span class="font-normal"> {{ i18n.t('messages.cart_itemsInCart') }}</span>
+    </span>
+    {{-- @end --}}
     {{item.type}}
   </p>
 
@@ -50,23 +52,30 @@ Variables utilisées :
       @end
     </p>
     
-    @if((item.type === 'infoPriceLimited' || item.type === 'freeLimited' || item.type === 'lastMinuteLimited' || item.type === 'lastMinuteFreeLimited') && !isPast)
-      <p class="text-center text-xs text-red-800 font-bold mb-2 animate-pulse">
-        {{ i18n.t('messages.cart_avl') }} {{item.availableQty}} {{ i18n.t('messages.cart_places') }} !
-      </p>
+    @if(item.availableQty > 0)
+      @if((item.type === 'infoPriceLimited' || item.type === 'freeLimited' || item.type === 'lastMinuteLimited' || item.type === 'lastMinuteFreeLimited') && !isPast)
+        <p class="text-right text-xs text-red-800 font-bold my-2">{{ i18n.t('messages.cart_avl') }} <span data-available-qty={{item.availableQty - userOrderLineQty}} data-price-id="{{item.id}}">{{item.availableQty - userOrderLineQty}}</span> {{ i18n.t('messages.cart_places') }} ! </p>
+      @end
+    @elseif(item.availableQty === 0)
+         <p class="text-right text-xs text-red-800 font-bold my-2">{{ i18n.t('messages.cart_noPlaces') }}</p>
     @end
-  </div>
+    @if(isPast)
+      <p class="text-right text-xs text-red-800 font-bold my-2">{{ i18n.t('messages.cart_pastEvent') }}</p>
+    @end
 
-  @if(!isPast && (item.type === 'infoPriceLimited' || item.type === 'freeLimited' || item.type === 'lastMinuteLimited' || item.type === 'lastMinuteFreeLimited'))
-    <div class="flex gap-4 justify-end w-full">
-      <form action="" method="POST">
-        {{ csrfField() }}
-        <input type="hidden" name="price_id" value={{item.id}} />
-        <button onclick="showSuccessNotification('Ticket ajouté au panier')" class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
-          {{ i18n.t('messages.cart_add') }}
-        </button>
-      </form>
-    </div>
+  </div>
+  @if(item.availableQty > 0)
+    @if(!isPast && (item.type === 'infoPriceLimited' || item.type === 'freeLimited' || item.type === 'lastMinuteLimited' || item.type === 'lastMinuteFreeLimited'))
+      <div class="flex gap-4 justify-end w-full">
+        <form action="" method="POST">
+          {{ csrfField() }}
+          <input type="hidden" name="price_id" value={{item.id}} />
+          <button onclick="addItemToCart({{item.id}})" class="mt-2 text-center py-1 px-2 lg:py-2 lg:px-4 bg-indigo-700 hover:bg-indigo-500 focus:ring-1 text-sm text-white font-bold rounded-md transition duration-200" type="submit">
+            {{ i18n.t('messages.cart_add') }}
+          </button>
+        </form>
+      </div>
+    @end
   @end
 </section>
 

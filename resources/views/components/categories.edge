@@ -3,10 +3,11 @@
   <div class="overflow-x-auto pb-4 px-2"> 
     <ul>
       <div class="flex justify-between items-center gap-x-2">
-        @each((category) in categories)  
+        @each(category in categories)  
+        
           <li class="bg-white hover:bg-slate-50 flex items-center justify-between p-1.5 sm:p-2 border border-slate-400/70 text-slate-600 hover:text-slate-800 shadow rounded-full  w-[160px] 2xl:w-[180px] mx-auto duration-300">
             <a href="{{route('events.search')}}" data-category="{{ category.id }}" class="flex items-center w-[160px] 2xl:w-[180px] justify-between">
-              <p class="uppercase text-[9px] text-sm 2xl:text-base  text-center font-semibold pl-2.5 pointer-events-none">{{ category.name }}</p>
+              <p class="uppercase text-[9px] text-sm 2xl:text-base  text-center font-semibold pl-2.5 pointer-events-none">{{ i18n.t(`messages.categories.${category.slug}`) }}</p>
               <div class="rounded-full p-2 bg-{{category.slug}} duration-300 h-10 w-10 2xl:w-12 2xl:h-12 pointer-events-none">
                 <img src=/svg/categories/{{category.slug}}.svg
                 alt="category icon" title="{{category.slug}}" class="pointer-events-none">

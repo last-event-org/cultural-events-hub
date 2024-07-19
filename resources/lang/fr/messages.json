@@ -1,6 +1,15 @@
 {
   "website_name": "Next Event",
 
+  "categories": {
+    "concerts": "Concerts",
+    "theatre_spectacles": "Spectacles",
+    "soirees": "Soirées",
+    "expos": "Expositions",
+    "salons_foires": "Salons",
+    "sports": "Sports"
+  },
+
   "header_add_event": "Ajouter un événement",
   "header_login": "Se connecter",
   "header_signup": "Enregistrement",
@@ -90,7 +99,6 @@
   "cart_emptyCart": "Vider mon panier",
   "cart_validateCart": "Valider mon panier",
   "cart_oldPrice": "Ancien prix",
-  "cart_free": "Gratuit",
   "cart_new": "Nouveau",
   "cart_avl": "Il reste",
   "cart_places": "places",
@@ -103,6 +111,8 @@
   "cart_noPlaces": "Plus de places disponibles.",
   "cart_itemDeleted": "L'article a été supprimé.",
   "cart_destroyed": "Panier vidé !",
+  "cart_itemsInCart": "places dans le panier",
+  "cart_pastEvent": "Trop tard!",
 
   "dashboard_title": "Tableau de bord",
   "dashboard_vendor_events": "Vos événements publiés",
@@ -257,9 +267,9 @@
   "events_next": "Evénements à venir",
   "events_video_events": "Video YouTube",
   "events_no_events": "Malheureusement, il n'y a pas d'événements pour votre sélection.",
-  "events_free_category" : "Catégorie Gratuite",
-  "events_become_free_category" : "Catégorie de prix devenue gratuite",
-  "events_free_entrance" : "Événement avec entrée libre et gratuite",
+  "events_free_category": "Catégorie Gratuite",
+  "events_become_free_category": "Catégorie de prix devenue gratuite",
+  "events_free_entrance": "Événement avec entrée libre et gratuite",
 
   "map_when": "Quand sortir?",
   "map_whenDesc": "Choisir une date",
@@ -342,8 +352,8 @@
   "footer_terms_and_conditions": "Conditions générales",
   "footer_pricing_advertising": "Tarifs / Publicités",
 
-  "footer_events_in":"Événements à",
-  
+  "footer_events_in": "Événements à",
+
   "btn_previous": "Précédent",
   "btn_next": "Suivant"
 }

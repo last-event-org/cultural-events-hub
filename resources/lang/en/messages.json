@@ -1,6 +1,15 @@
 {
   "website_name": "Next Event",
 
+  "categories": {
+    "concerts": "Concerts",
+    "theatre_spectacles": "Spectacles",
+    "soirees": "Parties",
+    "expos": "Exhibitions",
+    "salons_foires": "Fairs",
+    "sports": "Sports"
+  },
+
   "header_add_event": "Add an event",
   "header_login": "Log in",
   "header_signup": "Sign up",
@@ -90,7 +99,6 @@
   "cart_emptyCart": "Empty my cart",
   "cart_validateCart": "Validate my cart",
   "cart_oldPrice": "Old price",
-  "cart_free": "Free",
   "cart_new": "New",
   "cart_avl": "There are",
   "cart_places": "places available",
@@ -103,6 +111,8 @@
   "cart_noPlaces": "No more places availables.",
   "cart_itemDeleted": "Item has been deleted.",
   "cart_destroyed": "Cart emptied !",
+  "cart_itemsInCart": "tickets in your cart",
+  "cart_pastEvent": "Too late!",
 
   "dashboard_title": "Dashboard",
   "dashboard_vendor_events": "Your events",
@@ -257,10 +267,10 @@
   "events_next": "Upcoming events",
   "events_video_events": "YouTube video",
   "events_no_events": "Unfortunately, there are no events for your selection.",
-  "events_free_category" : "Price category Free",
-  "events_become_free_category" : "Price category became free",
-  "events_free_entrance" : "Free entrance",
-  
+  "events_free_category": "Price category Free",
+  "events_become_free_category": "Price category became free",
+  "events_free_entrance": "Free entrance",
+
   "map_when": "When ?",
   "map_whenDesc": "Select date",
   "map_where": "Where ?",
@@ -345,5 +355,4 @@
 
   "btn_previous": "Previous",
   "btn_next": "Next"
-
 }

@@ -21,7 +21,9 @@
         </div>
       </div>
     </div>
-
+    @if(flashMessages.has('error'))
+      @!component('components/errors/flashmessage', { message: flashMessages.get('error') })
+    @end
     <form action={{ route('events.store') }} method="POST" enctype="multipart/form-data" id="multi-step-form" class="w-full lg:w-[800px] mt-10">
       {{ csrfField() }}
 
@@ -183,7 +185,7 @@
               @each(category in categories)
                 <ul>
                   <li>
-                    <input type="radio" id="category_{{ category.id }}" name="categories[]" value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" required/>
+                    <input required type="radio" id="category_{{ category.id }}" name="categories[]" value="{{ category.id }}" onchange="toggleCategoryTypes({{ category.id }})" />
                     <label for="category_{{ category.id }}">{{ i18n.t(`messages.categories.${category.slug}`) }}</label>
                     <fieldset id="categoryTypesFieldset_{{ category.id }}" name="categoryTypesFieldset" class="hidden relative left-10">
                       @each(categoryType in categoryTypes)

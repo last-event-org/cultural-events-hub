@@ -144,20 +144,34 @@ export default class EventsController {
    * Handle form submission for the create action
    */
   async store({ request, session, response, i18n, auth }: HttpContext) {
+    console.log('STORE EVENT')
     const event = await this.createEvent(request, session, i18n)
     if (event) {
       const user = auth.user
       if (user) event.vendorId = user.id
-      if (!(await this.attachCategoryTypes(request, session, i18n, event)))
+      if (!(await this.attachCategoryTypes(request, session, i18n, event))) {
+        await event.delete()
         return response.redirect().back()
-      await this.attachIndicators(request, event)
-      await this.createEventAddress(request, event)
-      if (!event.isFree) {
-        if (!(await this.createEventPrices(request, session, response, i18n, event)))
-          return response.redirect().back()
       }
-      await this.uploadEventMedia(request, event)
-
+      if (!(await this.attachIndicators(request, event))) {
+        await event.delete()
+        return response.redirect().back()
+      }
+      if (!(await this.createEventAddress(request, event))) {
+        await event.delete()
+        return response.redirect().back()
+      }
+      if (!event.isFree) {
+        if (!(await this.createEventPrices(request, session, response, i18n, event))) {
+          await event.delete()
+          return response.redirect().back()
+        }
+      }
+      if (!(await this.uploadEventMedia(request, event))) {
+        session.flash('error', 'INVALID IMAGE TYPE')
+        await event.delete()
+        return response.redirect().back()
+      }
       return response.redirect().toRoute('events.show', { id: event.id })
     }
   }
@@ -415,15 +429,20 @@ export default class EventsController {
   }
 
   async attachIndicators(request: HttpContext['request'], event: Event) {
+    console.log('ATTACH INDICATORS')
     const selectedIndicators = request.body().indicators
     if (selectedIndicators) {
       selectedIndicators.forEach(async (indicatorId: number) => {
         await event.related('indicators').attach([indicatorId])
       })
+    } else {
+      return false
     }
+    return true
   }
 
   async setPriceType(isFreeCategory: boolean, requestPriceData: any) {
+    console.log('SET PRICE TYPE')
     if (requestPriceData) {
       if (isFreeCategory) {
         if (requestPriceData.available_qty == null) return 'freeNotLimited'
@@ -471,6 +490,7 @@ export default class EventsController {
     i18n: HttpContext['i18n'],
     event: Event
   ) {
+    console.log('CREATE EVENT PRICES')
     const bodyPrices = request.body().prices
 
     if (bodyPrices) {
@@ -515,6 +535,7 @@ export default class EventsController {
   }
 
   async createEventAddress(request: HttpContext['request'], event: Event) {
+    console.log('CREATE EVENT ADDRESS')
     const addressPayload = await request.validateUsing(createAddressValidator)
     const address = new Address()
 
@@ -533,10 +554,13 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) {}
+    } catch (error) {
+      return false
+    }
 
     await address.save()
     await event.related('location').associate(address)
+    return true
   }
 
   async getCoordinatesFromCity(city: string) {
@@ -572,19 +596,25 @@ export default class EventsController {
   }
 
   async uploadEventMedia(request: HttpContext['request'], event: Event) {
-    const { images_link } = await request.validateUsing(createMediaValidator)
+    console.log('UPLOAD EVENT MEDIA')
+    try {
+      const { images_link } = await request.validateUsing(createMediaValidator)
+      for (const file of images_link) {
+        const media = new Media()
+        const uniqueFileName = `${cuid()}.${file.extname}`
+        await file.move(app.publicPath('uploads/'), {
+          name: uniqueFileName,
+        })
+        media.path = `/uploads/${uniqueFileName}`
+        media.altName = file.clientName
+        media.eventId = event.id
 
-    for (const file of images_link) {
-      const media = new Media()
-      const uniqueFileName = `${cuid()}.${file.extname}`
-      await file.move(app.publicPath('uploads/'), {
-        name: uniqueFileName,
-      })
-      media.path = `/uploads/${uniqueFileName}`
-      media.altName = file.clientName
-      media.eventId = event.id
-
-      await media.save()
+        await media.save()
+        return true
+      }
+    } catch (e) {
+      console.log(e)
+      return false
     }
   }
 
@@ -823,6 +853,11 @@ export default class EventsController {
       .preload('indicators')
       .preload('prices')
 
+    const pricesCount = await Price.query()
+      .where('event_id', '=', params.id)
+      .count('*', 'total')
+    const eventPricesCount = pricesCount[0].$extras.total
+
     return view.render('pages/events/edit-event', {
       event: event[0],
       categories: categories,
@@ -830,6 +865,7 @@ export default class EventsController {
       indicators: indicators,
       media: media,
       mediaLength: media.length,
+      eventPricesCount: eventPricesCount,
     })
   }
 

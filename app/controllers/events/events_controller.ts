@@ -192,7 +192,7 @@ export default class EventsController {
     let categoryTypes: any
     let filter = true
 
-    const categories = await Category.query().select('name', 'slug', 'id')
+    const categories = await Category.query().select('name', 'slug', 'id').orderBy('id', 'asc')
 
     try {
       payload = await request.validateUsing(queryValidator)
@@ -237,7 +237,7 @@ export default class EventsController {
 
     if (qs.categoryType) {
       const categoryTypeId = await CategoryType.find(qs.categoryType)
-      categoryTypeName = categoryTypeId?.name
+      categoryTypeName = categoryTypeId
       category = await categoryTypeId
         ?.related('category')
         .query()
@@ -853,9 +853,7 @@ export default class EventsController {
       .preload('indicators')
       .preload('prices')
 
-    const pricesCount = await Price.query()
-      .where('event_id', '=', params.id)
-      .count('*', 'total')
+    const pricesCount = await Price.query().where('event_id', '=', params.id).count('*', 'total')
     const eventPricesCount = pricesCount[0].$extras.total
 
     return view.render('pages/events/edit-event', {

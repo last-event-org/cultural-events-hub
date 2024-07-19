@@ -91,18 +91,18 @@
                     <img class="p-1.5  h-full w-full" src="/svg/categories/{{event.categoryTypes[0].category.slug}}.svg" alt="{{event.categoryTypes[0].category.slug}}" title="{{event.categoryTypes[0].category.name}}">
                   </div>  
                   <h4 class="font-semibold ">
-                    <a href="/events/search?category={{event.categoryTypes[0].category.id}}">{{event.categoryTypes[0].category.name}}</a> :
+                    <a href="/events/search?category={{event.categoryTypes[0].category.id}}">{{ i18n.t(`messages.categories.${event.categoryTypes[0].category.slug}`) }}</a> :
                     <span>
                       @each(item in event.categoryTypes)
                       <a href="/events/search?categoryType={{item.id}}">
-                          {{item.name}}</a>   
+                          {{ i18n.t(`messages.categoryType.${item.slug}`) }}</a>   
                       @end
                     </span></h4>
                 </div>
                 <div class="flex gap-2 py-2 mb-1">
                   @each (item in event.indicators)
                   <div class="bg-indigo-100 hover:bg-indigo-200 w-6 h-6 lg:w-8 lg:h-8 rounded-full shadow flex items-center justify-center "> 
-                    <img src="/svg/indicators/{{item.slug}}.svg" alt="spécial étudiant" class="p-1 lg:p-1.5 w-full h-full" title="{{item.name}}">
+                    <img src="/svg/indicators/{{item.slug}}.svg" alt="{{ i18n.t(`messages.indicators.${item.slug}`) }}" class="p-1 lg:p-1.5 w-full h-full" title="{{ i18n.t(`messages.indicators.${item.slug}`) }}">
                   </div>
                   @end
                 </div>

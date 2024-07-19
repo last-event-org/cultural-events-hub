@@ -153,10 +153,9 @@ export default class EventsController {
         await event.delete()
         return response.redirect().back()
       }
-      if (!(await this.attachIndicators(request, event))) {
-        await event.delete()
-        return response.redirect().back()
-      }
+      
+      await this.attachIndicators(request, event)
+
       if (!(await this.createEventAddress(request, event))) {
         await event.delete()
         return response.redirect().back()
@@ -435,10 +434,7 @@ export default class EventsController {
       selectedIndicators.forEach(async (indicatorId: number) => {
         await event.related('indicators').attach([indicatorId])
       })
-    } else {
-      return false
-    }
-    return true
+    } 
   }
 
   async setPriceType(isFreeCategory: boolean, requestPriceData: any) {

@@ -18,7 +18,7 @@
     @let(showTicketFrom = false)
     @let(showTickets = false)
     @let(maxPercentage = 0)
-    
+
     @each(item in event.prices)
       @if(item.type === 'infoPriceLimited' || item.type === 'freeLimited' || item.type === 'lastMinuteLimited' || item.type === 'lastMinuteFreeLimited')
         @assign(showTickets = true)
@@ -33,43 +33,45 @@
       @if(event.isFree)
         @assign(showGratis = true)
       @endif
-    
-      @if(minPrice === null || item.discountedPrice < minPrice)
+
+      
+      @if(minPrice === null || (item.discountedPrice !== null && item.discountedPrice < minPrice))
         @assign(minPrice = item.discountedPrice)
       @elseif(minPrice === null || item.regularPrice < minPrice)
         @assign(minPrice = item.regularPrice)
       @endif
-    
+
       @if(minRegularPrice === null || item.regularPrice < minRegularPrice)
         @assign(minRegularPrice = item.regularPrice)
       @endif
-    
-      @if(item.regularPrice > 0 && item.discountedPrice < item.regularPrice)
-        @let(percentage = ((item.regularPrice - item.discountedPrice) / item.regularPrice) * 100)
-        @if(percentage > maxPercentage)
-          @assign(maxPercentage = percentage)
+
+      
+      @if(item.type === 'lastMinuteLimited' || item.type === 'lastMinuteNotLimited')
+        @if(item.regularPrice > 0 && item.discountedPrice !== null && item.discountedPrice < item.regularPrice)
+          @let(percentage = ((item.regularPrice - item.discountedPrice) / item.regularPrice) * 100)
+          @if(percentage > maxPercentage)
+            @assign(maxPercentage = percentage)
+          @endif
         @endif
       @endif
-      
     @end
-      
-    {{-- @let(percentage = ((minRegularPrice - minPrice) / minRegularPrice) * 100) --}}
-    @if(showTicketFrom && percentage > 0 && percentage != 100)
+
+    @if(showTicketFrom && maxPercentage > 0 && maxPercentage != 100)
       <div class="flex mb-1 absolute top-4 right-4">
         <p class="bg-yellow-500 rounded-2xl shadow border border-yellow-400 text-slate-600 text-xs font-bold px-3 py-1 mb-1">
-          -{{ percentage.toFixed(0) }}%
+          -{{ maxPercentage.toFixed(0) }}%
         </p>
       </div>
     @endif
-    @if(showGratis) 
+    @if(showGratis)
     <div class="flex mb-1 absolute top-4 right-4">
       <p class="bg-indigo-800 rounded-2xl shadow border border-indigo-700 text-white text-xs font-bold px-3 py-1 mb-1">
         {{ i18n.t('messages.eventCard_free') }}
       </p>
     </div>
     @endif
-  </div>
 
+  </div>
   <div class="p-2">
     <div class="formated-date text-xs text-slate-400 font-bold"
      data-event-start="{{ event.eventStart }}" data-event-end="{{ event.eventEnd }}">

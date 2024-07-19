@@ -3,7 +3,7 @@
   <div class="overflow-x-auto pb-4 px-2"> 
     <ul>
       <div class="flex justify-between items-center gap-x-2">
-        @each((category) in categories)  
+        @each(category in categories)  
         
           <li class="bg-white hover:bg-slate-50 flex items-center justify-between p-1.5 sm:p-2 border border-slate-400/70 text-slate-600 hover:text-slate-800 shadow rounded-full  w-[160px] 2xl:w-[180px] mx-auto duration-300">
             <a href="{{route('events.search')}}" data-category="{{ category.id }}" class="flex items-center w-[160px] 2xl:w-[180px] justify-between">

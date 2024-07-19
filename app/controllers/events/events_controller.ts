@@ -193,6 +193,8 @@ export default class EventsController {
     let categoryTypesId: any[] = []
     let categoryTypes: any
     let filter = true
+    console.log('search')
+    console.log(qs)
 
     const categories = await Category.query().select('name', 'slug', 'id').orderBy('id', 'asc')
 

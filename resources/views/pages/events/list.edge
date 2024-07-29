@@ -58,6 +58,15 @@
 </main>
 
 @include("pages/partials/footer")
+<script>
+  console.log("latitude longitude window")
+    if({{latitude}}) {
+      window.latitude = "{{ latitude }}";
+      window.longitude = "{{ longitude }}";
+      console.log(window.latitude)
+      console.log(window.longitude)
+    }
+</script>
 <script src="/js/leaflet.js"></script>
 <script src="/js/countdown.js"></script>
 <script src="/js/map_home.js"></script>
@@ -70,15 +79,6 @@
 integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 crossorigin=""></script> --}}
 
-<script>
-  console.log("latitude longitude window")
-    if({{latitude}}) {
-      window.latitude = "{{ latitude }}";
-      window.longitude = "{{ longitude }}";
-      console.log(window.latitude)
-      console.log(window.longitude)
-    }
-</script>
 
 </body>
 </html>

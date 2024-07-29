@@ -1,3 +1,26 @@
+import './add_event'
+import './add_event_navigation'
+import './cart'
+import './categories'
+import './countdown'
+import './date_format'
+import './destroy_event'
+import './dropdown_address'
+import './fade_animations'
+import './favourites'
+import './filters-buttons/date_picker'
+import './filters-buttons/map_button'
+import './geolocation'
+import './hours_create_event'
+import './locations'
+import './map_details'
+import './map_events'
+import './map_home'
+import './modale_form'
+import './price_fields'
+import './show_password'
+import './top_events'
+
 // Navbar scroll up
 document.addEventListener('DOMContentLoaded', function () {
   let lastScrollTop = 0

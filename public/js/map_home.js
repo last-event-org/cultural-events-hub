@@ -1,4 +1,4 @@
-import { getCoordinatesFromCity } from './geolocation'
+import { getCoordinatesFromCity } from '/js/geolocation'
 
 const sliderInput = document.getElementById('slider-input')
 const sliderThumb = document.getElementById('slider-thumb')

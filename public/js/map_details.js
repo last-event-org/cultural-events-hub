@@ -7,7 +7,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map)
 
 let popup = L.popup().setContent(
-  `<a href="/events/${window.id ?? ''}">${window.title}</a><br/>${window.locationname}`
+  `<a href="/events/${window.id ?? ''}"'>${window.title}</a><br/>${window.locationname}`
 )
 let myIcon = L.icon({
   // className: `bg-${event.categoryTypes[0].category.slug} rounded-full m-2`,

@@ -59,12 +59,9 @@
 
 @include("pages/partials/footer")
 <script>
-  console.log("latitude longitude window")
     if({{latitude}}) {
       window.latitude = "{{ latitude }}";
       window.longitude = "{{ longitude }}";
-      console.log(window.latitude)
-      console.log(window.longitude)
     }
 </script>
 <script src="/js/leaflet.js"></script>

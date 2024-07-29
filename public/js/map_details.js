@@ -6,4 +6,14 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map)
 
-L.marker([window.latitude, window.longitude]).addTo(map).bindPopup(window.name).openPopup()
+let popup = L.popup().setContent(
+  `<a href="/events/${event?.id ?? ''}"'>${event.title}</a><br/>${event.location.name}`
+)
+let myIcon = L.icon({
+  // className: `bg-${event.categoryTypes[0].category.slug} rounded-full m-2`,
+  iconSize: [24, 24],
+  iconUrl: `/svg/leaflet/${event.categoryTypes[0].category.slug}.svg`,
+})
+L.marker([event.location.latitude, event.location.longitude], { icon: myIcon })
+  .addTo(map)
+  .bindPopup(popup)

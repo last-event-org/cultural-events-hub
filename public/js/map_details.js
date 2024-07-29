@@ -14,6 +14,4 @@ let myIcon = L.icon({
   iconSize: [24, 24],
   iconUrl: `/svg/leaflet/${window.slug}.svg`,
 })
-L.marker([event.location.latitude, event.location.longitude], { icon: myIcon })
-  .addTo(map)
-  .bindPopup(popup)
+L.marker([window.latitude, window.longitude], { icon: myIcon }).addTo(map).bindPopup(popup)

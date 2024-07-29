@@ -122,8 +122,8 @@ function displayPOIsWithinRadius(centerLat, centerLng, radiusKm) {
 function displayEvents(point) {}
 
 // console.log(window.city)
-export async function getCoordinatesFromCity(city) {
-  console.log('getCoordinatesFromCity')
+async function getCoordinatesFromCity(city) {
+  console.log('getCoordinatesFromCity in map_events')
   console.log(city)
   try {
     const response = await fetch(

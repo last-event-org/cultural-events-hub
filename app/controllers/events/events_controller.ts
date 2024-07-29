@@ -582,7 +582,7 @@ export default class EventsController {
   async getCoordinatesFromAddress(city: string, street: string, zip: number, number: string) {
     try {
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
       return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]

@@ -192,11 +192,11 @@
                 {{i18n.t('messages.events_free')}}
               </p>
             </div>
-            @else        
+            @else
               @each(item in event.prices) 
                 @!events.addBasket({item, isPast, userOrderLineQty: userOrderLines ? userOrderLines[item.id] ?? 0 : 0})
               @end
-            @endif  
+            @endif
           </div>
         </section>
 
@@ -249,7 +249,8 @@
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""></script>
 
-  <script src="/js/cart.js" defer></script>
+  <script src="/public/js/cart.js" defer></script>
+  <script type="module" src="/public/js/date_format.js"></script>
   <script>
     window.latitude = "{{ event.location.latitude }}";
     window.longitude = "{{ event.location.longitude }}";

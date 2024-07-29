@@ -14,8 +14,10 @@ import 'reflect-metadata'
 import { Ignitor, prettyPrintError } from '@adonisjs/core'
 
 // Load environment variables from the .env file
-const envPath = process.env.ENV_PATH || '.'
-dotenv.config({ path: path.resolve(envPath, '.env') })
+if (process.env.NODE_ENV !== 'production') {
+  const envPath = process.env.ENV_PATH || '.'
+  dotenv.config({ path: path.resolve(envPath, '.env') })
+}
 
 /**
  * URL to the application root. AdonisJS need it to resolve

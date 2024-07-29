@@ -13,7 +13,7 @@
     {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
     {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
   </title>
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/date_format.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 
@@ -63,6 +63,7 @@
 
 <script src="/resources/js/countdown.js"></script>
 <script type="module" src="/resources/js/map_home.js"></script>
+<script type="module" src="/resources/js/date_format.js"></script>
 <script src="/resources/js/fade_animations.js"></script>
 
 

@@ -245,6 +245,10 @@
   <script>
     window.latitude = "{{ event.location.latitude }}";
     window.longitude = "{{ event.location.longitude }}";
+    window.title = "{{ event.title }}";
+    window.id = "{{ event.id }}";
+    window.slug = "{{ event.event.categoryTypes[0].category.slug}}";
+    window.location = "{{ event.location.name }}";
     window.name = "{{ event.title }}";
   </script>
 

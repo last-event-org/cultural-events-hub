@@ -563,7 +563,7 @@ export default class EventsController {
   }
 
   async getCoordinatesFromCity(city: string) {
-    console.log('getCoordinatesFromCity')
+    console.log('getCoordinatesFromCity in EventsController')
     try {
       const response = await fetch(
         `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${city}&boundary.country=BE`

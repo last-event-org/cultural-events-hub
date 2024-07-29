@@ -7,12 +7,12 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map)
 
 let popup = L.popup().setContent(
-  `<a href="/events/${window.id ?? ''}">${window.title}</a><br/>${window.location}`
+  `<a href="/events/${event?.id ?? ''}"'>${event.title}</a><br/>${event.location.name}`
 )
 let myIcon = L.icon({
   // className: `bg-${event.categoryTypes[0].category.slug} rounded-full m-2`,
   iconSize: [24, 24],
-  iconUrl: `/svg/leaflet/${window.slug}.svg`,
+  iconUrl: `/svg/leaflet/${event.categoryTypes[0].category.slug}.svg`,
 })
 L.marker([event.location.latitude, event.location.longitude], { icon: myIcon })
   .addTo(map)

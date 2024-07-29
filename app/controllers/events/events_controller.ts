@@ -207,6 +207,8 @@ export default class EventsController {
     }
 
     if (qs.city) {
+      console.log('SEARCH CITY')
+      console.log(payload.city)
       try {
         ;[latitude, longitude] = await this.getCoordinatesFromCity(payload?.city)
 

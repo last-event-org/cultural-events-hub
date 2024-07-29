@@ -23,7 +23,7 @@ sliderInput.addEventListener('input', updateSlider)
 let baseRadius = sliderInput.value * 1000
 
 async function getCoordinatesFromCity(city) {
-  console.log('getCoordinatesFromCity')
+  console.log('getCoordinatesFromCity in mapHome')
   console.log(city)
   try {
     const response = await fetch(
@@ -62,6 +62,8 @@ function updateCircleRadius(newRadius) {
 
 async function createMap(lat = latitude, long = longitude, update = false) {
   if (update === false) {
+    console.log('WINDOW')
+    console.log(window.latitude + '  /  ' + window.longitude)
     if (window.latitude) lat = window.latitude
     if (window.longitude) long = window.longitude
   }

@@ -246,12 +246,12 @@ summary {
 
     height: 16px;
     width: 16px;
-    background-image: url('/public/svg/arrow_details.svg');
+    background-image: url('/svg/arrow_details.svg');
 
     background-size: 16px 16px;
   }
   details[open] &:before {
-    background-image: url('/public/svg/arrow_details_open.svg');
+    background-image: url('/svg/arrow_details_open.svg');
   }
 }
 

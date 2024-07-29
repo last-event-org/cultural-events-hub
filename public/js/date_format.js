@@ -1,5 +1,4 @@
-const { DateTime } = require('luxon')
-
+import { DateTime } from 'luxon'
 const lang = document.documentElement.lang
 
 function formatDate(startString, endString) {

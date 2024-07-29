@@ -22,7 +22,7 @@ sliderInput.addEventListener('input', updateSlider)
 
 let baseRadius = sliderInput.value * 1000
 
-export async function getCoordinatesFromCity(city) {
+async function getCoordinatesFromCity(city) {
   console.log('getCoordinatesFromCity')
   console.log(city)
   try {

@@ -14,7 +14,6 @@
     {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
   </title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 
 <body class=" bg-slate-50">
@@ -54,7 +53,6 @@
       <div class="h-[400px] lg:hidden">
         @!component('components/events/top_events', {title: nextTitle, events: todayEvents})
       </div>
-  
     </div>
   @end
 </main>

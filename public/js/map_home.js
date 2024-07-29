@@ -1,5 +1,3 @@
-import { getCoordinatesFromCity } from '/js/geolocation'
-
 const sliderInput = document.getElementById('slider-input')
 const sliderThumb = document.getElementById('slider-thumb')
 const progressBar = document.getElementById('progress-bar')
@@ -23,6 +21,21 @@ let map
 sliderInput.addEventListener('input', updateSlider)
 
 let baseRadius = sliderInput.value * 1000
+
+export async function getCoordinatesFromCity(city) {
+  console.log('getCoordinatesFromCity')
+  console.log(city)
+  try {
+    const response = await fetch(
+      `https://api.openrouteservice.org/geocode/search/structured?api_key=${import.meta.env.VITE_API_KEY_ROUTERSERVICE}&country=belgium&locality=${city}&boundary.country=BE`
+    )
+    const datas = await response.json()
+    return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
+  } catch (e) {
+    console.log('ERROR')
+    console.log(e)
+  }
+}
 
 sliderInput.addEventListener('change', () => {
   inputRadius.value = sliderInput.value

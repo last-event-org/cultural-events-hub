@@ -35,6 +35,7 @@ export default class EventsController {
     const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
 
     const events = await Event.query()
+      .andWhere('event_start', '>=', dayBegin)
       .andWhereBetween('event_end', [dayBegin, dayEnd])
       .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
       .preload('location')
@@ -155,7 +156,7 @@ export default class EventsController {
         await event.delete()
         return response.redirect().back()
       }
-      
+
       await this.attachIndicators(request, event)
 
       if (!(await this.createEventAddress(request, event))) {
@@ -435,7 +436,7 @@ export default class EventsController {
       selectedIndicators.forEach(async (indicatorId: number) => {
         await event.related('indicators').attach([indicatorId])
       })
-    } 
+    }
   }
 
   async setPriceType(isFreeCategory: boolean, requestPriceData: any) {

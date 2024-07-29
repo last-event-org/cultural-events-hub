@@ -1,1 +1,1 @@
-web: ENV_SILENT=true node --ignore-ts-errors ace serve --production
+web: ENV_SILENT=true node ace serve --production --ignore-ts-errors

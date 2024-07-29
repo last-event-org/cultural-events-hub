@@ -65,11 +65,11 @@ async function createMap(lat = latitude, long = longitude, update = false) {
     if (window.latitude) lat = window.latitude
     if (window.longitude) long = window.longitude
   }
-  if (map === undefined) {
-    map = L.map('map', {
-      scrollWheelZoom: false, // Désactive le zoom par molette par défaut
-    })
-  }
+  // if (map === undefined) {
+  map = L.map('map', {
+    scrollWheelZoom: false, // Désactive le zoom par molette par défaut
+  })
+  // }
   map.setView([lat, long], mapZoom)
   setTimeout(function () {
     map.invalidateSize() // Redimensionne la carte après un léger délai

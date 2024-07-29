@@ -70,10 +70,9 @@ export default class EventsController {
 
     const categories = await Category.query().select('name', 'slug', 'id').orderBy('id', 'asc')
     const dayBegin = DateTime.now().toSQL()
-    const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
 
     const events = await Event.query()
-      .whereBetween('event_end', [dayBegin, dayEnd])
+      .where('event_start', '>=', dayBegin)
       .preload('location')
       .preload('categoryTypes', (categoryTypesQuery) => {
         categoryTypesQuery.preload('category')

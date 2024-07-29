@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "node ace build --ignore-ts-errors",
-    "start": "ls -R build && node ./build/server.js",
+    "start": "ls -R build && node build/bin/server.js",
     "heroku-postbuild": "npm run build && ls -R build",
     "dev": "node ace serve --hmr",
     "test": "node ace test",

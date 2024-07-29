@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Next Events - {{event.title}} </title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @vite(['resources/css/app.css', 'js/app.js'])
 </head>
 
 <body class="bg-slate-50">
@@ -249,12 +249,12 @@
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""></script>
 
-  <script src="/resources/js/cart.js" defer></script>
+  <script src="/js/cart.js" defer></script>
   <script>
     window.latitude = "{{ event.location.latitude }}";
     window.longitude = "{{ event.location.longitude }}";
     window.name = "{{ event.title }}";
   </script>
-  <script src="/resources/js/fade_animations.js"></script>
+  <script src="/js/fade_animations.js"></script>
 </body>
 </html>

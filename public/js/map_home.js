@@ -27,7 +27,7 @@ async function getCoordinatesFromCity(city) {
   console.log(city)
   try {
     const response = await fetch(
-      `https://api.openrouteservice.org/geocode/search/structured?api_key=${VITE_API_KEY_ROUTERSERVICE}&country=belgium&locality=${city}&boundary.country=BE`
+      `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${city}&boundary.country=BE`
     )
     const datas = await response.json()
     return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]

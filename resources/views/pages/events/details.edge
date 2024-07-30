@@ -44,14 +44,24 @@
             </h3>
           </div> 
           <div class="flex flex-col lg:flex-row w-full">
-            <div class="lg:w-1/2 relative ">
+            <div class="lg:w-1/2 relative " id="carousel">
 
-              <img class="sm:p-4 h-auto max-h-[800px] w-full object-cover sm:rounded-3xl"
-                    src="{{event.media[0]?.path ?? '/images/dummies/No_image.png'}}" 
-                    alt="{{event.media[0]?.altName ?? 'No picture available'}}"
-                    onerror="this.onerror=null; this.src='/images/dummies/No_image.png';">   
+              <img id="carouselImage" class="sm:p-4 h-auto max-h-[800px] lg:max-h-[600px] w-full object-cover sm:rounded-3xl cursor-pointer"
+                src="{{event.media[0]?.path ?? '/images/dummies/No_image.png'}}" 
+                alt="{{event.media[0]?.altName ?? 'No picture available'}}"
+                onerror="this.onerror=null; this.src='/images/dummies/No_image.png';"
+                data-event-media="{{event.media.map(m => `${m.path}::${m.altName}`).join('||')}}"> 
+
+              <button id="prevButton" class="absolute left-2 top-1/2 transform -translate-y-1/2 h-16 w-16 p-3 z-10">
+                <img src="/svg/previous_btn.svg" alt="<">
+              </button>
+              
+              <button id="nextButton" class="absolute right-2 top-1/2 transform -translate-y-1/2 h-16 w-16 p-3 z-10">
+                <img src="/svg/next_btn.svg" alt=">">
+              </button>      
+                    
+                    
               <div class= "flex gap-2 items-center absolute top-4 sm:top-8 right-4 sm:right-10 z-10  transition duration-300">
-
                 @if(!auth.isAuthenticated)
                   <form action="{{ route('auth.login.show')}}" method="get" class="" enctype="multipart/form-data">
                     {{ csrfField() }}
@@ -232,12 +242,18 @@
         
         <div id="error-notification" class="hidden">
           @!notifications.error({message: i18n.t('messages.cart_itemDeleted')})
-        </div>     
-        {{-- @!component('components/notification_added_to_basket', {message: {{i18n.t('messages.cart_itemAdded')}}}) --}}
-                  
+        </div>                      
       </article>     
     </div> 
   </main>
+
+  <div id="imageModal" class="fixed inset-0 bg-slate-950/80 flex items-center justify-center z-50 hidden overflow-hidden transition-opacity duration-300 ease-in-out">
+    <div class="w-full h-full p-4 flex items-center justify-center">
+      <img id="modalImage" src="" alt="Full screen image" class="max-w-full max-h-[calc(100vh-2rem)] w-auto object-contain">
+      <button id="closeModal" class="absolute top-4 right-4 text-white text-4xl">&times;</button>
+    </div>
+  </div>
+
 
 
   @include("pages/partials/footer")
@@ -256,5 +272,6 @@
     window.name = "{{ event.title }}";
   </script>
   <script src="/resources/js/fade_animations.js"></script>
+  <script src="/resources/js/carousel.js" defer></script>
 </body>
 </html>

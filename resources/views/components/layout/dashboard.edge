@@ -13,10 +13,10 @@
   @include("pages/partials/header")
 
   <main class="flex flex-col items-center min-h-screen">
-    <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border rounded-3xl shadow p-4 md:p-8 mt-10 mb-20 gap-6">
-        <div class=" flex justify-center font-bold text-xl items-center self-center shadow hover:shadow-inner duration-1000 border bg-slate-100 rounded-full p-3 gap-4 ">
+    <div class="w-screen sm:w-[600px] lg:w-[800px] bg-white text-slate-600 flex flex-col border sm:rounded-3xl shadow p-4 md:p-8 mt-10 mb-20 gap-6">
+        <div class=" flex justify-center font-bold text-xl items-center self-center shadow border bg-slate-50 rounded-full mt-4 p-3 gap-4 ">
             <img class="h-7 w-7" src="/svg/dashboard/{{svg}}.svg" alt="{{pageTitle}} icon">
-            <h1>{{pageTitle}}</h1>
+            <h1 class="pr-2">{{pageTitle}}</h1>
         </div>
          
         @if(flashMessages.has('error'))

@@ -26,3 +26,6 @@ yarn-error.log
 
 # file storage
 uploads
+
+# SQL queries
+database/sql_queries

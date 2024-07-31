@@ -13,8 +13,7 @@
     {{vendor ? i18n.t('messages.events_search_vendor') + " " + vendor : "" }}
     {{location ? i18n.t('messages.events_search_location') + " " + location : "" }}
   </title>
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/date_format.js'])
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class=" bg-slate-50">
@@ -54,31 +53,29 @@
       <div class="h-[400px] lg:hidden">
         @!component('components/events/top_events', {title: nextTitle, events: todayEvents})
       </div>
-  
     </div>
   @end
 </main>
 
 @include("pages/partials/footer")
-
-<script src="/resources/js/countdown.js"></script>
-<script type="module" src="/resources/js/map_home.js"></script>
-<script src="/resources/js/fade_animations.js"></script>
-
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-crossorigin=""></script>
-
 <script>
     if({{latitude}}) {
       window.latitude = "{{ latitude }}";
       window.longitude = "{{ longitude }}";
-    }     
+    }
 </script>
+<script src="/js/leaflet.js"></script>
+<script src="/js/countdown.js"></script>
+<script src="/js/map_home.js"></script>
+<script type="module" src="/js/date_format.js"></script>
+<script src="/js/fade_animations.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+{{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+crossorigin=""></script> --}}
+
 
 </body>
 </html>

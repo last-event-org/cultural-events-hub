@@ -1,5 +1,3 @@
-import { getCoordinatesFromCity } from './geolocation'
-
 const sliderInput = document.getElementById('slider-input')
 const sliderThumb = document.getElementById('slider-thumb')
 const progressBar = document.getElementById('progress-bar')
@@ -23,6 +21,22 @@ let map
 sliderInput.addEventListener('input', updateSlider)
 
 let baseRadius = sliderInput.value * 1000
+
+async function getCoordinatesFromCity(city) {
+  console.log('getCoordinatesFromCity in mapHome')
+  console.log(city)
+  try {
+    const response = await fetch(
+      `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${city}&boundary.country=BE`
+    )
+    const datas = await response.json()
+    console.log(datas)
+    return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]
+  } catch (e) {
+    console.log('ERROR')
+    console.log(e)
+  }
+}
 
 sliderInput.addEventListener('change', () => {
   inputRadius.value = sliderInput.value
@@ -48,6 +62,8 @@ function updateCircleRadius(newRadius) {
 
 async function createMap(lat = latitude, long = longitude, update = false) {
   if (update === false) {
+    console.log('WINDOW')
+    console.log(window.latitude + '  /  ' + window.longitude)
     if (window.latitude) lat = window.latitude
     if (window.longitude) long = window.longitude
   }
@@ -135,6 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
 async function updateCity(city) {
   cityInput.value = city
   ;[latitude, longitude] = await getCoordinatesFromCity(city)
+  console.log('latitude / longitude')
+  console.log(latitude + '   /   ' + longitude)
   map.setView([latitude, longitude], mapZoom)
   await createMap(latitude, longitude, true)
 }

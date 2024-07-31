@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon'
+import { DateTime } from 'https://cdn.jsdelivr.net/npm/luxon@3.0.0/build/es6/luxon.js'
 const lang = document.documentElement.lang
 
 function formatDate(startString, endString) {

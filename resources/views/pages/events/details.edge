@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Next Events - {{event.title}} </title>
-  @vite(['resources/css/app.css', 'resources/js/app.js','resources/js/map_details.js','resources/js/favourites.js', 'resources/js/date_format.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-slate-50">
@@ -66,8 +66,8 @@
                   <form action="{{ route('auth.login.show')}}" method="get" class="" enctype="multipart/form-data">
                     {{ csrfField() }}
                     <button type="submit" class="favourite-star {{ isInUserWishlist ? 'star-filled' : '' }}">
-                      <img src="/public/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
-                      <img src="/public/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+                      <img src="/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+                      <img src="/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
                     </button>
                   </form>
                 @else
@@ -75,8 +75,8 @@
                     <form action="{{ route('wishlist.destroy', [event.id]) }}" method="post" enctype="multipart/form-data">
                       {{ csrfField() }}
                       <button type="submit" class="favourite-star {{ isInUserWishlist ? 'star-filled' : '' }}">
-                        <img src="/public/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_remove_wish') }}">
-                        <img src="/public/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_remove_wish') }}">
+                        <img src="/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_remove_wish') }}">
+                        <img src="/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_remove_wish') }}">
                       </button>
                     </form>
                     
@@ -84,8 +84,8 @@
                     <form action="{{ route('wishlist.add', [event.id]) }}" method="post" class="" enctype="multipart/form-data">
                       {{ csrfField() }}
                       <button type="submit" class="favourite-star {{ isInUserWishlist ? 'star-filled' : '' }}">
-                        <img src="/public/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
-                        <img src="/public/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+                        <img src="/svg/favourite-star-empty.svg" class="star-empty" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
+                        <img src="/svg/favourite-star.svg" class="star-full" alt="Add to favourites" title="{{ i18n.t('messages.event_wish') }}">
                       </button>
                     </form>
                   @end
@@ -129,8 +129,8 @@
                       <form action="{{ route('auth.login.show') }}" method="get" class="" enctype="multipart/form-data">
                         {{ csrfField() }}
                         <button type="submit" class="favourite-heart">
-                          <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="heart-empty" title="{{ i18n.t('messages.add_to_favourites') }}">
-                          <img src="/public/svg/heart-full.svg" alt="Remove from favourites" class="heart-full" title="{{ i18n.t('messages.remove_from_favourites') }}">
+                          <img src="/svg/heart-empty.svg" alt="Add to favourites" class="heart-empty" title="{{ i18n.t('messages.add_to_favourites') }}">
+                          <img src="/svg/heart-full.svg" alt="Remove from favourites" class="heart-full" title="{{ i18n.t('messages.remove_from_favourites') }}">
                         </button>
                       </form>
                     @else
@@ -138,16 +138,16 @@
                         <form action="{{ route('favourite.destroy', [event.vendor.id]) }}" method="post" class="" enctype="multipart/form-data">
                           {{ csrfField() }}
                           <button type="submit" class="favourite-heart heart-filled">
-                            <img src="/public/svg/heart-empty.svg" alt="Remove from favourites" class="heart-empty" title="{{ i18n.t('messages.remove_from_favourites') }}">
-                            <img src="/public/svg/heart-full.svg" alt="Remove from favourites" class="heart-full" title="{{ i18n.t('messages.remove_from_favourites') }}">
+                            <img src="/svg/heart-empty.svg" alt="Remove from favourites" class="heart-empty" title="{{ i18n.t('messages.remove_from_favourites') }}">
+                            <img src="/svg/heart-full.svg" alt="Remove from favourites" class="heart-full" title="{{ i18n.t('messages.remove_from_favourites') }}">
                           </button>
                         </form>
                       @else
                         <form action="{{ route('favourite.add', [event.vendor.id]) }}" method="post" class="" enctype="multipart/form-data">
                           {{ csrfField() }}
                           <button type="submit" class="favourite-heart">
-                            <img src="/public/svg/heart-empty.svg" alt="Add to favourites" class="heart-empty" title="{{ i18n.t('messages.add_to_favourites') }}">
-                            <img src="/public/svg/heart-full.svg" alt="Add to favourites" class="heart-full" title="{{ i18n.t('messages.add_to_favourites') }}">
+                            <img src="/svg/heart-empty.svg" alt="Add to favourites" class="heart-empty" title="{{ i18n.t('messages.add_to_favourites') }}">
+                            <img src="/svg/heart-full.svg" alt="Add to favourites" class="heart-full" title="{{ i18n.t('messages.add_to_favourites') }}">
                           </button>
                         </form>
                       @end
@@ -164,17 +164,17 @@
                 <div class="flex justify-center items-center gap-8 lg:gap-4">
                   @if(event.facebookLink)
                     <a href="{{event.facebookLink}}" class="hover:animate-pulse">
-                      <img src="/public/svg/facebook-color.svg" alt="facebook link">
+                      <img src="/svg/facebook-color.svg" alt="facebook link">
                     </a>
                   @endif
                   @if(event.instagramLink)
                     <a href="{{event.instagramLink}}" class="hover:animate-pulse">
-                      <img src="/public/svg/instagram-color.svg" alt="instagram link">
+                      <img src="/svg/instagram-color.svg" alt="instagram link">
                     </a>
                   @endif
                   @if(event.websiteLink)
                     <a href="{{event.websiteLink}}" class="hover:animate-pulse">
-                      <img src="/public/svg/web.svg" alt="website link">
+                      <img src="/svg/web.svg" alt="website link">
                     </a>
                   @endif
                 </div>  
@@ -202,11 +202,11 @@
                 {{i18n.t('messages.events_free')}}
               </p>
             </div>
-            @else        
+            @else
               @each(item in event.prices) 
                 @!events.addBasket({item, isPast, userOrderLineQty: userOrderLines ? userOrderLines[item.id] ?? 0 : 0})
               @end
-            @endif  
+            @endif
           </div>
         </section>
 
@@ -257,21 +257,29 @@
 
 
   @include("pages/partials/footer")
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-  crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-  crossorigin=""></script>
-
-  <script src="/resources/js/cart.js" defer></script>
+  
   <script>
     window.latitude = "{{ event.location.latitude }}";
     window.longitude = "{{ event.location.longitude }}";
+    window.title = "{{ event.title }}";
+    window.id = "{{ event.id }}";
+    window.slug = "{{ event.categoryTypes[0].category.slug}}";
+    window.locationname = "{{ event.location.name }}";
     window.name = "{{ event.title }}";
   </script>
-  <script src="/resources/js/fade_animations.js"></script>
-  <script src="/resources/js/carousel.js" defer></script>
+
+  <script src="/js/carousel.js" defer></script>
+
+  {{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script> --}}
+  
+  <script src="/js/cart.js" defer></script>
+  <script type="module" src="js/date_format.js"></script>
+  <script src="/js/fade_animations.js"></script>
+
+  <script src="/js/leaflet.js"></script>
+  <script src="/js/map_details.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 </body>
 </html>

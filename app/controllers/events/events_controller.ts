@@ -35,6 +35,7 @@ export default class EventsController {
     const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
 
     const events = await Event.query()
+      .andWhere('event_start', '>=', dayBegin)
       .andWhereBetween('event_end', [dayBegin, dayEnd])
       .andWhereHas('prices', (query) => query.where('available_qty', '>', 0))
       .preload('location')
@@ -69,10 +70,9 @@ export default class EventsController {
 
     const categories = await Category.query().select('name', 'slug', 'id').orderBy('id', 'asc')
     const dayBegin = DateTime.now().toSQL()
-    const dayEnd = DateTime.now().plus({ days: 7 }).toSQL()
 
     const events = await Event.query()
-      .whereBetween('event_end', [dayBegin, dayEnd])
+      .where('event_start', '>=', dayBegin)
       .preload('location')
       .preload('categoryTypes', (categoryTypesQuery) => {
         categoryTypesQuery.preload('category')
@@ -155,7 +155,7 @@ export default class EventsController {
         await event.delete()
         return response.redirect().back()
       }
-      
+
       await this.attachIndicators(request, event)
 
       if (!(await this.createEventAddress(request, event))) {
@@ -207,6 +207,8 @@ export default class EventsController {
     }
 
     if (qs.city) {
+      console.log('SEARCH CITY')
+      console.log(payload.city)
       try {
         ;[latitude, longitude] = await this.getCoordinatesFromCity(payload?.city)
 
@@ -435,7 +437,7 @@ export default class EventsController {
       selectedIndicators.forEach(async (indicatorId: number) => {
         await event.related('indicators').attach([indicatorId])
       })
-    } 
+    }
   }
 
   async setPriceType(isFreeCategory: boolean, requestPriceData: any) {
@@ -561,10 +563,10 @@ export default class EventsController {
   }
 
   async getCoordinatesFromCity(city: string) {
-    console.log('getCoordinatesFromCity')
+    console.log('getCoordinatesFromCity in EventsController')
     try {
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&country=belgium&locality=${city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&country=belgium&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
       console.log(datas)
@@ -580,7 +582,7 @@ export default class EventsController {
   async getCoordinatesFromAddress(city: string, street: string, zip: number, number: string) {
     try {
       const response = await fetch(
-        `https://api.openrouteservice.org/geocode/search/structured?api_key=${env.get('API_KEY_ROUTERSERVICE')}&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
+        `https://api.openrouteservice.org/geocode/search/structured?api_key=5b3ce3597851110001cf6248e6f493bff36c4d3d8d3bc2062e801a41&address=${street} ${number}&postalcode=${zip}&locality=${city}&boundary.country=BE`
       )
       const datas = await response.json()
       return [datas.features[0].geometry.coordinates[1], datas.features[0].geometry.coordinates[0]]

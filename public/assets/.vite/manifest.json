@@ -1,0 +1,21 @@
+{
+  "public/svg/arrow_details.svg": {
+    "file": "arrow_details-DRSjThfQ.svg",
+    "src": "public/svg/arrow_details.svg"
+  },
+  "public/svg/arrow_details_open.svg": {
+    "file": "arrow_details_open-BpbsSgVn.svg",
+    "src": "public/svg/arrow_details_open.svg"
+  },
+  "resources/css/app.css": {
+    "file": "app-CjJsw0T4.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "app-Dgc-f8TG.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}

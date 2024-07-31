@@ -1,11 +1,11 @@
 @layout.dashboard({pageTitle: i18n.t('messages.profile_title'), svg: 'profile' }) 
 
 
-      <div class="flex flex-col lg:flex-row lg:items-center md:px-4">
-        <div class="flex self-center lg:self-start w-32 h-32 lg:w-40 lg:h-40  shadow m-4 p-4  rounded-md">
+      <div class="flex flex-col sm:flex-row sm:items-center md:px-4">
+        <div class="flex self-start w-32 h-32 lg:w-40 lg:h-40  shadow m-4 p-4  rounded-md">
           <img src="/svg/profile_picture_dummy.svg" alt="profile picture dummy">
         </div>
-        <div class="flex flex-col gap-1 mb-2 lg:my-2  mx-4 text-xs md:text-sm">
+        <div class="flex flex-col gap-1 mb-2 lg:my-2  mx-4 text-sm">
           <div class="flex gap-2">
             <p class="font-bold">{{ i18n.t('messages.profile_firstname') }}:</p>
             <p>{{ user.firstname }}</p>

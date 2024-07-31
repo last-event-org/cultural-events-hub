@@ -53,7 +53,7 @@ function updateSlider() {
 
   updateCircleRadius(value * 1000)
   // displayPOIsWithinRadius(latitude, longitude, value)
-  updateMapZoom(value) // Ajoutez cette ligne pour mettre à jour le zoom de la carte
+  updateMapZoom(value) 
 }
 
 function updateCircleRadius(newRadius) {
@@ -69,7 +69,7 @@ async function createMap(lat = latitude, long = longitude, update = false) {
   }
   if (map === undefined) {
     map = L.map('map', {
-      scrollWheelZoom: false, // Désactive le zoom par molette par défaut
+      // scrollWheelZoom: false, 
     })
   }
   map.setView([lat, long], mapZoom)
@@ -176,17 +176,17 @@ async function getEventsSearch(params) {
 }
 
 function updateMapZoom(radiusKm) {
-  let zoomLevel
+  // let zoomLevel = 9
   if (radiusKm <= 1) {
-    zoomLevel = 13
+    mapZoom = 13
   } else if (radiusKm <= 5) {
-    zoomLevel = 12
+    mapZoom = 12
   } else if (radiusKm <= 10) {
-    zoomLevel = 11
+    mapZoom = 11
   } else if (radiusKm <= 17) {
-    zoomLevel = 10
+    mapZoom = 10
   } else {
-    zoomLevel = 9
+    mapZoom = 9
   }
 }
 

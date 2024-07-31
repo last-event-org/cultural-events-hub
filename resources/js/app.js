@@ -169,33 +169,6 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 })
 
-//loading spinner
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   const spinner = document.querySelector('.loading-spinner')
-//   if (spinner !== null) {
-//     function showSpinner() {
-//       spinner.classList.remove('hidden')
-//     }
-
-//     function hideSpinner() {
-//       spinner.classList.add('hidden')
-//     }
-
-//     document.addEventListener('click', (event) => {
-//       const link = event.target.closest('a')
-//       if (link && link.getAttribute('href').startsWith('/')) {
-//         showSpinner()
-//       }
-//     })
-
-//     document.addEventListener('submit', () => {
-//       showSpinner()
-//     })
-
-//     window.addEventListener('load', hideSpinner)
-//   }
-// })
 
 document.addEventListener('DOMContentLoaded', () => {
   const spinner = document.querySelector('.loading-spinner')

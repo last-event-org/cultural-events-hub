@@ -29,6 +29,9 @@ export const http = defineConfig({
    * Manage cookies configuration. The settings for the session id cookie are
    * defined inside the "config/session.ts" file.
    */
+  port: process.env.PORT || 3333,
+  host: '0.0.0.0', // This allows connections from any IP,
+
   cookie: {
     domain: '',
     path: '/',

@@ -20,7 +20,7 @@ Variables used:
 -->
 
 <section class="flex flex-col my-2 w-full p-4 bg-white rounded-3xl shadow text-xs sm:text-base">
-  <p class="font-semibold text-slate-700 bg-slate-300/70 pl-2 rounded-md mb-2">
+  <p class="font-semibold text-slate-700 bg-slate-300/70 pl-2 py-2 rounded-md mb-2">
     {{item.description}}
     {{-- @if(userOrderLineQty > 0) --}}
     <span data-show-cart-qty="{{item.id}}" class="{{userOrderLineQty > 0 ? '' : 'hidden'}}">

@@ -6,7 +6,7 @@
       <section class="text-yellow-500 hidden md:block w-1/4">
         <h4 class="font-semibold underline mb-1">Next Events :</h4>
         <ul class="text-sm">
-          @each (city in ["Bruxelles", "Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon"])
+          @each (city in ["Liège","Charleroi", "Namur", "Mons", "Marche-en-Famenne", "Eupen","Arlon","Brussels"])
           <a class="hover:text-white transition duration-300" href='/events/search?city={{city}}'>
             <li>{{i18n.t('messages.footer_events_in')}} {{city}}</li>
           </a>

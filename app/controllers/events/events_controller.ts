@@ -147,7 +147,7 @@ export default class EventsController {
    */
   async store({ request, session, response, i18n, auth }: HttpContext) {
     console.log('STORE EVENT')
-    const event = await this.createEvent(request, session, i18n)
+    const event = await this.createEvent(request, session, response, i18n)
     if (event) {
       const user = auth.user
       if (user) event.vendorId = user.id
@@ -374,6 +374,7 @@ export default class EventsController {
   async createEvent(
     request: HttpContext['request'],
     session: HttpContext['session'],
+    response: HttpContext['response'],
     i18n: HttpContext['i18n']
   ) {
     const timezone = request.input('timezone')
@@ -415,6 +416,7 @@ export default class EventsController {
       session.flash('date', {
         message: errorMsg,
       })
+      return response.redirect().back()
     }
     // Links (allow empty links)
     if (
@@ -590,11 +592,11 @@ export default class EventsController {
     const addressPayload = await request.validateUsing(createAddressValidator)
     const address = new Address()
 
-    address.name = addressPayload.name ?? ''
-    address.street = addressPayload.street.replaceAll('&#x27;', "'")
-    address.number = addressPayload.number
+    if (addressPayload.name) address.name = addressPayload.name.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/') ?? ''
+    address.street = addressPayload.street.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    address.number = addressPayload.number.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
     address.zipCode = addressPayload.zip_code
-    address.city = addressPayload.city
+    address.city = addressPayload.city.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
     address.country = 'Belgique'
     try {
       const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
@@ -605,9 +607,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) {
-      return false
-    }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -930,11 +930,11 @@ export default class EventsController {
   ) {
     const addressPayload = await request.validateUsing(createAddressValidator)
     if (addressPayload) {
-      event.location.name = addressPayload.name ?? ''
-      event.location.street = addressPayload.street.replace('&#x27;', "'")
-      event.location.number = addressPayload.number
+      if (addressPayload.name) event.location.name = addressPayload.name.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/') ?? ''
+      event.location.street = addressPayload.street.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      event.location.number = addressPayload.number.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
       event.location.zipCode = addressPayload.zip_code
-      event.location.city = addressPayload.city
+      event.location.city = addressPayload.city.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
       event.location.country = 'Belgique'
 
       try {

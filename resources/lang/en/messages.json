@@ -269,7 +269,7 @@
   "event_start": "Start",
   "event_end": "End",
   "event_location": "Location",
-  "event_locationName": "Name",
+  "event_locationName": "Location Name",
   "event_locationStreet": "Street",
   "event_locationStreetNb": "Street number",
   "event_locationZip": "ZIP",

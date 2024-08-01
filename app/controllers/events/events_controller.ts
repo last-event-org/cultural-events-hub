@@ -382,9 +382,28 @@ export default class EventsController {
     console.log(timezone)
     const event = new Event()
 
-    event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
-    event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
-    event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    if (this.checkForbiddenWords(payload.title)) {
+      event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    } else {
+      event.title = this.replaceForbiddenWords(
+        payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      )
+    }
+    if (this.checkForbiddenWords(payload.subtitle)) {
+      event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    } else {
+      event.subtitle = this.replaceForbiddenWords(
+        payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      )
+    }
+    if (this.checkForbiddenWords(payload.description)) {
+      event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    } else {
+      event.description = this.replaceForbiddenWords(
+        payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      )
+    }
+
     event.eventStart = DateTime.fromFormat(payload.event_start, "yyyy-MM-dd'T'HH:mm", {
       zone: timezone,
     }).toISO()
@@ -399,10 +418,43 @@ export default class EventsController {
       })
       return response.redirect().back()
     }
-    if (payload.facebook_link) event.facebookLink = payload.facebook_link
-    if (payload.instagram_link) event.instagramLink = payload.instagram_link
-    if (payload.website_link) event.websiteLink = payload.website_link
-    if (payload.youtube_link && payload.youtube_link != '') {
+    // Links (allow empty links)
+    if (
+      payload.facebook_link &&
+      payload.facebook_link !== '' &&
+      this.checkForbiddenWords(payload.facebook_link) &&
+      this.checkHostName(payload.facebook_link, 'facebook')
+    ) {
+      event.facebookLink = payload.facebook_link
+    } else {
+      event.facebookLink = ''
+    }
+    if (
+      payload.instagram_link &&
+      payload.instagram_link !== '' &&
+      this.checkForbiddenWords(payload.instagram_link) &&
+      this.checkHostName(payload.instagram_link, 'instagram')
+    ) {
+      event.instagramLink = payload.instagram_link
+    } else {
+      event.instagramLink = ''
+    }
+    if (
+      payload.website_link &&
+      payload.website_link !== '' &&
+      this.checkForbiddenWords(payload.website_link)
+    ) {
+      event.websiteLink = payload.website_link
+    } else {
+      event.websiteLink = ''
+    }
+
+    if (
+      payload.youtube_link &&
+      payload.youtube_link !== '' &&
+      this.checkForbiddenWords(payload.youtube_link) &&
+      this.checkHostName(payload.youtube_link, 'youtube')
+    ) {
       event.youtubeLink = this.generateYoutubeEmbedLink(payload.youtube_link)
     } else {
       event.youtubeLink = ''
@@ -545,7 +597,7 @@ export default class EventsController {
     address.number = addressPayload.number.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
     address.zipCode = addressPayload.zip_code
     address.city = addressPayload.city.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
-    address.country = addressPayload.country.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    address.country = 'Belgique'
     try {
       const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
         address.city,
@@ -883,7 +935,7 @@ export default class EventsController {
       event.location.number = addressPayload.number.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
       event.location.zipCode = addressPayload.zip_code
       event.location.city = addressPayload.city.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
-      event.location.country = addressPayload.country.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      event.location.country = 'Belgique'
 
       try {
         const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
@@ -1025,6 +1077,21 @@ export default class EventsController {
     return false
   }
 
+  checkForbiddenWords(string: string) {
+    const forbiddenWords = ['porn', 'sex', 's3x', 'p0rn', 'dick', 'pussy', 'd1ck', 'pu55y']
+    const lowerUrl = string.toLowerCase()
+    return !forbiddenWords.some((word) => lowerUrl.includes(word))
+  }
+
+  replaceForbiddenWords(string: string) {
+    return string.replaceAll(/p(?:o|0)rn|s(?:e|3)x|d(?:i|1)ck|pu(?:ss|55)y/gi, '').trim()
+  }
+
+  checkHostName(link: string, website: string) {
+    const parsedUrl = new URL(link)
+    return parsedUrl.hostname.includes(website)
+  }
+
   /**
    * Handle form submission for the edit action
    */
@@ -1043,9 +1110,30 @@ export default class EventsController {
       .first()
 
     if (event) {
-      event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
-      event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
-      event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      if (this.checkForbiddenWords(payload.title)) {
+        event.title = payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      } else {
+        event.title = this.replaceForbiddenWords(
+          payload.title.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+        )
+      }
+      if (this.checkForbiddenWords(payload.subtitle)) {
+        event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      } else {
+        event.subtitle = this.replaceForbiddenWords(
+          payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+        )
+      }
+      if (this.checkForbiddenWords(payload.description)) {
+        event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      } else {
+        event.description = this.replaceForbiddenWords(
+          payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+        )
+      }
+
+      // event.subtitle = payload.subtitle.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      // event.description = payload.description.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
 
       // Date
       event.eventStart = DateTime.fromFormat(payload.event_start, "yyyy-MM-dd'T'HH:mm", {
@@ -1062,23 +1150,42 @@ export default class EventsController {
       }
 
       // Links (allow empty links)
-      if (payload.facebook_link && payload.facebook_link !== '') {
+      if (
+        payload.facebook_link &&
+        payload.facebook_link !== '' &&
+        this.checkForbiddenWords(payload.facebook_link) &&
+        this.checkHostName(payload.facebook_link, 'facebook')
+      ) {
         event.facebookLink = payload.facebook_link
       } else {
         event.facebookLink = ''
       }
-      if (payload.instagram_link && payload.instagram_link !== '') {
+      if (
+        payload.instagram_link &&
+        payload.instagram_link !== '' &&
+        this.checkForbiddenWords(payload.instagram_link) &&
+        this.checkHostName(payload.instagram_link, 'instagram')
+      ) {
         event.instagramLink = payload.instagram_link
       } else {
         event.instagramLink = ''
       }
-      if (payload.website_link && payload.website_link !== '') {
+      if (
+        payload.website_link &&
+        payload.website_link !== '' &&
+        this.checkForbiddenWords(payload.website_link)
+      ) {
         event.websiteLink = payload.website_link
       } else {
         event.websiteLink = ''
       }
 
-      if (payload.youtube_link && payload.youtube_link != '') {
+      if (
+        payload.youtube_link &&
+        payload.youtube_link !== '' &&
+        this.checkForbiddenWords(payload.youtube_link) &&
+        this.checkHostName(payload.youtube_link, 'youtube')
+      ) {
         event.youtubeLink = this.generateYoutubeEmbedLink(payload.youtube_link)
       } else {
         event.youtubeLink = ''

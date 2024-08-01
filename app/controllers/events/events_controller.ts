@@ -147,7 +147,7 @@ export default class EventsController {
    */
   async store({ request, session, response, i18n, auth }: HttpContext) {
     console.log('STORE EVENT')
-    const event = await this.createEvent(request, session, i18n)
+    const event = await this.createEvent(request, session, response, i18n)
     if (event) {
       const user = auth.user
       if (user) event.vendorId = user.id
@@ -374,6 +374,7 @@ export default class EventsController {
   async createEvent(
     request: HttpContext['request'],
     session: HttpContext['session'],
+    response: HttpContext['response'],
     i18n: HttpContext['i18n']
   ) {
     const timezone = request.input('timezone')
@@ -396,6 +397,7 @@ export default class EventsController {
       session.flash('date', {
         message: errorMsg,
       })
+      return response.redirect().back()
     }
     if (payload.facebook_link) event.facebookLink = payload.facebook_link
     if (payload.instagram_link) event.instagramLink = payload.instagram_link

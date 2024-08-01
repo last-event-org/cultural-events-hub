@@ -10,37 +10,51 @@ export const createEventValidator = vine.compile(
     facebook_link: vine // urls max length is not set because url() does it automatically
       .string()
       .url({
-        require_protocol: true,
         protocols: ['http', 'https'],
+        require_protocol: true,
+        require_host: true,
+        allow_underscores: false,
+        allow_trailing_dot: false,
+        allow_protocol_relative_urls: false,
       })
       .trim()
       .nullable(),
     instagram_link: vine
       .string()
       .url({
-        require_protocol: true,
         protocols: ['http', 'https'],
+        require_protocol: true,
+        require_host: true,
+        allow_underscores: false,
+        allow_trailing_dot: false,
+        allow_protocol_relative_urls: false,
       })
       .trim()
       .nullable(),
     website_link: vine
       .string()
       .url({
-        require_protocol: true,
         protocols: ['http', 'https'],
+        require_protocol: true,
+        require_host: true,
+        allow_underscores: false,
+        allow_trailing_dot: false,
+        allow_protocol_relative_urls: false,
       })
       .trim()
       .nullable(),
     youtube_link: vine
       .string()
       .url({
-        require_protocol: true,
         protocols: ['http', 'https'],
+        require_protocol: true,
+        require_host: true,
+        allow_underscores: false,
+        allow_trailing_dot: false,
+        allow_protocol_relative_urls: false,
       })
       .trim()
       .nullable(),
-    is_free: vine
-      .boolean()
-      .optional()
+    is_free: vine.boolean().optional(),
   })
 )

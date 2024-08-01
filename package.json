@@ -5,13 +5,17 @@
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node bin/server.js",
-    "build": "node ace build",
+    "build": "node ace build --ignore-ts-errors",
+    "start": "node build/server.js",
+    "heroku-postbuild": "npm run build",
     "dev": "node ace serve --hmr",
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": "22.x"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",

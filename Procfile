@@ -1,1 +1,1 @@
-web: ENV_SILENT=true node ace serve --production --ignore-ts-errors
+web: ENV_SILENT=true npm start

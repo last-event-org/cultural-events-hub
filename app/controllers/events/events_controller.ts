@@ -553,9 +553,7 @@ export default class EventsController {
       )
       address.latitude = latitude
       address.longitude = longitude
-    } catch (error) {
-      return false
-    }
+    } catch (error) {}
 
     await address.save()
     await event.related('location').associate(address)
@@ -878,12 +876,12 @@ export default class EventsController {
   ) {
     const addressPayload = await request.validateUsing(createAddressValidator)
     if (addressPayload) {
-      event.location.name = addressPayload.name ?? ''
-      event.location.street = addressPayload.street.replace('&#x27;', "'")
-      event.location.number = addressPayload.number
+      if (addressPayload.name) event.location.name = addressPayload.name.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/') ?? ''
+      event.location.street = addressPayload.street.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      event.location.number = addressPayload.number.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
       event.location.zipCode = addressPayload.zip_code
-      event.location.city = addressPayload.city
-      event.location.country = addressPayload.country
+      event.location.city = addressPayload.city.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+      event.location.country = addressPayload.country.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
 
       try {
         const [latitude, longitude]: any = await this.getCoordinatesFromAddress(

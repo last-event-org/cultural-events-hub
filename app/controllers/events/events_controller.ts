@@ -538,12 +538,12 @@ export default class EventsController {
     const addressPayload = await request.validateUsing(createAddressValidator)
     const address = new Address()
 
-    address.name = addressPayload.name ?? ''
-    address.street = addressPayload.street.replaceAll('&#x27;', "'")
-    address.number = addressPayload.number
+    if (addressPayload.name) address.name = addressPayload.name.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/') ?? ''
+    address.street = addressPayload.street.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    address.number = addressPayload.number.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
     address.zipCode = addressPayload.zip_code
-    address.city = addressPayload.city
-    address.country = addressPayload.country
+    address.city = addressPayload.city.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
+    address.country = addressPayload.country.replaceAll('&#x27;', "'").replaceAll('&#x2F;', '/')
     try {
       const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
         address.city,

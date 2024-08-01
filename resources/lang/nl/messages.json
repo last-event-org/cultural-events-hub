@@ -267,7 +267,7 @@
   "event_start": "Begin",
   "event_end": "Einde",
   "event_location": "Locatie",
-  "event_locationName": "Naam",
+  "event_locationName": "Plaatsnaam",
   "event_locationStreet": "Straat",
   "event_locationStreetNb": "Huisnummer",
   "event_locationZip": "Postcode",

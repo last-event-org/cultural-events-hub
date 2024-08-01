@@ -1078,7 +1078,7 @@ export default class EventsController {
   }
 
   checkForbiddenWords(string: string) {
-    const forbiddenWords = ['porn', 'sex', 's3x', 'p0rn']
+    const forbiddenWords = ['porn', 'sex', 's3x', 'p0rn', 'dick', 'pussy', 'd1ck', 'pu55y']
     const lowerUrl = string.toLowerCase()
     return !forbiddenWords.some((word) => lowerUrl.includes(word))
   }

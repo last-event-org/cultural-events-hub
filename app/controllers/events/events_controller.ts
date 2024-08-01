@@ -595,7 +595,7 @@ export default class EventsController {
     address.number = addressPayload.number
     address.zipCode = addressPayload.zip_code
     address.city = addressPayload.city
-    address.country = addressPayload.country
+    address.country = 'Belgique'
     try {
       const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
         address.city,
@@ -935,7 +935,7 @@ export default class EventsController {
       event.location.number = addressPayload.number
       event.location.zipCode = addressPayload.zip_code
       event.location.city = addressPayload.city
-      event.location.country = addressPayload.country
+      event.location.country = 'Belgique'
 
       try {
         const [latitude, longitude]: any = await this.getCoordinatesFromAddress(
@@ -1084,7 +1084,7 @@ export default class EventsController {
   }
 
   replaceForbiddenWords(string: string) {
-    return string.replaceAll(/p(?:o|0)rn|s(?:e|3)x/gi, '')
+    return string.replaceAll(/p(?:o|0)rn|s(?:e|3)x|d(?:i|1)ck|pu(?:ss|55)y/gi, '').trim()
   }
 
   checkHostName(link: string, website: string) {
